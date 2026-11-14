@@ -1,0 +1,48 @@
+{
+  "frames": 120,
+  "size_xy_px": [
+    256,
+    256
+  ],
+  "pixel_mode": "I;16B",
+  "description": "ImageJ=1.53f\nimages=120\nchannels=2\nslices=60\nhyperstack=true\nmode=composite\nunit=micron\nspacing=0.29\nloop=false\nmin=448.0\nmax=14996.0\n",
+  "x_resolution_px_per_um": 3.846153,
+  "y_resolution_px_per_um": 3.846153,
+  "metadata": {
+    "ImageJ": "1.53f",
+    "images": "120",
+    "channels": "2",
+    "slices": "60",
+    "hyperstack": "true",
+    "mode": "composite",
+    "unit": "micron",
+    "spacing": "0.29",
+    "loop": "false",
+    "min": "448.0",
+    "max": "14996.0"
+  },
+  "axes": "ZCYX",
+  "shape": [
+    60,
+    2,
+    256,
+    256
+  ],
+  "dtype": "uint16",
+  "channel_verification": {
+    "metadata_file_channel_0": "nuclei",
+    "metadata_file_channel_1": "membranes",
+    "method": "all pixels in all 60 depths equal the corresponding reversed channel of the official documented cells3d.tif",
+    "all_pixels_equal": true
+  },
+  "pixel_size_um_from_tiff": {
+    "x": 0.26000005720001257,
+    "y": 0.26000005720001257,
+    "z": 0.29
+  },
+  "pixel_size_um_for_arithmetic": {
+    "x": 0.26,
+    "y": 0.26,
+    "z": 0.29
+  }
+}

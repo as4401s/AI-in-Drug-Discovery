@@ -1,0 +1,691 @@
+{
+  "status": "executed",
+  "created_utc": "2026-11-09T00:05:06.144754+00:00",
+  "model_id": "facebook/esm2_t6_8M_UR50D",
+  "model_revision": "c731040fcd8d73dceaa04b0a8e6329b345b0f5df",
+  "model_parameter_count": 7512474,
+  "model_config": {
+    "hidden_size": 320,
+    "num_hidden_layers": 6,
+    "num_attention_heads": 20,
+    "vocab_size": 33
+  },
+  "device": "cpu",
+  "dtype": "torch.float32",
+  "cpu_threads": 2,
+  "seed": 0,
+  "hardware": {
+    "machine": "arm64",
+    "platform": "macOS-27.2-arm64-arm-64bit"
+  },
+  "python": "3.12.12 (main, Oct 28 2025, 11:52:25) [Clang 20.1.4 ]",
+  "python_executable": "/Users/arjunsarkar/Tutorial/Playlists/ai-in-drug-discovery/production/esm-runtime/bin/python",
+  "packages": {
+    "torch": "2.15.0",
+    "transformers": "5.22.2",
+    "numpy": "2.5.4",
+    "safetensors": "0.8.0",
+    "huggingface-hub": "2.4.0"
+  },
+  "command": [
+    "/Users/arjunsarkar/Tutorial/Playlists/ai-in-drug-discovery/production/esm-runtime/bin/python",
+    "/Users/arjunsarkar/Tutorial/Playlists/ai-in-drug-discovery/1/code/esm2_demo.py",
+    "--output-dir",
+    "/Users/arjunsarkar/Tutorial/Playlists/ai-in-drug-discovery/1/data/esm2"
+  ],
+  "elapsed_seconds": 3.305719666997902,
+  "code_sha256": "e1c5164c214f36dc75b995bfc6b821014363be5c54f79f662e83dd5f90b24f1c",
+  "provenance_sha256": "3379cc2c93e753632f12969a5a131a743525f41e940e825e5e7bd053049ff214",
+  "examples": [
+    {
+      "window": {
+        "canonical_position": 797,
+        "wild_type": "C",
+        "mutant": "S",
+        "start_position": 767,
+        "end_position": 827,
+        "sequence": "ASVDNPHVCRLLGICLTSTVQLITQLMPFGCLLDYVREHKDNIGSQYLLNWCVQIAKGMNY",
+        "residue_offset_zero_based": 30
+      },
+      "input_shape": [
+        1,
+        63
+      ],
+      "token_labels": [
+        "<cls>",
+        "A",
+        "S",
+        "V",
+        "D",
+        "N",
+        "P",
+        "H",
+        "V",
+        "C",
+        "R",
+        "L",
+        "L",
+        "G",
+        "I",
+        "C",
+        "L",
+        "T",
+        "S",
+        "T",
+        "V",
+        "Q",
+        "L",
+        "I",
+        "T",
+        "Q",
+        "L",
+        "M",
+        "P",
+        "F",
+        "G",
+        "C",
+        "L",
+        "L",
+        "D",
+        "Y",
+        "V",
+        "R",
+        "E",
+        "H",
+        "K",
+        "D",
+        "N",
+        "I",
+        "G",
+        "S",
+        "Q",
+        "Y",
+        "L",
+        "L",
+        "N",
+        "W",
+        "C",
+        "V",
+        "Q",
+        "I",
+        "A",
+        "K",
+        "G",
+        "M",
+        "N",
+        "Y",
+        "<eos>"
+      ],
+      "target_token_index_zero_based": 31,
+      "coordinate_explanation": "Canonical position is 1-based; subtract window start for a zero-based residue offset, then add one for <cls>.",
+      "embeddings_shape": [
+        63,
+        320
+      ],
+      "embeddings_file": "data/esm2/egfr/embeddings.npy",
+      "embeddings_sha256": "21df618b0ab832af0c2453a8202359bf45f6cc2d41d9d5853cda56be25a8a624",
+      "embedding_scope": "Final-layer unmasked token representations, including <cls> and <eos>.",
+      "attention_shape": [
+        6,
+        20,
+        63,
+        63
+      ],
+      "attention_axes": [
+        "layer",
+        "head",
+        "query token",
+        "key token"
+      ],
+      "attention_file": "data/esm2/egfr/attention.npy",
+      "attention_sha256": "12c33bbefd1a72b385cacf46c038ed46f86edc6e8165a0597f4a3964a1209c4a",
+      "attention_scope": "Raw unmasked self-attention weights; these are not a protein contact map or structural proof.",
+      "masked_input_token_labels": [
+        "<cls>",
+        "A",
+        "S",
+        "V",
+        "D",
+        "N",
+        "P",
+        "H",
+        "V",
+        "C",
+        "R",
+        "L",
+        "L",
+        "G",
+        "I",
+        "C",
+        "L",
+        "T",
+        "S",
+        "T",
+        "V",
+        "Q",
+        "L",
+        "I",
+        "T",
+        "Q",
+        "L",
+        "M",
+        "P",
+        "F",
+        "G",
+        "<mask>",
+        "L",
+        "L",
+        "D",
+        "Y",
+        "V",
+        "R",
+        "E",
+        "H",
+        "K",
+        "D",
+        "N",
+        "I",
+        "G",
+        "S",
+        "Q",
+        "Y",
+        "L",
+        "L",
+        "N",
+        "W",
+        "C",
+        "V",
+        "Q",
+        "I",
+        "A",
+        "K",
+        "G",
+        "M",
+        "N",
+        "Y",
+        "<eos>"
+      ],
+      "raw_vocabulary_probability_sum": 0.9999999403953552,
+      "probability_mass_on_20_amino_acids": 0.9999475479125977,
+      "amino_acid_probabilities": [
+        {
+          "amino_acid": "A",
+          "vocabulary_token_id": 5,
+          "raw_vocabulary_probability": 0.053437624126672745,
+          "probability_conditional_on_20_amino_acids": 0.05344042554497719
+        },
+        {
+          "amino_acid": "C",
+          "vocabulary_token_id": 23,
+          "raw_vocabulary_probability": 0.01715025119483471,
+          "probability_conditional_on_20_amino_acids": 0.017151150852441788
+        },
+        {
+          "amino_acid": "D",
+          "vocabulary_token_id": 13,
+          "raw_vocabulary_probability": 0.05485322326421738,
+          "probability_conditional_on_20_amino_acids": 0.05485609918832779
+        },
+        {
+          "amino_acid": "E",
+          "vocabulary_token_id": 9,
+          "raw_vocabulary_probability": 0.0704410970211029,
+          "probability_conditional_on_20_amino_acids": 0.07044479250907898
+        },
+        {
+          "amino_acid": "F",
+          "vocabulary_token_id": 18,
+          "raw_vocabulary_probability": 0.04564645141363144,
+          "probability_conditional_on_20_amino_acids": 0.04564884677529335
+        },
+        {
+          "amino_acid": "G",
+          "vocabulary_token_id": 6,
+          "raw_vocabulary_probability": 0.04316972941160202,
+          "probability_conditional_on_20_amino_acids": 0.043171994388103485
+        },
+        {
+          "amino_acid": "H",
+          "vocabulary_token_id": 21,
+          "raw_vocabulary_probability": 0.029891861602663994,
+          "probability_conditional_on_20_amino_acids": 0.029893429949879646
+        },
+        {
+          "amino_acid": "I",
+          "vocabulary_token_id": 12,
+          "raw_vocabulary_probability": 0.06498819589614868,
+          "probability_conditional_on_20_amino_acids": 0.06499160826206207
+        },
+        {
+          "amino_acid": "K",
+          "vocabulary_token_id": 15,
+          "raw_vocabulary_probability": 0.0655076801776886,
+          "probability_conditional_on_20_amino_acids": 0.06551111489534378
+        },
+        {
+          "amino_acid": "L",
+          "vocabulary_token_id": 4,
+          "raw_vocabulary_probability": 0.08823212236166,
+          "probability_conditional_on_20_amino_acids": 0.0882367491722107
+        },
+        {
+          "amino_acid": "M",
+          "vocabulary_token_id": 20,
+          "raw_vocabulary_probability": 0.024009086191654205,
+          "probability_conditional_on_20_amino_acids": 0.024010345339775085
+        },
+        {
+          "amino_acid": "N",
+          "vocabulary_token_id": 17,
+          "raw_vocabulary_probability": 0.046614259481430054,
+          "probability_conditional_on_20_amino_acids": 0.046616703271865845
+        },
+        {
+          "amino_acid": "P",
+          "vocabulary_token_id": 14,
+          "raw_vocabulary_probability": 0.03992077708244324,
+          "probability_conditional_on_20_amino_acids": 0.03992287069559097
+        },
+        {
+          "amino_acid": "Q",
+          "vocabulary_token_id": 16,
+          "raw_vocabulary_probability": 0.05004119127988815,
+          "probability_conditional_on_20_amino_acids": 0.05004381760954857
+        },
+        {
+          "amino_acid": "R",
+          "vocabulary_token_id": 10,
+          "raw_vocabulary_probability": 0.05247235670685768,
+          "probability_conditional_on_20_amino_acids": 0.052475109696388245
+        },
+        {
+          "amino_acid": "S",
+          "vocabulary_token_id": 8,
+          "raw_vocabulary_probability": 0.07351074367761612,
+          "probability_conditional_on_20_amino_acids": 0.07351460307836533
+        },
+        {
+          "amino_acid": "T",
+          "vocabulary_token_id": 11,
+          "raw_vocabulary_probability": 0.06047871708869934,
+          "probability_conditional_on_20_amino_acids": 0.06048189103603363
+        },
+        {
+          "amino_acid": "V",
+          "vocabulary_token_id": 7,
+          "raw_vocabulary_probability": 0.06675363332033157,
+          "probability_conditional_on_20_amino_acids": 0.06675713509321213
+        },
+        {
+          "amino_acid": "W",
+          "vocabulary_token_id": 22,
+          "raw_vocabulary_probability": 0.015213651582598686,
+          "probability_conditional_on_20_amino_acids": 0.015214449726045132
+        },
+        {
+          "amino_acid": "Y",
+          "vocabulary_token_id": 19,
+          "raw_vocabulary_probability": 0.037614867091178894,
+          "probability_conditional_on_20_amino_acids": 0.03761684149503708
+        }
+      ],
+      "top_five_amino_acids": [
+        {
+          "amino_acid": "L",
+          "vocabulary_token_id": 4,
+          "raw_vocabulary_probability": 0.08823212236166,
+          "probability_conditional_on_20_amino_acids": 0.0882367491722107
+        },
+        {
+          "amino_acid": "S",
+          "vocabulary_token_id": 8,
+          "raw_vocabulary_probability": 0.07351074367761612,
+          "probability_conditional_on_20_amino_acids": 0.07351460307836533
+        },
+        {
+          "amino_acid": "E",
+          "vocabulary_token_id": 9,
+          "raw_vocabulary_probability": 0.0704410970211029,
+          "probability_conditional_on_20_amino_acids": 0.07044479250907898
+        },
+        {
+          "amino_acid": "V",
+          "vocabulary_token_id": 7,
+          "raw_vocabulary_probability": 0.06675363332033157,
+          "probability_conditional_on_20_amino_acids": 0.06675713509321213
+        },
+        {
+          "amino_acid": "K",
+          "vocabulary_token_id": 15,
+          "raw_vocabulary_probability": 0.0655076801776886,
+          "probability_conditional_on_20_amino_acids": 0.06551111489534378
+        }
+      ],
+      "mutation": "C797S",
+      "wild_type_raw_probability": 0.01715025119483471,
+      "mutant_raw_probability": 0.07351074367761612,
+      "wild_type_negative_log_likelihood_nats": 4.065742492675781,
+      "masked_marginal_log_odds_nats": 1.4554188251495361,
+      "mutant_to_wild_type_probability_ratio": 4.2862782908630255,
+      "score_definition": "ln P(mutant | masked window) - ln P(wild type | the same masked window)",
+      "interpretation_limit": "A relative sequence-model preference in this short window. It does not establish protein function, drug resistance, binding affinity, safety or clinical response.",
+      "protein": "EGFR",
+      "uniprot_accession": "P00533",
+      "fasta_header": "sp|P00533|EGFR_HUMAN Epidermal growth factor receptor OS=Homo sapiens OX=9606 GN=EGFR PE=1 SV=2",
+      "canonical_sequence_length": 1210,
+      "source_fasta_sha256": "684e2da1f3ef05d0ce90d0aefe9125c6f7e9cdcfeac27ae72ed35243b64a73e8"
+    },
+    {
+      "window": {
+        "canonical_position": 12,
+        "wild_type": "G",
+        "mutant": "D",
+        "start_position": 1,
+        "end_position": 42,
+        "sequence": "MTEYKLVVVGAGGVGKSALTIQLIQNHFVDEYDPTIEDSYRK",
+        "residue_offset_zero_based": 11
+      },
+      "input_shape": [
+        1,
+        44
+      ],
+      "token_labels": [
+        "<cls>",
+        "M",
+        "T",
+        "E",
+        "Y",
+        "K",
+        "L",
+        "V",
+        "V",
+        "V",
+        "G",
+        "A",
+        "G",
+        "G",
+        "V",
+        "G",
+        "K",
+        "S",
+        "A",
+        "L",
+        "T",
+        "I",
+        "Q",
+        "L",
+        "I",
+        "Q",
+        "N",
+        "H",
+        "F",
+        "V",
+        "D",
+        "E",
+        "Y",
+        "D",
+        "P",
+        "T",
+        "I",
+        "E",
+        "D",
+        "S",
+        "Y",
+        "R",
+        "K",
+        "<eos>"
+      ],
+      "target_token_index_zero_based": 12,
+      "coordinate_explanation": "Canonical position is 1-based; subtract window start for a zero-based residue offset, then add one for <cls>.",
+      "embeddings_shape": [
+        44,
+        320
+      ],
+      "embeddings_file": "data/esm2/kras/embeddings.npy",
+      "embeddings_sha256": "faab158f8f53ecf3073f51a26b7ab37af097e59902ac1c0348b8960a500dfcb2",
+      "embedding_scope": "Final-layer unmasked token representations, including <cls> and <eos>.",
+      "attention_shape": [
+        6,
+        20,
+        44,
+        44
+      ],
+      "attention_axes": [
+        "layer",
+        "head",
+        "query token",
+        "key token"
+      ],
+      "attention_file": "data/esm2/kras/attention.npy",
+      "attention_sha256": "9778020d3c8d36ce7d255794fdc78d653fe0b802abb0fe225ed1496299521cfe",
+      "attention_scope": "Raw unmasked self-attention weights; these are not a protein contact map or structural proof.",
+      "masked_input_token_labels": [
+        "<cls>",
+        "M",
+        "T",
+        "E",
+        "Y",
+        "K",
+        "L",
+        "V",
+        "V",
+        "V",
+        "G",
+        "A",
+        "<mask>",
+        "G",
+        "V",
+        "G",
+        "K",
+        "S",
+        "A",
+        "L",
+        "T",
+        "I",
+        "Q",
+        "L",
+        "I",
+        "Q",
+        "N",
+        "H",
+        "F",
+        "V",
+        "D",
+        "E",
+        "Y",
+        "D",
+        "P",
+        "T",
+        "I",
+        "E",
+        "D",
+        "S",
+        "Y",
+        "R",
+        "K",
+        "<eos>"
+      ],
+      "raw_vocabulary_probability_sum": 0.9999999403953552,
+      "probability_mass_on_20_amino_acids": 0.9999555945396423,
+      "amino_acid_probabilities": [
+        {
+          "amino_acid": "A",
+          "vocabulary_token_id": 5,
+          "raw_vocabulary_probability": 0.05126551538705826,
+          "probability_conditional_on_20_amino_acids": 0.05126779153943062
+        },
+        {
+          "amino_acid": "C",
+          "vocabulary_token_id": 23,
+          "raw_vocabulary_probability": 0.006640485487878323,
+          "probability_conditional_on_20_amino_acids": 0.006640780251473188
+        },
+        {
+          "amino_acid": "D",
+          "vocabulary_token_id": 13,
+          "raw_vocabulary_probability": 0.0284091979265213,
+          "probability_conditional_on_20_amino_acids": 0.02841045893728733
+        },
+        {
+          "amino_acid": "E",
+          "vocabulary_token_id": 9,
+          "raw_vocabulary_probability": 0.036496419459581375,
+          "probability_conditional_on_20_amino_acids": 0.036498039960861206
+        },
+        {
+          "amino_acid": "F",
+          "vocabulary_token_id": 18,
+          "raw_vocabulary_probability": 0.010124425403773785,
+          "probability_conditional_on_20_amino_acids": 0.010124875232577324
+        },
+        {
+          "amino_acid": "G",
+          "vocabulary_token_id": 6,
+          "raw_vocabulary_probability": 0.06283722817897797,
+          "probability_conditional_on_20_amino_acids": 0.06284002214670181
+        },
+        {
+          "amino_acid": "H",
+          "vocabulary_token_id": 21,
+          "raw_vocabulary_probability": 0.01609976589679718,
+          "probability_conditional_on_20_amino_acids": 0.016100481152534485
+        },
+        {
+          "amino_acid": "I",
+          "vocabulary_token_id": 12,
+          "raw_vocabulary_probability": 0.019518494606018066,
+          "probability_conditional_on_20_amino_acids": 0.01951936073601246
+        },
+        {
+          "amino_acid": "K",
+          "vocabulary_token_id": 15,
+          "raw_vocabulary_probability": 0.05660904198884964,
+          "probability_conditional_on_20_amino_acids": 0.0566115565598011
+        },
+        {
+          "amino_acid": "L",
+          "vocabulary_token_id": 4,
+          "raw_vocabulary_probability": 0.014146724715828896,
+          "probability_conditional_on_20_amino_acids": 0.014147353358566761
+        },
+        {
+          "amino_acid": "M",
+          "vocabulary_token_id": 20,
+          "raw_vocabulary_probability": 0.008385474793612957,
+          "probability_conditional_on_20_amino_acids": 0.008385847322642803
+        },
+        {
+          "amino_acid": "N",
+          "vocabulary_token_id": 17,
+          "raw_vocabulary_probability": 0.040322814136743546,
+          "probability_conditional_on_20_amino_acids": 0.040324606001377106
+        },
+        {
+          "amino_acid": "P",
+          "vocabulary_token_id": 14,
+          "raw_vocabulary_probability": 0.2947792708873749,
+          "probability_conditional_on_20_amino_acids": 0.2947923541069031
+        },
+        {
+          "amino_acid": "Q",
+          "vocabulary_token_id": 16,
+          "raw_vocabulary_probability": 0.019325291737914085,
+          "probability_conditional_on_20_amino_acids": 0.01932615041732788
+        },
+        {
+          "amino_acid": "R",
+          "vocabulary_token_id": 10,
+          "raw_vocabulary_probability": 0.05464945733547211,
+          "probability_conditional_on_20_amino_acids": 0.054651882499456406
+        },
+        {
+          "amino_acid": "S",
+          "vocabulary_token_id": 8,
+          "raw_vocabulary_probability": 0.19773970544338226,
+          "probability_conditional_on_20_amino_acids": 0.19774848222732544
+        },
+        {
+          "amino_acid": "T",
+          "vocabulary_token_id": 11,
+          "raw_vocabulary_probability": 0.04276355355978012,
+          "probability_conditional_on_20_amino_acids": 0.042765453457832336
+        },
+        {
+          "amino_acid": "V",
+          "vocabulary_token_id": 7,
+          "raw_vocabulary_probability": 0.02609897404909134,
+          "probability_conditional_on_20_amino_acids": 0.02610013261437416
+        },
+        {
+          "amino_acid": "W",
+          "vocabulary_token_id": 22,
+          "raw_vocabulary_probability": 0.0025756796821951866,
+          "probability_conditional_on_20_amino_acids": 0.0025757940020412207
+        },
+        {
+          "amino_acid": "Y",
+          "vocabulary_token_id": 19,
+          "raw_vocabulary_probability": 0.011168073862791061,
+          "probability_conditional_on_20_amino_acids": 0.011168570257723331
+        }
+      ],
+      "top_five_amino_acids": [
+        {
+          "amino_acid": "P",
+          "vocabulary_token_id": 14,
+          "raw_vocabulary_probability": 0.2947792708873749,
+          "probability_conditional_on_20_amino_acids": 0.2947923541069031
+        },
+        {
+          "amino_acid": "S",
+          "vocabulary_token_id": 8,
+          "raw_vocabulary_probability": 0.19773970544338226,
+          "probability_conditional_on_20_amino_acids": 0.19774848222732544
+        },
+        {
+          "amino_acid": "G",
+          "vocabulary_token_id": 6,
+          "raw_vocabulary_probability": 0.06283722817897797,
+          "probability_conditional_on_20_amino_acids": 0.06284002214670181
+        },
+        {
+          "amino_acid": "K",
+          "vocabulary_token_id": 15,
+          "raw_vocabulary_probability": 0.05660904198884964,
+          "probability_conditional_on_20_amino_acids": 0.0566115565598011
+        },
+        {
+          "amino_acid": "R",
+          "vocabulary_token_id": 10,
+          "raw_vocabulary_probability": 0.05464945733547211,
+          "probability_conditional_on_20_amino_acids": 0.054651882499456406
+        }
+      ],
+      "mutation": "G12D",
+      "wild_type_raw_probability": 0.06283722817897797,
+      "mutant_raw_probability": 0.0284091979265213,
+      "wild_type_negative_log_likelihood_nats": 2.767207622528076,
+      "masked_marginal_log_odds_nats": -0.7938346862792969,
+      "mutant_to_wild_type_probability_ratio": 0.4521077754645337,
+      "score_definition": "ln P(mutant | masked window) - ln P(wild type | the same masked window)",
+      "interpretation_limit": "A relative sequence-model preference in this short window. It does not establish protein function, drug resistance, binding affinity, safety or clinical response.",
+      "protein": "KRAS",
+      "uniprot_accession": "P01116",
+      "fasta_header": "sp|P01116|RASK_HUMAN GTPase KRas OS=Homo sapiens OX=9606 GN=KRAS PE=1 SV=1",
+      "canonical_sequence_length": 189,
+      "source_fasta_sha256": "be58c42a464baafed08805898078839b0b47b559cec93fdb3cd7f8d95ab95ea6"
+    }
+  ],
+  "teaching_only_loss_examples": [
+    {
+      "probability": 0.2,
+      "negative_log_likelihood_nats": 1.6094379124341003
+    },
+    {
+      "probability": 0.8,
+      "negative_log_likelihood_nats": 0.2231435513142097
+    }
+  ],
+  "scope": "Real pretrained ESM-2 inference on short canonical sequence windows, not full kinase-domain/whole-protein modeling, folding, contact prediction, drug discovery or clinical validation.",
+  "network": "Offline local-files-only inference; no authentication or remote code"
+}

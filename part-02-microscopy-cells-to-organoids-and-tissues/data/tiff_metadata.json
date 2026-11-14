@@ -1,0 +1,12 @@
+{
+  "frames": 120,
+  "size": [
+    256,
+    256
+  ],
+  "mode": "I;16B",
+  "description": "ImageJ=1.53f\nimages=120\nchannels=2\nslices=60\nhyperstack=true\nmode=composite\nunit=micron\nspacing=0.29\nloop=false\nmin=448.0\nmax=14996.0\n",
+  "x_resolution": "3.846153",
+  "y_resolution": "3.846153",
+  "resolution_unit": "1"
+}

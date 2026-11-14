@@ -1,0 +1,78 @@
+{
+  "scope": "Educational 2D threshold/measurement/QC demonstration on one real fluorescence monolayer stack; no training, no drug condition, no segmentation accuracy estimate.",
+  "source_sha256": "bd35a300fbe4c90da5707eaa8b08f8893cb00787d81371c339057e068589691c",
+  "slice_index_zero_based": 30,
+  "z_position_relative_to_first_plane_um": 8.7,
+  "field_width_um": 66.56,
+  "slice_spacing_um": 0.29,
+  "interval_between_first_and_last_slice_centres_um": 17.11,
+  "qc_min_area_px": 100,
+  "qc_min_area_um2": 6.76,
+  "background_proxy_p10_au": 3557.0,
+  "raw_slice_min_max_au": [
+    1091,
+    58327
+  ],
+  "dtype_max_fraction": 0.0,
+  "saturation_caveat": "Zero dtype-maximum pixels does not rule out detector clipping below 65535; acquisition settings are unavailable.",
+  "baseline_otsu": {
+    "threshold_raw_au": 10432,
+    "foreground_pixels": 25864,
+    "components_before_qc": 92,
+    "small_components_excluded": 70,
+    "large_border_components_excluded": 10,
+    "accepted_2d_regions": 12,
+    "accepted_area_px": 18089
+  },
+  "controlled_half_brightness_fixed_baseline_threshold": {
+    "threshold_raw_au": 10432,
+    "foreground_pixels": 2644,
+    "components_before_qc": 361,
+    "small_components_excluded": 357,
+    "large_border_components_excluded": 1,
+    "accepted_2d_regions": 3,
+    "accepted_area_px": 567,
+    "binary_mask_iou_against_original_mask_not_ground_truth": 0.02404215610934241
+  },
+  "controlled_half_brightness_reestimated_otsu": {
+    "threshold_raw_au": 5216,
+    "foreground_pixels": 25864,
+    "components_before_qc": 92,
+    "small_components_excluded": 70,
+    "large_border_components_excluded": 10,
+    "accepted_2d_regions": 12,
+    "accepted_area_px": 18089,
+    "binary_mask_iou_against_original_mask_not_ground_truth": 1.0
+  },
+  "max_intensity_projection_baseline": {
+    "threshold_raw_au": 14226,
+    "foreground_pixels": 30924,
+    "components_before_qc": 85,
+    "small_components_excluded": 68,
+    "large_border_components_excluded": 8,
+    "accepted_2d_regions": 9,
+    "accepted_area_px": 16033
+  },
+  "first_retained_object": {
+    "label": 11,
+    "area_px": 1346,
+    "touches_edge": false,
+    "centroid_y_px": 31.967310549777118,
+    "centroid_x_px": 80.75037147102526,
+    "area_um2": 90.98960000000001,
+    "mean_raw_intensity_au": 13530.695393759286,
+    "mean_minus_p10_background_proxy_au": 9973.695393759286,
+    "slice_index_zero_based": 30,
+    "channel_index": 0,
+    "mask_status": "algorithm-generated; no manual ground truth"
+  },
+  "mean_intensity_of_retained_pixels_au": 15820.560893360605,
+  "mean_intensity_of_identical_mask_after_halving_au": 7910.033556304937,
+  "independent_specimens": 1,
+  "interpretation": "Connected bright 2D regions are candidates, not established complete nuclei or cells. A slice cuts through 3D objects; thresholding can fragment or merge them. The brightness stress test changes pixels, not biology.",
+  "sanity_checks": {
+    "known_bimodal_threshold": "pass",
+    "known_geometry_components_and_border": "pass",
+    "area_units": "pass"
+  }
+}
