@@ -12,7 +12,6 @@ Article: [Can AI Simulate a Cell? on Medium](https://arjun-sarkar786.medium.com/
 | `code/esm2_demo.py` | The experiment from Part 4 of the video. Every step has a comment that explains what it does and why. |
 | `data/esm2/results.json` | The results of the run shown in the video (probabilities, scores, shapes, model revision, software versions). |
 | `data/esm2/egfr/attention.npy` | The attention weights saved for the EGFR window (6 layers x 20 heads x 63 x 63). |
-| `animation/` | The code that draws the animated visuals of the video. |
 
 ## What the script does
 
@@ -44,5 +43,3 @@ python code/esm2_demo.py --output-dir data/esm2
 ## About the comments
 
 The script was annotated for this tutorial. The comments and docstrings were added without changing any working line: the parsed syntax tree of the annotated file is identical to the file that produced `results.json`, whose SHA-256 is `e1c5164c214f36dc75b995bfc6b821014363be5c54f79f662e83dd5f90b24f1c`. The model itself was not re-run when the comments were added.
-
-Animation code uses the tools in [`../shared/animation-kit`](../shared/animation-kit).

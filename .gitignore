@@ -6,3 +6,7 @@ __pycache__/
 .DS_Store
 out/
 node_modules/
+*.html
+animation/
+article/
+shared/animation-kit/

@@ -12,7 +12,6 @@ Article: [From Microscope Images to Measurements on Medium](https://arjun-sarkar
 | `code/microscopy_demo.py` | The experiment from Part 3 of the video. Every step has a comment that explains what it does and why. |
 | `data/cells3d-with-metadata.tif` | The image: Allen Institute for Cell Science "cells3d" (60 depth planes x 2 channels x 256 x 256), CC0, from the scikit-image sample data. |
 | `code/outputs/` | The results of the run shown in the video: `results.json`, `nuclear_region_measurements.csv`, `image_metadata.json`. |
-| `animation/` | The code that draws the animated visuals of the video. |
 
 ## What the script does
 
@@ -49,5 +48,3 @@ python code/microscopy_demo.py
 ## About the comments
 
 The script was annotated for this tutorial. The comments and docstrings were added without changing any working line: the parsed syntax tree of the annotated file is identical to the file that produced the saved results (SHA-256 of that file: `3473d60f1199d8f1c137a8a271689117f915a4b510122d29ae7f34d7a2baf8af`). To check the annotated code, its functions were run on the image: the threshold, region counts, first region, both stress tests, the projection and the three built-in sanity checks all reproduced the numbers above. The full script was not re-run, because the second image file was not available at that moment.
-
-Animation code uses the tools in [`../shared/animation-kit`](../shared/animation-kit).
