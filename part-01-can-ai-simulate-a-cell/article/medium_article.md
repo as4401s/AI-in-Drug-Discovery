@@ -10,7 +10,7 @@ A "virtual cell" model takes information about cells and a change we want to stu
 
 For our own hands-on experiment, we use ESM-2, a protein language model from the paper "Evolutionary-scale prediction of atomic-level protein structure with a language model" (Lin et al., Science, 2023). We use its smallest checkpoint, which runs on a normal CPU.
 
-This article follows the first video of the course. You can watch it here: **[VIDEO LINK, to be added when the video is published]**. All code is in the GitHub repository: [part-01-can-ai-simulate-a-cell](https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-01-can-ai-simulate-a-cell).
+This article follows the first video of the course. You can watch it here: [Part 1 on YouTube](https://youtu.be/6MPPidoDUdQ). All code is in the GitHub repository: [part-01-can-ai-simulate-a-cell](https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-01-can-ai-simulate-a-cell).
 
 We will follow these steps:
 

@@ -2,7 +2,8 @@
 
 Code for the second video of the course. The video follows the chain from light to image, from image to measurement, and from measurement to a carefully limited conclusion. The code turns a real fluorescence image into a measurement table with a transparent classical method (no AI model).
 
-Video: _link will be added when the video is published_
+Video: [Part 2 on YouTube](https://youtu.be/YD-tiKCHg58)  
+Article: [From Microscope Images to Measurements on Medium](https://arjun-sarkar786.medium.com/from-microscope-images-to-measurements-fluorescence-organoids-and-a-python-segmentation-baseline-6ec4ecdf5ada)
 
 ## What is in this folder
 

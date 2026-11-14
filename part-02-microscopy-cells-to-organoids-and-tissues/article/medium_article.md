@@ -8,7 +8,7 @@ Imagine that two microscope pictures arrive on your desk. In one, the cells look
 
 We will analyze a real fluorescence image with a simple, transparent method. We will not train an AI model here. The image comes from the Allen Institute for Cell Science and is distributed as the `cells3d` sample in the scikit-image data collection under a CC0 licence. To choose an intensity threshold, we use Otsu's method (Otsu, 1979).
 
-This article follows the second video of the course: **[VIDEO LINK, to be added when the video is published]**. All code is in the GitHub repository: [part-02-microscopy-cells-to-organoids-and-tissues](https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-02-microscopy-cells-to-organoids-and-tissues).
+This article follows the second video of the course: [Part 2 on YouTube](https://youtu.be/YD-tiKCHg58). All code is in the GitHub repository: [part-02-microscopy-cells-to-organoids-and-tissues](https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-02-microscopy-cells-to-organoids-and-tissues).
 
 We will follow these steps:
 
