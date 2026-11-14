@@ -1,0 +1,14 @@
+{
+  "code_sha256": "08bc6184ff60d884b953ee6b87014481e43594136bce983caa76a96608f12224",
+  "command": "Tools/ssd-run.sh python Playlists/ai-in-drug-discovery/4/code/curate_activities.py",
+  "elapsed_seconds": 0.03301962499972433,
+  "generated_utc": "2026-11-14T00:41:46.304827+00:00",
+  "network_calls": 0,
+  "outputs": {
+    "measured_activity_curation.csv": "f0d3b018c3b774d244a528a3161cbbec5f1913a08af35936fe554fda957f4f4c",
+    "measured_activity_curation.json": "497c335960c172da891db3660f52ddb5d2eb7d5298a36289087f58fbd2561084"
+  },
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "python": "3.12.14",
+  "source_receipts_sha256": "5bd2590cace13e4948550df382366393b82605c88d658accbbda6c90e4abd635"
+}

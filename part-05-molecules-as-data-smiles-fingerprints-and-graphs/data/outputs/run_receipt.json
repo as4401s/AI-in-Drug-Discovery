@@ -1,0 +1,41 @@
+{
+  "code_sha256": "b7ad533db987df5fe61347ea1037aa6928fe6c5427f1e6d9dbd4e66df5cfc8e2",
+  "command": "Tools/ssd-run.sh exec Runtime/python-chem/bin/python Playlists/ai-in-drug-discovery/5/code/molecular_representation_lab.py",
+  "depictions": {
+    "acetic-acid.svg": "b23911c6e11f79e6c1183a9428d2c7a82c3635900257775c55353ea05dd44f5e",
+    "benzene-kekule.svg": "7c68089d592de525567605e7b6b0ad14848e9c15f37bb77878eb336c0b8dbda9",
+    "benzene.svg": "7c68089d592de525567605e7b6b0ad14848e9c15f37bb77878eb336c0b8dbda9",
+    "dimethyl-ether.svg": "68d1b23d004ba93d5282ed81ada3d68075fafb98749b1b1519ed8e88ffc66bb9",
+    "erlotinib-pdb.svg": "4053d1e498ef5dc7f3c63265a222dd254e59904d33aabedbd12de403586e07be",
+    "erlotinib.svg": "4053d1e498ef5dc7f3c63265a222dd254e59904d33aabedbd12de403586e07be",
+    "ethanol-branched.svg": "5a4f84c1130242f5ea1258a24cb1d026b3c66b123533edc89916f49bc60ea024",
+    "ethanol-reversed.svg": "5a4f84c1130242f5ea1258a24cb1d026b3c66b123533edc89916f49bc60ea024",
+    "ethanol.svg": "5a4f84c1130242f5ea1258a24cb1d026b3c66b123533edc89916f49bc60ea024",
+    "lactic-aat.svg": "220464c9e9896ee4eb7b641667006ce691d76b50567bf89131eb4bf9448d3e9b",
+    "lactic-at.svg": "acc60e9c6d170c19fafc25cfd039a9e7f02f75dea473a0f18a5527a15ac3ac8b",
+    "lactic-unspecified.svg": "4333486acb33ceccfeee6deb2a78ee8f2d8053e41f08913a80b6876794031712",
+    "mrtx1133-6ic-pdb.svg": "b76a6c5d45b8e85d64538cbfccaa47227667dff58ad78d7a57d392fc4eb849bd",
+    "mrtx1133-6ic.svg": "b76a6c5d45b8e85d64538cbfccaa47227667dff58ad78d7a57d392fc4eb849bd",
+    "mrtx1133-name-alias.svg": "dbdb78f6c2073144a0e257aa2a33c8629a1a61157412decd0e8c34ca5b7e0520",
+    "sodium-acetate.svg": "bd9db623c4df6537660ad1b3d994bed7151deb1a1ff64b2bb004c18404dd5229"
+  },
+  "elapsed_seconds": 0.05496120802126825,
+  "generated_utc": "2026-11-14T02:42:03.086691+00:00",
+  "input_lock_sha256": "9e8f3e801fb38c0e27aba151878aaf48c41376939c5889cbfd53c382f1d36dc7",
+  "network_calls_required": 0,
+  "outputs": {
+    "features.csv": "d38aff281b0a1787729ffdb3470414edb800761dc2583ce5636d88d7b7a5a1a9",
+    "fingerprints.json": "05ce77082788d96ce935fb49b00b6459e3bf8de750ce5418ea43293f0e2b2db3",
+    "graphs.json": "96cf85a899b1162f7f146edec7344cba90ef7235b9a6a5f7a5fc2dce9b5fa59d",
+    "identity_audit.json": "567b1b92f293ec3084e7130871d65d19deee0f93f3610ad70990684ac1b8329b",
+    "input_audit.json": "7e1323fff503e9ca8a0511754560a0aa8b04bb394ab2ae0ff3a74c88b3f09389",
+    "lesson_payload.json": "0c3fff09c3bf0c56805a24192243de0fd332d575e128b20a31c08c6ea8226d63",
+    "maccs_bits.csv": "4d7b85ba1817cbd08530eacdad1eefe51f07b5c35ebe48b3b126968a2ce34d56",
+    "morgan_bits.csv": "b476fac070b7edd981e03e2ed3335ba87bb99d5d3dee0bb5282aa58ce9addda7",
+    "representation_settings.json": "630db361d278131e46b174a2722ebaa1e878eab37704bfab3cf3483d2f446544"
+  },
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "python": "3.12.12",
+  "rdkit": "2026.09.2",
+  "scope": "Actual local deterministic chemistry run; no activity model fitting or new biological experiment."
+}

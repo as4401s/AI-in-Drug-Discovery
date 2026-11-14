@@ -1,0 +1,6033 @@
+{
+  "scope": "actual experimental coordinate-model values extracted from retained mmCIF; any projection is a derived view, not a measured microscope image",
+  "structures": [
+    {
+      "alpha_carbons": [
+        {
+          "author_position": "672",
+          "entity_position": 7,
+          "reference_position": 696,
+          "residue": "GLY",
+          "xyz": [
+            54.168,
+            8.34,
+            69.707
+          ]
+        },
+        {
+          "author_position": "673",
+          "entity_position": 8,
+          "reference_position": 697,
+          "residue": "GLU",
+          "xyz": [
+            50.994,
+            6.785,
+            68.274
+          ]
+        },
+        {
+          "author_position": "674",
+          "entity_position": 9,
+          "reference_position": 698,
+          "residue": "ALA",
+          "xyz": [
+            48.912,
+            3.768,
+            69.37
+          ]
+        },
+        {
+          "author_position": "675",
+          "entity_position": 10,
+          "reference_position": 699,
+          "residue": "PRO",
+          "xyz": [
+            49.087,
+            0.665,
+            67.134
+          ]
+        },
+        {
+          "author_position": "676",
+          "entity_position": 11,
+          "reference_position": 700,
+          "residue": "ASN",
+          "xyz": [
+            45.735,
+            -0.094,
+            65.484
+          ]
+        },
+        {
+          "author_position": "677",
+          "entity_position": 12,
+          "reference_position": 701,
+          "residue": "GLN",
+          "xyz": [
+            45.231,
+            -3.744,
+            66.357
+          ]
+        },
+        {
+          "author_position": "678",
+          "entity_position": 13,
+          "reference_position": 702,
+          "residue": "ALA",
+          "xyz": [
+            41.893,
+            -4.066,
+            64.686
+          ]
+        },
+        {
+          "author_position": "679",
+          "entity_position": 14,
+          "reference_position": 703,
+          "residue": "LEU",
+          "xyz": [
+            41.137,
+            -7.401,
+            63.023
+          ]
+        },
+        {
+          "author_position": "680",
+          "entity_position": 15,
+          "reference_position": 704,
+          "residue": "LEU",
+          "xyz": [
+            40.291,
+            -7.423,
+            59.298
+          ]
+        },
+        {
+          "author_position": "681",
+          "entity_position": 16,
+          "reference_position": 705,
+          "residue": "ARG",
+          "xyz": [
+            38.223,
+            -10.519,
+            58.522
+          ]
+        },
+        {
+          "author_position": "682",
+          "entity_position": 17,
+          "reference_position": 706,
+          "residue": "ILE",
+          "xyz": [
+            38.382,
+            -12.164,
+            55.101
+          ]
+        },
+        {
+          "author_position": "683",
+          "entity_position": 18,
+          "reference_position": 707,
+          "residue": "LEU",
+          "xyz": [
+            35.113,
+            -13.966,
+            54.38
+          ]
+        },
+        {
+          "author_position": "684",
+          "entity_position": 19,
+          "reference_position": 708,
+          "residue": "LYS",
+          "xyz": [
+            34.639,
+            -16.678,
+            51.758
+          ]
+        },
+        {
+          "author_position": "685",
+          "entity_position": 20,
+          "reference_position": 709,
+          "residue": "GLU",
+          "xyz": [
+            32.135,
+            -15.771,
+            49.021
+          ]
+        },
+        {
+          "author_position": "686",
+          "entity_position": 21,
+          "reference_position": 710,
+          "residue": "THR",
+          "xyz": [
+            30.656,
+            -19.251,
+            49.526
+          ]
+        },
+        {
+          "author_position": "687",
+          "entity_position": 22,
+          "reference_position": 711,
+          "residue": "GLU",
+          "xyz": [
+            29.646,
+            -18.278,
+            53.054
+          ]
+        },
+        {
+          "author_position": "688",
+          "entity_position": 23,
+          "reference_position": 712,
+          "residue": "PHE",
+          "xyz": [
+            27.116,
+            -15.684,
+            51.945
+          ]
+        },
+        {
+          "author_position": "689",
+          "entity_position": 24,
+          "reference_position": 713,
+          "residue": "LYS",
+          "xyz": [
+            24.03,
+            -15.845,
+            49.785
+          ]
+        },
+        {
+          "author_position": "690",
+          "entity_position": 25,
+          "reference_position": 714,
+          "residue": "LYS",
+          "xyz": [
+            23.202,
+            -12.584,
+            47.943
+          ]
+        },
+        {
+          "author_position": "691",
+          "entity_position": 26,
+          "reference_position": 715,
+          "residue": "ILE",
+          "xyz": [
+            19.458,
+            -12.095,
+            47.535
+          ]
+        },
+        {
+          "author_position": "692",
+          "entity_position": 27,
+          "reference_position": 716,
+          "residue": "LYS",
+          "xyz": [
+            18.6,
+            -8.669,
+            46.111
+          ]
+        },
+        {
+          "author_position": "693",
+          "entity_position": 28,
+          "reference_position": 717,
+          "residue": "VAL",
+          "xyz": [
+            20.135,
+            -5.382,
+            45.039
+          ]
+        },
+        {
+          "author_position": "694",
+          "entity_position": 29,
+          "reference_position": 718,
+          "residue": "LEU",
+          "xyz": [
+            19.28,
+            -2.458,
+            47.324
+          ]
+        },
+        {
+          "author_position": "695",
+          "entity_position": 30,
+          "reference_position": 719,
+          "residue": "GLY",
+          "xyz": [
+            20.722,
+            0.231,
+            45.05
+          ]
+        },
+        {
+          "author_position": "696",
+          "entity_position": 31,
+          "reference_position": 720,
+          "residue": "SER",
+          "xyz": [
+            22.923,
+            0.647,
+            41.974
+          ]
+        },
+        {
+          "author_position": "697",
+          "entity_position": 32,
+          "reference_position": 721,
+          "residue": "GLY",
+          "xyz": [
+            24.214,
+            4.215,
+            42.311
+          ]
+        },
+        {
+          "author_position": "698",
+          "entity_position": 33,
+          "reference_position": 722,
+          "residue": "ALA",
+          "xyz": [
+            27.167,
+            6.072,
+            40.782
+          ]
+        },
+        {
+          "author_position": "699",
+          "entity_position": 34,
+          "reference_position": 723,
+          "residue": "PHE",
+          "xyz": [
+            29.645,
+            4.231,
+            43.015
+          ]
+        },
+        {
+          "author_position": "700",
+          "entity_position": 35,
+          "reference_position": 724,
+          "residue": "GLY",
+          "xyz": [
+            28.74,
+            0.605,
+            42.369
+          ]
+        },
+        {
+          "author_position": "701",
+          "entity_position": 36,
+          "reference_position": 725,
+          "residue": "THR",
+          "xyz": [
+            26.015,
+            -1.44,
+            44.039
+          ]
+        },
+        {
+          "author_position": "702",
+          "entity_position": 37,
+          "reference_position": 726,
+          "residue": "VAL",
+          "xyz": [
+            24.783,
+            -2.409,
+            47.51
+          ]
+        },
+        {
+          "author_position": "703",
+          "entity_position": 38,
+          "reference_position": 727,
+          "residue": "TYR",
+          "xyz": [
+            23.306,
+            -5.87,
+            47.92
+          ]
+        },
+        {
+          "author_position": "704",
+          "entity_position": 39,
+          "reference_position": 728,
+          "residue": "LYS",
+          "xyz": [
+            21.25,
+            -7.522,
+            50.636
+          ]
+        },
+        {
+          "author_position": "705",
+          "entity_position": 40,
+          "reference_position": 729,
+          "residue": "GLY",
+          "xyz": [
+            22.056,
+            -11.074,
+            51.766
+          ]
+        },
+        {
+          "author_position": "706",
+          "entity_position": 41,
+          "reference_position": 730,
+          "residue": "LEU",
+          "xyz": [
+            22.689,
+            -13.658,
+            54.471
+          ]
+        },
+        {
+          "author_position": "707",
+          "entity_position": 42,
+          "reference_position": 731,
+          "residue": "TRP",
+          "xyz": [
+            26.094,
+            -14.53,
+            55.914
+          ]
+        },
+        {
+          "author_position": "708",
+          "entity_position": 43,
+          "reference_position": 732,
+          "residue": "ILE",
+          "xyz": [
+            26.296,
+            -18.158,
+            56.984
+          ]
+        },
+        {
+          "author_position": "709",
+          "entity_position": 44,
+          "reference_position": 733,
+          "residue": "PRO",
+          "xyz": [
+            29.667,
+            -18.997,
+            58.615
+          ]
+        },
+        {
+          "author_position": "710",
+          "entity_position": 45,
+          "reference_position": 734,
+          "residue": "GLU",
+          "xyz": [
+            30.396,
+            -22.699,
+            57.894
+          ]
+        },
+        {
+          "author_position": "711",
+          "entity_position": 46,
+          "reference_position": 735,
+          "residue": "GLY",
+          "xyz": [
+            31.072,
+            -23.831,
+            61.454
+          ]
+        },
+        {
+          "author_position": "712",
+          "entity_position": 47,
+          "reference_position": 736,
+          "residue": "GLU",
+          "xyz": [
+            28.181,
+            -22.286,
+            63.417
+          ]
+        },
+        {
+          "author_position": "713",
+          "entity_position": 48,
+          "reference_position": 737,
+          "residue": "LYS",
+          "xyz": [
+            24.415,
+            -22.493,
+            63.081
+          ]
+        },
+        {
+          "author_position": "714",
+          "entity_position": 49,
+          "reference_position": 738,
+          "residue": "VAL",
+          "xyz": [
+            23.588,
+            -18.814,
+            62.567
+          ]
+        },
+        {
+          "author_position": "715",
+          "entity_position": 50,
+          "reference_position": 739,
+          "residue": "LYS",
+          "xyz": [
+            22.257,
+            -16.754,
+            59.662
+          ]
+        },
+        {
+          "author_position": "716",
+          "entity_position": 51,
+          "reference_position": 740,
+          "residue": "ILE",
+          "xyz": [
+            23.427,
+            -13.13,
+            59.763
+          ]
+        },
+        {
+          "author_position": "717",
+          "entity_position": 52,
+          "reference_position": 741,
+          "residue": "PRO",
+          "xyz": [
+            21.509,
+            -10.555,
+            57.687
+          ]
+        },
+        {
+          "author_position": "718",
+          "entity_position": 53,
+          "reference_position": 742,
+          "residue": "VAL",
+          "xyz": [
+            24.124,
+            -8.446,
+            55.875
+          ]
+        },
+        {
+          "author_position": "719",
+          "entity_position": 54,
+          "reference_position": 743,
+          "residue": "ALA",
+          "xyz": [
+            24.618,
+            -5.715,
+            53.268
+          ]
+        },
+        {
+          "author_position": "720",
+          "entity_position": 55,
+          "reference_position": 744,
+          "residue": "ILE",
+          "xyz": [
+            27.254,
+            -6.215,
+            50.57
+          ]
+        },
+        {
+          "author_position": "721",
+          "entity_position": 56,
+          "reference_position": 745,
+          "residue": "LYS",
+          "xyz": [
+            28.881,
+            -3.213,
+            48.864
+          ]
+        },
+        {
+          "author_position": "722",
+          "entity_position": 57,
+          "reference_position": 746,
+          "residue": "GLU",
+          "xyz": [
+            31.054,
+            -3.527,
+            45.691
+          ]
+        },
+        {
+          "author_position": "723",
+          "entity_position": 58,
+          "reference_position": 747,
+          "residue": "LEU",
+          "xyz": [
+            31.98,
+            -1.644,
+            42.502
+          ]
+        },
+        {
+          "author_position": "724",
+          "entity_position": 59,
+          "reference_position": 748,
+          "residue": "ARG",
+          "xyz": [
+            30.997,
+            -2.209,
+            38.848
+          ]
+        },
+        {
+          "author_position": "725",
+          "entity_position": 60,
+          "reference_position": 749,
+          "residue": "GLU",
+          "xyz": [
+            32.083,
+            -5.411,
+            37.038
+          ]
+        },
+        {
+          "author_position": "726",
+          "entity_position": 61,
+          "reference_position": 750,
+          "residue": "ALA",
+          "xyz": [
+            35.198,
+            -3.828,
+            35.494
+          ]
+        },
+        {
+          "author_position": "727",
+          "entity_position": 62,
+          "reference_position": 751,
+          "residue": "THR",
+          "xyz": [
+            38.153,
+            -3.156,
+            37.807
+          ]
+        },
+        {
+          "author_position": "728",
+          "entity_position": 63,
+          "reference_position": 752,
+          "residue": "SER",
+          "xyz": [
+            38.878,
+            0.497,
+            38.624
+          ]
+        },
+        {
+          "author_position": "729",
+          "entity_position": 64,
+          "reference_position": 753,
+          "residue": "PRO",
+          "xyz": [
+            42.419,
+            1.659,
+            39.676
+          ]
+        },
+        {
+          "author_position": "730",
+          "entity_position": 65,
+          "reference_position": 754,
+          "residue": "LYS",
+          "xyz": [
+            41.84,
+            4.313,
+            42.362
+          ]
+        },
+        {
+          "author_position": "731",
+          "entity_position": 66,
+          "reference_position": 755,
+          "residue": "ALA",
+          "xyz": [
+            38.347,
+            3.069,
+            43.313
+          ]
+        },
+        {
+          "author_position": "732",
+          "entity_position": 67,
+          "reference_position": 756,
+          "residue": "ASN",
+          "xyz": [
+            39.888,
+            -0.194,
+            44.504
+          ]
+        },
+        {
+          "author_position": "733",
+          "entity_position": 68,
+          "reference_position": 757,
+          "residue": "LYS",
+          "xyz": [
+            42.141,
+            1.636,
+            46.958
+          ]
+        },
+        {
+          "author_position": "734",
+          "entity_position": 69,
+          "reference_position": 758,
+          "residue": "GLU",
+          "xyz": [
+            39.167,
+            3.687,
+            48.142
+          ]
+        },
+        {
+          "author_position": "735",
+          "entity_position": 70,
+          "reference_position": 759,
+          "residue": "ILE",
+          "xyz": [
+            37.106,
+            0.646,
+            49.143
+          ]
+        },
+        {
+          "author_position": "736",
+          "entity_position": 71,
+          "reference_position": 760,
+          "residue": "LEU",
+          "xyz": [
+            40.074,
+            -0.653,
+            51.061
+          ]
+        },
+        {
+          "author_position": "737",
+          "entity_position": 72,
+          "reference_position": 761,
+          "residue": "ASP",
+          "xyz": [
+            40.53,
+            2.763,
+            52.719
+          ]
+        },
+        {
+          "author_position": "738",
+          "entity_position": 73,
+          "reference_position": 762,
+          "residue": "GLU",
+          "xyz": [
+            36.88,
+            2.649,
+            53.726
+          ]
+        },
+        {
+          "author_position": "739",
+          "entity_position": 74,
+          "reference_position": 763,
+          "residue": "ALA",
+          "xyz": [
+            37.364,
+            -0.918,
+            55.013
+          ]
+        },
+        {
+          "author_position": "740",
+          "entity_position": 75,
+          "reference_position": 764,
+          "residue": "TYR",
+          "xyz": [
+            40.257,
+            0.252,
+            57.151
+          ]
+        },
+        {
+          "author_position": "741",
+          "entity_position": 76,
+          "reference_position": 765,
+          "residue": "VAL",
+          "xyz": [
+            38.16,
+            2.885,
+            58.952
+          ]
+        },
+        {
+          "author_position": "742",
+          "entity_position": 77,
+          "reference_position": 766,
+          "residue": "MET",
+          "xyz": [
+            35.058,
+            0.73,
+            59.338
+          ]
+        },
+        {
+          "author_position": "743",
+          "entity_position": 78,
+          "reference_position": 767,
+          "residue": "ALA",
+          "xyz": [
+            37.125,
+            -2.096,
+            60.787
+          ]
+        },
+        {
+          "author_position": "744",
+          "entity_position": 79,
+          "reference_position": 768,
+          "residue": "SER",
+          "xyz": [
+            38.603,
+            0.362,
+            63.278
+          ]
+        },
+        {
+          "author_position": "745",
+          "entity_position": 80,
+          "reference_position": 769,
+          "residue": "VAL",
+          "xyz": [
+            35.376,
+            1.538,
+            64.945
+          ]
+        },
+        {
+          "author_position": "746",
+          "entity_position": 81,
+          "reference_position": 770,
+          "residue": "ASP",
+          "xyz": [
+            33.276,
+            -0.307,
+            67.482
+          ]
+        },
+        {
+          "author_position": "747",
+          "entity_position": 82,
+          "reference_position": 771,
+          "residue": "ASN",
+          "xyz": [
+            30.245,
+            1.557,
+            68.871
+          ]
+        },
+        {
+          "author_position": "748",
+          "entity_position": 83,
+          "reference_position": 772,
+          "residue": "PRO",
+          "xyz": [
+            26.438,
+            1.036,
+            69.033
+          ]
+        },
+        {
+          "author_position": "749",
+          "entity_position": 84,
+          "reference_position": 773,
+          "residue": "HIS",
+          "xyz": [
+            25.886,
+            4.143,
+            66.949
+          ]
+        },
+        {
+          "author_position": "750",
+          "entity_position": 85,
+          "reference_position": 774,
+          "residue": "VAL",
+          "xyz": [
+            28.491,
+            3.515,
+            64.286
+          ]
+        },
+        {
+          "author_position": "751",
+          "entity_position": 86,
+          "reference_position": 775,
+          "residue": "CYS",
+          "xyz": [
+            28.168,
+            0.99,
+            61.469
+          ]
+        },
+        {
+          "author_position": "752",
+          "entity_position": 87,
+          "reference_position": 776,
+          "residue": "ARG",
+          "xyz": [
+            30.785,
+            -1.742,
+            61.657
+          ]
+        },
+        {
+          "author_position": "753",
+          "entity_position": 88,
+          "reference_position": 777,
+          "residue": "LEU",
+          "xyz": [
+            32.503,
+            -3.877,
+            59.045
+          ]
+        },
+        {
+          "author_position": "754",
+          "entity_position": 89,
+          "reference_position": 778,
+          "residue": "LEU",
+          "xyz": [
+            31.927,
+            -7.616,
+            59.405
+          ]
+        },
+        {
+          "author_position": "755",
+          "entity_position": 90,
+          "reference_position": 779,
+          "residue": "GLY",
+          "xyz": [
+            34.617,
+            -8.276,
+            56.839
+          ]
+        },
+        {
+          "author_position": "756",
+          "entity_position": 91,
+          "reference_position": 780,
+          "residue": "ILE",
+          "xyz": [
+            35.681,
+            -8.242,
+            53.214
+          ]
+        },
+        {
+          "author_position": "757",
+          "entity_position": 92,
+          "reference_position": 781,
+          "residue": "CYS",
+          "xyz": [
+            35.446,
+            -10.779,
+            50.407
+          ]
+        },
+        {
+          "author_position": "758",
+          "entity_position": 93,
+          "reference_position": 782,
+          "residue": "LEU",
+          "xyz": [
+            38.247,
+            -10.664,
+            47.82
+          ]
+        },
+        {
+          "author_position": "759",
+          "entity_position": 94,
+          "reference_position": 783,
+          "residue": "THR",
+          "xyz": [
+            36.477,
+            -11.32,
+            44.519
+          ]
+        },
+        {
+          "author_position": "760",
+          "entity_position": 95,
+          "reference_position": 784,
+          "residue": "SER",
+          "xyz": [
+            37.153,
+            -9.809,
+            41.083
+          ]
+        },
+        {
+          "author_position": "761",
+          "entity_position": 96,
+          "reference_position": 785,
+          "residue": "THR",
+          "xyz": [
+            36.518,
+            -6.554,
+            42.96
+          ]
+        },
+        {
+          "author_position": "762",
+          "entity_position": 97,
+          "reference_position": 786,
+          "residue": "VAL",
+          "xyz": [
+            36.612,
+            -6.19,
+            46.729
+          ]
+        },
+        {
+          "author_position": "763",
+          "entity_position": 98,
+          "reference_position": 787,
+          "residue": "GLN",
+          "xyz": [
+            33.279,
+            -6.385,
+            48.599
+          ]
+        },
+        {
+          "author_position": "764",
+          "entity_position": 99,
+          "reference_position": 788,
+          "residue": "LEU",
+          "xyz": [
+            32.572,
+            -4.721,
+            51.952
+          ]
+        },
+        {
+          "author_position": "765",
+          "entity_position": 100,
+          "reference_position": 789,
+          "residue": "ILE",
+          "xyz": [
+            30.234,
+            -6.712,
+            54.242
+          ]
+        },
+        {
+          "author_position": "766",
+          "entity_position": 101,
+          "reference_position": 790,
+          "residue": "THR",
+          "xyz": [
+            28.297,
+            -5.044,
+            57.053
+          ]
+        },
+        {
+          "author_position": "767",
+          "entity_position": 102,
+          "reference_position": 791,
+          "residue": "GLN",
+          "xyz": [
+            25.224,
+            -5.535,
+            59.181
+          ]
+        },
+        {
+          "author_position": "768",
+          "entity_position": 103,
+          "reference_position": 792,
+          "residue": "LEU",
+          "xyz": [
+            21.93,
+            -5.035,
+            57.378
+          ]
+        },
+        {
+          "author_position": "769",
+          "entity_position": 104,
+          "reference_position": 793,
+          "residue": "MET",
+          "xyz": [
+            20.091,
+            -1.872,
+            58.436
+          ]
+        },
+        {
+          "author_position": "770",
+          "entity_position": 105,
+          "reference_position": 794,
+          "residue": "PRO",
+          "xyz": [
+            16.57,
+            -3.027,
+            57.284
+          ]
+        },
+        {
+          "author_position": "771",
+          "entity_position": 106,
+          "reference_position": 795,
+          "residue": "PHE",
+          "xyz": [
+            14.896,
+            0.377,
+            57.343
+          ]
+        },
+        {
+          "author_position": "772",
+          "entity_position": 107,
+          "reference_position": 796,
+          "residue": "GLY",
+          "xyz": [
+            17.489,
+            2.033,
+            55.119
+          ]
+        },
+        {
+          "author_position": "773",
+          "entity_position": 108,
+          "reference_position": 797,
+          "residue": "CYS",
+          "xyz": [
+            18.81,
+            5.587,
+            55.443
+          ]
+        },
+        {
+          "author_position": "774",
+          "entity_position": 109,
+          "reference_position": 798,
+          "residue": "LEU",
+          "xyz": [
+            17.238,
+            8.075,
+            57.877
+          ]
+        },
+        {
+          "author_position": "775",
+          "entity_position": 110,
+          "reference_position": 799,
+          "residue": "LEU",
+          "xyz": [
+            16.583,
+            10.797,
+            55.273
+          ]
+        },
+        {
+          "author_position": "776",
+          "entity_position": 111,
+          "reference_position": 800,
+          "residue": "ASP",
+          "xyz": [
+            14.224,
+            8.698,
+            53.191
+          ]
+        },
+        {
+          "author_position": "777",
+          "entity_position": 112,
+          "reference_position": 801,
+          "residue": "TYR",
+          "xyz": [
+            12.849,
+            7.22,
+            56.374
+          ]
+        },
+        {
+          "author_position": "778",
+          "entity_position": 113,
+          "reference_position": 802,
+          "residue": "VAL",
+          "xyz": [
+            11.612,
+            10.569,
+            57.729
+          ]
+        },
+        {
+          "author_position": "779",
+          "entity_position": 114,
+          "reference_position": 803,
+          "residue": "ARG",
+          "xyz": [
+            10.221,
+            11.346,
+            54.275
+          ]
+        },
+        {
+          "author_position": "780",
+          "entity_position": 115,
+          "reference_position": 804,
+          "residue": "GLU",
+          "xyz": [
+            8.027,
+            8.3,
+            53.897
+          ]
+        },
+        {
+          "author_position": "781",
+          "entity_position": 116,
+          "reference_position": 805,
+          "residue": "HIS",
+          "xyz": [
+            6.9,
+            8.397,
+            57.528
+          ]
+        },
+        {
+          "author_position": "782",
+          "entity_position": 117,
+          "reference_position": 806,
+          "residue": "LYS",
+          "xyz": [
+            6.326,
+            12.144,
+            58.32
+          ]
+        },
+        {
+          "author_position": "783",
+          "entity_position": 118,
+          "reference_position": 807,
+          "residue": "ASP",
+          "xyz": [
+            2.746,
+            11.453,
+            59.441
+          ]
+        },
+        {
+          "author_position": "784",
+          "entity_position": 119,
+          "reference_position": 808,
+          "residue": "ASN",
+          "xyz": [
+            3.915,
+            8.974,
+            62.091
+          ]
+        },
+        {
+          "author_position": "785",
+          "entity_position": 120,
+          "reference_position": 809,
+          "residue": "ILE",
+          "xyz": [
+            7.112,
+            10.496,
+            63.475
+          ]
+        },
+        {
+          "author_position": "786",
+          "entity_position": 121,
+          "reference_position": 810,
+          "residue": "GLY",
+          "xyz": [
+            6.673,
+            11.848,
+            66.973
+          ]
+        },
+        {
+          "author_position": "787",
+          "entity_position": 122,
+          "reference_position": 811,
+          "residue": "SER",
+          "xyz": [
+            8.932,
+            14.186,
+            68.935
+          ]
+        },
+        {
+          "author_position": "788",
+          "entity_position": 123,
+          "reference_position": 812,
+          "residue": "GLN",
+          "xyz": [
+            10.36,
+            11.363,
+            71.045
+          ]
+        },
+        {
+          "author_position": "789",
+          "entity_position": 124,
+          "reference_position": 813,
+          "residue": "TYR",
+          "xyz": [
+            11.806,
+            9.658,
+            67.986
+          ]
+        },
+        {
+          "author_position": "790",
+          "entity_position": 125,
+          "reference_position": 814,
+          "residue": "LEU",
+          "xyz": [
+            13.255,
+            12.869,
+            66.579
+          ]
+        },
+        {
+          "author_position": "791",
+          "entity_position": 126,
+          "reference_position": 815,
+          "residue": "LEU",
+          "xyz": [
+            15.044,
+            13.755,
+            69.839
+          ]
+        },
+        {
+          "author_position": "792",
+          "entity_position": 127,
+          "reference_position": 816,
+          "residue": "ASN",
+          "xyz": [
+            16.315,
+            10.202,
+            70.489
+          ]
+        },
+        {
+          "author_position": "793",
+          "entity_position": 128,
+          "reference_position": 817,
+          "residue": "TRP",
+          "xyz": [
+            17.867,
+            10.174,
+            66.978
+          ]
+        },
+        {
+          "author_position": "794",
+          "entity_position": 129,
+          "reference_position": 818,
+          "residue": "CYS",
+          "xyz": [
+            19.671,
+            13.454,
+            67.761
+          ]
+        },
+        {
+          "author_position": "795",
+          "entity_position": 130,
+          "reference_position": 819,
+          "residue": "VAL",
+          "xyz": [
+            21.039,
+            11.899,
+            70.968
+          ]
+        },
+        {
+          "author_position": "796",
+          "entity_position": 131,
+          "reference_position": 820,
+          "residue": "GLN",
+          "xyz": [
+            22.124,
+            8.679,
+            69.197
+          ]
+        },
+        {
+          "author_position": "797",
+          "entity_position": 132,
+          "reference_position": 821,
+          "residue": "ILE",
+          "xyz": [
+            23.754,
+            10.501,
+            66.317
+          ]
+        },
+        {
+          "author_position": "798",
+          "entity_position": 133,
+          "reference_position": 822,
+          "residue": "ALA",
+          "xyz": [
+            25.53,
+            12.733,
+            68.873
+          ]
+        },
+        {
+          "author_position": "799",
+          "entity_position": 134,
+          "reference_position": 823,
+          "residue": "LYS",
+          "xyz": [
+            26.766,
+            9.678,
+            70.787
+          ]
+        },
+        {
+          "author_position": "800",
+          "entity_position": 135,
+          "reference_position": 824,
+          "residue": "GLY",
+          "xyz": [
+            28.136,
+            8.037,
+            67.637
+          ]
+        },
+        {
+          "author_position": "801",
+          "entity_position": 136,
+          "reference_position": 825,
+          "residue": "MET",
+          "xyz": [
+            29.9,
+            11.252,
+            66.684
+          ]
+        },
+        {
+          "author_position": "802",
+          "entity_position": 137,
+          "reference_position": 826,
+          "residue": "ASN",
+          "xyz": [
+            31.397,
+            11.781,
+            70.168
+          ]
+        },
+        {
+          "author_position": "803",
+          "entity_position": 138,
+          "reference_position": 827,
+          "residue": "TYR",
+          "xyz": [
+            32.737,
+            8.235,
+            69.849
+          ]
+        },
+        {
+          "author_position": "804",
+          "entity_position": 139,
+          "reference_position": 828,
+          "residue": "LEU",
+          "xyz": [
+            34.305,
+            9.033,
+            66.481
+          ]
+        },
+        {
+          "author_position": "805",
+          "entity_position": 140,
+          "reference_position": 829,
+          "residue": "GLU",
+          "xyz": [
+            35.894,
+            12.103,
+            68.091
+          ]
+        },
+        {
+          "author_position": "806",
+          "entity_position": 141,
+          "reference_position": 830,
+          "residue": "ASP",
+          "xyz": [
+            37.326,
+            9.969,
+            70.882
+          ]
+        },
+        {
+          "author_position": "807",
+          "entity_position": 142,
+          "reference_position": 831,
+          "residue": "ARG",
+          "xyz": [
+            38.774,
+            7.703,
+            68.186
+          ]
+        },
+        {
+          "author_position": "808",
+          "entity_position": 143,
+          "reference_position": 832,
+          "residue": "ARG",
+          "xyz": [
+            40.186,
+            10.86,
+            66.604
+          ]
+        },
+        {
+          "author_position": "809",
+          "entity_position": 144,
+          "reference_position": 833,
+          "residue": "LEU",
+          "xyz": [
+            38.11,
+            10.376,
+            63.473
+          ]
+        },
+        {
+          "author_position": "810",
+          "entity_position": 145,
+          "reference_position": 834,
+          "residue": "VAL",
+          "xyz": [
+            36.674,
+            13.254,
+            61.405
+          ]
+        },
+        {
+          "author_position": "811",
+          "entity_position": 146,
+          "reference_position": 835,
+          "residue": "HIS",
+          "xyz": [
+            33.711,
+            11.967,
+            59.538
+          ]
+        },
+        {
+          "author_position": "812",
+          "entity_position": 147,
+          "reference_position": 836,
+          "residue": "ARG",
+          "xyz": [
+            33.687,
+            14.489,
+            56.673
+          ]
+        },
+        {
+          "author_position": "813",
+          "entity_position": 148,
+          "reference_position": 837,
+          "residue": "ASP",
+          "xyz": [
+            30.284,
+            13.508,
+            55.232
+          ]
+        },
+        {
+          "author_position": "814",
+          "entity_position": 149,
+          "reference_position": 838,
+          "residue": "LEU",
+          "xyz": [
+            27.734,
+            13.515,
+            58.055
+          ]
+        },
+        {
+          "author_position": "815",
+          "entity_position": 150,
+          "reference_position": 839,
+          "residue": "ALA",
+          "xyz": [
+            24.198,
+            13.99,
+            56.774
+          ]
+        },
+        {
+          "author_position": "816",
+          "entity_position": 151,
+          "reference_position": 840,
+          "residue": "ALA",
+          "xyz": [
+            20.812,
+            12.244,
+            57.062
+          ]
+        },
+        {
+          "author_position": "817",
+          "entity_position": 152,
+          "reference_position": 841,
+          "residue": "ARG",
+          "xyz": [
+            21.578,
+            10.086,
+            53.999
+          ]
+        },
+        {
+          "author_position": "818",
+          "entity_position": 153,
+          "reference_position": 842,
+          "residue": "ASN",
+          "xyz": [
+            24.535,
+            8.632,
+            55.917
+          ]
+        },
+        {
+          "author_position": "819",
+          "entity_position": 154,
+          "reference_position": 843,
+          "residue": "VAL",
+          "xyz": [
+            22.628,
+            7.511,
+            59.007
+          ]
+        },
+        {
+          "author_position": "820",
+          "entity_position": 155,
+          "reference_position": 844,
+          "residue": "LEU",
+          "xyz": [
+            21.098,
+            4.056,
+            58.748
+          ]
+        },
+        {
+          "author_position": "821",
+          "entity_position": 156,
+          "reference_position": 845,
+          "residue": "VAL",
+          "xyz": [
+            18.083,
+            2.707,
+            60.604
+          ]
+        },
+        {
+          "author_position": "822",
+          "entity_position": 157,
+          "reference_position": 846,
+          "residue": "LYS",
+          "xyz": [
+            18.403,
+            -0.678,
+            62.395
+          ]
+        },
+        {
+          "author_position": "823",
+          "entity_position": 158,
+          "reference_position": 847,
+          "residue": "THR",
+          "xyz": [
+            14.993,
+            -0.112,
+            64.008
+          ]
+        },
+        {
+          "author_position": "824",
+          "entity_position": 159,
+          "reference_position": 848,
+          "residue": "PRO",
+          "xyz": [
+            12.948,
+            3.112,
+            64.373
+          ]
+        },
+        {
+          "author_position": "825",
+          "entity_position": 160,
+          "reference_position": 849,
+          "residue": "GLN",
+          "xyz": [
+            14.466,
+            3.33,
+            67.877
+          ]
+        },
+        {
+          "author_position": "826",
+          "entity_position": 161,
+          "reference_position": 850,
+          "residue": "HIS",
+          "xyz": [
+            18.096,
+            2.613,
+            66.912
+          ]
+        },
+        {
+          "author_position": "827",
+          "entity_position": 162,
+          "reference_position": 851,
+          "residue": "VAL",
+          "xyz": [
+            20.161,
+            4.417,
+            64.239
+          ]
+        },
+        {
+          "author_position": "828",
+          "entity_position": 163,
+          "reference_position": 852,
+          "residue": "LYS",
+          "xyz": [
+            23.905,
+            4.4,
+            63.329
+          ]
+        },
+        {
+          "author_position": "829",
+          "entity_position": 164,
+          "reference_position": 853,
+          "residue": "ILE",
+          "xyz": [
+            26.341,
+            6.538,
+            61.36
+          ]
+        },
+        {
+          "author_position": "830",
+          "entity_position": 165,
+          "reference_position": 854,
+          "residue": "THR",
+          "xyz": [
+            27.862,
+            5.143,
+            58.157
+          ]
+        },
+        {
+          "author_position": "831",
+          "entity_position": 166,
+          "reference_position": 855,
+          "residue": "ASP",
+          "xyz": [
+            29.643,
+            5.954,
+            54.868
+          ]
+        },
+        {
+          "author_position": "832",
+          "entity_position": 167,
+          "reference_position": 856,
+          "residue": "PHE",
+          "xyz": [
+            33.281,
+            6.583,
+            55.779
+          ]
+        },
+        {
+          "author_position": "833",
+          "entity_position": 168,
+          "reference_position": 857,
+          "residue": "GLY",
+          "xyz": [
+            34.361,
+            7.265,
+            52.207
+          ]
+        },
+        {
+          "author_position": "834",
+          "entity_position": 169,
+          "reference_position": 858,
+          "residue": "LEU",
+          "xyz": [
+            35.82,
+            10.628,
+            53.168
+          ]
+        },
+        {
+          "author_position": "835",
+          "entity_position": 170,
+          "reference_position": 859,
+          "residue": "ALA",
+          "xyz": [
+            36.821,
+            9.896,
+            56.783
+          ]
+        },
+        {
+          "author_position": "836",
+          "entity_position": 171,
+          "reference_position": 860,
+          "residue": "LYS",
+          "xyz": [
+            40.355,
+            10.801,
+            57.893
+          ]
+        },
+        {
+          "author_position": "837",
+          "entity_position": 172,
+          "reference_position": 861,
+          "residue": "LEU",
+          "xyz": [
+            42.172,
+            9.804,
+            61.119
+          ]
+        },
+        {
+          "author_position": "838",
+          "entity_position": 173,
+          "reference_position": 862,
+          "residue": "LEU",
+          "xyz": [
+            44.081,
+            12.701,
+            62.701
+          ]
+        },
+        {
+          "author_position": "839",
+          "entity_position": 174,
+          "reference_position": 863,
+          "residue": "GLY",
+          "xyz": [
+            47.498,
+            12.363,
+            64.293
+          ]
+        },
+        {
+          "author_position": "840",
+          "entity_position": 175,
+          "reference_position": 864,
+          "residue": "ALA",
+          "xyz": [
+            48.281,
+            12.736,
+            67.978
+          ]
+        },
+        {
+          "author_position": "841",
+          "entity_position": 176,
+          "reference_position": 865,
+          "residue": "GLU",
+          "xyz": [
+            49.341,
+            16.366,
+            67.806
+          ]
+        },
+        {
+          "author_position": "842",
+          "entity_position": 177,
+          "reference_position": 866,
+          "residue": "GLU",
+          "xyz": [
+            47.358,
+            16.946,
+            64.609
+          ]
+        },
+        {
+          "author_position": "843",
+          "entity_position": 178,
+          "reference_position": 867,
+          "residue": "LYS",
+          "xyz": [
+            44.462,
+            19.415,
+            64.99
+          ]
+        },
+        {
+          "author_position": "844",
+          "entity_position": 179,
+          "reference_position": 868,
+          "residue": "GLU",
+          "xyz": [
+            43.045,
+            19.547,
+            61.475
+          ]
+        },
+        {
+          "author_position": "845",
+          "entity_position": 180,
+          "reference_position": 869,
+          "residue": "TYR",
+          "xyz": [
+            42.957,
+            17.871,
+            58.102
+          ]
+        },
+        {
+          "author_position": "846",
+          "entity_position": 181,
+          "reference_position": 870,
+          "residue": "HIS",
+          "xyz": [
+            43.816,
+            19.744,
+            54.911
+          ]
+        },
+        {
+          "author_position": "847",
+          "entity_position": 182,
+          "reference_position": 871,
+          "residue": "ALA",
+          "xyz": [
+            41.881,
+            18.363,
+            51.942
+          ]
+        },
+        {
+          "author_position": "848",
+          "entity_position": 183,
+          "reference_position": 872,
+          "residue": "GLU",
+          "xyz": [
+            42.645,
+            18.304,
+            48.224
+          ]
+        },
+        {
+          "author_position": "849",
+          "entity_position": 184,
+          "reference_position": 873,
+          "residue": "GLY",
+          "xyz": [
+            40.077,
+            17.507,
+            45.523
+          ]
+        },
+        {
+          "author_position": "850",
+          "entity_position": 185,
+          "reference_position": 874,
+          "residue": "GLY",
+          "xyz": [
+            36.552,
+            18.838,
+            45.201
+          ]
+        },
+        {
+          "author_position": "851",
+          "entity_position": 186,
+          "reference_position": 875,
+          "residue": "LYS",
+          "xyz": [
+            34.171,
+            15.977,
+            45.87
+          ]
+        },
+        {
+          "author_position": "852",
+          "entity_position": 187,
+          "reference_position": 876,
+          "residue": "VAL",
+          "xyz": [
+            32.586,
+            17.062,
+            49.154
+          ]
+        },
+        {
+          "author_position": "853",
+          "entity_position": 188,
+          "reference_position": 877,
+          "residue": "PRO",
+          "xyz": [
+            28.871,
+            18.032,
+            49.499
+          ]
+        },
+        {
+          "author_position": "854",
+          "entity_position": 189,
+          "reference_position": 878,
+          "residue": "ILE",
+          "xyz": [
+            28.884,
+            21.795,
+            50.008
+          ]
+        },
+        {
+          "author_position": "855",
+          "entity_position": 190,
+          "reference_position": 879,
+          "residue": "LYS",
+          "xyz": [
+            25.547,
+            22.256,
+            51.748
+          ]
+        },
+        {
+          "author_position": "856",
+          "entity_position": 191,
+          "reference_position": 880,
+          "residue": "TRP",
+          "xyz": [
+            26.697,
+            20.351,
+            54.848
+          ]
+        },
+        {
+          "author_position": "857",
+          "entity_position": 192,
+          "reference_position": 881,
+          "residue": "MET",
+          "xyz": [
+            30.119,
+            21.864,
+            55.327
+          ]
+        },
+        {
+          "author_position": "858",
+          "entity_position": 193,
+          "reference_position": 882,
+          "residue": "ALA",
+          "xyz": [
+            31.478,
+            24.41,
+            57.752
+          ]
+        },
+        {
+          "author_position": "859",
+          "entity_position": 194,
+          "reference_position": 883,
+          "residue": "LEU",
+          "xyz": [
+            32.389,
+            27.78,
+            56.228
+          ]
+        },
+        {
+          "author_position": "860",
+          "entity_position": 195,
+          "reference_position": 884,
+          "residue": "GLU",
+          "xyz": [
+            36.095,
+            27.27,
+            56.96
+          ]
+        },
+        {
+          "author_position": "861",
+          "entity_position": 196,
+          "reference_position": 885,
+          "residue": "SER",
+          "xyz": [
+            35.883,
+            24.0,
+            55.053
+          ]
+        },
+        {
+          "author_position": "862",
+          "entity_position": 197,
+          "reference_position": 886,
+          "residue": "ILE",
+          "xyz": [
+            34.63,
+            25.715,
+            51.883
+          ]
+        },
+        {
+          "author_position": "863",
+          "entity_position": 198,
+          "reference_position": 887,
+          "residue": "LEU",
+          "xyz": [
+            37.06,
+            28.578,
+            52.224
+          ]
+        },
+        {
+          "author_position": "864",
+          "entity_position": 199,
+          "reference_position": 888,
+          "residue": "HIS",
+          "xyz": [
+            40.204,
+            26.802,
+            53.439
+          ]
+        },
+        {
+          "author_position": "865",
+          "entity_position": 200,
+          "reference_position": 889,
+          "residue": "ARG",
+          "xyz": [
+            39.548,
+            23.063,
+            52.953
+          ]
+        },
+        {
+          "author_position": "866",
+          "entity_position": 201,
+          "reference_position": 890,
+          "residue": "ILE",
+          "xyz": [
+            40.127,
+            22.702,
+            56.728
+          ]
+        },
+        {
+          "author_position": "867",
+          "entity_position": 202,
+          "reference_position": 891,
+          "residue": "TYR",
+          "xyz": [
+            38.228,
+            19.957,
+            58.613
+          ]
+        },
+        {
+          "author_position": "868",
+          "entity_position": 203,
+          "reference_position": 892,
+          "residue": "THR",
+          "xyz": [
+            37.935,
+            19.277,
+            62.309
+          ]
+        },
+        {
+          "author_position": "869",
+          "entity_position": 204,
+          "reference_position": 893,
+          "residue": "HIS",
+          "xyz": [
+            35.671,
+            17.568,
+            64.807
+          ]
+        },
+        {
+          "author_position": "870",
+          "entity_position": 205,
+          "reference_position": 894,
+          "residue": "GLN",
+          "xyz": [
+            34.08,
+            21.047,
+            65.145
+          ]
+        },
+        {
+          "author_position": "871",
+          "entity_position": 206,
+          "reference_position": 895,
+          "residue": "SER",
+          "xyz": [
+            33.612,
+            21.035,
+            61.382
+          ]
+        },
+        {
+          "author_position": "872",
+          "entity_position": 207,
+          "reference_position": 896,
+          "residue": "ASP",
+          "xyz": [
+            31.585,
+            17.884,
+            61.894
+          ]
+        },
+        {
+          "author_position": "873",
+          "entity_position": 208,
+          "reference_position": 897,
+          "residue": "VAL",
+          "xyz": [
+            29.377,
+            19.715,
+            64.385
+          ]
+        },
+        {
+          "author_position": "874",
+          "entity_position": 209,
+          "reference_position": 898,
+          "residue": "TRP",
+          "xyz": [
+            28.261,
+            22.137,
+            61.636
+          ]
+        },
+        {
+          "author_position": "875",
+          "entity_position": 210,
+          "reference_position": 899,
+          "residue": "SER",
+          "xyz": [
+            27.266,
+            19.113,
+            59.593
+          ]
+        },
+        {
+          "author_position": "876",
+          "entity_position": 211,
+          "reference_position": 900,
+          "residue": "TYR",
+          "xyz": [
+            25.555,
+            17.676,
+            62.659
+          ]
+        },
+        {
+          "author_position": "877",
+          "entity_position": 212,
+          "reference_position": 901,
+          "residue": "GLY",
+          "xyz": [
+            23.458,
+            20.882,
+            62.807
+          ]
+        },
+        {
+          "author_position": "878",
+          "entity_position": 213,
+          "reference_position": 902,
+          "residue": "VAL",
+          "xyz": [
+            22.393,
+            20.545,
+            59.183
+          ]
+        },
+        {
+          "author_position": "879",
+          "entity_position": 214,
+          "reference_position": 903,
+          "residue": "THR",
+          "xyz": [
+            21.638,
+            16.849,
+            59.729
+          ]
+        },
+        {
+          "author_position": "880",
+          "entity_position": 215,
+          "reference_position": 904,
+          "residue": "VAL",
+          "xyz": [
+            19.417,
+            17.902,
+            62.648
+          ]
+        },
+        {
+          "author_position": "881",
+          "entity_position": 216,
+          "reference_position": 905,
+          "residue": "TRP",
+          "xyz": [
+            17.663,
+            20.406,
+            60.338
+          ]
+        },
+        {
+          "author_position": "882",
+          "entity_position": 217,
+          "reference_position": 906,
+          "residue": "GLU",
+          "xyz": [
+            16.914,
+            17.675,
+            57.776
+          ]
+        },
+        {
+          "author_position": "883",
+          "entity_position": 218,
+          "reference_position": 907,
+          "residue": "LEU",
+          "xyz": [
+            15.262,
+            15.603,
+            60.486
+          ]
+        },
+        {
+          "author_position": "884",
+          "entity_position": 219,
+          "reference_position": 908,
+          "residue": "MET",
+          "xyz": [
+            13.153,
+            18.429,
+            62.042
+          ]
+        },
+        {
+          "author_position": "885",
+          "entity_position": 220,
+          "reference_position": 909,
+          "residue": "THR",
+          "xyz": [
+            11.915,
+            19.437,
+            58.56
+          ]
+        },
+        {
+          "author_position": "886",
+          "entity_position": 221,
+          "reference_position": 910,
+          "residue": "PHE",
+          "xyz": [
+            11.117,
+            15.758,
+            57.795
+          ]
+        },
+        {
+          "author_position": "887",
+          "entity_position": 222,
+          "reference_position": 911,
+          "residue": "GLY",
+          "xyz": [
+            13.576,
+            15.486,
+            54.908
+          ]
+        },
+        {
+          "author_position": "888",
+          "entity_position": 223,
+          "reference_position": 912,
+          "residue": "SER",
+          "xyz": [
+            13.876,
+            18.863,
+            53.209
+          ]
+        },
+        {
+          "author_position": "889",
+          "entity_position": 224,
+          "reference_position": 913,
+          "residue": "LYS",
+          "xyz": [
+            16.776,
+            19.754,
+            50.937
+          ]
+        },
+        {
+          "author_position": "890",
+          "entity_position": 225,
+          "reference_position": 914,
+          "residue": "PRO",
+          "xyz": [
+            18.929,
+            22.424,
+            52.595
+          ]
+        },
+        {
+          "author_position": "891",
+          "entity_position": 226,
+          "reference_position": 915,
+          "residue": "TYR",
+          "xyz": [
+            18.781,
+            25.682,
+            50.616
+          ]
+        },
+        {
+          "author_position": "892",
+          "entity_position": 227,
+          "reference_position": 916,
+          "residue": "ASP",
+          "xyz": [
+            16.402,
+            24.02,
+            48.11
+          ]
+        },
+        {
+          "author_position": "893",
+          "entity_position": 228,
+          "reference_position": 917,
+          "residue": "GLY",
+          "xyz": [
+            16.799,
+            26.799,
+            45.575
+          ]
+        },
+        {
+          "author_position": "894",
+          "entity_position": 229,
+          "reference_position": 918,
+          "residue": "ILE",
+          "xyz": [
+            20.361,
+            28.09,
+            45.815
+          ]
+        },
+        {
+          "author_position": "895",
+          "entity_position": 230,
+          "reference_position": 919,
+          "residue": "PRO",
+          "xyz": [
+            23.005,
+            26.165,
+            43.785
+          ]
+        },
+        {
+          "author_position": "896",
+          "entity_position": 231,
+          "reference_position": 920,
+          "residue": "ALA",
+          "xyz": [
+            26.21,
+            24.905,
+            45.415
+          ]
+        },
+        {
+          "author_position": "897",
+          "entity_position": 232,
+          "reference_position": 921,
+          "residue": "SER",
+          "xyz": [
+            28.211,
+            27.789,
+            43.926
+          ]
+        },
+        {
+          "author_position": "898",
+          "entity_position": 233,
+          "reference_position": 922,
+          "residue": "GLU",
+          "xyz": [
+            26.34,
+            30.445,
+            45.907
+          ]
+        },
+        {
+          "author_position": "899",
+          "entity_position": 234,
+          "reference_position": 923,
+          "residue": "ILE",
+          "xyz": [
+            26.304,
+            28.691,
+            49.313
+          ]
+        },
+        {
+          "author_position": "900",
+          "entity_position": 235,
+          "reference_position": 924,
+          "residue": "SER",
+          "xyz": [
+            29.654,
+            30.137,
+            50.352
+          ]
+        },
+        {
+          "author_position": "901",
+          "entity_position": 236,
+          "reference_position": 925,
+          "residue": "SER",
+          "xyz": [
+            28.36,
+            33.682,
+            49.819
+          ]
+        },
+        {
+          "author_position": "902",
+          "entity_position": 237,
+          "reference_position": 926,
+          "residue": "ILE",
+          "xyz": [
+            24.968,
+            33.378,
+            51.452
+          ]
+        },
+        {
+          "author_position": "903",
+          "entity_position": 238,
+          "reference_position": 927,
+          "residue": "LEU",
+          "xyz": [
+            26.87,
+            31.953,
+            54.43
+          ]
+        },
+        {
+          "author_position": "904",
+          "entity_position": 239,
+          "reference_position": 928,
+          "residue": "GLU",
+          "xyz": [
+            29.349,
+            34.837,
+            54.384
+          ]
+        },
+        {
+          "author_position": "905",
+          "entity_position": 240,
+          "reference_position": 929,
+          "residue": "LYS",
+          "xyz": [
+            26.406,
+            37.283,
+            54.562
+          ]
+        },
+        {
+          "author_position": "906",
+          "entity_position": 241,
+          "reference_position": 930,
+          "residue": "GLY",
+          "xyz": [
+            25.379,
+            35.602,
+            57.827
+          ]
+        },
+        {
+          "author_position": "907",
+          "entity_position": 242,
+          "reference_position": 931,
+          "residue": "GLU",
+          "xyz": [
+            22.388,
+            33.768,
+            56.393
+          ]
+        },
+        {
+          "author_position": "908",
+          "entity_position": 243,
+          "reference_position": 932,
+          "residue": "ARG",
+          "xyz": [
+            21.528,
+            30.338,
+            57.847
+          ]
+        },
+        {
+          "author_position": "909",
+          "entity_position": 244,
+          "reference_position": 933,
+          "residue": "LEU",
+          "xyz": [
+            18.967,
+            27.573,
+            57.552
+          ]
+        },
+        {
+          "author_position": "910",
+          "entity_position": 245,
+          "reference_position": 934,
+          "residue": "PRO",
+          "xyz": [
+            15.462,
+            28.597,
+            58.668
+          ]
+        },
+        {
+          "author_position": "911",
+          "entity_position": 246,
+          "reference_position": 935,
+          "residue": "GLN",
+          "xyz": [
+            13.697,
+            27.585,
+            61.908
+          ]
+        },
+        {
+          "author_position": "912",
+          "entity_position": 247,
+          "reference_position": 936,
+          "residue": "PRO",
+          "xyz": [
+            11.715,
+            24.388,
+            61.167
+          ]
+        },
+        {
+          "author_position": "913",
+          "entity_position": 248,
+          "reference_position": 937,
+          "residue": "PRO",
+          "xyz": [
+            8.011,
+            24.942,
+            61.98
+          ]
+        },
+        {
+          "author_position": "914",
+          "entity_position": 249,
+          "reference_position": 938,
+          "residue": "ILE",
+          "xyz": [
+            7.963,
+            22.189,
+            64.616
+          ]
+        },
+        {
+          "author_position": "915",
+          "entity_position": 250,
+          "reference_position": 939,
+          "residue": "CYS",
+          "xyz": [
+            10.947,
+            23.727,
+            66.403
+          ]
+        },
+        {
+          "author_position": "916",
+          "entity_position": 251,
+          "reference_position": 940,
+          "residue": "THR",
+          "xyz": [
+            10.841,
+            25.522,
+            69.697
+          ]
+        },
+        {
+          "author_position": "917",
+          "entity_position": 252,
+          "reference_position": 941,
+          "residue": "ILE",
+          "xyz": [
+            13.423,
+            28.276,
+            69.949
+          ]
+        },
+        {
+          "author_position": "918",
+          "entity_position": 253,
+          "reference_position": 942,
+          "residue": "ASP",
+          "xyz": [
+            15.291,
+            26.011,
+            72.428
+          ]
+        },
+        {
+          "author_position": "919",
+          "entity_position": 254,
+          "reference_position": 943,
+          "residue": "VAL",
+          "xyz": [
+            15.988,
+            23.379,
+            69.761
+          ]
+        },
+        {
+          "author_position": "920",
+          "entity_position": 255,
+          "reference_position": 944,
+          "residue": "TYR",
+          "xyz": [
+            16.666,
+            25.884,
+            66.979
+          ]
+        },
+        {
+          "author_position": "921",
+          "entity_position": 256,
+          "reference_position": 945,
+          "residue": "MET",
+          "xyz": [
+            19.189,
+            27.656,
+            69.185
+          ]
+        },
+        {
+          "author_position": "922",
+          "entity_position": 257,
+          "reference_position": 946,
+          "residue": "ILE",
+          "xyz": [
+            21.139,
+            24.364,
+            69.263
+          ]
+        },
+        {
+          "author_position": "923",
+          "entity_position": 258,
+          "reference_position": 947,
+          "residue": "MET",
+          "xyz": [
+            21.229,
+            24.19,
+            65.44
+          ]
+        },
+        {
+          "author_position": "924",
+          "entity_position": 259,
+          "reference_position": 948,
+          "residue": "VAL",
+          "xyz": [
+            22.204,
+            27.854,
+            65.211
+          ]
+        },
+        {
+          "author_position": "925",
+          "entity_position": 260,
+          "reference_position": 949,
+          "residue": "LYS",
+          "xyz": [
+            25.108,
+            27.365,
+            67.657
+          ]
+        },
+        {
+          "author_position": "926",
+          "entity_position": 261,
+          "reference_position": 950,
+          "residue": "CYS",
+          "xyz": [
+            26.593,
+            24.584,
+            65.506
+          ]
+        },
+        {
+          "author_position": "927",
+          "entity_position": 262,
+          "reference_position": 951,
+          "residue": "TRP",
+          "xyz": [
+            26.735,
+            27.235,
+            62.744
+          ]
+        },
+        {
+          "author_position": "928",
+          "entity_position": 263,
+          "reference_position": 952,
+          "residue": "MET",
+          "xyz": [
+            28.826,
+            29.942,
+            64.452
+          ]
+        },
+        {
+          "author_position": "929",
+          "entity_position": 264,
+          "reference_position": 953,
+          "residue": "ILE",
+          "xyz": [
+            31.842,
+            31.18,
+            62.43
+          ]
+        },
+        {
+          "author_position": "930",
+          "entity_position": 265,
+          "reference_position": 954,
+          "residue": "ASP",
+          "xyz": [
+            34.305,
+            30.507,
+            65.274
+          ]
+        },
+        {
+          "author_position": "931",
+          "entity_position": 266,
+          "reference_position": 955,
+          "residue": "ALA",
+          "xyz": [
+            34.5,
+            26.684,
+            65.363
+          ]
+        },
+        {
+          "author_position": "932",
+          "entity_position": 267,
+          "reference_position": 956,
+          "residue": "ASP",
+          "xyz": [
+            35.351,
+            26.541,
+            69.109
+          ]
+        },
+        {
+          "author_position": "933",
+          "entity_position": 268,
+          "reference_position": 957,
+          "residue": "SER",
+          "xyz": [
+            32.211,
+            28.522,
+            69.872
+          ]
+        },
+        {
+          "author_position": "934",
+          "entity_position": 269,
+          "reference_position": 958,
+          "residue": "ARG",
+          "xyz": [
+            30.115,
+            25.672,
+            68.505
+          ]
+        },
+        {
+          "author_position": "935",
+          "entity_position": 270,
+          "reference_position": 959,
+          "residue": "PRO",
+          "xyz": [
+            29.044,
+            23.006,
+            70.985
+          ]
+        },
+        {
+          "author_position": "936",
+          "entity_position": 271,
+          "reference_position": 960,
+          "residue": "LYS",
+          "xyz": [
+            30.903,
+            19.756,
+            71.44
+          ]
+        },
+        {
+          "author_position": "937",
+          "entity_position": 272,
+          "reference_position": 961,
+          "residue": "PHE",
+          "xyz": [
+            29.336,
+            16.401,
+            70.681
+          ]
+        },
+        {
+          "author_position": "938",
+          "entity_position": 273,
+          "reference_position": 962,
+          "residue": "ARG",
+          "xyz": [
+            29.534,
+            15.483,
+            74.38
+          ]
+        },
+        {
+          "author_position": "939",
+          "entity_position": 274,
+          "reference_position": 963,
+          "residue": "GLU",
+          "xyz": [
+            27.409,
+            18.594,
+            75.118
+          ]
+        },
+        {
+          "author_position": "940",
+          "entity_position": 275,
+          "reference_position": 964,
+          "residue": "LEU",
+          "xyz": [
+            24.929,
+            17.926,
+            72.314
+          ]
+        },
+        {
+          "author_position": "941",
+          "entity_position": 276,
+          "reference_position": 965,
+          "residue": "ILE",
+          "xyz": [
+            24.288,
+            14.532,
+            73.98
+          ]
+        },
+        {
+          "author_position": "942",
+          "entity_position": 277,
+          "reference_position": 966,
+          "residue": "ILE",
+          "xyz": [
+            23.469,
+            16.118,
+            77.375
+          ]
+        },
+        {
+          "author_position": "943",
+          "entity_position": 278,
+          "reference_position": 967,
+          "residue": "GLU",
+          "xyz": [
+            21.291,
+            18.824,
+            75.784
+          ]
+        },
+        {
+          "author_position": "944",
+          "entity_position": 279,
+          "reference_position": 968,
+          "residue": "PHE",
+          "xyz": [
+            19.202,
+            16.581,
+            73.597
+          ]
+        },
+        {
+          "author_position": "945",
+          "entity_position": 280,
+          "reference_position": 969,
+          "residue": "SER",
+          "xyz": [
+            19.027,
+            14.02,
+            76.389
+          ]
+        },
+        {
+          "author_position": "946",
+          "entity_position": 281,
+          "reference_position": 970,
+          "residue": "LYS",
+          "xyz": [
+            17.31,
+            16.518,
+            78.758
+          ]
+        },
+        {
+          "author_position": "947",
+          "entity_position": 282,
+          "reference_position": 971,
+          "residue": "MET",
+          "xyz": [
+            14.85,
+            17.472,
+            75.994
+          ]
+        },
+        {
+          "author_position": "948",
+          "entity_position": 283,
+          "reference_position": 972,
+          "residue": "ALA",
+          "xyz": [
+            14.223,
+            13.812,
+            75.319
+          ]
+        },
+        {
+          "author_position": "949",
+          "entity_position": 284,
+          "reference_position": 973,
+          "residue": "ARG",
+          "xyz": [
+            12.806,
+            13.409,
+            78.839
+          ]
+        },
+        {
+          "author_position": "950",
+          "entity_position": 285,
+          "reference_position": 974,
+          "residue": "ASP",
+          "xyz": [
+            10.025,
+            15.859,
+            77.96
+          ]
+        },
+        {
+          "author_position": "951",
+          "entity_position": 286,
+          "reference_position": 975,
+          "residue": "PRO",
+          "xyz": [
+            9.599,
+            15.784,
+            74.103
+          ]
+        },
+        {
+          "author_position": "952",
+          "entity_position": 287,
+          "reference_position": 976,
+          "residue": "GLN",
+          "xyz": [
+            6.474,
+            17.902,
+            73.714
+          ]
+        },
+        {
+          "author_position": "953",
+          "entity_position": 288,
+          "reference_position": 977,
+          "residue": "ARG",
+          "xyz": [
+            8.006,
+            20.885,
+            75.526
+          ]
+        },
+        {
+          "author_position": "954",
+          "entity_position": 289,
+          "reference_position": 978,
+          "residue": "TYR",
+          "xyz": [
+            10.605,
+            21.05,
+            72.768
+          ]
+        },
+        {
+          "author_position": "955",
+          "entity_position": 290,
+          "reference_position": 979,
+          "residue": "LEU",
+          "xyz": [
+            8.962,
+            19.977,
+            69.478
+          ]
+        },
+        {
+          "author_position": "956",
+          "entity_position": 291,
+          "reference_position": 980,
+          "residue": "VAL",
+          "xyz": [
+            5.375,
+            20.832,
+            68.486
+          ]
+        },
+        {
+          "author_position": "957",
+          "entity_position": 292,
+          "reference_position": 981,
+          "residue": "ILE",
+          "xyz": [
+            3.944,
+            18.169,
+            66.179
+          ]
+        },
+        {
+          "author_position": "958",
+          "entity_position": 293,
+          "reference_position": 982,
+          "residue": "GLN",
+          "xyz": [
+            0.257,
+            18.028,
+            65.226
+          ]
+        },
+        {
+          "author_position": "959",
+          "entity_position": 294,
+          "reference_position": 983,
+          "residue": "GLY",
+          "xyz": [
+            -0.286,
+            14.372,
+            65.993
+          ]
+        },
+        {
+          "author_position": "960",
+          "entity_position": 295,
+          "reference_position": 984,
+          "residue": "ASP",
+          "xyz": [
+            2.46,
+            13.364,
+            68.408
+          ]
+        },
+        {
+          "author_position": "961",
+          "entity_position": 296,
+          "reference_position": 985,
+          "residue": "GLU",
+          "xyz": [
+            1.346,
+            9.741,
+            68.738
+          ]
+        },
+        {
+          "author_position": "962",
+          "entity_position": 297,
+          "reference_position": 986,
+          "residue": "ARG",
+          "xyz": [
+            -0.23,
+            8.407,
+            65.5
+          ]
+        },
+        {
+          "author_position": "963",
+          "entity_position": 298,
+          "reference_position": 987,
+          "residue": "MET",
+          "xyz": [
+            -3.268,
+            10.474,
+            64.371
+          ]
+        },
+        {
+          "author_position": "964",
+          "entity_position": 299,
+          "reference_position": 988,
+          "residue": "HIS",
+          "xyz": [
+            -5.47,
+            7.475,
+            63.606
+          ]
+        },
+        {
+          "author_position": "977",
+          "entity_position": 312,
+          "reference_position": 1001,
+          "residue": "LEU",
+          "xyz": [
+            -12.096,
+            6.763,
+            60.91
+          ]
+        },
+        {
+          "author_position": "978",
+          "entity_position": 313,
+          "reference_position": 1002,
+          "residue": "MET",
+          "xyz": [
+            -10.504,
+            8.315,
+            57.817
+          ]
+        },
+        {
+          "author_position": "979",
+          "entity_position": 314,
+          "reference_position": 1003,
+          "residue": "ASP",
+          "xyz": [
+            -12.744,
+            11.335,
+            57.231
+          ]
+        },
+        {
+          "author_position": "980",
+          "entity_position": 315,
+          "reference_position": 1004,
+          "residue": "GLU",
+          "xyz": [
+            -10.977,
+            12.138,
+            53.975
+          ]
+        },
+        {
+          "author_position": "981",
+          "entity_position": 316,
+          "reference_position": 1005,
+          "residue": "GLU",
+          "xyz": [
+            -12.582,
+            15.594,
+            54.474
+          ]
+        },
+        {
+          "author_position": "982",
+          "entity_position": 317,
+          "reference_position": 1006,
+          "residue": "ASP",
+          "xyz": [
+            -11.79,
+            18.937,
+            56.15
+          ]
+        },
+        {
+          "author_position": "983",
+          "entity_position": 318,
+          "reference_position": 1007,
+          "residue": "MET",
+          "xyz": [
+            -14.513,
+            18.983,
+            58.831
+          ]
+        },
+        {
+          "author_position": "984",
+          "entity_position": 319,
+          "reference_position": 1008,
+          "residue": "ASP",
+          "xyz": [
+            -14.585,
+            19.196,
+            62.624
+          ]
+        },
+        {
+          "author_position": "985",
+          "entity_position": 320,
+          "reference_position": 1009,
+          "residue": "ASP",
+          "xyz": [
+            -18.35,
+            19.482,
+            63.184
+          ]
+        },
+        {
+          "author_position": "986",
+          "entity_position": 321,
+          "reference_position": 1010,
+          "residue": "VAL",
+          "xyz": [
+            -18.783,
+            15.857,
+            62.11
+          ]
+        },
+        {
+          "author_position": "987",
+          "entity_position": 322,
+          "reference_position": 1011,
+          "residue": "VAL",
+          "xyz": [
+            -20.781,
+            13.749,
+            64.551
+          ]
+        },
+        {
+          "author_position": "988",
+          "entity_position": 323,
+          "reference_position": 1012,
+          "residue": "ASP",
+          "xyz": [
+            -21.487,
+            10.043,
+            64.369
+          ]
+        },
+        {
+          "author_position": "989",
+          "entity_position": 324,
+          "reference_position": 1013,
+          "residue": "ALA",
+          "xyz": [
+            -25.078,
+            8.923,
+            63.748
+          ]
+        },
+        {
+          "author_position": "990",
+          "entity_position": 325,
+          "reference_position": 1014,
+          "residue": "ASP",
+          "xyz": [
+            -25.451,
+            7.012,
+            66.988
+          ]
+        },
+        {
+          "author_position": "991",
+          "entity_position": 326,
+          "reference_position": 1015,
+          "residue": "GLU",
+          "xyz": [
+            -24.777,
+            10.297,
+            68.836
+          ]
+        },
+        {
+          "author_position": "992",
+          "entity_position": 327,
+          "reference_position": 1016,
+          "residue": "TYR",
+          "xyz": [
+            -27.326,
+            12.326,
+            66.853
+          ]
+        },
+        {
+          "author_position": "993",
+          "entity_position": 328,
+          "reference_position": 1017,
+          "residue": "LEU",
+          "xyz": [
+            -30.731,
+            11.698,
+            68.469
+          ]
+        },
+        {
+          "author_position": "994",
+          "entity_position": 329,
+          "reference_position": 1018,
+          "residue": "ILE",
+          "xyz": [
+            -34.387,
+            12.712,
+            67.878
+          ]
+        },
+        {
+          "author_position": "995",
+          "entity_position": 330,
+          "reference_position": 1019,
+          "residue": "PRO",
+          "xyz": [
+            -34.506,
+            16.354,
+            66.608
+          ]
+        }
+      ],
+      "pdb_id": "1M17",
+      "selected_ligand_heavy_atoms": [
+        {
+          "atom_id": "C1",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            29.552,
+            -1.989,
+            53.496
+          ]
+        },
+        {
+          "atom_id": "C2",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            28.841,
+            -1.022,
+            53.432
+          ]
+        },
+        {
+          "atom_id": "C3",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            27.989,
+            0.094,
+            53.366
+          ]
+        },
+        {
+          "atom_id": "C4",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            26.606,
+            -0.119,
+            53.323
+          ]
+        },
+        {
+          "atom_id": "C5",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            25.725,
+            0.972,
+            53.258
+          ]
+        },
+        {
+          "atom_id": "N1",
+          "element": "N",
+          "occupancy": 1.0,
+          "xyz": [
+            24.289,
+            0.712,
+            53.215
+          ]
+        },
+        {
+          "atom_id": "C6",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            23.41,
+            -0.217,
+            53.908
+          ]
+        },
+        {
+          "atom_id": "C7",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            22.037,
+            -0.309,
+            53.572
+          ]
+        },
+        {
+          "atom_id": "C8",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            21.501,
+            0.476,
+            52.546
+          ]
+        },
+        {
+          "atom_id": "C9",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            20.143,
+            0.376,
+            52.218
+          ]
+        },
+        {
+          "atom_id": "O1",
+          "element": "O",
+          "occupancy": 1.0,
+          "xyz": [
+            19.589,
+            1.22,
+            51.12
+          ]
+        },
+        {
+          "atom_id": "C10",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            20.55,
+            1.362,
+            50.041
+          ]
+        },
+        {
+          "atom_id": "C11",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            20.235,
+            2.645,
+            49.262
+          ]
+        },
+        {
+          "atom_id": "O2",
+          "element": "O",
+          "occupancy": 1.0,
+          "xyz": [
+            18.99,
+            2.485,
+            48.543
+          ]
+        },
+        {
+          "atom_id": "C12",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            17.712,
+            2.618,
+            49.399
+          ]
+        },
+        {
+          "atom_id": "C13",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            19.301,
+            -0.535,
+            52.923
+          ]
+        },
+        {
+          "atom_id": "O3",
+          "element": "O",
+          "occupancy": 1.0,
+          "xyz": [
+            17.828,
+            -0.679,
+            52.597
+          ]
+        },
+        {
+          "atom_id": "C14",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            17.227,
+            0.601,
+            52.22
+          ]
+        },
+        {
+          "atom_id": "C15",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            15.703,
+            0.494,
+            52.066
+          ]
+        },
+        {
+          "atom_id": "O4",
+          "element": "O",
+          "occupancy": 1.0,
+          "xyz": [
+            15.108,
+            0.167,
+            53.335
+          ]
+        },
+        {
+          "atom_id": "C16",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            13.843,
+            -0.695,
+            53.221
+          ]
+        },
+        {
+          "atom_id": "C17",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            19.845,
+            -1.318,
+            53.942
+          ]
+        },
+        {
+          "atom_id": "C18",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            21.199,
+            -1.222,
+            54.264
+          ]
+        },
+        {
+          "atom_id": "N2",
+          "element": "N",
+          "occupancy": 1.0,
+          "xyz": [
+            21.747,
+            -2.039,
+            55.319
+          ]
+        },
+        {
+          "atom_id": "C19",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            23.117,
+            -1.934,
+            55.642
+          ]
+        },
+        {
+          "atom_id": "N3",
+          "element": "N",
+          "occupancy": 1.0,
+          "xyz": [
+            23.943,
+            -1.023,
+            54.94
+          ]
+        },
+        {
+          "atom_id": "C20",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            26.234,
+            2.292,
+            53.236
+          ]
+        },
+        {
+          "atom_id": "C21",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            27.625,
+            2.509,
+            53.279
+          ]
+        },
+        {
+          "atom_id": "C22",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            28.508,
+            1.41,
+            53.344
+          ]
+        }
+      ],
+      "source": "data/raw/rcsb-1M17.cif",
+      "units": "angstrom"
+    },
+    {
+      "alpha_carbons": [
+        {
+          "author_position": "1",
+          "entity_position": 3,
+          "reference_position": 2,
+          "residue": "THR",
+          "xyz": [
+            -17.16234,
+            -13.86486,
+            -13.30698
+          ]
+        },
+        {
+          "author_position": "3",
+          "entity_position": 4,
+          "reference_position": 3,
+          "residue": "GLU",
+          "xyz": [
+            -14.32418,
+            -12.81034,
+            -15.62191
+          ]
+        },
+        {
+          "author_position": "4",
+          "entity_position": 5,
+          "reference_position": 4,
+          "residue": "TYR",
+          "xyz": [
+            -12.56029,
+            -9.45441,
+            -15.20944
+          ]
+        },
+        {
+          "author_position": "5",
+          "entity_position": 6,
+          "reference_position": 5,
+          "residue": "LYS",
+          "xyz": [
+            -10.23282,
+            -7.75897,
+            -17.75067
+          ]
+        },
+        {
+          "author_position": "6",
+          "entity_position": 7,
+          "reference_position": 6,
+          "residue": "LEU",
+          "xyz": [
+            -7.64233,
+            -5.95167,
+            -15.64252
+          ]
+        },
+        {
+          "author_position": "7",
+          "entity_position": 8,
+          "reference_position": 7,
+          "residue": "VAL",
+          "xyz": [
+            -4.88065,
+            -3.8253,
+            -17.24896
+          ]
+        },
+        {
+          "author_position": "8",
+          "entity_position": 9,
+          "reference_position": 8,
+          "residue": "VAL",
+          "xyz": [
+            -1.58609,
+            -2.87047,
+            -15.562
+          ]
+        },
+        {
+          "author_position": "9",
+          "entity_position": 10,
+          "reference_position": 9,
+          "residue": "VAL",
+          "xyz": [
+            -0.22361,
+            0.46178,
+            -16.83621
+          ]
+        },
+        {
+          "author_position": "10",
+          "entity_position": 11,
+          "reference_position": 10,
+          "residue": "GLY",
+          "xyz": [
+            2.56115,
+            2.90732,
+            -15.99319
+          ]
+        },
+        {
+          "author_position": "11",
+          "entity_position": 12,
+          "reference_position": 11,
+          "residue": "ALA",
+          "xyz": [
+            6.0988,
+            3.87275,
+            -16.9245
+          ]
+        },
+        {
+          "author_position": "12",
+          "entity_position": 13,
+          "reference_position": 12,
+          "residue": "ASP",
+          "xyz": [
+            8.84271,
+            1.44553,
+            -17.8454
+          ]
+        },
+        {
+          "author_position": "13",
+          "entity_position": 14,
+          "reference_position": 13,
+          "residue": "GLY",
+          "xyz": [
+            10.57881,
+            -0.0804,
+            -14.86335
+          ]
+        },
+        {
+          "author_position": "14",
+          "entity_position": 15,
+          "reference_position": 14,
+          "residue": "VAL",
+          "xyz": [
+            7.89776,
+            0.53699,
+            -12.21339
+          ]
+        },
+        {
+          "author_position": "15",
+          "entity_position": 16,
+          "reference_position": 15,
+          "residue": "GLY",
+          "xyz": [
+            7.31071,
+            -3.16642,
+            -11.69388
+          ]
+        },
+        {
+          "author_position": "16",
+          "entity_position": 17,
+          "reference_position": 16,
+          "residue": "LYS",
+          "xyz": [
+            4.20828,
+            -3.98645,
+            -13.77847
+          ]
+        },
+        {
+          "author_position": "17",
+          "entity_position": 18,
+          "reference_position": 17,
+          "residue": "SER",
+          "xyz": [
+            5.6133,
+            -7.36399,
+            -14.84597
+          ]
+        },
+        {
+          "author_position": "18",
+          "entity_position": 19,
+          "reference_position": 18,
+          "residue": "ALA",
+          "xyz": [
+            6.94233,
+            -8.15781,
+            -11.3704
+          ]
+        },
+        {
+          "author_position": "19",
+          "entity_position": 20,
+          "reference_position": 19,
+          "residue": "LEU",
+          "xyz": [
+            3.52999,
+            -7.36557,
+            -9.8501
+          ]
+        },
+        {
+          "author_position": "20",
+          "entity_position": 21,
+          "reference_position": 20,
+          "residue": "THR",
+          "xyz": [
+            1.74758,
+            -9.471,
+            -12.46596
+          ]
+        },
+        {
+          "author_position": "21",
+          "entity_position": 22,
+          "reference_position": 21,
+          "residue": "ILE",
+          "xyz": [
+            4.03639,
+            -12.46767,
+            -11.9763
+          ]
+        },
+        {
+          "author_position": "22",
+          "entity_position": 23,
+          "reference_position": 22,
+          "residue": "GLN",
+          "xyz": [
+            3.66892,
+            -12.19771,
+            -8.18409
+          ]
+        },
+        {
+          "author_position": "23",
+          "entity_position": 24,
+          "reference_position": 23,
+          "residue": "LEU",
+          "xyz": [
+            -0.06926,
+            -12.51923,
+            -8.57971
+          ]
+        },
+        {
+          "author_position": "24",
+          "entity_position": 25,
+          "reference_position": 24,
+          "residue": "ILE",
+          "xyz": [
+            0.13995,
+            -15.31359,
+            -11.18589
+          ]
+        },
+        {
+          "author_position": "25",
+          "entity_position": 26,
+          "reference_position": 25,
+          "residue": "GLN",
+          "xyz": [
+            3.10741,
+            -17.37689,
+            -9.80799
+          ]
+        },
+        {
+          "author_position": "26",
+          "entity_position": 27,
+          "reference_position": 26,
+          "residue": "ASN",
+          "xyz": [
+            3.5941,
+            -16.23834,
+            -6.21412
+          ]
+        },
+        {
+          "author_position": "27",
+          "entity_position": 28,
+          "reference_position": 27,
+          "residue": "HIS",
+          "xyz": [
+            7.20961,
+            -15.2807,
+            -6.52037
+          ]
+        },
+        {
+          "author_position": "28",
+          "entity_position": 29,
+          "reference_position": 28,
+          "residue": "PHE",
+          "xyz": [
+            9.39468,
+            -12.34633,
+            -7.44969
+          ]
+        },
+        {
+          "author_position": "29",
+          "entity_position": 30,
+          "reference_position": 29,
+          "residue": "VAL",
+          "xyz": [
+            10.78771,
+            -12.58353,
+            -10.99387
+          ]
+        },
+        {
+          "author_position": "30",
+          "entity_position": 31,
+          "reference_position": 30,
+          "residue": "ASP",
+          "xyz": [
+            13.90224,
+            -10.38676,
+            -11.11474
+          ]
+        },
+        {
+          "author_position": "31",
+          "entity_position": 32,
+          "reference_position": 31,
+          "residue": "GLU",
+          "xyz": [
+            14.27943,
+            -10.42185,
+            -14.92192
+          ]
+        },
+        {
+          "author_position": "32",
+          "entity_position": 33,
+          "reference_position": 32,
+          "residue": "TYR",
+          "xyz": [
+            11.16603,
+            -10.23202,
+            -17.0108
+          ]
+        },
+        {
+          "author_position": "33",
+          "entity_position": 34,
+          "reference_position": 33,
+          "residue": "ASP",
+          "xyz": [
+            11.78904,
+            -9.05018,
+            -20.55254
+          ]
+        },
+        {
+          "author_position": "34",
+          "entity_position": 35,
+          "reference_position": 34,
+          "residue": "PRO",
+          "xyz": [
+            11.10386,
+            -5.28309,
+            -20.37632
+          ]
+        },
+        {
+          "author_position": "35",
+          "entity_position": 36,
+          "reference_position": 35,
+          "residue": "THR",
+          "xyz": [
+            9.7517,
+            -5.08808,
+            -23.95302
+          ]
+        },
+        {
+          "author_position": "36",
+          "entity_position": 37,
+          "reference_position": 36,
+          "residue": "ILE",
+          "xyz": [
+            7.11552,
+            -7.84561,
+            -23.74022
+          ]
+        },
+        {
+          "author_position": "37",
+          "entity_position": 38,
+          "reference_position": 37,
+          "residue": "GLU",
+          "xyz": [
+            3.38616,
+            -7.14861,
+            -23.36861
+          ]
+        },
+        {
+          "author_position": "38",
+          "entity_position": 39,
+          "reference_position": 38,
+          "residue": "ASP",
+          "xyz": [
+            1.37912,
+            -10.2538,
+            -22.50958
+          ]
+        },
+        {
+          "author_position": "39",
+          "entity_position": 40,
+          "reference_position": 39,
+          "residue": "SER",
+          "xyz": [
+            -1.61643,
+            -11.41862,
+            -20.54525
+          ]
+        },
+        {
+          "author_position": "40",
+          "entity_position": 41,
+          "reference_position": 40,
+          "residue": "TYR",
+          "xyz": [
+            -2.21959,
+            -14.10286,
+            -17.97074
+          ]
+        },
+        {
+          "author_position": "41",
+          "entity_position": 42,
+          "reference_position": 41,
+          "residue": "ARG",
+          "xyz": [
+            -5.24531,
+            -15.61013,
+            -16.2057
+          ]
+        },
+        {
+          "author_position": "42",
+          "entity_position": 43,
+          "reference_position": 42,
+          "residue": "LYS",
+          "xyz": [
+            -5.51711,
+            -16.27552,
+            -12.46292
+          ]
+        },
+        {
+          "author_position": "43",
+          "entity_position": 44,
+          "reference_position": 43,
+          "residue": "GLN",
+          "xyz": [
+            -8.61009,
+            -17.94838,
+            -10.98304
+          ]
+        },
+        {
+          "author_position": "44",
+          "entity_position": 45,
+          "reference_position": 44,
+          "residue": "VAL",
+          "xyz": [
+            -9.20335,
+            -16.78143,
+            -7.39351
+          ]
+        },
+        {
+          "author_position": "45",
+          "entity_position": 46,
+          "reference_position": 45,
+          "residue": "VAL",
+          "xyz": [
+            -12.07264,
+            -16.48494,
+            -4.92414
+          ]
+        },
+        {
+          "author_position": "46",
+          "entity_position": 47,
+          "reference_position": 46,
+          "residue": "ILE",
+          "xyz": [
+            -12.57348,
+            -12.86376,
+            -3.80675
+          ]
+        },
+        {
+          "author_position": "47",
+          "entity_position": 48,
+          "reference_position": 47,
+          "residue": "ASP",
+          "xyz": [
+            -15.17645,
+            -12.22156,
+            -1.0994
+          ]
+        },
+        {
+          "author_position": "48",
+          "entity_position": 49,
+          "reference_position": 48,
+          "residue": "GLY",
+          "xyz": [
+            -16.6427,
+            -15.62791,
+            -1.82079
+          ]
+        },
+        {
+          "author_position": "49",
+          "entity_position": 50,
+          "reference_position": 49,
+          "residue": "GLU",
+          "xyz": [
+            -17.0186,
+            -15.17172,
+            -5.61514
+          ]
+        },
+        {
+          "author_position": "50",
+          "entity_position": 51,
+          "reference_position": 50,
+          "residue": "THR",
+          "xyz": [
+            -14.90158,
+            -17.22592,
+            -8.00425
+          ]
+        },
+        {
+          "author_position": "51",
+          "entity_position": 52,
+          "reference_position": 51,
+          "residue": "SER",
+          "xyz": [
+            -13.18113,
+            -14.76121,
+            -10.28645
+          ]
+        },
+        {
+          "author_position": "52",
+          "entity_position": 53,
+          "reference_position": 52,
+          "residue": "LEU",
+          "xyz": [
+            -11.22774,
+            -15.24441,
+            -13.53175
+          ]
+        },
+        {
+          "author_position": "53",
+          "entity_position": 54,
+          "reference_position": 53,
+          "residue": "LEU",
+          "xyz": [
+            -8.77001,
+            -12.37287,
+            -13.6707
+          ]
+        },
+        {
+          "author_position": "54",
+          "entity_position": 55,
+          "reference_position": 54,
+          "residue": "ASP",
+          "xyz": [
+            -7.33614,
+            -11.7615,
+            -17.13382
+          ]
+        },
+        {
+          "author_position": "55",
+          "entity_position": 56,
+          "reference_position": 55,
+          "residue": "ILE",
+          "xyz": [
+            -4.40591,
+            -9.45082,
+            -16.51765
+          ]
+        },
+        {
+          "author_position": "56",
+          "entity_position": 57,
+          "reference_position": 56,
+          "residue": "LEU",
+          "xyz": [
+            -2.74832,
+            -7.47901,
+            -19.33111
+          ]
+        },
+        {
+          "author_position": "57",
+          "entity_position": 58,
+          "reference_position": 57,
+          "residue": "ASP",
+          "xyz": [
+            0.82355,
+            -6.48693,
+            -18.40177
+          ]
+        },
+        {
+          "author_position": "58",
+          "entity_position": 59,
+          "reference_position": 58,
+          "residue": "THR",
+          "xyz": [
+            1.48321,
+            -3.55022,
+            -20.74372
+          ]
+        },
+        {
+          "author_position": "59",
+          "entity_position": 60,
+          "reference_position": 59,
+          "residue": "ALA",
+          "xyz": [
+            4.89785,
+            -2.90458,
+            -22.34501
+          ]
+        },
+        {
+          "author_position": "60",
+          "entity_position": 61,
+          "reference_position": 60,
+          "residue": "GLY",
+          "xyz": [
+            6.64289,
+            -2.03377,
+            -25.58781
+          ]
+        },
+        {
+          "author_position": "61",
+          "entity_position": 62,
+          "reference_position": 61,
+          "residue": "GLN",
+          "xyz": [
+            6.85454,
+            0.95502,
+            -27.86979
+          ]
+        },
+        {
+          "author_position": "62",
+          "entity_position": 63,
+          "reference_position": 62,
+          "residue": "GLU",
+          "xyz": [
+            4.58006,
+            3.88085,
+            -27.26249
+          ]
+        },
+        {
+          "author_position": "63",
+          "entity_position": 64,
+          "reference_position": 63,
+          "residue": "GLU",
+          "xyz": [
+            2.00466,
+            3.8213,
+            -30.03741
+          ]
+        },
+        {
+          "author_position": "64",
+          "entity_position": 65,
+          "reference_position": 64,
+          "residue": "TYR",
+          "xyz": [
+            -1.67683,
+            4.71924,
+            -30.41949
+          ]
+        },
+        {
+          "author_position": "65",
+          "entity_position": 66,
+          "reference_position": 65,
+          "residue": "SER",
+          "xyz": [
+            -3.03335,
+            2.54546,
+            -33.25452
+          ]
+        },
+        {
+          "author_position": "66",
+          "entity_position": 67,
+          "reference_position": 66,
+          "residue": "ALA",
+          "xyz": [
+            -6.81427,
+            2.11178,
+            -33.58498
+          ]
+        },
+        {
+          "author_position": "67",
+          "entity_position": 68,
+          "reference_position": 67,
+          "residue": "MET",
+          "xyz": [
+            -6.40521,
+            -1.54954,
+            -32.65239
+          ]
+        },
+        {
+          "author_position": "68",
+          "entity_position": 69,
+          "reference_position": 68,
+          "residue": "ARG",
+          "xyz": [
+            -4.69255,
+            -0.43784,
+            -29.45738
+          ]
+        },
+        {
+          "author_position": "69",
+          "entity_position": 70,
+          "reference_position": 69,
+          "residue": "ASP",
+          "xyz": [
+            -7.39173,
+            2.0827,
+            -28.4899
+          ]
+        },
+        {
+          "author_position": "70",
+          "entity_position": 71,
+          "reference_position": 70,
+          "residue": "GLN",
+          "xyz": [
+            -10.05481,
+            -0.54132,
+            -29.03996
+          ]
+        },
+        {
+          "author_position": "71",
+          "entity_position": 72,
+          "reference_position": 71,
+          "residue": "TYR",
+          "xyz": [
+            -8.14472,
+            -3.19841,
+            -27.07459
+          ]
+        },
+        {
+          "author_position": "72",
+          "entity_position": 73,
+          "reference_position": 72,
+          "residue": "MET",
+          "xyz": [
+            -7.6012,
+            -0.841,
+            -24.10617
+          ]
+        },
+        {
+          "author_position": "73",
+          "entity_position": 74,
+          "reference_position": 73,
+          "residue": "ARG",
+          "xyz": [
+            -11.29053,
+            0.07425,
+            -24.22488
+          ]
+        },
+        {
+          "author_position": "74",
+          "entity_position": 75,
+          "reference_position": 74,
+          "residue": "THR",
+          "xyz": [
+            -12.14124,
+            -3.55003,
+            -23.33661
+          ]
+        },
+        {
+          "author_position": "75",
+          "entity_position": 76,
+          "reference_position": 75,
+          "residue": "GLY",
+          "xyz": [
+            -10.24467,
+            -3.23441,
+            -20.0591
+          ]
+        },
+        {
+          "author_position": "76",
+          "entity_position": 77,
+          "reference_position": 76,
+          "residue": "GLU",
+          "xyz": [
+            -12.65304,
+            -3.07893,
+            -17.13054
+          ]
+        },
+        {
+          "author_position": "77",
+          "entity_position": 78,
+          "reference_position": 77,
+          "residue": "GLY",
+          "xyz": [
+            -10.23216,
+            -1.78572,
+            -14.54135
+          ]
+        },
+        {
+          "author_position": "78",
+          "entity_position": 79,
+          "reference_position": 78,
+          "residue": "PHE",
+          "xyz": [
+            -6.70439,
+            -0.40804,
+            -14.50249
+          ]
+        },
+        {
+          "author_position": "79",
+          "entity_position": 80,
+          "reference_position": 79,
+          "residue": "LEU",
+          "xyz": [
+            -3.81367,
+            -0.38678,
+            -12.04312
+          ]
+        },
+        {
+          "author_position": "80",
+          "entity_position": 81,
+          "reference_position": 80,
+          "residue": "LEU",
+          "xyz": [
+            -1.96897,
+            2.9443,
+            -12.35419
+          ]
+        },
+        {
+          "author_position": "81",
+          "entity_position": 82,
+          "reference_position": 81,
+          "residue": "VAL",
+          "xyz": [
+            1.50767,
+            1.86181,
+            -11.24982
+          ]
+        },
+        {
+          "author_position": "82",
+          "entity_position": 83,
+          "reference_position": 82,
+          "residue": "PHE",
+          "xyz": [
+            4.3841,
+            4.14389,
+            -10.27385
+          ]
+        },
+        {
+          "author_position": "83",
+          "entity_position": 84,
+          "reference_position": 83,
+          "residue": "ALA",
+          "xyz": [
+            7.50977,
+            3.36926,
+            -8.23274
+          ]
+        },
+        {
+          "author_position": "84",
+          "entity_position": 85,
+          "reference_position": 84,
+          "residue": "ILE",
+          "xyz": [
+            8.14825,
+            5.24094,
+            -4.96519
+          ]
+        },
+        {
+          "author_position": "85",
+          "entity_position": 86,
+          "reference_position": 85,
+          "residue": "ASN",
+          "xyz": [
+            11.82197,
+            5.75796,
+            -5.91754
+          ]
+        },
+        {
+          "author_position": "86",
+          "entity_position": 87,
+          "reference_position": 86,
+          "residue": "ASN",
+          "xyz": [
+            11.08226,
+            7.31868,
+            -9.32013
+          ]
+        },
+        {
+          "author_position": "87",
+          "entity_position": 88,
+          "reference_position": 87,
+          "residue": "THR",
+          "xyz": [
+            9.41656,
+            10.74258,
+            -9.40316
+          ]
+        },
+        {
+          "author_position": "88",
+          "entity_position": 89,
+          "reference_position": 88,
+          "residue": "LYS",
+          "xyz": [
+            9.05385,
+            10.75565,
+            -13.21035
+          ]
+        },
+        {
+          "author_position": "89",
+          "entity_position": 90,
+          "reference_position": 89,
+          "residue": "SER",
+          "xyz": [
+            6.96776,
+            7.56855,
+            -13.00105
+          ]
+        },
+        {
+          "author_position": "90",
+          "entity_position": 91,
+          "reference_position": 90,
+          "residue": "PHE",
+          "xyz": [
+            4.63412,
+            9.31913,
+            -10.53006
+          ]
+        },
+        {
+          "author_position": "91",
+          "entity_position": 92,
+          "reference_position": 91,
+          "residue": "GLU",
+          "xyz": [
+            4.45716,
+            12.4332,
+            -12.72022
+          ]
+        },
+        {
+          "author_position": "92",
+          "entity_position": 93,
+          "reference_position": 92,
+          "residue": "ASP",
+          "xyz": [
+            3.47469,
+            10.20526,
+            -15.6909
+          ]
+        },
+        {
+          "author_position": "93",
+          "entity_position": 94,
+          "reference_position": 93,
+          "residue": "ILE",
+          "xyz": [
+            0.35566,
+            8.85867,
+            -13.88679
+          ]
+        },
+        {
+          "author_position": "94",
+          "entity_position": 95,
+          "reference_position": 94,
+          "residue": "HIS",
+          "xyz": [
+            -1.79472,
+            11.73413,
+            -15.20491
+          ]
+        },
+        {
+          "author_position": "95",
+          "entity_position": 96,
+          "reference_position": 95,
+          "residue": "HIS",
+          "xyz": [
+            -1.01171,
+            10.6837,
+            -18.79869
+          ]
+        },
+        {
+          "author_position": "96",
+          "entity_position": 97,
+          "reference_position": 96,
+          "residue": "TYR",
+          "xyz": [
+            -2.05898,
+            7.055,
+            -18.21686
+          ]
+        },
+        {
+          "author_position": "97",
+          "entity_position": 98,
+          "reference_position": 97,
+          "residue": "ARG",
+          "xyz": [
+            -5.2533,
+            8.07201,
+            -16.4434
+          ]
+        },
+        {
+          "author_position": "98",
+          "entity_position": 99,
+          "reference_position": 98,
+          "residue": "GLU",
+          "xyz": [
+            -6.15691,
+            10.4369,
+            -19.29128
+          ]
+        },
+        {
+          "author_position": "99",
+          "entity_position": 100,
+          "reference_position": 99,
+          "residue": "GLN",
+          "xyz": [
+            -5.5348,
+            7.79872,
+            -21.95014
+          ]
+        },
+        {
+          "author_position": "100",
+          "entity_position": 101,
+          "reference_position": 100,
+          "residue": "ILE",
+          "xyz": [
+            -7.87862,
+            5.43802,
+            -20.09579
+          ]
+        },
+        {
+          "author_position": "101",
+          "entity_position": 102,
+          "reference_position": 101,
+          "residue": "LYS",
+          "xyz": [
+            -10.54691,
+            8.14649,
+            -19.86101
+          ]
+        },
+        {
+          "author_position": "102",
+          "entity_position": 103,
+          "reference_position": 102,
+          "residue": "ARG",
+          "xyz": [
+            -10.02312,
+            8.9812,
+            -23.54428
+          ]
+        },
+        {
+          "author_position": "103",
+          "entity_position": 104,
+          "reference_position": 103,
+          "residue": "VAL",
+          "xyz": [
+            -10.61246,
+            5.44336,
+            -24.84791
+          ]
+        },
+        {
+          "author_position": "104",
+          "entity_position": 105,
+          "reference_position": 104,
+          "residue": "LYS",
+          "xyz": [
+            -13.37542,
+            4.53713,
+            -22.41213
+          ]
+        },
+        {
+          "author_position": "105",
+          "entity_position": 106,
+          "reference_position": 105,
+          "residue": "ASP",
+          "xyz": [
+            -15.193,
+            7.82169,
+            -23.07141
+          ]
+        },
+        {
+          "author_position": "106",
+          "entity_position": 107,
+          "reference_position": 106,
+          "residue": "SER",
+          "xyz": [
+            -15.95646,
+            8.01999,
+            -19.37395
+          ]
+        },
+        {
+          "author_position": "107",
+          "entity_position": 108,
+          "reference_position": 107,
+          "residue": "GLU",
+          "xyz": [
+            -14.93588,
+            10.04797,
+            -16.32905
+          ]
+        },
+        {
+          "author_position": "108",
+          "entity_position": 109,
+          "reference_position": 108,
+          "residue": "ASP",
+          "xyz": [
+            -15.71377,
+            7.01481,
+            -14.1287
+          ]
+        },
+        {
+          "author_position": "109",
+          "entity_position": 110,
+          "reference_position": 109,
+          "residue": "VAL",
+          "xyz": [
+            -13.48434,
+            4.03943,
+            -14.92411
+          ]
+        },
+        {
+          "author_position": "110",
+          "entity_position": 111,
+          "reference_position": 110,
+          "residue": "PRO",
+          "xyz": [
+            -12.3898,
+            1.61077,
+            -12.16134
+          ]
+        },
+        {
+          "author_position": "111",
+          "entity_position": 112,
+          "reference_position": 111,
+          "residue": "MET",
+          "xyz": [
+            -8.76552,
+            2.363,
+            -11.28526
+          ]
+        },
+        {
+          "author_position": "112",
+          "entity_position": 113,
+          "reference_position": 112,
+          "residue": "VAL",
+          "xyz": [
+            -6.38415,
+            1.88774,
+            -8.35293
+          ]
+        },
+        {
+          "author_position": "113",
+          "entity_position": 114,
+          "reference_position": 113,
+          "residue": "LEU",
+          "xyz": [
+            -3.22547,
+            3.93151,
+            -7.7967
+          ]
+        },
+        {
+          "author_position": "114",
+          "entity_position": 115,
+          "reference_position": 114,
+          "residue": "VAL",
+          "xyz": [
+            -0.29863,
+            1.58614,
+            -6.93585
+          ]
+        },
+        {
+          "author_position": "115",
+          "entity_position": 116,
+          "reference_position": 115,
+          "residue": "GLY",
+          "xyz": [
+            2.95723,
+            2.81929,
+            -5.36336
+          ]
+        },
+        {
+          "author_position": "116",
+          "entity_position": 117,
+          "reference_position": 116,
+          "residue": "ASN",
+          "xyz": [
+            5.33154,
+            -0.05311,
+            -5.97681
+          ]
+        },
+        {
+          "author_position": "117",
+          "entity_position": 118,
+          "reference_position": 117,
+          "residue": "LYS",
+          "xyz": [
+            8.90037,
+            -0.77792,
+            -4.69308
+          ]
+        },
+        {
+          "author_position": "118",
+          "entity_position": 119,
+          "reference_position": 118,
+          "residue": "SER",
+          "xyz": [
+            7.82086,
+            0.14081,
+            -1.16238
+          ]
+        },
+        {
+          "author_position": "119",
+          "entity_position": 120,
+          "reference_position": 119,
+          "residue": "ASP",
+          "xyz": [
+            10.60527,
+            -2.13289,
+            0.16867
+          ]
+        },
+        {
+          "author_position": "120",
+          "entity_position": 121,
+          "reference_position": 120,
+          "residue": "LEU",
+          "xyz": [
+            13.27173,
+            0.28555,
+            -1.08156
+          ]
+        },
+        {
+          "author_position": "121",
+          "entity_position": 122,
+          "reference_position": 121,
+          "residue": "PRO",
+          "xyz": [
+            14.75621,
+            3.03591,
+            1.11124
+          ]
+        },
+        {
+          "author_position": "122",
+          "entity_position": 123,
+          "reference_position": 122,
+          "residue": "SER",
+          "xyz": [
+            15.43136,
+            5.49236,
+            -1.69813
+          ]
+        },
+        {
+          "author_position": "123",
+          "entity_position": 124,
+          "reference_position": 123,
+          "residue": "ARG",
+          "xyz": [
+            11.95258,
+            7.09245,
+            -1.61068
+          ]
+        },
+        {
+          "author_position": "124",
+          "entity_position": 125,
+          "reference_position": 124,
+          "residue": "THR",
+          "xyz": [
+            11.36065,
+            10.23893,
+            -3.68274
+          ]
+        },
+        {
+          "author_position": "125",
+          "entity_position": 126,
+          "reference_position": 125,
+          "residue": "VAL",
+          "xyz": [
+            7.54493,
+            10.16929,
+            -3.8195
+          ]
+        },
+        {
+          "author_position": "126",
+          "entity_position": 127,
+          "reference_position": 126,
+          "residue": "ASP",
+          "xyz": [
+            5.89782,
+            10.76405,
+            -0.44983
+          ]
+        },
+        {
+          "author_position": "127",
+          "entity_position": 128,
+          "reference_position": 127,
+          "residue": "THR",
+          "xyz": [
+            2.94873,
+            8.64701,
+            0.622
+          ]
+        },
+        {
+          "author_position": "128",
+          "entity_position": 129,
+          "reference_position": 128,
+          "residue": "LYS",
+          "xyz": [
+            1.02429,
+            11.90872,
+            1.15383
+          ]
+        },
+        {
+          "author_position": "129",
+          "entity_position": 130,
+          "reference_position": 129,
+          "residue": "GLN",
+          "xyz": [
+            1.61528,
+            12.97486,
+            -2.4604
+          ]
+        },
+        {
+          "author_position": "130",
+          "entity_position": 131,
+          "reference_position": 130,
+          "residue": "ALA",
+          "xyz": [
+            0.14776,
+            9.71739,
+            -3.69039
+          ]
+        },
+        {
+          "author_position": "131",
+          "entity_position": 132,
+          "reference_position": 131,
+          "residue": "GLN",
+          "xyz": [
+            -2.77511,
+            9.86542,
+            -1.25393
+          ]
+        },
+        {
+          "author_position": "132",
+          "entity_position": 133,
+          "reference_position": 132,
+          "residue": "ASP",
+          "xyz": [
+            -3.58041,
+            13.40451,
+            -2.38891
+          ]
+        },
+        {
+          "author_position": "133",
+          "entity_position": 134,
+          "reference_position": 133,
+          "residue": "LEU",
+          "xyz": [
+            -3.46945,
+            12.34985,
+            -6.03868
+          ]
+        },
+        {
+          "author_position": "134",
+          "entity_position": 135,
+          "reference_position": 134,
+          "residue": "ALA",
+          "xyz": [
+            -5.67515,
+            9.29032,
+            -5.48856
+          ]
+        },
+        {
+          "author_position": "135",
+          "entity_position": 136,
+          "reference_position": 135,
+          "residue": "ARG",
+          "xyz": [
+            -8.11239,
+            11.42673,
+            -3.46018
+          ]
+        },
+        {
+          "author_position": "136",
+          "entity_position": 137,
+          "reference_position": 136,
+          "residue": "SER",
+          "xyz": [
+            -8.29634,
+            13.93729,
+            -6.3162
+          ]
+        },
+        {
+          "author_position": "137",
+          "entity_position": 138,
+          "reference_position": 137,
+          "residue": "TYR",
+          "xyz": [
+            -9.10694,
+            11.06066,
+            -8.72007
+          ]
+        },
+        {
+          "author_position": "138",
+          "entity_position": 139,
+          "reference_position": 138,
+          "residue": "GLY",
+          "xyz": [
+            -11.63702,
+            9.46816,
+            -6.35419
+          ]
+        },
+        {
+          "author_position": "139",
+          "entity_position": 140,
+          "reference_position": 139,
+          "residue": "ILE",
+          "xyz": [
+            -9.74122,
+            6.11292,
+            -6.36783
+          ]
+        },
+        {
+          "author_position": "140",
+          "entity_position": 141,
+          "reference_position": 140,
+          "residue": "PRO",
+          "xyz": [
+            -7.93968,
+            3.89954,
+            -3.83024
+          ]
+        },
+        {
+          "author_position": "141",
+          "entity_position": 142,
+          "reference_position": 141,
+          "residue": "PHE",
+          "xyz": [
+            -4.16923,
+            4.08124,
+            -3.24282
+          ]
+        },
+        {
+          "author_position": "142",
+          "entity_position": 143,
+          "reference_position": 142,
+          "residue": "ILE",
+          "xyz": [
+            -2.27378,
+            0.85059,
+            -2.35525
+          ]
+        },
+        {
+          "author_position": "143",
+          "entity_position": 144,
+          "reference_position": 143,
+          "residue": "GLU",
+          "xyz": [
+            1.40428,
+            0.58164,
+            -1.4658
+          ]
+        },
+        {
+          "author_position": "144",
+          "entity_position": 145,
+          "reference_position": 144,
+          "residue": "THR",
+          "xyz": [
+            3.02468,
+            -2.55193,
+            -2.86281
+          ]
+        },
+        {
+          "author_position": "145",
+          "entity_position": 146,
+          "reference_position": 145,
+          "residue": "SER",
+          "xyz": [
+            6.27999,
+            -4.39074,
+            -3.14281
+          ]
+        },
+        {
+          "author_position": "146",
+          "entity_position": 147,
+          "reference_position": 146,
+          "residue": "ALA",
+          "xyz": [
+            6.50908,
+            -7.00246,
+            -5.88213
+          ]
+        },
+        {
+          "author_position": "147",
+          "entity_position": 148,
+          "reference_position": 147,
+          "residue": "LYS",
+          "xyz": [
+            9.74698,
+            -8.11078,
+            -4.20366
+          ]
+        },
+        {
+          "author_position": "148",
+          "entity_position": 149,
+          "reference_position": 148,
+          "residue": "THR",
+          "xyz": [
+            8.14841,
+            -9.1075,
+            -0.87395
+          ]
+        },
+        {
+          "author_position": "149",
+          "entity_position": 150,
+          "reference_position": 149,
+          "residue": "ARG",
+          "xyz": [
+            4.55474,
+            -9.4516,
+            -2.10784
+          ]
+        },
+        {
+          "author_position": "150",
+          "entity_position": 151,
+          "reference_position": 150,
+          "residue": "GLN",
+          "xyz": [
+            3.40295,
+            -6.68852,
+            0.28282
+          ]
+        },
+        {
+          "author_position": "151",
+          "entity_position": 152,
+          "reference_position": 151,
+          "residue": "GLY",
+          "xyz": [
+            0.07213,
+            -5.29851,
+            -0.94325
+          ]
+        },
+        {
+          "author_position": "152",
+          "entity_position": 153,
+          "reference_position": 152,
+          "residue": "VAL",
+          "xyz": [
+            -0.09275,
+            -7.29985,
+            -4.18076
+          ]
+        },
+        {
+          "author_position": "153",
+          "entity_position": 154,
+          "reference_position": 153,
+          "residue": "ASP",
+          "xyz": [
+            -3.34681,
+            -9.16766,
+            -3.50076
+          ]
+        },
+        {
+          "author_position": "154",
+          "entity_position": 155,
+          "reference_position": 154,
+          "residue": "ASP",
+          "xyz": [
+            -4.81061,
+            -6.01846,
+            -2.00473
+          ]
+        },
+        {
+          "author_position": "155",
+          "entity_position": 156,
+          "reference_position": 155,
+          "residue": "ALA",
+          "xyz": [
+            -4.08345,
+            -3.99134,
+            -5.16628
+          ]
+        },
+        {
+          "author_position": "156",
+          "entity_position": 157,
+          "reference_position": 156,
+          "residue": "PHE",
+          "xyz": [
+            -5.70176,
+            -6.52765,
+            -7.55215
+          ]
+        },
+        {
+          "author_position": "157",
+          "entity_position": 158,
+          "reference_position": 157,
+          "residue": "TYR",
+          "xyz": [
+            -8.61875,
+            -7.44957,
+            -5.25859
+          ]
+        },
+        {
+          "author_position": "158",
+          "entity_position": 159,
+          "reference_position": 158,
+          "residue": "THR",
+          "xyz": [
+            -9.32391,
+            -3.77952,
+            -4.53729
+          ]
+        },
+        {
+          "author_position": "159",
+          "entity_position": 160,
+          "reference_position": 159,
+          "residue": "LEU",
+          "xyz": [
+            -9.51044,
+            -3.20141,
+            -8.28883
+          ]
+        },
+        {
+          "author_position": "160",
+          "entity_position": 161,
+          "reference_position": 160,
+          "residue": "VAL",
+          "xyz": [
+            -12.04024,
+            -6.07886,
+            -8.59751
+          ]
+        },
+        {
+          "author_position": "161",
+          "entity_position": 162,
+          "reference_position": 161,
+          "residue": "ARG",
+          "xyz": [
+            -14.1117,
+            -4.48164,
+            -5.79792
+          ]
+        },
+        {
+          "author_position": "162",
+          "entity_position": 163,
+          "reference_position": 162,
+          "residue": "GLU",
+          "xyz": [
+            -13.98353,
+            -1.16055,
+            -7.66361
+          ]
+        },
+        {
+          "author_position": "163",
+          "entity_position": 164,
+          "reference_position": 163,
+          "residue": "ILE",
+          "xyz": [
+            -15.30052,
+            -2.88372,
+            -10.81897
+          ]
+        },
+        {
+          "author_position": "164",
+          "entity_position": 165,
+          "reference_position": 164,
+          "residue": "ARG",
+          "xyz": [
+            -18.17159,
+            -4.45817,
+            -8.85116
+          ]
+        },
+        {
+          "author_position": "165",
+          "entity_position": 166,
+          "reference_position": 165,
+          "residue": "LYS",
+          "xyz": [
+            -19.1154,
+            -1.09877,
+            -7.39059
+          ]
+        },
+        {
+          "author_position": "166",
+          "entity_position": 167,
+          "reference_position": 166,
+          "residue": "HIS",
+          "xyz": [
+            -19.00343,
+            0.42571,
+            -10.87983
+          ]
+        },
+        {
+          "author_position": "167",
+          "entity_position": 168,
+          "reference_position": 167,
+          "residue": "LYS",
+          "xyz": [
+            -21.38935,
+            -2.20275,
+            -12.23238
+          ]
+        },
+        {
+          "author_position": "168",
+          "entity_position": 169,
+          "reference_position": 168,
+          "residue": "GLU",
+          "xyz": [
+            -23.97723,
+            -1.26911,
+            -9.60651
+          ]
+        },
+        {
+          "author_position": "169",
+          "entity_position": 170,
+          "reference_position": 169,
+          "residue": "LYS",
+          "xyz": [
+            -23.87962,
+            2.52522,
+            -10.13446
+          ]
+        }
+      ],
+      "pdb_id": "7RPZ",
+      "selected_ligand_heavy_atoms": [
+        {
+          "atom_id": "C22",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -5.05281,
+            3.45497,
+            -22.06841
+          ]
+        },
+        {
+          "atom_id": "C21",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -5.31244,
+            3.64291,
+            -23.40491
+          ]
+        },
+        {
+          "atom_id": "C23",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -3.81296,
+            3.22427,
+            -21.71756
+          ]
+        },
+        {
+          "atom_id": "C20",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -2.90665,
+            3.37434,
+            -23.87601
+          ]
+        },
+        {
+          "atom_id": "C24",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -2.75322,
+            3.12845,
+            -22.45473
+          ]
+        },
+        {
+          "atom_id": "C19",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -4.25549,
+            3.61281,
+            -24.40702
+          ]
+        },
+        {
+          "atom_id": "C17",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -3.48295,
+            3.65573,
+            -26.59921
+          ]
+        },
+        {
+          "atom_id": "C14",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            6.21603,
+            3.08651,
+            -21.25813
+          ]
+        },
+        {
+          "atom_id": "C13",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            6.0947,
+            3.23548,
+            -23.80805
+          ]
+        },
+        {
+          "atom_id": "C18",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -4.49819,
+            3.73953,
+            -25.74361
+          ]
+        },
+        {
+          "atom_id": "C01",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            2.30062,
+            3.71236,
+            -23.85368
+          ]
+        },
+        {
+          "atom_id": "C02",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            1.4569,
+            4.80393,
+            -23.5583
+          ]
+        },
+        {
+          "atom_id": "C03",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            3.22696,
+            6.03115,
+            -22.85959
+          ]
+        },
+        {
+          "atom_id": "C04",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            3.69461,
+            3.92776,
+            -23.52906
+          ]
+        },
+        {
+          "atom_id": "C05",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            1.78096,
+            2.58688,
+            -24.52336
+          ]
+        },
+        {
+          "atom_id": "C06",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -0.36166,
+            3.36031,
+            -24.4274
+          ]
+        },
+        {
+          "atom_id": "C07",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            0.13747,
+            4.58836,
+            -23.81968
+          ]
+        },
+        {
+          "atom_id": "C08",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -1.81169,
+            3.34042,
+            -24.79258
+          ]
+        },
+        {
+          "atom_id": "C09",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            5.09596,
+            7.32996,
+            -22.11417
+          ]
+        },
+        {
+          "atom_id": "C10",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            4.34467,
+            1.44108,
+            -23.23964
+          ]
+        },
+        {
+          "atom_id": "C11",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            5.27569,
+            1.0992,
+            -22.08705
+          ]
+        },
+        {
+          "atom_id": "C12",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            6.84435,
+            2.67059,
+            -22.60612
+          ]
+        },
+        {
+          "atom_id": "C15",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            5.23033,
+            2.09558,
+            -20.9173
+          ]
+        },
+        {
+          "atom_id": "C16",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -2.12888,
+            3.49778,
+            -26.22329
+          ]
+        },
+        {
+          "atom_id": "C25",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            5.38089,
+            8.87926,
+            -21.98577
+          ]
+        },
+        {
+          "atom_id": "C26",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            4.41284,
+            9.51835,
+            -20.93295
+          ]
+        },
+        {
+          "atom_id": "C27",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            3.9684,
+            10.8147,
+            -21.60056
+          ]
+        },
+        {
+          "atom_id": "C28",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            3.89835,
+            10.47543,
+            -23.07364
+          ]
+        },
+        {
+          "atom_id": "C29",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            6.32013,
+            10.28143,
+            -23.71143
+          ]
+        },
+        {
+          "atom_id": "C30",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            7.41706,
+            9.43378,
+            -23.09785
+          ]
+        },
+        {
+          "atom_id": "C31",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            6.87315,
+            9.09326,
+            -21.65803
+          ]
+        },
+        {
+          "atom_id": "C32",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -1.40564,
+            2.73766,
+            -21.84702
+          ]
+        },
+        {
+          "atom_id": "C33",
+          "element": "C",
+          "occupancy": 1.0,
+          "xyz": [
+            -0.37316,
+            2.40806,
+            -21.33378
+          ]
+        },
+        {
+          "atom_id": "F01",
+          "element": "F",
+          "occupancy": 1.0,
+          "xyz": [
+            -0.72679,
+            5.61565,
+            -23.47866
+          ]
+        },
+        {
+          "atom_id": "F02",
+          "element": "F",
+          "occupancy": 1.0,
+          "xyz": [
+            4.93597,
+            11.78114,
+            -21.35119
+          ]
+        },
+        {
+          "atom_id": "F23",
+          "element": "F",
+          "occupancy": 1.0,
+          "xyz": [
+            -3.60907,
+            2.98055,
+            -20.33464
+          ]
+        },
+        {
+          "atom_id": "N01",
+          "element": "N",
+          "occupancy": 1.0,
+          "xyz": [
+            1.90849,
+            5.9696,
+            -23.01862
+          ]
+        },
+        {
+          "atom_id": "N02",
+          "element": "N",
+          "occupancy": 1.0,
+          "xyz": [
+            4.14321,
+            5.08634,
+            -23.07598
+          ]
+        },
+        {
+          "atom_id": "N03",
+          "element": "N",
+          "occupancy": 1.0,
+          "xyz": [
+            0.47945,
+            2.47359,
+            -24.8389
+          ]
+        },
+        {
+          "atom_id": "N04",
+          "element": "N",
+          "occupancy": 1.0,
+          "xyz": [
+            4.63439,
+            2.89768,
+            -23.70204
+          ]
+        },
+        {
+          "atom_id": "N05",
+          "element": "N",
+          "occupancy": 1.0,
+          "xyz": [
+            6.6853,
+            1.19367,
+            -22.55761
+          ]
+        },
+        {
+          "atom_id": "N06",
+          "element": "N",
+          "occupancy": 1.0,
+          "xyz": [
+            5.07898,
+            9.59333,
+            -23.28727
+          ]
+        },
+        {
+          "atom_id": "O01",
+          "element": "O",
+          "occupancy": 1.0,
+          "xyz": [
+            3.70166,
+            7.23791,
+            -22.433
+          ]
+        },
+        {
+          "atom_id": "O02",
+          "element": "O",
+          "occupancy": 1.0,
+          "xyz": [
+            -3.64455,
+            3.67197,
+            -27.99017
+          ]
+        }
+      ],
+      "source": "data/raw/rcsb-7RPZ.cif",
+      "units": "angstrom"
+    }
+  ]
+}

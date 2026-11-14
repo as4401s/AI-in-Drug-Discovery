@@ -1,0 +1,328 @@
+{
+  "artifact_id": "wb.add.episode03.target-compound-manifest.v1",
+  "bioactivity_records": [],
+  "bioactivity_status": "not acquired or curated in this episode; dose-response and compatible assay data are the planned episode 4 handoff",
+  "chembl_service_status": {
+    "activities": 24527044,
+    "chembl_db_version": "ChEMBL_37",
+    "chembl_release_date": "2026-05-01",
+    "compound_records": 3824604,
+    "disinct_compounds": 2921148,
+    "publications": 101100,
+    "status": "UP",
+    "targets": 18552
+  },
+  "producer_episode": 3,
+  "reference_compounds": [
+    {
+      "artifact_id": "wb.add.compound.AQ4.v1",
+      "chembl_canonical_smiles": "C#Cc1cccc(Nc2ncnc3cc(OCCOC)c(OCCOC)cc23)c1",
+      "chembl_id_exact_component_match": "CHEMBL553",
+      "chembl_preferred_name": "ERLOTINIB",
+      "identity_check": "exact complete standard InChIKey equality as supplied by both databases; no local chemical standardization or stereochemistry inference",
+      "pdb_component_id": "AQ4",
+      "pdb_stereo_smiles": "COCCOc1cc2c(cc1OCCOC)ncnc2Nc3cccc(c3)C#C",
+      "role": "reference record and bound component; not a newly discovered candidate or treatment recommendation",
+      "standard_inchi_key": "AAKJLRGGTJKAMG-UHFFFAOYSA-N",
+      "teaching_name": "erlotinib"
+    },
+    {
+      "artifact_id": "wb.add.compound.6IC.v1",
+      "chembl_canonical_smiles": "C#Cc1c(F)ccc2cc(O)cc(-c3ncc4c(N5C[C@H]6CC[C@@H](C5)N6)nc(OC[C@@]56CCCN5C[C@H](F)C6)nc4c3F)c12",
+      "chembl_id_exact_component_match": "CHEMBL5081048",
+      "chembl_preferred_name": null,
+      "identity_check": "exact complete standard InChIKey equality as supplied by both databases; no local chemical standardization or stereochemistry inference",
+      "name_search_caution": {
+        "explanation": "the name-matched record and exact PDB-component record differ in specified stereochemistry; retain both identities rather than silently joining them",
+        "matches_complete_pdb_inchikey": false,
+        "number_of_search_results": 8,
+        "preferred_name_record_id": "CHEMBL4858364",
+        "preferred_name_record_inchikey": "SCLLZBIBSFTLIN-IFMUVJFISA-N"
+      },
+      "pdb_component_id": "6IC",
+      "pdb_stereo_smiles": "C#Cc1c(ccc2c1c(cc(c2)O)c3c(c4c(cn3)c(nc(n4)OC[C@@]56CCCN5C[C@@H](C6)F)N7C[C@H]8CC[C@@H](C7)N8)F)F",
+      "role": "reference record and bound component; not a newly discovered candidate or treatment recommendation",
+      "standard_inchi_key": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+      "teaching_name": "MRTX1133 (7RPZ chemical component)"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "scope": "verified record inspection and explicit identity checks; no training, molecular prediction, new assay or potency result",
+  "source_rights": {
+    "ChEMBL": "CC BY-SA 3.0; credit ChEMBL/EMBL-EBI and retain attribution/share-alike terms",
+    "UniProt": "CC BY 4.0; credit UniProt Consortium",
+    "wwPDB/RCSB": "PDB archive data CC0; cite entries and original structure papers"
+  },
+  "source_snapshots": [
+    {
+      "bytes": 385210,
+      "file": "uniprot-P00533.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/uniprot-P00533.json",
+      "retrieved_at_utc": "2026-11-13T22:32:52.000114+00:00",
+      "sha256": "c7d320b0eed723b77b2fe2e023a5ee4bf0265f8c9deeb03a249703ffbea443dc",
+      "url": "https://rest.uniprot.org/uniprotkb/P00533.json"
+    },
+    {
+      "bytes": 232323,
+      "file": "uniprot-P01116.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/uniprot-P01116.json",
+      "retrieved_at_utc": "2026-11-13T22:32:52.422895+00:00",
+      "sha256": "f5859c0632f543b103a6a5c64f86f78cdc88950bdcd010d0a11ecd215bf5929a",
+      "url": "https://rest.uniprot.org/uniprotkb/P01116.json"
+    },
+    {
+      "bytes": 274,
+      "file": "uniprot-P01116-2.fasta",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/uniprot-P01116-2.fasta",
+      "retrieved_at_utc": "2026-11-13T22:32:52.667566+00:00",
+      "sha256": "8bcf1d107ea750b5ddc8a0f80b60227d16a3e559a6744798aea46b65fc97663b",
+      "url": "https://rest.uniprot.org/uniprotkb/P01116-2.fasta"
+    },
+    {
+      "bytes": 39338,
+      "file": "rcsb-1M17-entry.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/rcsb-1M17-entry.json",
+      "retrieved_at_utc": "2026-11-13T22:32:53.210599+00:00",
+      "sha256": "fd0c60f0e838d264d1049b6a0a751ddfc71b48eb87215fd35d57cdaaf8d92e12",
+      "url": "https://data.rcsb.org/rest/v1/core/entry/1M17"
+    },
+    {
+      "bytes": 191383,
+      "file": "rcsb-1M17-polymer.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/rcsb-1M17-polymer.json",
+      "retrieved_at_utc": "2026-11-13T22:32:54.037311+00:00",
+      "sha256": "281a294a58f8213cce58a92654155e8e22eba8622b197eb08b01e2cf32afeb65",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/1M17/1"
+    },
+    {
+      "bytes": 12142,
+      "file": "rcsb-7RPZ-entry.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/rcsb-7RPZ-entry.json",
+      "retrieved_at_utc": "2026-11-13T22:32:54.426918+00:00",
+      "sha256": "a040901ea54bcfeafa1d10438e81cb6f2e1f635a100465ccb4717dbe99c8382a",
+      "url": "https://data.rcsb.org/rest/v1/core/entry/7RPZ"
+    },
+    {
+      "bytes": 46494,
+      "file": "rcsb-7RPZ-polymer.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/rcsb-7RPZ-polymer.json",
+      "retrieved_at_utc": "2026-11-13T22:32:55.074745+00:00",
+      "sha256": "7590acbe23297bdbf04fac9c367beb911619e80e4eefa58cac359ee2a92e1d4a",
+      "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/7RPZ/1"
+    },
+    {
+      "bytes": 10402,
+      "file": "rcsb-AQ4-chemcomp.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/rcsb-AQ4-chemcomp.json",
+      "retrieved_at_utc": "2026-11-13T22:32:55.471136+00:00",
+      "sha256": "5bcfc4bdb92580edb927e131314355abd6b294fd29042c07b671150294aab7b3",
+      "url": "https://data.rcsb.org/rest/v1/core/chemcomp/AQ4"
+    },
+    {
+      "bytes": 5008,
+      "file": "rcsb-6IC-chemcomp.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/rcsb-6IC-chemcomp.json",
+      "retrieved_at_utc": "2026-11-13T22:32:55.834264+00:00",
+      "sha256": "e4ae24235bce3dc687eee04c59bc573fafdb0aaccda58cb34b131e6f0e52b65c",
+      "url": "https://data.rcsb.org/rest/v1/core/chemcomp/6IC"
+    },
+    {
+      "bytes": 307709,
+      "file": "rcsb-1M17.cif",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/rcsb-1M17.cif",
+      "retrieved_at_utc": "2026-11-13T22:32:56.590999+00:00",
+      "sha256": "849bd2548dffb7ddcb7229a05202c1e2e41019a1fd69ec39483654cf984fc4d0",
+      "url": "https://files.rcsb.org/download/1M17.cif"
+    },
+    {
+      "bytes": 451341,
+      "file": "rcsb-7RPZ.cif",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/rcsb-7RPZ.cif",
+      "retrieved_at_utc": "2026-11-13T22:32:56.764688+00:00",
+      "sha256": "102fe7dbc630e37624597ee3c204446b839c26079c7014da885114312af576ee",
+      "url": "https://files.rcsb.org/download/7RPZ.cif"
+    },
+    {
+      "bytes": 5082,
+      "file": "chembl-CHEMBL553.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/chembl-CHEMBL553.json",
+      "retrieved_at_utc": "2026-11-13T22:32:57.147125+00:00",
+      "sha256": "6518a75e34d67519e8183a6b0230ffa4a793de416dff8de0e659d93610d50488",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/molecule/CHEMBL553.json"
+    },
+    {
+      "bytes": 47042,
+      "file": "chembl-mrtx1133-search.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/chembl-mrtx1133-search.json",
+      "retrieved_at_utc": "2026-11-13T22:32:57.416924+00:00",
+      "sha256": "21f8c451dcaec94b42e40123eb3a3c799fa454815315606672168ea6ebd26d46",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/molecule/search.json?q=MRTX1133"
+    },
+    {
+      "bytes": 67886,
+      "file": "chembl-CHEMBL203-target.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/chembl-CHEMBL203-target.json",
+      "retrieved_at_utc": "2026-11-13T22:32:57.812285+00:00",
+      "sha256": "0ba4114f45f53710f7c617e6ffb2f2bc2e311fb87e436bd68842704a5b85553a",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/target/CHEMBL203.json"
+    },
+    {
+      "bytes": 808529,
+      "file": "chembl-kras-target-search.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/chembl-kras-target-search.json",
+      "retrieved_at_utc": "2026-11-13T22:32:58.352086+00:00",
+      "sha256": "add6ce7597b721f9fe53d2045f5ea3b288cec7df8b04ad868f4b0858a5c09c88",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/target.json?target_components__accession=P01116&limit=100"
+    },
+    {
+      "bytes": 212,
+      "file": "chembl-status.json",
+      "method": "public HTTPS via curl; TLS verification enabled",
+      "path": "data/raw/chembl-status.json",
+      "retrieved_at_utc": "2026-11-13T22:38:31.359366+00:00",
+      "sha256": "29dc1fb09487a8d2962253a4d0d92c4ded0aa0d831effab42445d0c3483d4740",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/status.json"
+    }
+  ],
+  "targets": [
+    {
+      "artifact_id": "wb.add.target.egfr.P00533-1.reference.v1",
+      "chembl_target_id": "CHEMBL203",
+      "chembl_target_scope": "gene/protein-level record; assay variant still needs checking",
+      "gene": "EGFR",
+      "reference_sequence": {
+        "entry_version": 302,
+        "isoform_id": "P00533-1",
+        "isoform_name": "1 / p170",
+        "length": 1210,
+        "organism": "Homo sapiens",
+        "parent_canonical_sequence_version": 2,
+        "sequence": "MRPSGTAGAALLALLAALCPASRALEEKKVCQGTSNKLTQLGTFEDHFLSLQRMFNNCEVVLGNLEITYVQRNYDLSFLKTIQEVAGYVLIALNTVERIPLENLQIIRGNMYYENSYALAVLSNYDANKTGLKELPMRNLQEILHGAVRFSNNPALCNVESIQWRDIVSSDFLSNMSMDFQNHLGSCQKCDPSCPNGSCWGAGEENCQKLTKIICAQQCSGRCRGKSPSDCCHNQCAAGCTGPRESDCLVCRKFRDEATCKDTCPPLMLYNPTTYQMDVNPEGKYSFGATCVKKCPRNYVVTDHGSCVRACGADSYEMEEDGVRKCKKCEGPCRKVCNGIGIGEFKDSLSINATNIKHFKNCTSISGDLHILPVAFRGDSFTHTPPLDPQELDILKTVKEITGFLLIQAWPENRTDLHAFENLEIIRGRTKQHGQFSLAVVSLNITSLGLRSLKEISDGDVIISGNKNLCYANTINWKKLFGTSGQKTKIISNRGENSCKATGQVCHALCSPEGCWGPEPRDCVSCRNVSRGRECVDKCNLLEGEPREFVENSECIQCHPECLPQAMNITCTGRGPDNCIQCAHYIDGPHCVKTCPAGVMGENNTLVWKYADAGHVCHLCHPNCTYGCTGPGLEGCPTNGPKIPSIATGMVGALLLLLVVALGIGLFMRRRHIVRKRTLRRLLQERELVEPLTPSGEAPNQALLRILKETEFKKIKVLGSGAFGTVYKGLWIPEGEKVKIPVAIKELREATSPKANKEILDEAYVMASVDNPHVCRLLGICLTSTVQLITQLMPFGCLLDYVREHKDNIGSQYLLNWCVQIAKGMNYLEDRRLVHRDLAARNVLVKTPQHVKITDFGLAKLLGAEEKEYHAEGGKVPIKWMALESILHRIYTHQSDVWSYGVTVWELMTFGSKPYDGIPASEISSILEKGERLPQPPICTIDVYMIMVKCWMIDADSRPKFRELIIEFSKMARDPQRYLVIQGDERMHLPSPTDSNFYRALMDEEDMDDVVDADEYLIPQQGFFSSPSTSRTPLLSSLSATSNNSTVACIDRNGLQSCPIKEDSFLQRYSSDPTGALTEDSIDDTFLPVPEYINQSVPKRPAGSVQNPVYHNQPLNPAPSRDPHYQDPHSTAVGNPEYLNTVQPTCVNSTFDSPAHWAQKGSHQISLDNPDYQQDFFPKEAKPNGIFKGSTAENAEYLRVAPQSSEFIGA",
+        "sequence_sha256": "dbb4583267ad40a7dfd854ee3c44ce4be38e137d0570e3eb76cf1854a74e7246",
+        "taxon_id": 9606,
+        "uniprot_accession": "P00533"
+      },
+      "structure": {
+        "all_nonwater_components": [
+          "AQ4"
+        ],
+        "construct_sequence": "GSHMASGEAPNQALLRILKETEFKKIKVLGSGAFGTVYKGLWIPEGEKVKIPVAIKELREATSPKANKEILDEAYVMASVDNPHVCRLLGICLTSTVQLITQLMPFGCLLDYVREHKDNIGSQYLLNWCVQIAKGMNYLEDRRLVHRDLAARNVLVKTPQHVKITDFGLAKLLGAEEKEYHAEGGKVPIKWMALESILHRIYTHQSDVWSYGVTVWELMTFGSKPYDGIPASEISSILEKGERLPQPPICTIDVYMIMVKCWMIDADSRPKFRELIIEFSKMARDPQRYLVIQGDERMHLPSPTDSNFYRALMDEEDMDDVVDADEYLIPQQG",
+        "coordinate_source": "data/raw/rcsb-1M17.cif",
+        "declared_mutation": null,
+        "deposited_residues": 333,
+        "differences_from_track_reference": [],
+        "doi": "10.2210/pdb1M17/pdb",
+        "entry_revision": "1.3",
+        "entry_revision_date": "2024-02-14T00:00:00.000+00:00",
+        "experimental_method": "X-RAY DIFFRACTION",
+        "interpretation": "experimental crystal coordinate model of this construct and conditions; not a full living receptor or a clinical outcome",
+        "label_asym_id": "A",
+        "modeled_residues": 312,
+        "pdb_id": "1M17",
+        "polymer_entity_id": "1",
+        "resolution_angstrom": 2.6,
+        "selected_ligand_component_id": "AQ4",
+        "sequence_artifact_count": 1,
+        "sequence_conflict_count": 0,
+        "sifts_reference_accession": "P00533",
+        "sifts_regions": [
+          {
+            "entity_beg_seq_id": 6,
+            "length": 328,
+            "ref_beg_seq_id": 695
+          }
+        ],
+        "title": "Epidermal Growth Factor Receptor tyrosine kinase domain with 4-anilinoquinazoline inhibitor erlotinib",
+        "unmodeled_residues": 21
+      },
+      "track": "guided",
+      "variant": "reference"
+    },
+    {
+      "artifact_id": "wb.add.target.kras.P01116-2.G12D.v1",
+      "chembl_target_id": "CHEMBL2189121",
+      "chembl_target_scope": "gene/protein-level record; this ID alone does not specify G12D or a particular assay",
+      "gene": "KRAS",
+      "prior_episode_canonical_reference": {
+        "explanation": "episode 1 used the displayed 189-residue canonical sequence; 7RPZ explicitly specifies isoform 2B and a shorter engineered construct",
+        "first_difference_from_track_isoform": 151,
+        "isoform_id": "P01116-1",
+        "isoform_name": "2A / K-Ras4A",
+        "length": 189,
+        "reference_residue_12": "G",
+        "uniprot_accession": "P01116"
+      },
+      "reference_sequence": {
+        "entry_version": 271,
+        "isoform_id": "P01116-2",
+        "isoform_name": "2B / K-Ras4B",
+        "length": 188,
+        "organism": "Homo sapiens",
+        "parent_canonical_sequence_version": 1,
+        "sequence": "MTEYKLVVVGAGGVGKSALTIQLIQNHFVDEYDPTIEDSYRKQVVIDGETCLLDILDTAGQEEYSAMRDQYMRTGEGFLCVFAINNTKSFEDIHHYREQIKRVKDSEDVPMVLVGNKCDLPSRTVDTKQAQDLARSYGIPFIETSAKTRQGVDDAFYTLVREIRKHKEKMSKDGKKKKKKSKTKCVIM",
+        "sequence_sha256": "9a0ed04ef46e15865a90f9dd0808d7d12c94746c66b0f41228aa2e62516ccbca",
+        "taxon_id": 9606,
+        "uniprot_accession": "P01116"
+      },
+      "structure": {
+        "all_nonwater_components": [
+          "6IC",
+          "GDP",
+          "MG"
+        ],
+        "construct_sequence": "GMTEYKLVVVGADGVGKSALTIQLIQNHFVDEYDPTIEDSYRKQVVIDGETSLLDILDTAGQEEYSAMRDQYMRTGEGFLLVFAINNTKSFEDIHHYREQIKRVKDSEDVPMVLVGNKSDLPSRTVDTKQAQDLARSYGIPFIETSAKTRQGVDDAFYTLVREIRKHKEK",
+        "coordinate_source": "data/raw/rcsb-7RPZ.cif",
+        "declared_mutation": "G12D",
+        "deposited_residues": 170,
+        "differences_from_track_reference": [
+          "G12D",
+          "C51S",
+          "C80L",
+          "C118S"
+        ],
+        "doi": "10.2210/pdb7RPZ/pdb",
+        "entry_revision": "1.2",
+        "entry_revision_date": "2023-10-18T00:00:00.000+00:00",
+        "experimental_method": "X-RAY DIFFRACTION",
+        "interpretation": "experimental crystal coordinate model of this construct and conditions; not a full living receptor or a clinical outcome",
+        "label_asym_id": "A",
+        "modeled_residues": 168,
+        "pdb_id": "7RPZ",
+        "polymer_entity_id": "1",
+        "resolution_angstrom": 1.3,
+        "selected_ligand_component_id": "6IC",
+        "sequence_artifact_count": 1,
+        "sequence_conflict_count": 3,
+        "sifts_reference_accession": "P01116",
+        "sifts_regions": [
+          {
+            "entity_beg_seq_id": 2,
+            "length": 169,
+            "ref_beg_seq_id": 1
+          }
+        ],
+        "title": "KRAS G12D in complex with MRTX-1133",
+        "unmodeled_residues": 2
+      },
+      "track": "challenge",
+      "variant": "G12D",
+      "variant_sequence": "MTEYKLVVVGADGVGKSALTIQLIQNHFVDEYDPTIEDSYRKQVVIDGETCLLDILDTAGQEEYSAMRDQYMRTGEGFLCVFAINNTKSFEDIHHYREQIKRVKDSEDVPMVLVGNKCDLPSRTVDTKQAQDLARSYGIPFIETSAKTRQGVDDAFYTLVREIRKHKEKMSKDGKKKKKKSKTKCVIM",
+      "variant_status": "locally derived single substitution of the natural isoform reference, not a new experimental sequence"
+    }
+  ]
+}

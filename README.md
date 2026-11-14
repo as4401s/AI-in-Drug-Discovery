@@ -6,9 +6,9 @@ Code that accompanies the **WhiskerBrief "AI in Drug Discovery"** video course. 
 |------|-------|--------|---------|
 | 1 | [Can AI simulate a cell?](https://youtu.be/6MPPidoDUdQ) | [`part-01-can-ai-simulate-a-cell`](part-01-can-ai-simulate-a-cell) | [Medium](https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0) |
 | 2 | [Microscopy: from cells to organoids and tissues](https://youtu.be/YD-tiKCHg58) | [`part-02-microscopy-cells-to-organoids-and-tissues`](part-02-microscopy-cells-to-organoids-and-tissues) | [Medium](https://arjun-sarkar786.medium.com/from-microscope-images-to-measurements-fluorescence-organoids-and-a-python-segmentation-baseline-6ec4ecdf5ada) |
-| 3 | _coming soon_ | – | – |
-| 4 | _coming soon_ | – | – |
-| 5 | _coming soon_ | – | – |
+| 3 | Drug discovery targets and molecular identity (video coming soon) | [`part-03-drug-discovery-targets-and-molecular-identity`](part-03-drug-discovery-targets-and-molecular-identity) | – |
+| 4 | Dose-response curves and IC50 (video coming soon) | [`part-04-dose-response-curves-and-ic50`](part-04-dose-response-curves-and-ic50) | – |
+| 5 | Molecules as data: SMILES, fingerprints and graphs (video coming soon) | [`part-05-molecules-as-data-smiles-fingerprints-and-graphs`](part-05-molecules-as-data-smiles-fingerprints-and-graphs) | – |
 
 ## Layout
 
@@ -16,7 +16,8 @@ Code that accompanies the **WhiskerBrief "AI in Drug Discovery"** video course. 
 part-NN-<video-name>/
   README.md        what the video covers, what each folder contains, how to run it
   code/            the scripts used in the video, with beginner-level comments
-  data/            small sample inputs needed to run the code
+  data/            small sample inputs needed to run the code, and the saved results
+  research/        (some parts) receipts for the downloaded source files
 ```
 
 ## Notes

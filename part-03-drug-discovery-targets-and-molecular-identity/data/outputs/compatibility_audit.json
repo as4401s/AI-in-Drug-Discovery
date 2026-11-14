@@ -1,0 +1,88 @@
+{
+  "examples": [
+    {
+      "compatible": true,
+      "label": "same declared metadata",
+      "left": {
+        "compound": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+        "endpoint": "biochemical inhibition",
+        "target": "P01116-2",
+        "units": "nM",
+        "variant": "G12D"
+      },
+      "reasons": [],
+      "right": {
+        "compound": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+        "endpoint": "biochemical inhibition",
+        "target": "P01116-2",
+        "units": "nM",
+        "variant": "G12D"
+      }
+    },
+    {
+      "compatible": false,
+      "label": "wrong variant",
+      "left": {
+        "compound": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+        "endpoint": "biochemical inhibition",
+        "target": "P01116-2",
+        "units": "nM",
+        "variant": "G12D"
+      },
+      "reasons": [
+        "variant: 'G12D' differs from 'reference G12'"
+      ],
+      "right": {
+        "compound": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+        "endpoint": "biochemical inhibition",
+        "target": "P01116-2",
+        "units": "nM",
+        "variant": "reference G12"
+      }
+    },
+    {
+      "compatible": false,
+      "label": "different biological endpoint",
+      "left": {
+        "compound": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+        "endpoint": "biochemical inhibition",
+        "target": "P01116-2",
+        "units": "nM",
+        "variant": "G12D"
+      },
+      "reasons": [
+        "endpoint: 'biochemical inhibition' differs from 'cell viability'"
+      ],
+      "right": {
+        "compound": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+        "endpoint": "cell viability",
+        "target": "P01116-2",
+        "units": "nM",
+        "variant": "G12D"
+      }
+    },
+    {
+      "compatible": false,
+      "label": "unknown variant",
+      "left": {
+        "compound": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+        "endpoint": "biochemical inhibition",
+        "target": "P01116-2",
+        "units": "nM",
+        "variant": "G12D"
+      },
+      "reasons": [
+        "variant: missing context is not evidence of a match"
+      ],
+      "right": {
+        "compound": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+        "endpoint": "biochemical inhibition",
+        "target": "P01116-2",
+        "units": "nM",
+        "variant": null
+      }
+    }
+  ],
+  "limitation": "matching these fields is necessary for this illustration, not sufficient to pool real assays; methods, construct, concentration series, exposure, controls, organism and independent replication still require curation",
+  "scope": "synthetic metadata-only teaching examples, not real assays or measured potency"
+}

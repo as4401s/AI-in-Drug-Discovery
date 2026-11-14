@@ -1,0 +1,7 @@
+{
+  "artifact_id": "wb.add.episode03.target-compound-manifest.v1",
+  "source": "../3/data/outputs/target_reference_manifest.v1.json",
+  "snapshot": "data/raw/episode03-target_reference_manifest.v1.json",
+  "sha256": "7978bea5c5428cfc26c2444eb852561cc9f93dc8225d75740d604f18b436af6c",
+  "scope": "retained exact prerequisite, preserve reference/variant/chemical identity; measured activity not inherited"
+}

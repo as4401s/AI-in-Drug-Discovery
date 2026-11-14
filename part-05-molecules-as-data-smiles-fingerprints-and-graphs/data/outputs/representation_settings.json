@@ -1,0 +1,23 @@
+{
+  "activity_labels_in_features": false,
+  "canonicalization": "RDKit canonical=True,isomericSmiles=True; toolkit/version specific",
+  "descriptors": {
+    "HBA": "RDKit hydrogen-bond acceptor count",
+    "HBD": "RDKit hydrogen-bond donor count",
+    "MolLogP": "Wildman-Crippen calculated logP, dimensionless; not experimental solubility",
+    "MolWt": "average molecular mass, g/mol",
+    "TPSA": "calculated topological polar surface area, angstrom squared; includeSandP=False",
+    "heavy_atoms": "non-hydrogen atom count",
+    "rotatable_bonds": "RDKit Lipinski.NumRotatableBonds default definition"
+  },
+  "graph": "Heavy-atom SMILES graph with H counts and stereo attributes, no 3D coordinates",
+  "morgan": {
+    "countSimulation": false,
+    "fpSize": 2048,
+    "includeChirality": true,
+    "radius": 2,
+    "useBondTypes": true
+  },
+  "standardization": "No neutralization, largest-fragment selection, tautomer normalization or stereo removal.",
+  "training_ready": false
+}

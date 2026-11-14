@@ -1,0 +1,183 @@
+{
+  "artifact_id": "wb.add.episode05.representation-inputs.v1",
+  "biological_activity_labels": null,
+  "inputs": [
+    {
+      "display_name": "ethanol",
+      "input_id": "ethanol",
+      "main_matrix_approved": true,
+      "role": "primary",
+      "smiles": "CCO",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "alias_of": "ethanol",
+      "display_name": "ethanol: reversed traversal",
+      "input_id": "ethanol-reversed",
+      "main_matrix_approved": false,
+      "role": "alias",
+      "smiles": "OCC",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "alias_of": "ethanol",
+      "display_name": "ethanol: branched traversal",
+      "input_id": "ethanol-branched",
+      "main_matrix_approved": false,
+      "role": "alias",
+      "smiles": "C(O)C",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "dimethyl ether",
+      "input_id": "dimethyl-ether",
+      "main_matrix_approved": true,
+      "role": "primary",
+      "smiles": "COC",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "benzene: aromatic notation",
+      "input_id": "benzene",
+      "main_matrix_approved": true,
+      "role": "primary",
+      "smiles": "c1ccccc1",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "alias_of": "benzene",
+      "display_name": "benzene: alternating bond notation",
+      "input_id": "benzene-kekule",
+      "main_matrix_approved": false,
+      "role": "alias",
+      "smiles": "C1=CC=CC=C1",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "lactic acid: specified stereo A",
+      "input_id": "lactic-at",
+      "main_matrix_approved": true,
+      "role": "primary",
+      "smiles": "C[C@H](O)C(=O)O",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "lactic acid: specified stereo B",
+      "input_id": "lactic-aat",
+      "main_matrix_approved": true,
+      "role": "primary",
+      "smiles": "C[C@@H](O)C(=O)O",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "lactic acid: unspecified stereo",
+      "input_id": "lactic-unspecified",
+      "main_matrix_approved": false,
+      "role": "comparison",
+      "smiles": "CC(O)C(=O)O",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "acetic acid",
+      "input_id": "acetic-acid",
+      "main_matrix_approved": true,
+      "role": "primary",
+      "smiles": "CC(=O)O",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "sodium acetate: disconnected salt components",
+      "input_id": "sodium-acetate",
+      "main_matrix_approved": false,
+      "role": "multi_component",
+      "smiles": "CC(=O)[O-].[Na+]",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "unclosed ring",
+      "input_id": "invalid-ring",
+      "main_matrix_approved": false,
+      "role": "rejection",
+      "smiles": "C1CC",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "neutral oxygen with three single bonds",
+      "input_id": "invalid-valence",
+      "main_matrix_approved": false,
+      "role": "rejection",
+      "smiles": "CO(C)C",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "empty string",
+      "input_id": "empty",
+      "main_matrix_approved": false,
+      "role": "rejection",
+      "smiles": "",
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "display_name": "missing string",
+      "input_id": "missing",
+      "main_matrix_approved": false,
+      "role": "rejection",
+      "smiles": null,
+      "source_id": "LOCAL_TEACHING_INPUT"
+    },
+    {
+      "chembl_id": "CHEMBL553",
+      "display_name": "erlotinib",
+      "expected_standard_inchi_key": "AAKJLRGGTJKAMG-UHFFFAOYSA-N",
+      "input_id": "erlotinib",
+      "main_matrix_approved": true,
+      "pdb_component": "AQ4",
+      "role": "primary",
+      "smiles": "C#Cc1cccc(Nc2ncnc3cc(OCCOC)c(OCCOC)cc23)c1",
+      "source_id": "CHEMBL553_CURRENT"
+    },
+    {
+      "alias_of": "erlotinib",
+      "display_name": "erlotinib: PDB component traversal",
+      "expected_standard_inchi_key": "AAKJLRGGTJKAMG-UHFFFAOYSA-N",
+      "input_id": "erlotinib-pdb",
+      "main_matrix_approved": false,
+      "role": "alias",
+      "smiles": "COCCOc1cc2c(cc1OCCOC)ncnc2Nc3cccc(c3)C#C",
+      "source_id": "RCSB_AQ4_CURRENT"
+    },
+    {
+      "chembl_id": "CHEMBL5081048",
+      "display_name": "MRTX1133: exact 7RPZ component 6IC",
+      "expected_standard_inchi_key": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+      "input_id": "mrtx1133-6ic",
+      "main_matrix_approved": true,
+      "pdb_component": "6IC",
+      "role": "primary",
+      "smiles": "C#Cc1c(F)ccc2cc(O)cc(-c3ncc4c(N5C[C@H]6CC[C@@H](C5)N6)nc(OC[C@@]56CCCN5C[C@H](F)C6)nc4c3F)c12",
+      "source_id": "CHEMBL5081048_CURRENT"
+    },
+    {
+      "alias_of": "mrtx1133-6ic",
+      "display_name": "mrtx1133-6ic: PDB component traversal",
+      "expected_standard_inchi_key": "SCLLZBIBSFTLIN-INOGPEIASA-N",
+      "input_id": "mrtx1133-6ic-pdb",
+      "main_matrix_approved": false,
+      "role": "alias",
+      "smiles": "C#Cc1c(ccc2c1c(cc(c2)O)c3c(c4c(cn3)c(nc(n4)OC[C@@]56CCCN5C[C@@H](C6)F)N7C[C@H]8CC[C@@H](C7)N8)F)F",
+      "source_id": "RCSB_6IC_CURRENT"
+    },
+    {
+      "chembl_id": "CHEMBL4858364",
+      "display_name": "MRTX-1133 name record: partly unspecified stereo",
+      "expected_standard_inchi_key": "SCLLZBIBSFTLIN-IFMUVJFISA-N",
+      "input_id": "mrtx1133-name-alias",
+      "main_matrix_approved": false,
+      "role": "comparison",
+      "smiles": "C#Cc1c(F)ccc2cc(O)cc(-c3ncc4c(N5CC6CCC(C5)N6)nc(OC[C@@]56CCCN5C[C@H](F)C6)nc4c3F)c12",
+      "source_id": "CHEMBL4858364_CURRENT"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "scope": "Original teaching structures and exact current official source strings; no activity labels. Expected behavior awaits actual RDKit execution."
+}

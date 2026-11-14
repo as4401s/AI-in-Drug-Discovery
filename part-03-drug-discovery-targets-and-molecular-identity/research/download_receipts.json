@@ -1,0 +1,146 @@
+[
+  {
+    "file": "uniprot-P00533.json",
+    "path": "data/raw/uniprot-P00533.json",
+    "url": "https://rest.uniprot.org/uniprotkb/P00533.json",
+    "retrieved_at_utc": "2026-11-13T22:32:52.000114+00:00",
+    "bytes": 385210,
+    "sha256": "c7d320b0eed723b77b2fe2e023a5ee4bf0265f8c9deeb03a249703ffbea443dc",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "uniprot-P01116.json",
+    "path": "data/raw/uniprot-P01116.json",
+    "url": "https://rest.uniprot.org/uniprotkb/P01116.json",
+    "retrieved_at_utc": "2026-11-13T22:32:52.422895+00:00",
+    "bytes": 232323,
+    "sha256": "f5859c0632f543b103a6a5c64f86f78cdc88950bdcd010d0a11ecd215bf5929a",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "uniprot-P01116-2.fasta",
+    "path": "data/raw/uniprot-P01116-2.fasta",
+    "url": "https://rest.uniprot.org/uniprotkb/P01116-2.fasta",
+    "retrieved_at_utc": "2026-11-13T22:32:52.667566+00:00",
+    "bytes": 274,
+    "sha256": "8bcf1d107ea750b5ddc8a0f80b60227d16a3e559a6744798aea46b65fc97663b",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "rcsb-1M17-entry.json",
+    "path": "data/raw/rcsb-1M17-entry.json",
+    "url": "https://data.rcsb.org/rest/v1/core/entry/1M17",
+    "retrieved_at_utc": "2026-11-13T22:32:53.210599+00:00",
+    "bytes": 39338,
+    "sha256": "fd0c60f0e838d264d1049b6a0a751ddfc71b48eb87215fd35d57cdaaf8d92e12",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "rcsb-1M17-polymer.json",
+    "path": "data/raw/rcsb-1M17-polymer.json",
+    "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/1M17/1",
+    "retrieved_at_utc": "2026-11-13T22:32:54.037311+00:00",
+    "bytes": 191383,
+    "sha256": "281a294a58f8213cce58a92654155e8e22eba8622b197eb08b01e2cf32afeb65",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "rcsb-7RPZ-entry.json",
+    "path": "data/raw/rcsb-7RPZ-entry.json",
+    "url": "https://data.rcsb.org/rest/v1/core/entry/7RPZ",
+    "retrieved_at_utc": "2026-11-13T22:32:54.426918+00:00",
+    "bytes": 12142,
+    "sha256": "a040901ea54bcfeafa1d10438e81cb6f2e1f635a100465ccb4717dbe99c8382a",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "rcsb-7RPZ-polymer.json",
+    "path": "data/raw/rcsb-7RPZ-polymer.json",
+    "url": "https://data.rcsb.org/rest/v1/core/polymer_entity/7RPZ/1",
+    "retrieved_at_utc": "2026-11-13T22:32:55.074745+00:00",
+    "bytes": 46494,
+    "sha256": "7590acbe23297bdbf04fac9c367beb911619e80e4eefa58cac359ee2a92e1d4a",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "rcsb-AQ4-chemcomp.json",
+    "path": "data/raw/rcsb-AQ4-chemcomp.json",
+    "url": "https://data.rcsb.org/rest/v1/core/chemcomp/AQ4",
+    "retrieved_at_utc": "2026-11-13T22:32:55.471136+00:00",
+    "bytes": 10402,
+    "sha256": "5bcfc4bdb92580edb927e131314355abd6b294fd29042c07b671150294aab7b3",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "rcsb-6IC-chemcomp.json",
+    "path": "data/raw/rcsb-6IC-chemcomp.json",
+    "url": "https://data.rcsb.org/rest/v1/core/chemcomp/6IC",
+    "retrieved_at_utc": "2026-11-13T22:32:55.834264+00:00",
+    "bytes": 5008,
+    "sha256": "e4ae24235bce3dc687eee04c59bc573fafdb0aaccda58cb34b131e6f0e52b65c",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "rcsb-1M17.cif",
+    "path": "data/raw/rcsb-1M17.cif",
+    "url": "https://files.rcsb.org/download/1M17.cif",
+    "retrieved_at_utc": "2026-11-13T22:32:56.590999+00:00",
+    "bytes": 307709,
+    "sha256": "849bd2548dffb7ddcb7229a05202c1e2e41019a1fd69ec39483654cf984fc4d0",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "rcsb-7RPZ.cif",
+    "path": "data/raw/rcsb-7RPZ.cif",
+    "url": "https://files.rcsb.org/download/7RPZ.cif",
+    "retrieved_at_utc": "2026-11-13T22:32:56.764688+00:00",
+    "bytes": 451341,
+    "sha256": "102fe7dbc630e37624597ee3c204446b839c26079c7014da885114312af576ee",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "chembl-CHEMBL553.json",
+    "path": "data/raw/chembl-CHEMBL553.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/molecule/CHEMBL553.json",
+    "retrieved_at_utc": "2026-11-13T22:32:57.147125+00:00",
+    "bytes": 5082,
+    "sha256": "6518a75e34d67519e8183a6b0230ffa4a793de416dff8de0e659d93610d50488",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "chembl-mrtx1133-search.json",
+    "path": "data/raw/chembl-mrtx1133-search.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/molecule/search.json?q=MRTX1133",
+    "retrieved_at_utc": "2026-11-13T22:32:57.416924+00:00",
+    "bytes": 47042,
+    "sha256": "21f8c451dcaec94b42e40123eb3a3c799fa454815315606672168ea6ebd26d46",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "chembl-CHEMBL203-target.json",
+    "path": "data/raw/chembl-CHEMBL203-target.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/target/CHEMBL203.json",
+    "retrieved_at_utc": "2026-11-13T22:32:57.812285+00:00",
+    "bytes": 67886,
+    "sha256": "0ba4114f45f53710f7c617e6ffb2f2bc2e311fb87e436bd68842704a5b85553a",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "chembl-kras-target-search.json",
+    "path": "data/raw/chembl-kras-target-search.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/target.json?target_components__accession=P01116&limit=100",
+    "retrieved_at_utc": "2026-11-13T22:32:58.352086+00:00",
+    "bytes": 808529,
+    "sha256": "add6ce7597b721f9fe53d2045f5ea3b288cec7df8b04ad868f4b0858a5c09c88",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  },
+  {
+    "file": "chembl-status.json",
+    "path": "data/raw/chembl-status.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/status.json",
+    "retrieved_at_utc": "2026-11-13T22:38:31.359366+00:00",
+    "bytes": 212,
+    "sha256": "29dc1fb09487a8d2962253a4d0d92c4ded0aa0d831effab42445d0c3483d4740",
+    "method": "public HTTPS via curl; TLS verification enabled"
+  }
+]

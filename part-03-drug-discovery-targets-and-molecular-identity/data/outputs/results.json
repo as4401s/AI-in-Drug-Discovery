@@ -1,0 +1,26 @@
+{
+  "bioactivity_records": 0,
+  "egfr_full_reference_residues": 1210,
+  "egfr_structure_deposited_residues": 333,
+  "egfr_structure_modeled_residues": 312,
+  "kras_derived_G12D_residue_12": "D",
+  "kras_explicit_4b_reference_residues": 188,
+  "kras_prior_canonical_residues": 189,
+  "kras_reference_residue_12": "G",
+  "kras_structure_deposited_residues": 170,
+  "kras_structure_modeled_residues": 168,
+  "kras_structure_reference_differences": [
+    "G12D",
+    "C51S",
+    "C80L",
+    "C118S"
+  ],
+  "mrtx1133_exact_ligand_chembl_id": "CHEMBL5081048",
+  "mrtx1133_name_search_results": 8,
+  "reference_compound_count": 2,
+  "schema_version": "1.0.0",
+  "source_snapshot_count": 16,
+  "synthetic_metadata_joins_accepted": 1,
+  "synthetic_metadata_joins_rejected": 3,
+  "target_count": 2
+}

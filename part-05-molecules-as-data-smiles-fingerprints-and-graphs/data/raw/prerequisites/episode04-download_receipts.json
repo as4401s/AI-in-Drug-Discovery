@@ -1,0 +1,250 @@
+[
+  {
+    "path": "data/raw/chembl-egfr-erlotinib-ic50.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?molecule_chembl_id=CHEMBL553&target_chembl_id=CHEMBL203&standard_type=IC50&limit=1000",
+    "retrieved_at_utc": "2026-11-14T00:29:18.527905+00:00",
+    "bytes": 356116,
+    "sha256": "e884ec6c4e230b0e5e13a02c526a0f99205e4b66b90f31b8a9ed7f5c5271ed64",
+    "method": "public HTTPS curl; TLS verification enabled; no credentials or paid services"
+  },
+  {
+    "path": "research/papers/hafner-2016-dash.pdf",
+    "url": "https://dash.harvard.edu/server/api/core/bitstreams/7312037e-02b3-6bd4-e053-0100007fdf3b/content",
+    "retrieved_at_utc": "2026-11-14T00:32:07.655062+00:00",
+    "bytes": 2192002,
+    "sha256": "4aa64207ad56fd44dec51ac1bb822a2fec2b89b604fc1852cd0583a753de0137",
+    "method": "public HTTPS curl; TLS verification enabled; no credentials or paid services"
+  },
+  {
+    "path": "research/sources/hafner-2016-pmc.html",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4887336/",
+    "retrieved_at_utc": "2026-11-14T00:31:58.471972+00:00",
+    "bytes": 219496,
+    "sha256": "571e528717029a4fd7ac6f80570f2db9fa87f1bb5f962588f1b86d60228a8dd0",
+    "method": "public HTTPS curl; TLS verification enabled; no credentials or paid services"
+  },
+  {
+    "path": "data/raw/chembl-status.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/status.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.693274+00:00",
+    "bytes": 212,
+    "sha256": "29dc1fb09487a8d2962253a4d0d92c4ded0aa0d831effab42445d0c3483d4740",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-CHEMBL553.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/molecule/CHEMBL553.json",
+    "retrieved_at_utc": "2026-11-14T00:34:28.950436+00:00",
+    "bytes": 5082,
+    "sha256": "6518a75e34d67519e8183a6b0230ffa4a793de416dff8de0e659d93610d50488",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-CHEMBL203.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/target/CHEMBL203.json",
+    "retrieved_at_utc": "2026-11-14T00:34:28.950669+00:00",
+    "bytes": 67886,
+    "sha256": "0ba4114f45f53710f7c617e6ffb2f2bc2e311fb87e436bd68842704a5b85553a",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "research/sources/chembl-data-questions.md",
+    "url": "https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/chembl-data-questions.md",
+    "retrieved_at_utc": "2026-11-14T00:34:29.655041+00:00",
+    "bytes": 13015,
+    "sha256": "a50c4a19144d34621b986c728f60f4ace42e8fcba14dd04c701681580443bcb3",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "research/sources/chembl-general-questions.md",
+    "url": "https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/general-questions.md",
+    "retrieved_at_utc": "2026-11-14T00:34:29.582674+00:00",
+    "bytes": 11244,
+    "sha256": "389eb0c0692cd5240c6333c2ac79655e92797ddce21d581b29cafb1d70e11886",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL1044055.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL1044055.json",
+    "retrieved_at_utc": "2026-11-14T00:34:29.238136+00:00",
+    "bytes": 890,
+    "sha256": "344cdb490f30c3bc265ff3124c43cd5b02ee09655f8f90263f71cbb005f8b5ca",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL1044057.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL1044057.json",
+    "retrieved_at_utc": "2026-11-14T00:34:29.420841+00:00",
+    "bytes": 2234,
+    "sha256": "9b04591403608e77f451c28bb152e06ded73a13b794b3280ad3aa0b13273fdff",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL1105216.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL1105216.json",
+    "retrieved_at_utc": "2026-11-14T00:34:29.699126+00:00",
+    "bytes": 879,
+    "sha256": "f69d6c5bb6ca608a33c6c5bf440e4814b723062da4c50da7cb7a648388c10046",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL1105217.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL1105217.json",
+    "retrieved_at_utc": "2026-11-14T00:34:29.772509+00:00",
+    "bytes": 2219,
+    "sha256": "56c5c634a418be724d54804f652bdcd9e3b22ad9d1e2e26fabfc5a4bb829a058",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL2427713.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL2427713.json",
+    "retrieved_at_utc": "2026-11-14T00:34:29.851014+00:00",
+    "bytes": 950,
+    "sha256": "2c1dc50e901015d5abaf257fe07993b388fbc933b299e1c3c3f66bb9a1a87968",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL3095060.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3095060.json",
+    "retrieved_at_utc": "2026-11-14T00:34:29.862388+00:00",
+    "bytes": 984,
+    "sha256": "bb26db55fa7da602c2aaa17684f79c623e9b00da19a0db639416d95e25a58b2c",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL3238947.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3238947.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.192318+00:00",
+    "bytes": 985,
+    "sha256": "f44000ff2435ffa41b3424e9e9f2a17c8acef2e769f933752fc08ece62d69122",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL3375345.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3375345.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.208174+00:00",
+    "bytes": 912,
+    "sha256": "6e8244af834d058045ac21fd9da40655faba4060c778e95086d613cec7d4de71",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL674106.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL674106.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.232224+00:00",
+    "bytes": 896,
+    "sha256": "4f252d830ee6bf09f277fee5a6e1800c85946c208278a509c3a9605a86acb6f9",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL862512.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL862512.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.449143+00:00",
+    "bytes": 897,
+    "sha256": "9ea1f70a3b03df098b550e3cd03c333866aad3eb5244a85b7d2e4a70a626c391",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL862515.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL862515.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.523065+00:00",
+    "bytes": 928,
+    "sha256": "849d591ff9580e8c6684d275d5301bb119a7c40480c98ce561e849fab37a3d5c",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-assay-CHEMBL978648.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL978648.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.417669+00:00",
+    "bytes": 854,
+    "sha256": "39e8817712eef6ce9a7adeead48b1540719ea999335b8ab6ea95816c127e9a9a",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-document-CHEMBL1138126.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL1138126.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.689409+00:00",
+    "bytes": 2096,
+    "sha256": "acdda97c1c112cda1ec27722f833b001182e5b6cd83451f85ead6519274f7303",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-document-CHEMBL1146682.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL1146682.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.691514+00:00",
+    "bytes": 984,
+    "sha256": "1ba2fdbccbf4df7ca1ecd091717eb9f9d415caf707f3ab6e75d171a7dae3bca4",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-document-CHEMBL1154692.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL1154692.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.775353+00:00",
+    "bytes": 1578,
+    "sha256": "01a814973e54e6db0b45790c2667213eed395b04f6214783bebc22cb569fc57e",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-document-CHEMBL1156950.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL1156950.json",
+    "retrieved_at_utc": "2026-11-14T00:34:31.345406+00:00",
+    "bytes": 1238,
+    "sha256": "311be0d017763cc2a4883f5492f03fb96f082c3102823e89b1d51fa63625b7c4",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-document-CHEMBL1157167.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL1157167.json",
+    "retrieved_at_utc": "2026-11-14T00:34:31.333012+00:00",
+    "bytes": 1568,
+    "sha256": "8efc5ddb4a713867fef5f81241b85e167ddb74ca87b17cfbe7912f197f45bae2",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-document-CHEMBL2424560.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL2424560.json",
+    "retrieved_at_utc": "2026-11-14T00:34:30.884692+00:00",
+    "bytes": 1926,
+    "sha256": "1a166d965a8b2a4eebcda7515ea2d912da4208cf30de69d97223ede56fc01d11",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-document-CHEMBL3091333.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL3091333.json",
+    "retrieved_at_utc": "2026-11-14T00:34:31.460057+00:00",
+    "bytes": 1881,
+    "sha256": "1f5b0742e3ea6cb889e763e8e9f6464af8d6e2d30af8160c21f70417de87c9e0",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-document-CHEMBL3233010.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL3233010.json",
+    "retrieved_at_utc": "2026-11-14T00:34:31.157336+00:00",
+    "bytes": 1639,
+    "sha256": "7385f4c539849c22530807d9b3f919eaa389a53654af4d7808f0ec94bfabe0dd",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "data/raw/chembl-document-CHEMBL3352011.json",
+    "url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL3352011.json",
+    "retrieved_at_utc": "2026-11-14T00:34:31.476239+00:00",
+    "bytes": 1531,
+    "sha256": "db7602035df0eb33b71aed2fa8a01258823ffcf3df7174e0f91785a88bc8e93e",
+    "method": "public HTTPS curl, TLS verification enabled; no account, paid endpoint or credentials"
+  },
+  {
+    "path": "research/papers/assay-guidance-NBK91994.pdf",
+    "url": "https://www.ncbi.nlm.nih.gov/sites/books/NBK91994/pdf/Bookshelf_NBK91994.pdf",
+    "retrieved_at_utc": "2026-11-14T00:37:03.197370+00:00",
+    "bytes": 612961,
+    "sha256": "b3cce64ed9f06686234fabd3607f386eab67eed35f9764aaabf61d5a69a3a303",
+    "method": "public HTTPS curl; TLS verification enabled; no credentials or paid services"
+  },
+  {
+    "path": "research/sources/assay-guidance-NBK91994.html",
+    "url": "https://www.ncbi.nlm.nih.gov/sites/books/NBK91994/",
+    "retrieved_at_utc": "2026-11-14T00:36:46.013091+00:00",
+    "bytes": 87654,
+    "sha256": "19f8691336d47e6259be3744b38f74f00966c5873828ed10fa876eb0c01c6cdd",
+    "method": "public HTTPS curl; TLS verification enabled; no credentials or paid services"
+  }
+]

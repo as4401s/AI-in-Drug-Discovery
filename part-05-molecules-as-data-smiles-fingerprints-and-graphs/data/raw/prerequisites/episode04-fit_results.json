@@ -1,0 +1,46 @@
+{
+  "absolute_ic50_nm": 9.78213223175378,
+  "assumption": "single increasing sigmoid; plateaus fixed to 0 and 100, supported only by this synthetic design",
+  "bounds_log10_midpoint_nm_and_slope": [
+    [
+      -3.0,
+      6.0
+    ],
+    [
+      0.3,
+      3.0
+    ]
+  ],
+  "fixed_bottom_percent": 0,
+  "fixed_top_percent": 100,
+  "hill_slope": 1.0015165756523434,
+  "mean_squared_error": 0.2004139956166043,
+  "pIC50": 8.009566470820312,
+  "prediction_percent": [
+    1.0049886054529173,
+    2.9603422875637118,
+    9.245541904864464,
+    23.438081338439186,
+    50.55150312378655,
+    75.44224000952535,
+    91.11807724169645,
+    96.8580916801296,
+    99.03797222842708
+  ],
+  "reasons": [],
+  "relative_midpoint_nm": 9.78213223175378,
+  "residual_percent": [
+    0.20675465666889803,
+    0.7841462802145092,
+    0.09940275932751952,
+    -0.061131252078535425,
+    -0.33369704712701065,
+    0.28819071474919156,
+    -0.1556295029393766,
+    0.8283568701366733,
+    -0.47714975779264535
+  ],
+  "rmse_constant_baseline": 39.23375029220974,
+  "rmse_percentage_points": 0.4476762173899841,
+  "status": "accepted_for_teaching"
+}

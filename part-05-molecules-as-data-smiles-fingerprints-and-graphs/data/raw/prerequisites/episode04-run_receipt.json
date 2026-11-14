@@ -1,0 +1,21 @@
+{
+  "code_sha256": "27cbb3e88c493fa9215093b1fe48ef1b08ba4f1d3287249683711a4c19d0625e",
+  "command": "Tools/ssd-run.sh python Playlists/ai-in-drug-discovery/4/code/dose_response_lab.py",
+  "elapsed_seconds": 0.5869493329955731,
+  "generated_utc": "2026-11-14T00:38:35.083917+00:00",
+  "network_calls": 0,
+  "new_dependencies": 0,
+  "numpy": "2.3.5",
+  "outputs": {
+    "fit_results.json": "23d18eb288336f81b6eeb70eae5370daf3e16026b11d0b57dc4fe7307f99c3f5",
+    "lesson_payload.json": "6ca5030334ccac29968f7cc3bd19a30ac0c41c6e25040b2f0b69bfd4690afb22",
+    "qc_cases.json": "651e94f35d8128099b5922ab6e1c948c719e920cd81669d38a14f3e5dd3438ca",
+    "synthetic_wells.csv": "9affa8890e0e9a10ebd65a3431a237453044baa109e4e3ef00ac3c21cd96f01b"
+  },
+  "paid_services": 0,
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "prerequisite_sha256": "7978bea5c5428cfc26c2444eb852561cc9f93dc8225d75740d604f18b436af6c",
+  "processor": "arm64",
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "seed": 20261114
+}

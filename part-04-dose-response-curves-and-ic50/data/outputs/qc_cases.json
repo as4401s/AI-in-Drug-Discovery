@@ -1,0 +1,77 @@
+{
+  "bad_nonmonotonic_model": {
+    "absolute_ic50_nm": null,
+    "assumption": "single increasing sigmoid; plateaus fixed to 0 and 100, supported only by this synthetic design",
+    "bounds_log10_midpoint_nm_and_slope": [
+      [
+        -3.0,
+        6.0
+      ],
+      [
+        0.3,
+        3.0
+      ]
+    ],
+    "fixed_bottom_percent": 0,
+    "fixed_top_percent": 100,
+    "hill_slope": 0.5820550697402346,
+    "mean_squared_error": 561.8193899415137,
+    "pIC50": null,
+    "prediction_percent": [
+      3.6727350847233153,
+      6.739808001629024,
+      12.712922439923641,
+      21.633888504079284,
+      35.74722865704626,
+      51.32720669958159,
+      68.0023372828836,
+      80.11236561777166,
+      89.03294355752668
+    ],
+    "reasons": [
+      "mean-point RMSE exceeds teaching QC threshold of 5 percentage points",
+      "large nonmonotonic decrease exceeds teaching QC threshold of 10 percentage points"
+    ],
+    "relative_midpoint_nm": 27.384238921666682,
+    "residual_percent": [
+      -2.6727350847233153,
+      -4.739808001629024,
+      -9.712922439923641,
+      -16.633888504079284,
+      44.25277134295374,
+      -31.327206699581588,
+      26.9976627171164,
+      -30.11236561777166,
+      8.967056442473321
+    ],
+    "rmse_constant_baseline": 39.50246124540146,
+    "rmse_percentage_points": 23.702729588414783,
+    "status": "flagged_do_not_report_as_validated_ic50"
+  },
+  "different_relative_and_absolute": {
+    "absolute_50_percent_crossing_nm": 200.0,
+    "bottom_percent": 10,
+    "hill_slope": 1,
+    "relative_midpoint_nm": 100,
+    "response_at_relative_midpoint_percent": 40,
+    "top_percent": 70
+  },
+  "incomplete_plateau": {
+    "absolute_50_percent_crossing_nm": null,
+    "bottom_percent": 0,
+    "hill_slope": 1,
+    "interpretation": "a relative half-dynamic-range midpoint exists; absolute 50% inhibition is never reached",
+    "relative_midpoint_nm": 10,
+    "response_at_relative_midpoint_percent": 20,
+    "top_percent": 40
+  },
+  "unbracketed_low_range": {
+    "absolute_ic50_nm": null,
+    "direction": "if a monotone 50% crossing exists: > highest tested concentration",
+    "reasons": [
+      "absolute 50% inhibition is not bracketed by observed concentration means"
+    ],
+    "rmse_constant_baseline": 18.033237946108237,
+    "status": "refused"
+  }
+}

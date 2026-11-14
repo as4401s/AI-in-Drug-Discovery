@@ -1,0 +1,27 @@
+{
+  "artifact_id": "wb.add.episode05.input-lock.v1",
+  "files": {
+    "data/raw/current/chembl-CHEMBL4858364.json": "5da7d16c03626bc9ff3db6bf1cae7256dffb1467734ecf0d00c9ef747627669c",
+    "data/raw/current/chembl-CHEMBL5081048.json": "b4433bfc293a1b478136616c32191f3fd0286e8d9ab27c106eed4926e2ef8a2f",
+    "data/raw/current/chembl-CHEMBL553.json": "6518a75e34d67519e8183a6b0230ffa4a793de416dff8de0e659d93610d50488",
+    "data/raw/current/chembl-status.json": "29dc1fb09487a8d2962253a4d0d92c4ded0aa0d831effab42445d0c3483d4740",
+    "data/raw/current/rcsb-6IC-chemcomp.json": "e4ae24235bce3dc687eee04c59bc573fafdb0aaccda58cb34b131e6f0e52b65c",
+    "data/raw/current/rcsb-AQ4-chemcomp.json": "5bcfc4bdb92580edb927e131314355abd6b294fd29042c07b671150294aab7b3",
+    "data/raw/prerequisites/episode03-chembl-CHEMBL553.json": "6518a75e34d67519e8183a6b0230ffa4a793de416dff8de0e659d93610d50488",
+    "data/raw/prerequisites/episode03-chembl-mrtx1133-search.json": "21f8c451dcaec94b42e40123eb3a3c799fa454815315606672168ea6ebd26d46",
+    "data/raw/prerequisites/episode03-rcsb-6IC-chemcomp.json": "e4ae24235bce3dc687eee04c59bc573fafdb0aaccda58cb34b131e6f0e52b65c",
+    "data/raw/prerequisites/episode03-rcsb-AQ4-chemcomp.json": "5bcfc4bdb92580edb927e131314355abd6b294fd29042c07b671150294aab7b3",
+    "data/raw/prerequisites/episode03-target_reference_manifest.v1.json": "7978bea5c5428cfc26c2444eb852561cc9f93dc8225d75740d604f18b436af6c",
+    "data/raw/prerequisites/episode04-SOURCE_LEDGER.csv": "55fb1cbd119d58e9d97abc70fe242e44242df88ce9ad01e6709ca6d0f6b70de3",
+    "data/raw/prerequisites/episode04-chembl-assay-CHEMBL3095060.json": "bb26db55fa7da602c2aaa17684f79c623e9b00da19a0db639416d95e25a58b2c",
+    "data/raw/prerequisites/episode04-chembl-egfr-erlotinib-ic50.json": "e884ec6c4e230b0e5e13a02c526a0f99205e4b66b90f31b8a9ed7f5c5271ed64",
+    "data/raw/prerequisites/episode04-curation_run_receipt.json": "d3d046545423009a90e19fa2ea719536639e40c963f9bdb2f373939c24eb8844",
+    "data/raw/prerequisites/episode04-download_receipts.json": "5bd2590cace13e4948550df382366393b82605c88d658accbbda6c90e4abd635",
+    "data/raw/prerequisites/episode04-fit_results.json": "23d18eb288336f81b6eeb70eae5370daf3e16026b11d0b57dc4fe7307f99c3f5",
+    "data/raw/prerequisites/episode04-measured_activity_curation.json": "497c335960c172da891db3660f52ddb5d2eb7d5298a36289087f58fbd2561084",
+    "data/raw/prerequisites/episode04-run_receipt.json": "7bf129a1ac6907796fde5c0e8b4e6612413ddf875a1c9ccb20848d7160fb3ec2",
+    "data/raw/representation_inputs.json": "898e26aff881f7adc7d691cb85f5619e10341615cec41c5d834ec57364db7071"
+  },
+  "schema_version": "1.0.0",
+  "scope": "Exact bytes of raw representation/prerequisite/current-source inputs; no derived feature identity claim."
+}
