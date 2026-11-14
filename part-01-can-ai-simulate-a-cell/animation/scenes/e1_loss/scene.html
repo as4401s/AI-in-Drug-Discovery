@@ -1,0 +1,154 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script>
+<script>
+SCENE_INIT({ep:1,part:3,partTitle:'How models learn',title:'Read the loss in plain English',foot:'WhiskerBrief teaching example · concepts and worked mathematics'},(S,C)=>{
+const {el,at,show,ramp,out,lin,mix,svg}=WB;
+const clamp=WB.clamp;
+// ---------- Phase 1 : power -> logarithm ----------
+const P1=[];            // elements that belong to phase 1 (faded out together)
+function card(cls,x,y,w,h){const b=el('div','box '+cls);at(b,x,y,w,h);P1.push(b);return b}
+function txt(cls,html,x,y,parent){const e=el('div','t '+cls,html);at(e,x,y);return e}
+// tag line
+const tag=el('div','pill b-lav','A <b>logarithm</b> reverses a <b>power</b>');at(tag,80,250);P1.push(tag);
+// card 1 : 2 x 2 x 2 = 8
+const k1=card('b-blue',80,350,560,300);
+const k1t=txt('lbl','Multiply three copies of 2',110,372);
+const discs=[0,1,2].map(i=>{const d=el('div','t c','2');d.style.cssText+=`;width:92px;height:92px;border-radius:46px;background:#fff;border:5px solid #557eaf;font:700 50px/82px Poppins;color:#183b32`;at(d,106+i*124,478);return d});
+const times=[0,1].map(i=>{const x=el('div','t c','×');x.style.cssText+=';width:32px;font:500 44px/1 Inter';at(x,200+i*124,502);return x});
+const eq8=el('div','t','= 8');eq8.style.font='700 60px/1 Poppins';at(eq8,462,498);
+P1.push(...discs,...times,eq8);
+// card 2 : 2^3 = 8
+const k2=card('b-mint',680,350,560,300);
+const k2t=txt('lbl','Same thing, written as a power',710,372);
+const pw=el('div','t','2<sup style="font-size:.62em;position:relative;top:-.55em;color:#26765d">3</sup> = 8');pw.style.cssText+=';font:700 112px/1 Poppins;letter-spacing:-2px';at(pw,740,455);
+const pwn=txt('small','the power 3 = how many 2s to multiply',710,590);
+// card 3 : log2 8 = 3
+const k3=card('b-lav',1280,350,560,300);
+const k3t=txt('lbl','Run it backwards',1310,372);
+const lg=el('div','t','log<sub style="font-size:.5em">2</sub> 8 = 3');lg.style.cssText+=';font:700 100px/1 Poppins;letter-spacing:-2px';at(lg,1325,455);
+const lgn=txt('small','Which power of 2 gives 8?  →  3',1310,590);
+P1.push(k1t,k2t,k3t,pwn,lgn,pw,lg);
+const arrow=svg('svg',{width:1,height:1,style:'position:absolute;left:0;top:0'},S);const rev=svg('path',{d:'M0 0'},arrow);
+// card 4 : natural log
+const k4=card('b-amber',80,700,1160,230);
+const k4a=txt('lbl','Natural logarithm',115,722);
+const k4b=el('div','t','ln x  =  “which power of <b>e</b> gives x?”');k4b.style.font='600 54px/1.1 Poppins';at(k4b,115,790);
+const k4c=txt('small','e is a special number, about 2.718',115,868);
+const k4d=el('div','pill b-mint','You only need to read results — computers do the arithmetic');at(k4d,1280,745);k4d.style.cssText+=';white-space:normal;width:560px;font-size:30px;padding:26px 30px;border-radius:28px';
+P1.push(k4a,k4b,k4c,k4d,arrow);
+
+// ---------- hidden amino-acid reminder strip ----------
+const SEQ='LMPFGCLLDYVR'.split('');const HID=5;
+const stripEls=[];
+SEQ.forEach((a,i)=>{const d=el('div','t c',i==HID?'?':a);d.style.cssText+=`;width:66px;height:66px;border-radius:14px;font:700 34px/62px Poppins;background:${i==HID?'#fbe6e3':'#e3efff'};border:4px solid ${i==HID?'#b76d66':'#9fb9d9'};color:#183b32`;at(d,120+i*78,300);stripEls.push(d)});
+const stripLab=el('div','t','');stripLab.innerHTML='<b style="color:#b76d66">hidden position</b> — the correct answer is <b style="color:#26765d">cysteine (C)</b>';stripLab.style.cssText+=';font:500 30px/1 Inter;color:#183b32';at(stripLab,120,372);
+// ---------- Phase 2 : formula ----------
+const F=[];
+const fbox=el('div','box b-blue');at(fbox,80,410,1760,330);F.push(fbox);
+const flabel=txt('small','The loss formula, read in words',120,434);flabel.style.fontSize='28px';F.push(flabel);
+const fl=el('div','t','');fl.style.cssText+=';font:700 86px/1 Poppins;letter-spacing:-2px;color:#183b32';at(fl,120,520);
+const pieces=[['loss&nbsp;=','c_loss_eq','#183b32'],['&nbsp;−&thinsp;ln','c_minus_ln','#a65647'],['&nbsp;p(','c_minus_ln','#183b32'],['&nbsp;correct','c_correct','#26765d'],['&nbsp;|&nbsp;context','c_given','#557eaf'],['&nbsp;)','c_given','#183b32']];
+const pe=pieces.map(([h,c,col])=>{const s=document.createElement('span');s.innerHTML=h;s.style.color=col;s.style.opacity=0;fl.appendChild(s);return [s,c]});
+F.push(fl);
+const fn1=el('div','pill b-mint','');fn1.innerHTML='<b>correct</b> = the amino acid we hid';at(fn1,120,640);fn1.style.cssText+=';font-size:32px;padding:14px 30px;background:#dff2ec;color:#183b32';
+const fn2=el('div','pill b-lav','');fn2.innerHTML='<b>| context</b> = “given” the visible sequence around it';at(fn2,800,640);fn2.style.cssText+=';font-size:32px;padding:14px 30px;background:#fff;color:#183b32';
+F.push(fn1,fn2);
+// ---------- Phase 3 : curve ----------
+const PX0=250,PX1=1170,PY0=650,U=88;      // p axis, baseline, px per unit
+function X(p){return PX0+p*(PX1-PX0)}
+function Y(v){return PY0-v*U}
+const G=svg('svg',{width:1920,height:1080,style:'position:absolute;left:0;top:0'},S);
+const gaxis=svg('g',{},G);
+svg('line',{x1:PX0,y1:PY0,x2:PX1+20,y2:PY0,stroke:'#60716a','stroke-width':3},gaxis);
+svg('line',{x1:PX0,y1:Y(3.2),x2:PX0,y2:Y(-3.2),stroke:'#60716a','stroke-width':3},gaxis);
+[0,0.25,0.5,0.75,1].forEach(p=>{svg('line',{x1:X(p),y1:PY0-8,x2:X(p),y2:PY0+8,stroke:'#60716a','stroke-width':3},gaxis);const t=svg('text',{x:X(p),y:PY0+(p==0?-18:42),'text-anchor':'middle','font-size':26,fill:'#60716a'},gaxis);t.textContent=p===0?'':p});
+[-3,-2,-1,1,2,3].forEach(v=>{svg('line',{x1:PX0-8,y1:Y(v),x2:PX0+8,y2:Y(v),stroke:'#60716a','stroke-width':3},gaxis);const t=svg('text',{x:PX0-18,y:Y(v)+9,'text-anchor':'end','font-size':26,fill:'#60716a'},gaxis);t.textContent=v});
+const xl=svg('text',{x:(PX0+PX1)/2,y:PY0+300,'text-anchor':'middle','font-size':30,fill:'#183b32','font-weight':500},gaxis);xl.textContent='probability given to the correct amino acid, p';
+const yl=svg('text',{x:150,y:(Y(3)+Y(-3))/2,'text-anchor':'middle','font-size':28,fill:'#183b32','font-weight':500,transform:`rotate(-90 150 ${(Y(3)+Y(-3))/2})`},gaxis);yl.textContent='value';
+// zero line label
+// curve paths (computed each frame for the flip)
+const NP=90;
+const curveLn=svg('path',{fill:'none',stroke:'#557eaf','stroke-width':9,'stroke-linecap':'round','stroke-linejoin':'round'},G);
+const curvePen=svg('path',{fill:'none',stroke:'#b76d66','stroke-width':9,'stroke-linecap':'round','stroke-linejoin':'round'},G);
+function pathFor(sign,upto){let d='';for(let i=0;i<=NP;i++){const f=i/NP;if(f>upto)break;const p=0.05+f*0.95;const v=sign*Math.log(p);d+=(d?'L':'M')+X(p).toFixed(1)+' '+Y(v).toFixed(1)}return d}
+const lnTag=el('div','t','ln(p)  is negative');lnTag.style.cssText+=';font:600 34px/1 Inter;color:#557eaf';at(lnTag,470,845);
+const penTag=el('div','t','penalty = −ln(p)');penTag.style.cssText+=';font:600 34px/1 Inter;color:#b76d66';at(penTag,420,420);
+const mk1=svg('circle',{r:17,fill:'#fff',stroke:'#26765d','stroke-width':7},G);
+const mkLine=svg('line',{stroke:'#26765d','stroke-width':3,'stroke-dasharray':'8 7'},G);
+const mkLab=el('div','t','');mkLab.style.cssText+=';font:700 34px/1.15 Inter;color:#183b32;background:#fff;border-radius:14px;padding:8px 16px;border:3px solid #d4ded9';
+// right callouts
+const R=[];
+function call(cls,html,y){const b=el('div','box '+cls,html);at(b,1240,y,600,150);b.style.cssText+=';padding:24px 30px;font:500 31px/1.3 Inter;color:#183b32;border-radius:26px';R.push(b);return b}
+const r1=call('b-blue','For 0 &lt; p &lt; 1, <b>ln(p)</b> is negative<br><span style="color:#60716a;font-size:27px">the curve sits below zero</span>',330);
+const r2=call('b-coral','The minus sign flips it up:<br><b>a positive penalty</b>',500);
+const r3=call('b-mint','p close to 1  →  penalty ≈ 0',670);
+const r4=call('b-amber','p very small  →  penalty large',840);
+// formula banner reused in phase 3
+const fban=el('div','t','');fban.style.cssText+=';font:700 54px/1 Poppins;letter-spacing:-1px;color:#183b32';fban.innerHTML='loss = <span style="color:#a65647">−&thinsp;ln</span> p(<span style="color:#26765d">correct</span> | <span style="color:#557eaf">context</span>)';at(fban,80,252);
+// preview marks for next scene
+const dots=[0.2,0.8].map((p,i)=>{const c=svg('circle',{r:13,fill:i?'#4d8f7e':'#b76d66'},G);return [c,p]});
+const dotLab=[0.2,0.8].map((p,i)=>{const e=el('div','t','p = '+p.toFixed(1));e.style.cssText+=';font:700 28px/1 Inter;color:'+(i?'#4d8f7e':'#b76d66');return e});
+
+return function update(t){
+  const c=C;
+  // Phase 1 reveals
+  const p1out=1-WB.out(t,c.c_return-0.4,0.8);   // everything in phase 1 fades before phase 2
+  show(tag,t,c.c_logrev-.3,.6);
+  show(k1,t,c.c_222-.3,.6);show(k1t,t,c.c_222-.3,.6);
+  discs.forEach((d,i)=>show(d,t,c.c_222+i*.28,.5,{scale:.7,dy:10}));
+  times.forEach((x,i)=>show(x,t,c.c_222+.15+i*.28,.4));
+  show(eq8,t,c.c_222+1.0,.5);
+  show(k2,t,c.c_pow-.2,.6);show(k2t,t,c.c_pow-.2,.6);show(pw,t,c.c_pow,.6,{scale:.8});show(pwn,t,c.c_copies-.2,.6);
+  show(k3,t,c.c_log2-.2,.6);show(k3t,t,c.c_log2-.2,.6);show(lg,t,c.c_ans3-1.2,.6,{scale:.85});show(lgn,t,c.c_ans3-1.0,.6);
+  const ar=WB.out(t,c.c_log2,1.0);rev.style.opacity=ar;rev.setAttribute('stroke-dasharray','1200');rev.setAttribute('stroke-dashoffset',(1-ar)*1200);
+  show(k4,t,c.c_ln-.2,.6);show(k4a,t,c.c_ln-.2,.6);show(k4b,t,c.c_ln+.3,.6);show(k4c,t,c.c_e-.4,.6);show(k4d,t,c.c_nohand-.2,.6);
+  const out1=WB.out(t,c.c_return-0.5,0.7);
+  P1.forEach(e=>{const base=parseFloat(e.style.opacity||1);e.style.opacity=base*(1-out1)});
+  rev.style.opacity=ar*(1-out1);
+  arrow.style.display=(out1>=1)?'none':'block';
+  // hidden-amino-acid strip
+  const sIn=WB.out(t,c.c_return,.7), sOut=WB.out(t,c.c_prob01-.3,.7);
+  stripEls.forEach((d,i)=>{d.style.opacity=sIn*(1-sOut);});
+  stripLab.style.opacity=sIn*(1-sOut);
+  // Phase 2 : formula
+  const fin=WB.out(t,c.c_formula-.3,.7), fout=WB.out(t,c.c_prob01-.3,.8);
+  const fo=fin*(1-fout);
+  fbox.style.opacity=fo;flabel.style.opacity=fo;fl.style.opacity=fo;
+  pe.forEach(([s,k],i)=>{const a=WB.out(t,c[k]+(i==2?0.25:0)+(i==5?0.4:0),.5);s.style.opacity=a});
+  fn1.style.opacity=WB.out(t,c.c_correct+.5,.6)*(1-fout);
+  fn2.style.opacity=WB.out(t,c.c_given_means,.6)*(1-fout);
+  // Phase 3
+  const g_in=WB.out(t,c.c_prob01-.2,.8);
+  G.style.opacity=g_in;fban.style.opacity=g_in;
+  // curve drawing: ln first (draw), flip to penalty
+  const draw=WB.lin(t,c.c_prob01+1.2,3.4);
+  const flip=WB.ramp(t,c.c_flip,1.8);   // 0 -> ln(p), 1 -> -ln(p)
+  const sign=mix(1,-1,flip);
+  curveLn.style.opacity=0;curvePen.style.opacity=0;
+  // single morphing curve: value = sign*ln(p), colour from blue to coral
+  let d='';for(let i=0;i<=NP;i++){const f=i/NP;if(f>draw)break;const p=0.05+f*0.95;const v=sign*Math.log(p);d+=(d?'L':'M')+X(p).toFixed(1)+' '+Y(v).toFixed(1)}
+  curveLn.setAttribute('d',d);curveLn.style.opacity=1;
+  const col=flip<.5?'#557eaf':'#b76d66';curveLn.setAttribute('stroke',col);
+  lnTag.style.opacity=WB.out(t,c.c_neg+.3,.6)*(1-flip);yl.textContent=flip<.5?'ln(p)':'penalty = −ln(p)';yl.setAttribute('fill',flip<.5?'#557eaf':'#b76d66');
+  penTag.style.opacity=0;
+  show(r1,t,c.c_neg-.2,.6);show(r2,t,c.c_flip+.4,.6);show(r3,t,c.c_p1+.2,.6);show(r4,t,c.c_p0+.2,.6);
+  // marker: appears after flip, slides to p=.97 then p=.05
+  const m_in=WB.out(t,c.c_p1-.2,.5);
+  const s1=WB.ramp(t,c.c_p1,1.3), s2=WB.ramp(t,c.c_p0,1.5);
+  let mp=mix(0.5,0.97,s1);mp=mix(mp,0.06,s2);
+  const mv=-Math.log(mp);
+  mk1.setAttribute('cx',X(mp));mk1.setAttribute('cy',Y(mv));mk1.style.opacity=m_in*(1-WB.out(t,c.c_next+.8,.6)*0);
+  mkLine.setAttribute('x1',X(mp));mkLine.setAttribute('x2',X(mp));mkLine.setAttribute('y1',PY0);mkLine.setAttribute('y2',Y(mv));mkLine.style.opacity=m_in;
+  mkLab.style.opacity=m_in;mkLab.innerHTML=`p = ${mp.toFixed(2)}<br><span style="color:#b76d66">penalty = ${mv.toFixed(2)}</span>`;
+  let lx,ly;if(mp>0.45){lx=X(mp)-250;ly=Y(mv)-128}else{lx=X(mp)+46;ly=Y(mv)-34}lx=clamp(lx,PX0+20,PX1-200);ly=clamp(ly,Y(3.1),PY0-150);
+  at(mkLab,lx,ly);
+  // preview dots
+  const dp=WB.out(t,c.c_next,.7);
+  dots.forEach(([cc,p],i)=>{cc.setAttribute('cx',X(p));cc.setAttribute('cy',Y(-Math.log(p)));cc.style.opacity=dp});
+  dotLab.forEach((e,i)=>{const p=[0.2,0.8][i];e.style.opacity=dp;at(e,X(p)+(i?-30:24),Y(-Math.log(p))+(i?-62:-8))});
+  // when dots shown, fade the marker/label
+  const mfade=1-dp;mk1.style.opacity=m_in*mfade;mkLine.style.opacity=m_in*mfade;mkLab.style.opacity=m_in*mfade;
+};
+});
+</script></body></html>

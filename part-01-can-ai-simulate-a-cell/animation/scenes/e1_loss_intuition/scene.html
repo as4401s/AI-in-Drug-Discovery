@@ -1,0 +1,95 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script>
+<script>
+SCENE_INIT({ep:1,part:3,partTitle:'How models learn',title:'Loss · a numerical learning signal',foot:'WhiskerBrief teaching example · concepts and worked mathematics'},(S,C)=>{
+const {el,at,show,out,ramp,mix,svg}=WB;const clamp=WB.clamp;
+const c=Object.assign({},C);for(const k in c)c[k]=Math.max(c[k],0.1);
+function box(cls,x,y,w,h){const b=el('div','box '+cls);at(b,x,y,w,h);return b}
+function tx(css,html,x,y){const e=el('div','t');e.style.cssText+=';'+css;e.innerHTML=html;at(e,x,y);return e}
+// ---- Row 1 : prediction + target -> loss rule -> number
+const R1=[];
+const predBox=box('b-blue',80,255,640,260);R1.push(predBox);
+const predLab=tx('font:500 28px/1 Inter;color:#60716a','Model prediction · illustrative probabilities',108,275);
+const AA=[['A',.10],['C',.20],['D',.15],['L',.30],['S',.15],['Y',.10]];
+const bars=AA.map(([a,p],i)=>{const h=p*520;const b=el('div','box');b.style.cssText+=`;width:62px;height:${h}px;border-radius:10px 10px 0 0;background:${a=='C'?'#4d8f7e':'#9fb9d9'};transform-origin:bottom`;at(b,120+i*98,480-h);
+  const l=el('div','t c',a);l.style.cssText+=';width:62px;font:700 26px/1 Poppins;color:#183b32';at(l,120+i*98,486);return [b,l,h,480]});
+const predCap=el('div','t','');
+const tgtBox=box('b-mint',800,255,300,260);
+const tgtL=tx('font:500 28px/1.2 Inter;color:#60716a','Target answer<br>(the hidden amino acid)',828,275);
+const tgtC=tx('font:700 150px/1 Poppins;color:#26765d','C',888,350);
+const ar1=svg('svg',{width:1920,height:1080,style:'position:absolute;left:0;top:0'},S);
+const defs=svg('defs',{},ar1);const mk=svg('marker',{id:'ah2',viewBox:'0 0 10 10',refX:8,refY:5,markerWidth:6,markerHeight:6,orient:'auto'},defs);svg('path',{d:'M0 0L10 5L0 10z',fill:'#26765d'},mk);
+const arrA=svg('path',{d:'M1120 385 L1190 385',stroke:'#26765d','stroke-width':6,fill:'none','marker-end':'url(#ah2)'},ar1);
+const lossBox=box('b-coral',1210,255,630,260);
+const lossT=tx('font:700 40px/1 Poppins;color:#183b32','LOSS',1242,280);
+const lossSub=tx('font:500 28px/1.25 Inter;color:#183b32','one number from prediction + target',1242,336);
+// meter
+const mx=1242,my=430,mw=560;
+const meter=box('',mx,my,mw,34);meter.style.cssText+=';background:linear-gradient(90deg,#4d8f7e,#d9c26e 55%,#b76d66);border-radius:17px';
+const mLo=tx('font:500 24px/1 Inter;color:#183b32','good fit',mx,my+44);
+const mHi=tx('font:500 24px/1 Inter;color:#183b32;text-align:right;width:200px','poor fit',mx+mw-200,my+44);
+const needle=el('div','box');needle.style.cssText+=';width:10px;height:56px;background:#183b32;border-radius:5px';
+const qmark=tx('font:700 56px/1 Poppins;color:#b76d66','?',1700,268);
+R1.push(tgtBox,tgtL,tgtC,lossBox,lossT,lossSub,meter,mLo,mHi,needle,qmark,predCap,predLab);
+// defining line
+const defPill=el('div','pill b-lav','The chosen loss defines what the model is encouraged to improve');at(defPill,80,540);defPill.style.cssText+=';font-size:30px;padding:14px 30px';
+// ---- Row 2 : two cases
+const cases=[];
+function caseCard(x,cls,head,pfill,pcol,plabel,penw,pen,penlab,pcolr){
+  const b=box(cls,x,605,850,225);const h=tx('font:600 31px/1.2 Inter;color:#183b32',head,x+30,625);
+  const bg=box('',x+30,690,400,44);bg.style.cssText+=';background:#fff;border:3px solid #cfd9e6;border-radius:12px';
+  const fl=box('',x+30,690,400*pfill,44);fl.style.cssText+=`;background:${pcol};border-radius:12px`;
+  const pl=tx('font:700 34px/1 Poppins;color:#183b32',plabel,x+30,754);
+  const arw=svg('path',{d:`M${x+455} 712 L${x+510} 712`,stroke:'#26765d','stroke-width':6,fill:'none','marker-end':'url(#ah2)'},ar1);
+  const pbg=box('',x+535,690,290,44);pbg.style.cssText+=';background:#fff;border:3px solid #ecd2cf;border-radius:12px';
+  const pf=box('',x+535,690,290*penw,44);pf.style.cssText+=`;background:${pcolr};border-radius:12px`;
+  const pe=tx('font:700 34px/1 Poppins;color:'+pcolr,penlab,x+535,754);
+  return {els:[b,h,bg,fl,pl,pbg,pf,pe],arw}
+}
+const c1=caseCard(80,'b-mint','Correct symbol gets <u>high</u> probability',.80,'#4d8f7e','p = 0.80',.10,0,'small penalty','#4d8f7e');
+const c2=caseCard(990,'b-coral','Correct symbol gets <u>very little</u>',.05,'#557eaf','p = 0.05',.95,0,'large penalty','#b76d66');
+// caution banner
+const caut=el('div','box b-amber');at(caut,80,848,1760,118);caut.innerHTML='<div style="padding:20px 36px;font:500 32px/1.3 Inter;color:#183b32"><b>A small loss on the training examples</b> does not establish biological usefulness<br>or performance on new data. <b>Check those separately.</b></div>';
+// ---- sketch of the unknown curve
+const sk=svg('svg',{width:1920,height:1080,style:'position:absolute;left:0;top:0'},S);
+const sx0=330,sx1=1130,sy0=840,sy1=300;
+svg('line',{x1:sx0,y1:sy0,x2:sx1,y2:sy0,stroke:'#60716a','stroke-width':4},sk);
+svg('line',{x1:sx0,y1:sy0,x2:sx0,y2:sy1-20,stroke:'#60716a','stroke-width':4},sk);
+const dash=svg('path',{d:`M${sx0+40} ${sy1} C ${sx0+140} ${sy1+200}, ${sx0+330} ${sy0-50}, ${sx1-20} ${sy0-12}`,fill:'none',stroke:'#b76d66','stroke-width':9,'stroke-dasharray':'4 20','stroke-linecap':'round'},sk);
+const xl=svg('text',{x:(sx0+sx1)/2,y:sy0+46,'text-anchor':'middle','font-size':30,fill:'#183b32','font-weight':500},sk);xl.textContent='probability given to the correct amino acid  →';
+const yl=svg('text',{x:sx0-26,y:sy1+30,'text-anchor':'end','font-size':30,fill:'#183b32','font-weight':500},sk);yl.textContent='penalty';
+const q=tx('font:700 120px/1 Poppins;color:#b76d66','?',640,470);
+const sq=tx('font:600 46px/1.25 Inter;color:#183b32','What simple formula<br>behaves like this?',1230,400);
+const sq2=tx('font:400 30px/1.3 Inter;color:#60716a','High probability → low penalty<br>Low probability → high penalty',1230,560);
+return function update(t){
+  const out2=WB.out(t,c.c_next-.2,.8);
+  show(predBox,t,.2,.6);show(predLab,t,.3,.6);bars.forEach(([b,l],i)=>{const p=WB.out(t,.5+i*.1,.5);b.style.opacity=p;b.style.transform=`scaleY(${p})`;show(l,t,.5+i*.1,.5,{dy:0})});show(predCap,t,1.2,.5);
+  show(tgtBox,t,1.0,.6);show(tgtL,t,1.0,.6);show(tgtC,t,1.4,.6,{scale:.7});
+  arrA.style.opacity=WB.out(t,2.0,.5);
+  show(lossBox,t,2.2,.6);show(lossT,t,2.2,.6);show(lossSub,t,2.4,.6);show(qmark,t,2.8,.5);
+  show(meter,t,c.c_poorly-.3,.6,{dy:0});show(mLo,t,c.c_poorly-.3,.6,{dy:0});show(mHi,t,c.c_poorly-.3,.6,{dy:0});
+  const nn=WB.out(t,c.c_poorly+.3,1.2);needle.style.opacity=nn;at(needle,mx+mw*mix(.05,.82,nn)-5,my-12);qmark.style.opacity=WB.out(t,2.8,.5)*(1-nn);
+  show(defPill,t,c.c_defines-.2,.6);
+  const fadeRow1=out2;R1.forEach(e=>{});
+  // cases
+  const A=c.c_low-0.9,B=c.c_high-0.9;
+  c1.els.forEach(e=>show(e,t,A,.6,{dy:10}));c2.els.forEach(e=>show(e,t,B,.6,{dy:10}));
+  c1.arw.style.opacity=WB.out(t,A+.3,.5);c2.arw.style.opacity=WB.out(t,B+.3,.5);
+  // growth of fills (animate widths)
+  const fills=[[c1.els[3],.8*400],[c1.els[6],.10*290],[c2.els[3],.05*400],[c2.els[6],.95*290]];
+  fills.forEach(([e,w],i)=>{const st=i<2?A+.4+(i%2)*.7:B+.4+(i%2)*.7;e.style.width=(w*WB.out(t,st,.8))+'px'});
+  show(caut,t,c.c_caution-.2,.6);
+  // transition to sketch: fade cases + banner + defPill (keep row 1 small? fade row1 too)
+  const k=1-out2;
+  c1.els.concat(c2.els,[caut,defPill]).forEach(e=>{e.style.opacity=parseFloat(e.style.opacity||1)*k});
+  c1.arw.style.opacity*=k;c2.arw.style.opacity*=k;
+  // row 1 shrinks away at the end
+  const r1k=1-WB.out(t,c.c_next+.6,.8);
+  [predBox,predLab,tgtBox,tgtL,tgtC,lossBox,lossT,lossSub,meter,mLo,mHi,needle,predCap].forEach(e=>{e.style.opacity=parseFloat(e.style.opacity||1)*r1k});
+  bars.forEach(([b,l])=>{b.style.opacity=parseFloat(b.style.opacity||1)*r1k;l.style.opacity=parseFloat(l.style.opacity||1)*r1k});
+  arrA.style.opacity*=r1k;
+  const sIn=WB.out(t,c.c_next+.3,.9);sk.style.opacity=sIn;q.style.opacity=WB.out(t,c.c_next+1.3,.7);sq.style.opacity=WB.out(t,c.c_next+1.0,.7);sq2.style.opacity=WB.out(t,c.c_next+2.4,.7);
+};
+});
+</script></body></html>

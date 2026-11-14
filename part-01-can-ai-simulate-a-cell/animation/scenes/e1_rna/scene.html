@@ -1,0 +1,124 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script>
+<script>
+SCENE_INIT({ep:1,part:1,partTitle:'Biology foundations',title:'RNA · working messages and other roles',foot:'Biology foundations · schematic illustrations · expression bars are illustrative, not measured data · National Human Genome Research Institute concepts'},(S,C)=>{
+const {out,ramp,lin,mix,track}=WB;const c=k=>Math.max(C[k],0.05);
+const X0=700;const win=(t,a,b,d)=>out(t,a,d||.5)*(1-out(t,b,.4));
+// left: RNA icon
+const lrna=ico('rna-strand',330,650,480);const lc=chip('RNA',330,930,'lav',{fs:36,px:34});
+const nk=[['c_rna','RNA','another molecule made from a sequence of <b>chemical building blocks</b>'],['c_single','A single strand','usually one strand; common base labels are <b>A, C, G and U</b>'],['c_transc','Transcription','cellular machinery uses <b>DNA as a template</b> to make RNA'],['c_notused','DNA is not used up','the <b>DNA information</b> is not used up in the process'],['c_mrna','Messenger RNA','carries information from a <b>protein-coding gene</b> toward the machinery that builds proteins'],['c_nuc','In our human cell','the RNA message is <b>processed</b> and can <b>leave the nucleus</b>; the nuclear DNA stays'],['c_other','Other RNAs','other types of RNA help <b>assemble proteins</b> or <b>regulate</b> how genes are used'],['c_more','More than a copy','RNA is more than a temporary copy with <b>only one job</b>'],['c_measure','Why measure RNA?','its <b>abundance</b> can help reveal which gene-related processes are active under particular conditions'],['c_clues','Clues, not everything','useful clues about a <b>cell state</b> — but <b>not</b> a complete measurement of every protein or activity'],['c_next','Next','let’s follow a <b>messenger RNA</b> into protein building']];
+const notes=NOTES({x:X0,y:226,w:1160,h:178,tfs:30,bfs:28,notes:nk.map((n,i)=>({a:c(n[0]),b:i<nk.length-1?c(nk[i+1][0])-.1:null,title:n[1],body:n[2]}))});
+const svB=svgLayer(S);arrowDefs(svB,'ar',GRN);arrowDefs(svB,'arp',LAV);
+// ---- step 1/2: beads -> letters ----
+const BX=i=>800+i*130,BY=590;
+const back=WB.svg('path',{d:`M${BX(0)} ${BY+48} L ${BX(7)+96} ${BY+48}`,stroke:'#8b75b0','stroke-width':10,'stroke-linecap':'round',fill:'none'},svB);
+const beads=[0,1,2,3,4,5,6,7].map(i=>{const e=box('',BX(i)+10,BY+10,76,76);const P=[PAL.blue,PAL.mint,PAL.lav,PAL.amber][i%4];e.style.cssText+=`;border-radius:50%;background:${P[0]};border:5px solid ${P[1]};opacity:0`;return e});
+const RL='ACGUUAGC';const letters=[...RL].map((l,i)=>tile(l,BX(i),BY,96));
+const b1=chip('a chain of chemical building blocks',1280,730,'lav',{fs:30});
+const b2=chip('usually a single strand',1280,730,'blue',{fs:30});
+const uc=chip('U — used in RNA in place of T',BX(3)+48+60,810,'lav',{fs:28});
+const ul=WB.svg('path',{d:`M${BX(3)+48} 700 L ${BX(3)+48} 786`,stroke:LAV,'stroke-width':6,'stroke-linecap':'round',fill:'none'},svB);
+// ---- step 3: transcription ----
+const TX=i=>775+i*128,R1=552,R2=672,R3=808,TW=84;
+const dnaTop=row('ACGTTAGC',R1),dnaBot=row('TGCAATCG',R2),rnaRow=row('ACGUUAGC',R3);
+function row(seq,y){return [...seq].map((l,i)=>tile(l,TX(i),y,TW))}
+const rungs=[0,1,2,3,4,5,6,7].map(i=>WB.svg('line',{x1:TX(i)+TW/2,x2:TX(i)+TW/2,y1:R1+TW,y2:R2,stroke:'#8aa59b','stroke-width':8,'stroke-linecap':'round'},svB));
+const conn=[0,1,2,3,4,5,6,7].map(i=>WB.svg('line',{x1:TX(i)+TW/2,x2:TX(i)+TW/2,y1:R2+TW,y2:R3,stroke:LAV,'stroke-width':6,'stroke-dasharray':'3 10','stroke-linecap':'round'},svB));
+const pol=ico('rna-polymerase',TX(0)+TW/2,474,150);
+const dnaL=ctx('font:700 26px Inter;color:'+MUT,'DNA',715,R1+22,80),dnaL2=ctx('font:700 26px Inter;color:'+MUT,'template',715,R2+22,110),rnaL=ctx('font:700 26px Inter;color:'+LAV,'new RNA',715,R3+22,110);
+const keep=box('',751,538,1060,244);keep.style.cssText+=';border:5px dashed #4d8f7e;border-radius:26px;background:rgba(77,143,126,.08);opacity:0';
+const kc=chip('✓  the DNA stays intact — its information is not used up',1280,925,'mint',{fs:30});
+const tcl=chip('RNA polymerase copies the template',1280,925,'amber',{fs:28});
+// ---- step 4: gene -> mRNA -> ribosome ----
+const gdna=ico('dna-helix',830,700,150);const gl=chip('protein-coding gene',830,900,'blue',{fs:28});
+const wavePts=[];for(let k=0;k<=60;k++){const x=960+k*10;wavePts.push([x,700+Math.sin(k*.5)*26])}
+const mpath=WB.svg('polyline',{points:wavePts.map(p=>p.join(',')).join(' '),fill:'none',stroke:'#8b75b0','stroke-width':11,'stroke-linecap':'round','stroke-linejoin':'round'},svB);
+const mhead=WB.svg('path',{d:'M1580 668 L 1620 700 L 1580 732 z',fill:LAV},svB);
+const mdots=[0,1,2].map(i=>WB.svg('circle',{r:12,fill:COR,stroke:'#fff','stroke-width':4},svB));
+const mc=chip('messenger RNA (mRNA)',1280,590,'lav',{fs:32});const mrib=ico('ribosome',1700,700,230);const rc=chip('protein-building machinery',1690,860,'mint',{fs:26});
+// ---- step 5: in the cell ----
+const cell=ico('animal-cell',1030,700,470);const nuc=cellAt(cell,'nuc'),er=cellAt(cell,'er'),rimR=cellAt(cell,'rim');
+const nh=ico('dna-helix',nuc[0]+5,nuc[1],70);
+const svC=svgLayer(S);const halo=WB.svg('circle',{r:42,fill:'rgba(255,255,255,.82)',stroke:'#8b75b0','stroke-width':6,opacity:0},svC);
+const tok1=ico('rna-strand',nuc[0],nuc[1],80),tok2=ico('capped-polyadenylated-mrna',nuc[0],nuc[1],100);
+const nr=WB.svg('circle',{fill:'none','stroke-width':8},svC),nr2=WB.svg('circle',{fill:'none','stroke-width':8},svC);
+const cp1=chip('① the message is processed',1560,560,'amber',{fs:28}),cp2=chip('② it can leave the nucleus',1560,680,'mint',{fs:28}),cp3=chip('③ the DNA stays in the nucleus',1560,800,'lav',{fs:28});
+const trail=WB.svg('path',{d:`M${nuc[0]} ${nuc[1]} Q ${nuc[0]+60} ${nuc[1]+90} ${er[0]-20} ${er[1]+10} L ${er[0]+60} ${er[1]+20}`,fill:'none',stroke:'#8b75b0','stroke-width':9,'stroke-linecap':'round',opacity:.6},svC);
+// ---- step 6/7: other RNAs ----
+const OX=[740,1118,1496],OW=350;
+const oc=[['b-mint','messenger RNA','carries the message','capped-polyadenylated-mrna',270],['b-lav','transfer RNA','helps assemble proteins','transfer-rna',250],['b-amber','regulatory RNA','helps control how genes are used','rna-strand',230]].map(([cls,tt,sub,ik,iw],i)=>({bx:box(cls,OX[i],540,OW,360),t1:ctx('font:700 30px/1.15 Poppins;color:'+INK,tt,OX[i]+OW/2,760,OW-24),t2:ctx('font:500 25px/1.25 Inter;color:'+INK,sub,OX[i]+OW/2,806,OW-40),ic:ico(ik,OX[i]+OW/2,640,iw)}));
+const nc=chip('✗  not just a temporary copy with one job',1280,945,'coral',{fs:30});
+// ---- step 8/9: bar chart ----
+const BAR0=800,BASE=860;const C1=[130,240,80,190,110],C2=[220,110,180,80,210];
+const axis=box('',760,BASE,1040,5);axis.style.cssText+=';background:#8aa59b;border-radius:3px;opacity:0';
+const yax=box('',760,500,5,BASE-500);yax.style.cssText+=';background:#8aa59b;border-radius:3px;opacity:0';
+const yl=ctx('font:600 24px Inter;color:'+MUT,'RNA abundance',700,470,300);
+const bars=[];for(let i=0;i<5;i++){[C1,C2].forEach((arr,k)=>{const b=box('',BAR0+i*190+k*74,BASE-arr[i],62,arr[i]);b.style.cssText+=`;background:${k?'#cf8a83':'#7f9fc9'};border-radius:10px 10px 0 0;transform-origin:bottom;opacity:0`;b._k=k;b._i=i;bars.push(b)})}
+const gl5=[0,1,2,3,4].map(i=>ctx('font:600 26px Inter;color:'+INK,'gene '+(i+1),BAR0+i*190+68,BASE+14,150));
+const lg1=chip('condition 1',1500,470,'blue',{fs:26}),lg2=chip('condition 2',1700,470,'coral',{fs:26});
+const mm=chip('researchers measure RNA',1280,455,'lav',{fs:30});
+const cl1=chip('✓  useful clues about a cell state',1060,960,'mint',{fs:28}),cl2=chip('✗  not every protein or activity',1560,960,'coral',{fs:28});
+// ---- step 10 ----
+const nmr=ico('capped-polyadenylated-mrna',1000,720,260),nrb=ico('ribosome',1560,720,290);
+const na=WB.svg('path',{d:'M1180 720 L 1380 720',stroke:'#8b75b0','stroke-width':9,fill:'none','stroke-linecap':'round','marker-end':'url(#arp)'},svB);const nd1=WB.svg('circle',{r:12,fill:COR},svB);
+const nl1=chip('messenger RNA',1000,900,'lav',{fs:30}),nl2=chip('next · protein building',1560,900,'mint',{fs:32});
+return function update(t){
+  const A=k=>c(k);
+  lrna.set({op:out(t,A('c_rna'),.9),s:.9+.1*out(t,A('c_rna'),.9),y:track(Math.sin(t*1.3)*8),r:track(Math.sin(t*.9)*2.5)});life(lc,t,A('c_rna')+.4,null);
+  notes.update(t);
+  // beads -> letters
+  const e1=A('c_transc')-.3;
+  const bk=out(t,A('c_rna')+.2,2.4);pathGrow(back,bk);back.style.opacity=bk*(1-out(t,e1,.4));
+  beads.forEach((b,i)=>{const pin=out(t,A('c_rna')+.3+.28*i,.4);const tr=out(t,A('c_single')+.1+.12*i,.35);b.style.opacity=pin*(1-tr)*(1-out(t,e1,.4));b.style.transform=`scale(${(.4+.6*pin).toFixed(3)})`});
+  letters.forEach((e,i)=>{const p=out(t,A('c_single')+.15+.2*i,.4);e.style.opacity=p*(1-out(t,e1,.4));e.style.transform=`scale(${(.6+.4*p).toFixed(3)})`});
+  life(b1,t,A('c_rna')+1.2,A('c_single')-.2,{dy:8});life(b2,t,A('c_single')+.5,e1,{dy:8});
+  life(uc,t,A('c_u')+.8,e1,{dy:8});const ulp=out(t,A('c_u')+.8,.5)*(1-out(t,e1,.4));ul.style.opacity=ulp;
+  // transcription
+  const ts=A('c_transc'),te=A('c_mrna')-.3,tEnd=ts+.5+6.1;
+  const prog=lin(t,ts+.7,6.0);
+  dnaTop.forEach((e,i)=>{const p=out(t,ts-.1+.08*i,.4);e.style.opacity=p*(1-out(t,te,.4));e.style.transform=`translateY(${((1-p)*-30).toFixed(1)}px)`});
+  dnaBot.forEach((e,i)=>{const p=out(t,ts+.1+.08*i,.4);e.style.opacity=p*(1-out(t,te,.4));e.style.transform=`translateY(${((1-p)*30).toFixed(1)}px)`});
+  rungs.forEach((r,i)=>{r.style.opacity=out(t,ts+.3+.08*i,.4)*(1-out(t,te,.4))});
+  [dnaL,dnaL2].forEach(e=>life(e,t,ts+.4,te,{dy:6}));life(rnaL,t,ts+1.2,te,{dy:6});
+  const px=TX(0)+TW/2+prog*7*128;pol.set({op:win(t,ts+.3,A('c_notused')+1.2,.5),x:px-(TX(0)+TW/2),y:track(Math.sin(t*5)*4)+(1-out(t,ts+.3,.5))*-30,s:1});
+  rnaRow.forEach((e,i)=>{const at=ts+.7+(i+.4)*(6.0/7);const p=out(t,at,.35);e.style.opacity=p*(1-out(t,te,.4));e.style.transform=`translateY(${((1-p)*-40).toFixed(1)}px) scale(${(.6+.4*p).toFixed(3)})`;const l=conn[i];l.style.opacity=p*(1-out(t,te,.4))});
+  life(tcl,t,ts+.8,A('c_notused')-.2,{dy:8});
+  keep.style.opacity=win(t,A('c_notused'),te,.5);life(kc,t,A('c_notused')+.3,te,{dy:8});
+  // mRNA story
+  const ms=A('c_mrna'),me=A('c_nuc')-.3;
+  gdna.set({op:win(t,ms,me,.5),s:.9+.1*out(t,ms,.5),y:track(Math.sin(t*1.4)*4)});life(gl,t,ms+.2,me,{dy:8});
+  const mp=out(t,ms+.8,2.4);mpath.setAttribute('stroke-dasharray',1000);mpath.setAttribute('stroke-dashoffset',1000*(1-mp)*(mpath.getTotalLength()/1000));mpath.style.opacity=win(t,ms+.8,me,.1);
+  mhead.style.opacity=win(t,ms+3.0,me,.3);life(mc,t,ms+1.0,me,{dy:8});
+  mrib.set({op:win(t,ms+3.0,me,.6),s:.8+.2*out(t,ms+3.0,.7),y:track(Math.sin(t*1.5)*5)});life(rc,t,ms+3.3,me,{dy:8});
+  mdots.forEach((d,i)=>{const q=track(((t-ms-1.4)*.32+i/3)%1);d.setAttribute('cx',960+600*q);d.setAttribute('cy',700+Math.sin((q*600)/10*.5)*26);d.style.opacity=out(t,ms+1.4,.4)*Math.sin(Math.PI*q)*win(t,ms,me,.1)});
+  // cell
+  const ns=A('c_nuc'),ne=A('c_other')-.3;
+  cell.set({op:win(t,ns-.2,ne,.6),s:.9+.1*out(t,ns-.2,.7),y:track(Math.sin(t*1.4)*4)});
+  nh.set({op:win(t,ns+.4,ne,.5),s:.6+.4*out(t,ns+.4,.5)});
+  const pr=out(t,A('c_proc'),.6);
+  const move=out(t,A('c_leave')-.3,2.6);const tp=trail.getPointAtLength(trail.getTotalLength()*move);
+  const hop=win(t,A('c_leave')-.3,ne,.4);halo.setAttribute('cx',tp.x);halo.setAttribute('cy',tp.y);halo.style.opacity=hop;
+  tok1.set({op:win(t,ns+.8,A('c_proc')+.4,.4)*(1-pr),x:tp.x-nuc[0],y:tp.y-nuc[1]});
+  tok2.set({op:win(t,A('c_proc')+.2,ne,.4),x:tp.x-nuc[0],y:tp.y-nuc[1],s:1});
+  pathGrow(trail,move);trail.style.opacity=win(t,A('c_leave')-.3,ne,.2)*.6;
+  pulseRing(nr,nuc[0],nuc[1],t,A('c_stay'),1.6,24,80,'#8b75b0');pulseRing(nr2,nuc[0],nuc[1],t,A('c_proc'),1.4,20,70,'#e0a43a');
+  life(cp1,t,A('c_proc'),ne,{dy:8,dx:30});life(cp2,t,A('c_leave'),ne,{dy:8,dx:30});life(cp3,t,A('c_stay'),ne,{dy:8,dx:30});
+  // other RNAs
+  const os=A('c_other'),oe=A('c_measure')-.3;const ot=[os,A('c_assemble')-.2,A('c_regul')-.2];
+  oc.forEach((o,i)=>{life(o.bx,t,ot[i],oe,{dy:20});life(o.t1,t,ot[i]+.2,oe,{dy:8});life(o.t2,t,ot[i]+.35,oe,{dy:8});o.ic.set({op:win(t,ot[i]+.15,oe,.5),s:.8+.2*out(t,ot[i]+.15,.6),y:track(Math.sin(t*1.5+i)*6)})});
+  life(nc,t,A('c_more')+.2,oe,{dy:8});
+  // bar chart
+  const ms2=A('c_measure'),me2=A('c_next')-.3;
+  [axis,yax].forEach(e=>{e.style.opacity=win(t,ms2+.5,me2,.5)});life(yl,t,ms2+.6,me2,{dy:6});life(mm,t,ms2+.1,A('c_abund')-.2,{dy:8});
+  gl5.forEach((e,i)=>life(e,t,A('c_abund')+.2+.15*i,me2,{dy:6}));life(lg1,t,A('c_abund')+.5,me2,{dy:6});life(lg2,t,A('c_abund')+1.0,me2,{dy:6});
+  bars.forEach(b=>{const a=A('c_abund')+.2+b._i*.28+b._k*.9;const g=out(t,a,.7);const wob=1+.03*track(Math.sin(t*2.2+b._i*1.3+b._k)*1)*g;b.style.opacity=g*(1-out(t,me2,.4));b.style.transform=`scaleY(${(g*wob).toFixed(3)})`});
+  life(cl1,t,A('c_clues')+.2,me2,{dy:8});life(cl2,t,A('c_notall'),me2,{dy:8});
+  // next
+  const nx=A('c_next');
+  nmr.set({op:win(t,nx,9999,.6),s:.85+.15*out(t,nx,.7),y:track(Math.sin(t*1.4)*4)});nrb.set({op:win(t,nx+1.4,9999,.6),s:.85+.15*out(t,nx+1.4,.7),y:track(Math.sin(t*1.4+1)*4)});
+  pathGrow(na,out(t,nx+.8,.7));na.style.opacity=win(t,nx+.8,9999,.1);
+  const dp=track(((t-nx-1.6)*.45)%1);nd1.setAttribute('cx',1180+200*dp);nd1.setAttribute('cy',720);nd1.style.opacity=out(t,nx+1.6,.4)*Math.sin(Math.PI*dp);
+  life(nl1,t,nx+.3,null,{dy:8});life(nl2,t,nx+2.0,null,{dy:8});
+};});
+</script></body></html>

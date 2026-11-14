@@ -1,0 +1,116 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../lib/codecard.js"></script>
+<script>
+SCENE_INIT({ep:1,part:4,partTitle:'The real ESM-2 experiment',title:'From letters to model tensors',foot:'Actual local ESM-2 t6_8M run · frozen checkpoint · short sequence windows · source SHA-256 recorded with the run'},(S,C)=>{
+const {el,at,show,out,mix,svg,lin}=WB;const K=C;const INK='#183b32',MUT='#60716a';
+function box(cls,x,y,w,h){const b=el('div','box '+cls);at(b,x,y,w,h);return b}
+function tx(css,html,x,y,w){const e=el('div','t');e.style.cssText+=';'+css;e.innerHTML=html;at(e,x,y,w);return e}
+const code=CODECARD(S,{x:1210,y:222,w:630,h:520,title:'esm2_demo.py · analyze_window',sub:'real source lines 71–75',lines:K.code,fs:20,lh:30,cpl:46,measure:true});
+const nBox=box('b-amber',1210,764,630,200);
+const NOTES=[['Letters become the integer IDs the model expects.',K.c_tok,K.c_special-.3],['It adds a start token <b>&lt;cls&gt;</b> and an end token <b>&lt;eos&gt;</b>.',K.c_special-.2,K.c_count-.3],
+ ['61 amino acids + 2 special tokens = <b>63</b> token positions.',K.c_count-.2,K.c_320-.3],['Each position is described by <b>320 numbers</b>.',K.c_320-.2,K.c_tensor-.3],
+ ['Those numbers are stored in a <b>tensor</b>: an array with one or more dimensions.',K.c_tensor-.2,K.c_d1-.3],['Three dimensions: sequences · positions · features.',K.c_d1-.2,K.c_rm-.3],
+ ['Drop &lt;cls&gt; and &lt;eos&gt; to get one row per amino acid.',K.c_rm-.2,K.c_chk-.3],['Check: 61 rows ↔ 61 amino acids ✓',K.c_chk-.2,999]];
+const nts=NOTES.map(([h,a,b])=>{const e=tx('font:600 29px/1.3 Inter;color:'+INK+';white-space:normal',h,1236,792,580);return {e,a,b}});
+// ---------- phase 1 : token strip
+const P1=[];const r1=e=>{P1.push(e);return e};
+const SEQ=K.seq;const SX=100,CWD=80;
+const strip=[['<cls>',0,'sp'],...[...SEQ.slice(0,7)].map(a=>[a,K.ids[a],'aa']),['⋯','','dot'],...[...SEQ.slice(-3)].map(a=>[a,K.ids[a],'aa']),['<eos>',2,'sp']];
+const cellsP=strip.map(([a,id,k],i)=>{const x=SX+i*CWD;const isSp=k=='sp';
+  const c=r1(box(isSp?'b-coral':(k=='dot'?'':'b-blue'),x,300,CWD-6,74));c.style.cssText+=`;border-radius:14px;font:700 ${isSp?24:34}px/74px Poppins;text-align:center;color:${INK}`+(isSp?';border:3px solid #b76d66':'');c.textContent=a;
+  const d=r1(box(k=='dot'?'':'',x,420,CWD-6,66));d.style.cssText+=`;border-radius:14px;background:${isSp?'#fff':(k=='dot'?'transparent':'#f1f6fb')};border:${k=='dot'?'0':'3px solid '+(isSp?'#b76d66':'#9fb9d9')};font:600 30px/60px Inter;text-align:center;color:${INK}`;d.textContent=id;
+  return {c,d,isSp,k,i}});
+const lab1=r1(tx('font:600 26px/1 Inter;color:'+MUT,'amino-acid symbols',SX,256));const lab2=r1(tx('font:600 26px/1 Inter;color:'+MUT,'integer identifiers (token IDs)',SX,388+0));lab2.style.top='392px';lab2.style.display='none';
+const tk=r1(tx('font:700 26px/1 Poppins;color:#26765d','tokenizer ↓',SX+420,382));
+const idsHdr=r1(tx('font:600 26px/1 Inter;color:'+MUT,'token IDs',SX,386));
+const brk=r1(box('',SX+CWD,500,11*CWD-6,22));// bracket under letters (61 aa)
+brk.style.cssText+=';border:4px solid #4d8f7e;border-top:0;border-radius:0 0 12px 12px;height:22px;box-sizing:border-box';
+const eq=r1(tx('font:700 56px/1 Poppins;color:'+INK,'61 + 2 = <span style="color:#b76d66">63</span>',SX,552));
+const eqS=r1(tx('font:500 29px/1.3 Inter;color:'+MUT,'amino acids + start/end tokens = token positions',SX,626));
+// ---------- phase 2a : one token -> 320 numbers
+const P2=[];const r2=e=>{P2.push(e);return e};
+const one=r2(box('b-blue',100,300,110,90));one.style.cssText+=';border-radius:16px;font:700 40px/90px Poppins;text-align:center;color:'+INK;one.textContent='H';
+const oneL=r2(tx('font:500 24px/1.2 Inter;color:'+MUT+';text-align:center;width:130px','one token<br>position',90,398));
+const arr=r2(tx('font:700 56px/1 Inter;color:#26765d','→',226,318));
+function mb(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rnd=mb(5);const nums=[...Array(12)].map(()=>(Math.round((rnd()*1.2-.6)*100)/100));
+const NC=r2(box('',300,300,12*58+60,90));
+const numC=nums.map((v,i)=>{const c=r2(box('',300+i*58,300,54,90));const tt=Math.min(1,Math.abs(v)/.6);const col=v<0?[150,190,235]:[240,170,163];const m=col.map(q=>Math.round(255+(q-255)*(.2+.7*tt)));c.style.cssText+=`;background:rgb(${m});border-radius:10px;font:500 21px/90px Inter;text-align:center;color:${INK}`;c.textContent=(v<0?'−':'')+Math.abs(v).toFixed(2).replace('0.','.');return c});
+const dots2=r2(tx('font:700 40px/90px Inter;color:'+MUT,'⋯',300+12*58+4,300));
+const br320=r2(box('',300,402,12*58+60,0));br320.style.cssText+=';border-top:5px solid #4d8f7e;height:0;border-radius:3px';
+const n320=r2(tx('font:700 42px/1 Poppins;color:#26765d','320 numbers',300,420));
+const n320s=r2(tx('font:400 26px/1 Inter;color:'+MUT,'illustrative values',300+330,432));
+// ---------- phase 2b : tensor block
+const P3=[];const r3=e=>{P3.push(e);return e};
+const BX=300,BY=470,BW=500,BH=370,DD=34;
+const cv=r3(document.createElement('canvas'));cv.width=320;cv.height=63;cv.style.cssText=`position:absolute;left:${BX}px;top:${BY}px;width:${BW}px;height:${BH}px;image-rendering:pixelated;border:3px solid ${INK};border-radius:6px`;S.appendChild(cv);
+{const g=cv.getContext('2d');const r=mb(21);const base=[];for(let y=0;y<63;y++){base.push([]);for(let x=0;x<320;x++){const v=Math.sin(x/17+y/9)*.35+Math.sin(x/5.3-y/3.1)*.25+(r()-.5)*.7;base[y].push(v)}}
+ for(let y=0;y<63;y++)for(let x=0;x<320;x++){let v=base[y][x];let col;if(y==0||y==62){col=[240,190,184]}else{const tt=Math.min(1,Math.abs(v)/.9);const c=v<0?[150,190,235]:[240,170,163];col=c.map(q=>Math.round(255+(q-255)*(.15+.8*tt)))}g.fillStyle=`rgb(${col})`;g.fillRect(x,y,1,1)}}
+const topF=r3(box('',BX+3,BY-DD,BW,DD));topF.style.cssText+=`;background:#dbe6f2;border:3px solid ${INK};border-bottom:0;border-radius:6px 6px 0 0;transform:skewX(-45deg);transform-origin:bottom left`;
+const sideF=r3(box('',BX+BW+3,BY-DD+4,DD,BH));sideF.style.cssText+=`;background:#c4d4e6;border:3px solid ${INK};border-left:0;transform:skewY(-45deg);transform-origin:top left`;
+const sh=r3(tx('font:700 52px/1 "DejaVu Sans Mono",monospace;color:'+INK,'<span style="color:#8b75b0">1</span>, <span style="color:#557eaf">63</span>, <span style="color:#26765d">320</span>',BX,BY-132));const shL=r3(tx('font:700 52px/1 "DejaVu Sans Mono",monospace;color:'+INK,'[',BX-34,BY-134));const shR=r3(tx('font:700 52px/1 "DejaVu Sans Mono",monospace;color:'+INK,']',BX+346,BY-134));
+const shC=r3(tx('font:500 24px/1 Inter;color:'+MUT,'tensor shape',BX+390,BY-118));
+const dimD=r3(tx('font:700 29px/1.2 Inter;color:#8b75b0','1st: sequences<br><span style="font:700 40px Poppins">1</span>',BX+BW+54,BY-96));
+const dimP=r3(tx('font:700 29px/1.2 Inter;color:#557eaf;text-align:right;width:180px;white-space:normal','2nd: token<br>positions',BX-216,BY+130));
+const dimPn=r3(tx('font:700 40px/1 Poppins;color:#557eaf;text-align:right;width:180px','63',BX-216,BY+196));
+const dimPn2=r3(tx('font:700 40px/1 Poppins;color:#26765d;text-align:right;width:180px','61',BX-216,BY+196));
+const dimF=r3(tx('font:700 29px/1.2 Inter;color:#26765d;text-align:center;width:500px','3rd: features  <span style="font:700 40px Poppins">320</span>',BX,BY+BH+14));
+const arP=r3(box('',BX-26,BY+4,6,BH-8));arP.style.cssText+=';background:#557eaf;border-radius:3px';
+const arF=r3(box('',BX+4,BY+BH+8,BW-8,6));arF.style.cssText+=';background:#26765d;border-radius:3px';
+const arD=r3(box('',BX+BW+14,BY-DD+4,6,28));arD.style.cssText+=';background:#8b75b0;border-radius:3px';
+const dnote=r3(tx('font:500 24px/1.2 Inter;color:'+MUT,'illustrative values',BX+BW-190,BY+BH+72));
+// glyph trio (what is a tensor): stacked column right of the tensor
+const P4=[];const r4=e=>{P4.push(e);return e};
+const gx=880;
+const g1=r4(box('',gx,330,130,28));g1.style.cssText+=';background:repeating-linear-gradient(90deg,#9fb9d9 0 22px,#fff 22px 26px);border-radius:6px;border:3px solid #557eaf;box-sizing:border-box';
+const g1l=r4(tx('font:600 26px/1.2 Inter;color:'+INK,'1 dimension<br><span style="font-weight:400;color:'+MUT+'">a list</span>',gx+150,310,170));
+const g2=r4(box('',gx,462,110,110));g2.style.cssText+=';background:repeating-linear-gradient(90deg,transparent 0 26px,#fff 26px 30px),repeating-linear-gradient(#f0aaa3 0 26px,#fff 26px 30px);border-radius:6px;border:3px solid #b76d66;box-sizing:border-box';
+const g2l=r4(tx('font:600 26px/1.2 Inter;color:'+INK,'2 dimensions<br><span style="font-weight:400;color:'+MUT+'">a table</span>',gx+150,490,170));
+const g3b=r4(box('',gx+28,640,90,90));g3b.style.cssText+=';background:#dff2ec;border:3px solid #26765d;border-radius:6px;box-sizing:border-box';
+const g3=r4(box('',gx,668,90,90));g3.style.cssText+=';background:#c9e5da;border:3px solid #26765d;border-radius:6px;box-sizing:border-box';
+const g3l=r4(tx('font:600 26px/1.2 Inter;color:'+INK,'3 dimensions<br><span style="font-weight:400;color:'+MUT+'">a block</span>',gx+150,672,170));
+// removal + result
+const P5=[];const r5=e=>{P5.push(e);return e};
+const rm1=r5(tx('font:700 26px/1 Poppins;color:#a65647;background:#fff;border:3px solid #b76d66;border-radius:12px;padding:6px 12px','&lt;cls&gt; row',BX+BW+54,BY+2));
+const rm2=r5(tx('font:700 26px/1 Poppins;color:#a65647;background:#fff;border:3px solid #b76d66;border-radius:12px;padding:6px 12px','&lt;eos&gt; row',BX+BW+54,BY+BH-44));
+const res=r5(box('b-mint',BX+BW+54,BY+110,300,150));const resT=r5(tx('font:700 56px/1 Poppins;color:'+INK,'61 × 320',BX+BW+78,BY+130));const resS=r5(tx('font:400 26px/1.3 Inter;color:'+INK,'one row per<br>amino acid',BX+BW+78,BY+204));
+const ok=r5(tx('font:700 40px/74px Poppins;color:#fff;background:#26765d;border-radius:50%;width:74px;height:74px;text-align:center','✓',BX+BW+54+300-30,BY+110-44));
+const RH=BH/63;
+const stT=r5(box('',BX,BY,BW,RH+2));stT.style.cssText+=';border:3px solid #b76d66;box-sizing:border-box;border-radius:3px';
+const stB=r5(box('',BX,BY+BH-RH-2,BW,RH+2));stB.style.cssText+=';border:3px solid #b76d66;box-sizing:border-box;border-radius:3px';
+const cT=r5(box('',BX+BW+6,BY+RH/2+10,44,3));cT.style.cssText+=';background:#b76d66';
+const cB=r5(box('',BX+BW+6,BY+BH-RH/2-12,44,3));cB.style.cssText+=';background:#b76d66';
+const wT=r5(box('',BX,BY,BW,RH+2));wT.style.cssText+=';background:#fff;border:3px dashed #b76d66;box-sizing:border-box;border-radius:3px';
+const wB=r5(box('',BX,BY+BH-RH-2,BW,RH+2));wB.style.cssText+=';background:#fff;border:3px dashed #b76d66;box-sizing:border-box;border-radius:3px';
+return function update(t){
+  code.update(t,out(t,K.c_tok,.7));
+  show(nBox,t,K.c_tok-.2,.6);nts.forEach(n=>{const a=out(t,n.a,.4)*(1-out(t,n.b,.4));n.e.style.opacity=a;n.e.style.transform=`translateY(${((1-a)*8).toFixed(1)}px)`});
+  // phase 1
+  const f1=1-out(t,K.c_320-.4,.6);
+  show(lab1,t,K.c_tok,.6);
+  cellsP.forEach(({c,d,isSp,k,i})=>{const sa=isSp?K.c_special:K.c_tok+.1+i*.08;show(c,t,sa,.5,{dy:isSp?0:8,scale:isSp?.6:null});const ia=isSp?K.c_special+.3:K.c_ids+i*.08;show(d,t,ia,.5,{dy:8})});
+  show(tk,t,K.c_ids,.6);show(idsHdr,t,K.c_ids+.4,.6);
+  show(brk,t,K.c_count,.6,{dy:0});show(eq,t,K.c_63-.3,.6);show(eqS,t,K.c_63+.2,.6);
+  P1.forEach(e=>{e.style.opacity=parseFloat(e.style.opacity||0)*f1});
+  // phase 2a
+  const f2=1-out(t,K.c_tensor-.2,.6);
+  [one,oneL,arr].forEach(e=>{show(e,t,K.c_320-.3,.6)});
+  numC.forEach((c,i)=>show(c,t,K.c_320+.2+i*.05,.4,{dy:6}));show(dots2,t,K.c_320+.8,.5);show(br320,t,K.c_320+.9,.5,{dy:0});show(n320,t,K.c_320+1.0,.6);show(n320s,t,K.c_320+1.2,.5);
+  [one,oneL,arr,dots2,br320,n320,n320s,NC].concat(numC).forEach(e=>{e.style.opacity=parseFloat(e.style.opacity||0)*f2});
+  // phase 2b tensor
+  const f3=1;
+  [cv,topF,sideF].forEach(e=>show(e,t,K.c_tensor,.8,{dy:12}));
+  show(sh,t,K.c_shape,.6);show(shL,t,K.c_shape,.6);show(shR,t,K.c_shape,.6);show(shC,t,K.c_shape+.3,.6);
+  [g1,g1l,g2,g2l,g3,g3b,g3l].forEach((e,i)=>{show(e,t,K.c_def+.1+Math.floor(i/2)*.0+(i>=4?1.2:(i>=2?.6:0)),.6);e.style.opacity=parseFloat(e.style.opacity||0)*(1-out(t,K.c_d1-.4,.5))});
+  show(dnote,t,K.c_tensor+.6,.6);show(dimD,t,K.c_d1,.6);show(arD,t,K.c_d1,.5,{dy:0});show(dimP,t,K.c_d2,.6);show(dimPn,t,K.c_d2,.6);show(arP,t,K.c_d2,.5,{dy:0});show(dimF,t,K.c_d3,.6);show(arF,t,K.c_d3,.5,{dy:0});
+  // dim notes dim down once the shape is shown (keep visible)
+  // removal
+  const rmP=out(t,K.c_rm,.7);
+  show(rm1,t,K.c_rm-.2,.6);show(rm2,t,K.c_rm-.2,.6);show(stT,t,K.c_rm-.2,.5,{dy:0});show(stB,t,K.c_rm-.2,.5,{dy:0});show(cT,t,K.c_rm,.4,{dy:0});show(cB,t,K.c_rm,.4,{dy:0});show(wT,t,K.c_61-.4,.6,{dy:0});show(wB,t,K.c_61-.4,.6,{dy:0});dimPn.style.opacity=out(t,K.c_d2,.6)*(1-out(t,K.c_61,.5));show(dimPn2,t,K.c_61,.6,{dy:0});show(res,t,K.c_61-.2,.6);show(resT,t,K.c_61-.2,.6);show(resS,t,K.c_61,.6);show(ok,t,K.c_chk,.5,{scale:.4,dy:0});
+  // blank out special rows after removal: dim canvas rows by overlay
+  cv.style.filter=`none`;
+  return 0;
+};
+});
+</script></body></html>

@@ -1,0 +1,74 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets2/data2.js"></script><script src="../../lib/ep2.js"></script>
+<script>
+SCENE_INIT({ep:2,part:3,partTitle:'A real pixels-to-measurements experiment',title:'Read the real output and its limits',foot:'Allen Institute for Cell Science / scikit-image · CC0 · Actual saved Python run (results.json, nuclear_region_measurements.csv) · candidate regions, not validated cell counts'},(S,K)=>{
+const {out,show,mix}=WB;
+const IM={x:100,y:240,s:480};const k=IM.s/256;
+const pl=PLANE(S,IM.x,IM.y,IM.s);
+const cap=tx('font:600 24px/1.25 Inter;color:'+MUT+';white-space:normal','real nucleus plane (index 30) · raw 16-bit values',IM.x,IM.y+IM.s+16,540);
+// region 11 bbox
+let y0=999,y1=0,x0=999,x1=0;for(let y=0;y<256;y++)for(let x=0;x<256;x++){if(D.LAB[y*256+x]===11){y0=Math.min(y0,y);y1=Math.max(y1,y);x0=Math.min(x0,x);x1=Math.max(x1,x)}}
+const cw=x1-x0+1,ch=y1-y0+1;
+const rb=box('',IM.x+3+x0*k-4,IM.y+3+y0*k-4,cw*k+8,ch*k+8);rb.style.cssText+=';border:4px solid #fff;box-shadow:0 0 0 3px #183b32;border-radius:8px;box-sizing:border-box';
+const rbL=tx('font:700 22px/1 Poppins;color:#fff;background:#183b32;border-radius:10px;padding:5px 12px;white-space:nowrap','region 11',IM.x+3+x0*k-6,IM.y+3+y0*k-38);
+// funnel rows
+const rows=[[K.c_otsu,'b-lav','Otsu threshold','<b>10,432</b> raw units',INK],[K.c_92,'b-blue','connected regions above T','<b>92</b>',INK],[K.c_70,'b-coral','− smaller than 100 px','<b>70</b> removed','#a65647'],[K.c_10,'b-coral','− touching the image border','<b>10</b> removed','#a65647'],[K.c_12,'b-mint','= retained 2-D regions','<b>12</b>',GRN],[K.c_not,'b-amber','12 regions under this method','<b>not</b> 12 validated cells in the whole stack',INK]].map(([a,cls,l1,l2,col],i)=>{
+  const h=i==5?84:76;const y=262+i*86;const b=box(cls,640,y,590,h);const t1=tx(`font:600 23px/1.2 Inter;color:${MUT}`,l1,664,y+10,540);const t2=tx(`font:600 33px/1.2 Poppins;color:${col};white-space:nowrap`,l2,664,y+(i==5?36:34),540);if(i==5){t2.style.font='600 26px/1.25 Inter';t2.style.whiteSpace='normal'}
+  return {b,t1,t2,a}});
+// measurement panel
+const zs=9;const zc=document.createElement('canvas');zc.width=cw;zc.height=ch;zc.style.cssText=`position:absolute;left:640px;top:262px;width:${cw*zs}px;height:${ch*zs}px;image-rendering:pixelated;border:3px solid ${INK};border-radius:8px`;S.appendChild(zc);
+{const g=zc.getContext('2d');const id=g.createImageData(cw,ch);for(let y=0;y<ch;y++)for(let x=0;x<cw;x++){const i=(y0+y)*256+x0+x;const v=D.P[i];let gr=Math.max(0,Math.min(1,(v-D.LO)/(D.HI-D.LO)))*255;let r=gr*.5+30,gg=gr*.5+30,b=gr*.5+30;if(D.LAB[i]===11){r=r*.35+38*.65+gr*.1;gg=gg*.35+170*.65+gr*.1;b=b*.35+120*.65+gr*.1}const o=(y*cw+x)*4;id.data[o]=r;id.data[o+1]=gg;id.data[o+2]=b;id.data[o+3]=255}g.putImageData(id,0,0)}
+const zcap=tx('display:none','',0,0,10);
+const e1=tx('font:700 44px/1 Poppins;color:'+INK+';white-space:nowrap','1,346 <span style="font-size:26px;font-weight:600">pixels</span>',640,262+ch*zs+22);
+const e2=tx('font:700 36px/1 Poppins;color:'+BLU+';white-space:nowrap','× 0.26 µm × 0.26 µm',640,262+ch*zs+84);
+const e3=tx('font:700 48px/1 Poppins;color:'+GRN+';white-space:nowrap','= 90.99 µm²',640,262+ch*zs+138);
+const e3s=tx('display:none','',0,0,10);
+const e4=box('b-lav',640,262+ch*zs+196,590,64);const e4t=tx('font:700 28px/64px Inter;color:'+INK+';white-space:nowrap','mean raw intensity ≈ <span style="color:'+GRN+'">13,530.7</span> a.u.',664,262+ch*zs+196,560);
+// provenance card
+const pv=box('b-lav',1260,666,580,214);const pvT=tx('font:700 24px/1 Inter;color:'+MUT,'Where every number comes from',1288,688,520);
+const pvL=[[K.c_read,'plane','index 30 · z = 8.7 µm'],[K.c_read+.3,'channel','0 · nuclei'],[K.c_otsu,'mask','Otsu T = 10,432 · 8-connected'],[K.c_rm,'rule','area ≥ 100 px · no border contact']].map(([a,l,v],i)=>{const e=tx('font:600 24px/1.2 Inter;color:'+INK+';white-space:nowrap',`<span style="display:inline-block;width:110px;color:${MUT};font-weight:600">${l}</span>${v}`,1288,722+i*36,540);return {e,a}});
+const banner=box('b-amber',100,924,1740,50);const banT=tx('font:600 27px/50px Inter;color:'+INK+';text-align:center','Retained 2D regions under this method · not validated cells in the whole stack.',100,924,1740);
+const notes=NOTEBOX(S,{x:1260,y:222,w:580,h:424,tfs:32,bfs:31,notes:[
+ {a:K.c_read,b:K.c_otsu-.1,title:'Reading the real output',body:'These numbers come from the <b>actual saved run</b>, not from an illustration.'},
+ {a:K.c_otsu,b:K.c_92-.1,title:'Step 1 · threshold',body:'On the declared nucleus plane, Otsu’s method chooses <b>T = 10,432</b> raw intensity units.'},
+ {a:K.c_92,b:K.c_rm-.1,title:'Step 2 · components',body:'Pixels <b>strictly above</b> that value form <b>92</b> connected regions.'},
+ {a:K.c_rm,b:K.c_12-.1,title:'Step 3 · declared QC rules',body:'',subs:[[K.c_70,'<b>70</b> regions are smaller than 100 pixels'],[K.c_10,'<b>10</b> larger regions touch the image border']]},
+ {a:K.c_12,b:K.c_not-.1,title:'What remains',body:'<b>12</b> candidate regions.'},
+ {a:K.c_not,b:K.c_one-.1,title:'Say it carefully',body:'12 retained <b>2-D regions under this method</b> — not 12 validated cells in the whole stack.'},
+ {a:K.c_one,b:K.c_sp-.1,title:'One region, measured',body:'Region 11 contains <b>1,346 pixels</b>.'},
+ {a:K.c_sp,b:K.c_mul-.1,title:'Pixel spacing',body:'The file records about <b>0.26 µm</b> per pixel in x and in y.'},
+ {a:K.c_mul,b:K.c_mean-.1,title:'Area',body:'pixel count × both spacings:<br>1,346 × 0.26 × 0.26 ≈ <b>90.99 µm²</b>'},
+ {a:K.c_mean,b:K.c_gen-.1,title:'Mean intensity',body:'The average raw value inside the region is <b>≈ 13,530.7</b> arbitrary units.'},
+ {a:K.c_gen,b:K.c_tied-.1,title:'Genuine outputs',body:'These are real values from our saved run.'},
+ {a:K.c_tied,b:null,title:'Their meaning is tied to…',body:'',subs:[[K.c_tied+.4,'that <b>plane</b> (index 30)'],[K.c_tied+2.0,'that <b>channel</b> (nuclei)'],[K.c_tied+3.0,'that <b>mask</b> (T = 10,432)'],[K.c_tied+3.9,'that <b>measurement rule</b>']]}]});
+const pal=l=>LABPAL[l%16];
+return function update(t){
+  show(pl.cv,t,K.c_read,.8,{dy:10});show(cap,t,K.c_read+.4,.6);
+  const a=out(t,K.c_otsu,.8),b=out(t,K.c_92,1.0),ps=out(t,K.c_70,1.0),pb=out(t,K.c_10,1.0),pr=out(t,K.c_12,1.0),one=out(t,K.c_one,.8);
+  const key=[a,b,ps,pb,pr,one].map(v=>v.toFixed(2)).join('|');
+  pl.draw({key,T:D.T,alpha:+(.55*a*(1-b)).toFixed(3),lab:D.LAB,colorFn:(l)=>{
+    let c,al;
+    if(!l){return one>0.01?[0,0,0,.5*one]:null}
+    const st=D.ST[l];let col=pal(l);
+    if(st==1){col=[mix(col[0],110,ps),mix(col[1],120,ps),mix(col[2],116,ps)]}
+    else if(st==2){col=[mix(col[0],214,pb),mix(col[1],102,pb),mix(col[2],92,pb)]}
+    else{col=[mix(col[0],38,pr),mix(col[1],170,pr),mix(col[2],120,pr)]}
+    al=.82*b;
+    if(one>0.01&&l!==11){return [mix(col[0],20,.7*one),mix(col[1],20,.7*one),mix(col[2],20,.7*one),Math.max(al,.65*one)]}
+    return [col[0],col[1],col[2],al]}});
+  cap.innerHTML=t<K.c_otsu?'real nucleus plane (index 30) · raw 16-bit values':(t<K.c_92?'green = pixels above T = 10,432':(t<K.c_12?'each colour = one of the 92 connected regions':(t<K.c_one?'green = the 12 retained regions · grey = too small · red = touching the border':'region 11 outlined · right: its 1,346 selected pixels')));
+  const fa=1-out(t,K.c_one-.3,.6);
+  rows.forEach(({b,t1,t2,a:aa})=>{const v=out(t,aa,.6)*fa;b.style.opacity=v;t1.style.opacity=v;t2.style.opacity=v;const tr=`translateY(${((1-out(t,aa,.6))*10).toFixed(1)}px)`;b.style.transform=t1.style.transform=t2.style.transform=tr});
+  const ra=out(t,K.c_one,.6);rb.style.opacity=ra;rbL.style.opacity=ra;
+  zc.style.opacity=ra;zcap.style.opacity=out(t,K.c_one+.2,.6);
+  show(e1,t,K.c_one+.4,.6);show(e2,t,K.c_sp,.6);show(e3,t,K.c_mul,.6);show(e3s,t,K.c_mul+.4,.6);
+  show(e4,t,K.c_mean,.6);show(e4t,t,K.c_mean+.1,.6);
+  show(banner,t,K.c_tied+4.2,.6,{dy:0});show(banT,t,K.c_tied+4.4,.6,{dy:0});
+  const pa=out(t,K.c_read,.6);[pv,pvT].forEach(e=>e.style.opacity=pa);const hl=out(t,K.c_tied,.6);pv.style.boxShadow=`0 0 0 ${(4*hl).toFixed(1)}px rgba(224,164,58,${(.8*hl).toFixed(2)})`;
+  pvL.forEach(({e,a})=>{e.style.opacity=out(t,a,.5)});
+  notes.update(t);
+  return 0;
+};
+});
+</script></body></html>

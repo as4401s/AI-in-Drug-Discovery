@@ -1,0 +1,113 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets2/data2.js"></script><script src="../../lib/ep2.js"></script>
+<script>
+SCENE_INIT({ep:2,part:3,partTitle:'A real pixels-to-measurements experiment',title:'Connected pixels become proposed objects',foot:'Allen Institute for Cell Science / scikit-image · CC0 · Executed source: microscopy_demo.py (label_components) · candidate regions, not validated cell counts'},(S,K)=>{
+const {out,show,mix}=WB;
+const IM={x:100,y:240,s:480};const k=IM.s/256;
+const pl=PLANE(S,IM.x,IM.y,IM.s);
+const cap=tx('font:600 24px/1.25 Inter;color:'+MUT+';white-space:normal','real nucleus plane (index 30) · threshold T = 10,432',IM.x,IM.y+IM.s+16,540);
+// id labels on retained regions
+const ids=D.CSV.map(r=>{const e=tx('font:700 24px/1 Poppins;color:#fff;background:#183b32;border-radius:12px;padding:4px 10px;white-space:nowrap;transform-origin:center',String(r.label),IM.x+3+r.cx*k-18,IM.y+3+r.cy*k-16);return e});
+// --- real crop zoom (14x14) chosen for several touching/near components
+let WB0=[0,0,0];{const N=14;for(let y=0;y<=256-N;y+=2)for(let x=0;x<=256-N;x+=2){const set=new Set();let sel=0;for(let j=0;j<N;j++)for(let i=0;i<N;i++){const l=D.LAB[(y+j)*256+x+i];if(l){set.add(l);sel++}}
+  const sc=set.size*100+Math.min(sel,N*N-sel);if(sc>WB0[0]){WB0=[sc,y,x]}}}
+const CY0=WB0[1],CX0=WB0[2],CN=14,CZ=30;
+const zc=document.createElement('canvas');zc.width=CN;zc.height=CN;zc.style.cssText=`position:absolute;left:660px;top:262px;width:${CN*CZ}px;height:${CN*CZ}px;image-rendering:pixelated;border:3px solid ${INK};border-radius:8px`;S.appendChild(zc);
+const zg=zc.getContext('2d');const zid=zg.createImageData(CN,CN);let zkey='';
+function drawZoom(p1){const kk=p1.toFixed(2);if(kk===zkey)return;zkey=kk;for(let j=0;j<CN;j++)for(let i=0;i<CN;i++){const l=D.LAB[(CY0+j)*256+CX0+i];const v=D.P[(CY0+j)*256+CX0+i];let gr=Math.max(0,Math.min(1,(v-D.LO)/(D.HI-D.LO)))*255;let r=gr*.35+60,g=gr*.35+60,b=gr*.35+60;
+  if(l){const c1=[47,143,116],c2=LABPAL[l%16];r=mix(c1[0],c2[0],p1);g=mix(c1[1],c2[1],p1);b=mix(c1[2],c2[2],p1)}const o=(j*CN+i)*4;zid.data[o]=r;zid.data[o+1]=g;zid.data[o+2]=b;zid.data[o+3]=255}zg.putImageData(zid,0,0)}
+const zgrid=WB.svg('svg',{width:1920,height:1080,style:'position:absolute;left:0;top:0'},S);
+for(let i=1;i<CN;i++){WB.svg('line',{x1:663+i*CZ,x2:663+i*CZ,y1:265,y2:265+CN*CZ,stroke:'rgba(255,255,255,.35)','stroke-width':1},zgrid);WB.svg('line',{y1:265+i*CZ,y2:265+i*CZ,x1:663,x2:663+CN*CZ,stroke:'rgba(255,255,255,.35)','stroke-width':1},zgrid)}
+const zL=tx('font:600 23px/1.3 Inter;color:'+INK+';white-space:normal','zoom: 14 × 14 pixels<br><span style="font-weight:500;color:'+MUT+'">each square is one pixel</span>',660,262+CN*CZ+12,440);
+const zr=box('',IM.x+3+CX0*k-3,IM.y+3+CY0*k-3,CN*k+6,CN*k+6);zr.style.cssText+=';border:3px solid #fff;box-sizing:border-box;border-radius:3px';
+// --- 8 neighbour diagram
+const GX=791,GY=300,CS=96;const nb=[];
+for(let r=0;r<3;r++)for(let c=0;c<3;c++){const e=box('',GX+c*CS,GY+r*CS,CS-6,CS-6);const centre=r==1&&c==1,edge=(r==1||c==1)&&!centre;
+ e.style.cssText+=`;border-radius:14px;border:3px solid ${centre?'#26765d':(edge?'#557eaf':'#b76d66')};background:${centre?'#2f8f74':(edge?'#dbe6f2':'#fbe5e1')};font:700 24px/${CS-12}px Poppins;text-align:center;color:${centre?'#fff':INK}`;
+ if(centre)e.textContent='pixel';nb.push({e,centre,edge})}
+const nbE=tx('font:700 25px/1.2 Inter;color:'+BLU+';white-space:nowrap',"■ 4 <b>edge</b> neighbours (touch along a side)",GX-70,GY+3*CS+8,520);
+const nbC=tx('font:700 25px/1.2 Inter;color:'+AMB+';white-space:nowrap',"■ 4 <b>corner</b> neighbours (touch at a corner)",GX-70,GY+3*CS+44,520);
+const nb8=tx('font:700 64px/1 Poppins;color:'+INK,'8',GX+3*CS+8,GY+88,100);const nb8s=tx('font:600 24px/1.2 Inter;color:'+MUT+';white-space:normal','neighbours<br>in total',GX+3*CS+8,GY+158,110);
+const fixed=tx('font:700 26px/1 Poppins;color:#fff;background:#26765d;border-radius:16px;padding:9px 18px;white-space:nowrap','rule kept fixed: 8-connected',GX-20,GY-52);
+// --- sketches
+const sv=WB.svg('svg',{width:1920,height:1080,style:'position:absolute;left:0;top:0'},S);
+const skA=WB.svg('g',{},sv),skB=WB.svg('g',{},sv);
+const el1=(g,tag,a)=>WB.svg(tag,a,g);
+el1(skA,'rect',{x:650,y:270,width:280,height:300,rx:18,fill:'#f4f8fb',stroke:'#c7d6e4','stroke-width':3});
+el1(skA,'ellipse',{cx:752,cy:410,rx:56,ry:76,fill:'#2f8f74','fill-opacity':.85,stroke:'#183b32','stroke-width':3});
+el1(skA,'ellipse',{cx:826,cy:410,rx:56,ry:76,fill:'#2f8f74','fill-opacity':.85,stroke:'#183b32','stroke-width':3});
+el1(skB,'rect',{x:950,y:270,width:280,height:300,rx:18,fill:'#f4f8fb',stroke:'#c7d6e4','stroke-width':3});
+el1(skB,'ellipse',{cx:1090,cy:410,rx:100,ry:80,fill:'none',stroke:'#8aa59b','stroke-width':3,'stroke-dasharray':'9 8'});
+[[1050,385,34,'#e76f51'],[1115,370,28,'#2a9d8f'],[1100,445,30,'#e9c46a']].forEach(([x,y,r,c])=>el1(skB,'circle',{cx:x,cy:y,r:r,fill:c,stroke:'#183b32','stroke-width':3}));
+const skAL=tx('font:700 24px/1.25 Inter;color:'+INK+';text-align:center;white-space:normal','touching nuclei →<br><b>1 region</b> → 1 object',650,582,280);
+const skBL=tx('font:700 24px/1.25 Inter;color:'+INK+';text-align:center;white-space:normal','one nucleus, bright islands →<br><b>3 regions</b> → 3 objects',940,582,300);
+const skN=tx('font:500 22px/1 Inter;color:'+MUT,'illustrative sketches',650,646,400);
+// --- hole zoom (region 30)
+const H=D.HOLE,cw=H.x1-H.x0+1,ch=H.y1-H.y0+1,ZS=8;
+const hz=document.createElement('canvas');hz.width=cw;hz.height=ch;hz.style.cssText=`position:absolute;left:660px;top:262px;width:${cw*ZS}px;height:${ch*ZS}px;image-rendering:pixelated;border:3px solid ${INK};border-radius:8px`;S.appendChild(hz);
+{const g=hz.getContext('2d');const id=g.createImageData(cw,ch);for(let y=0;y<ch;y++)for(let x=0;x<cw;x++){const i=(H.y0+y)*256+(H.x0+x);const v=D.P[i];let gr=Math.max(0,Math.min(1,(v-D.LO)/(D.HI-D.LO)))*255;let r=gr,gg=gr,b=gr;
+ if(D.LAB[i]===H.label){r=r*.45+38*.55;gg=gg*.45+170*.55;b=b*.45+120*.55}
+ if(D.HOLE.HM[i]){r=r*.15+255*.85;gg=gg*.15+190*.85;b=b*.15+60*.85}
+ const j=(y*cw+x)*4;id.data[j]=r;id.data[j+1]=gg;id.data[j+2]=b;id.data[j+3]=255}g.putImageData(id,0,0)}
+const hzL=tx('font:600 23px/1.3 Inter;color:'+INK+';white-space:normal',`region ${H.label}: <span style="color:#26765d;font-weight:700">selected</span> ${H.area.toLocaleString('en-US')} px · <span style="color:#a65f00;font-weight:700">unselected holes</span> ${H.holes} px inside`,640+22,262+ch*ZS+12,560);
+// ring around the region on the main image
+const hr=box('',IM.x+3+H.x0*k-4,IM.y+3+H.y0*k-4,cw*k+8,ch*k+8);hr.style.cssText+=';border:4px solid #e0a43a;border-radius:10px;box-sizing:border-box';
+// --- border example + table
+const B=D.BORDER;const br=box('',IM.x+3+B.x0*k-4,IM.y+3+B.y0*k-4,(B.x1-B.x0+1)*k+8,(B.y1-B.y0+1)*k+8);br.style.cssText+=';border:4px solid #b76d66;border-radius:10px;box-sizing:border-box';
+const brL=tx('font:700 22px/1.2 Inter;color:#fff;background:#b76d66;border-radius:10px;padding:4px 10px;white-space:nowrap','cut off by the image edge',IM.x+3+B.x0*k-120,IM.y+3+B.y0*k-36);
+const TX=660,TY=282,RW=[110,190,250];
+const tcard=box('',TX,TY-24,560,330);tcard.style.cssText+=';border:3px solid #d4ded9;border-radius:18px;background:#f6f8f7';
+const thead=tx('font:700 23px/1 Inter;color:'+MUT,'<span style="display:inline-block;width:110px">label</span><span style="display:inline-block;width:190px">area_px</span><span>touches_edge</span>',TX+18,TY-4,560);
+const trows=D.CSV.slice(0,6).map((r,i)=>tx('font:600 26px/1 "DejaVu Sans Mono",monospace;color:'+INK+';white-space:nowrap',`<span style="display:inline-block;width:110px">${r.label}</span><span style="display:inline-block;width:190px">${r.area_px.toLocaleString('en-US')}</span><span style="color:${r.edge?AMB:GRN}">${r.edge?'True':'False'}</span>`,TX+18,TY+32+i*46,540));
+const tnote=tx('font:600 23px/1.3 Inter;color:'+MUT+';white-space:normal','real rows of nuclear_region_measurements.csv · every row passed the declared QC, and the flag is stored beside the numbers',TX+6,TY+318,560);
+// legend card
+const lc=box('b-lav',1260,622,580,258);const lcT=tx('font:600 24px/1 Inter;color:'+MUT,'Declared QC · colours on the image',1288,646,520);
+const lg=[['#26765d','12 retained','area ≥ 100 px and not touching the border'],['#6b7f78','70 too small','area &lt; 100 pixels'],['#b76d66','10 touch the border','area ≥ 100 px, but cut off by the image edge']].map(([c,a,b],i)=>{const sw=box('',1288,692+i*62,26,26);sw.style.cssText+=`;background:${c};border-radius:7px`;const t1=tx('font:700 26px/1.15 Inter;color:'+INK+';white-space:nowrap',`${a}<br><span style="font:500 21px Inter;color:${MUT}">${b}</span>`,1330,684+i*62,500);return {sw,t1}});
+const banner=box('b-mint',100,924,1740,50);const banT=tx('font:600 27px/50px Inter;color:'+INK+';text-align:center','Declared QC: area ≥ 100 pixels; exclude border objects. IDs remain proposals.',100,924,1740);
+const notes=NOTEBOX(S,{x:1260,y:222,w:580,h:380,notes:[
+ {a:K.c_only,b:K.c_group-.1,title:'The mask alone',body:'A binary mask only says <b>which pixels</b> were selected.'},
+ {a:K.c_group,b:K.c_rule-.1,title:'Connected components',body:'Group neighbouring foreground pixels into <b>separate proposed objects</b>.'},
+ {a:K.c_rule,b:K.c_8-.1,title:'Who counts as a neighbour?',body:'Pixels that touch along an <b>edge</b> or at a <b>corner</b>.'},
+ {a:K.c_8,b:K.c_id-.1,title:'8 neighbours',body:'On a square grid every interior pixel has <b>8</b> possible neighbours. We keep this rule <b>fixed</b>.'},
+ {a:K.c_id,b:K.c_book-.1,title:'Identifiers',body:'Each connected region gets an <b>ID number</b>.'},
+ {a:K.c_book,b:K.c_touch-.1,title:'Only bookkeeping',body:'An ID is a label for the program — <b>not a biological identity</b>.'},
+ {a:K.c_touch,b:K.c_break-.1,title:'Merge risk',body:'Two touching nuclei can form <b>one</b> connected region → <b>one</b> object, although biology has 2.'},
+ {a:K.c_break,b:K.c_hole-.1,title:'Split risk',body:'One nucleus that breaks into several bright islands can become <b>several</b> objects.'},
+ {a:K.c_hole,b:K.c_qc-.1,title:'Holes',body:'A thresholded region can contain <b>unselected dark holes</b> — so its selected area is not automatically a full nuclear outline.'},
+ {a:K.c_qc,b:K.c_travel-.1,title:'Record the QC choices',body:'',subs:[[K.c_qc,'<b>size filter</b>: area ≥ 100 px'],[K.c_qc+2.2,'<b>border contact</b> flag'],[K.c_border,'an object cut off by the edge may not show its full area']]},
+ {a:K.c_travel,b:null,title:'Travel with the table',body:'These choices must be stored <b>with the measurement table</b>.'}]});
+const pal=l=>LABPAL[l%16];
+return function update(t){
+  show(pl.cv,t,K.c_only,.8,{dy:10});show(cap,t,K.c_only+.4,.6);
+  const p1=out(t,K.c_group,1.2),p2=out(t,K.c_qc,1.2);const key=[p1.toFixed(2),p2.toFixed(2)].join('|');
+  pl.draw({key,T:D.T,alpha:+(.55*(1-p1)).toFixed(3),lab:D.LAB,colorFn:(l)=>{if(!l)return null;const c1=pal(l),st=D.ST[l];const c2=st==0?[38,170,120]:(st==1?[110,120,116]:[214,102,92]);
+      return [mix(c1[0],c2[0],p2),mix(c1[1],c2[1],p2),mix(c1[2],c2[2],p2),(.82*p1)]}});
+  // captions swap
+  cap.innerHTML=t<K.c_group?'real nucleus plane (index 30) · green = selected by T = 10,432':(t<K.c_qc?'each colour = one connected component (92 in total)':'colour = QC status of each of the 92 components');
+  // zoom crop
+  const za=out(t,K.c_only+.8,.6)*(1-out(t,K.c_rule-.2,.6));drawZoom(p1);zc.style.opacity=za;zgrid.style.opacity=za;zL.style.opacity=za;zr.style.opacity=za;
+  zL.innerHTML=t<K.c_group?'zoom: 14 × 14 pixels<br><span style="font-weight:500;color:'+MUT+'">green = selected by the mask</span>':'zoom: 14 × 14 pixels<br><span style="font-weight:500;color:'+MUT+'">one colour per connected group of selected pixels</span>';
+  // ids
+  const ia=out(t,K.c_id,.6)*(1-out(t,K.c_touch-.3,.5));ids.forEach((e,i)=>{const a=out(t,K.c_id+i*.12,.4)*(1-out(t,K.c_touch-.3,.5));e.style.opacity=a;e.style.transform=`scale(${(.6+.4*a).toFixed(2)})`});
+  // neighbour diagram
+  const nd=out(t,K.c_rule,.6)*(1-out(t,K.c_id-.2,.6));
+  nb.forEach(({e,centre,edge})=>{let a=nd;if(!centre){const st=edge?K.c_edge:K.c_corner;a=out(t,st,.5)*(1-out(t,K.c_id-.2,.6))}e.style.opacity=a});
+  nb[4].e.style.opacity=nd;
+  nbE.style.opacity=out(t,K.c_edge+.3,.5)*(1-out(t,K.c_id-.2,.6));nbC.style.opacity=out(t,K.c_corner+.3,.5)*(1-out(t,K.c_id-.2,.6));
+  const n8=out(t,K.c_8,.6)*(1-out(t,K.c_id-.2,.6));nb8.style.opacity=n8;nb8s.style.opacity=n8;fixed.style.opacity=out(t,K.c_fixed,.6)*(1-out(t,K.c_id-.2,.6));
+  // sketches
+  const sa=out(t,K.c_touch,.6)*(1-out(t,K.c_hole-.3,.5)),sb=out(t,K.c_break,.6)*(1-out(t,K.c_hole-.3,.5));
+  skA.style.opacity=sa;skAL.style.opacity=sa;skB.style.opacity=sb;skBL.style.opacity=sb;skN.style.opacity=Math.max(sa,sb);
+  // hole
+  const ha=out(t,K.c_hole,.6)*(1-out(t,K.c_qc-.3,.5));hz.style.opacity=ha;hzL.style.opacity=ha;hr.style.opacity=ha;
+  // QC
+  const q=out(t,K.c_qc,.6);[lc,lcT].forEach(e=>e.style.opacity=q);lg.forEach(({sw,t1},i)=>{const a=out(t,K.c_qc+.3+i*.5,.5);sw.style.opacity=a;t1.style.opacity=a});
+  const ba=out(t,K.c_border,.6);br.style.opacity=ba*(1-out(t,K.c_travel-.3,.5));brL.style.opacity=ba*(1-out(t,K.c_travel-.3,.5));
+  const ta=out(t,K.c_travel,.6);[tcard,thead,tnote].forEach(e=>e.style.opacity=ta);trows.forEach((e,i)=>e.style.opacity=out(t,K.c_travel+.3+i*.15,.4));
+  show(banner,t,K.c_travel+1.8,.6,{dy:0});show(banT,t,K.c_travel+2,.6,{dy:0});
+  notes.update(t);
+  return 0;
+};
+});
+</script></body></html>

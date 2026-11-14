@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:2,part:1,partTitle:"Light becomes a measurement",title:"From light to numbers on a grid",foot:"Part 1 \u00b7 schematic illustration \u00b7 pixel values illustrative"},(S,C)=>{
+
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[['c_follow','Follow the light','the <b>emitted light</b> travels through the instrument'],['c_optics','Optics and detector','optics form an image; a <b>detector</b> converts the signal into <b>numbers on a grid</b>'],['c_pixel','A pixel','each small element of the grid is a <b>pixel</b>'],['c_array','A saved image','an <b>array of numbers</b> with an experimental history'],['c_gray','Grayscale view','a larger number is usually drawn <b>brighter</b>'],['c_depend','The number also depends on','detector settings, exposure, background and processing'],['c_notmol','A pixel is not','a single molecule or a single cell'],['c_many','Many sources','can contribute to the signal recorded at one location'],['c_before','Before interpreting','what was labelled, how it was acquired, what was transformed']]},
+els:[
+ic('animal-cell',170,640,170,'c_follow',{bob:4}),ch('sample',170,740,'mint','c_follow+.3',{fs:26}),
+dt([[260,640],[430,640]],'#3a9d6b','c_follow+.5',{n:4,speed:.35,r:9}),
+cd('',440,520,54,240,'c_optics',{css:'border-radius:50%;background:rgba(127,159,201,.35);border:5px solid #7f9fc9',dy:0}),ch('optics',467,775,'blue','c_optics+.3',{fs:26}),
+dt([[510,640],[760,640]],'#3a9d6b','c_optics+.4',{n:4,speed:.35,r:9}),
+{t:'grid',x:780,y:450,cw:72,ch:72,vals:[[0.41,0.63,0.43,0.21,0.14],[0.63,1.00,0.75,0.51,0.38],[0.42,0.70,0.80,0.94,0.73],[0.16,0.31,0.68,1.00,0.76],[0.09,0.15,0.38,0.58,0.41]],mode:'gray',a:'c_pixel',stag:.03,hot:[[2,2]],ht:'c_notmol'},
+ch('detector',960,825,'lav','c_optics+.8',{fs:26}),ch('one pixel',1210,520,'amber','c_pixel+.4',{fs:26,b:'c_array'}),ar(1160,570,1000,625,'a','c_pixel+.4',{b:'c_array'}),
+{t:'grid',x:780,y:450,cw:72,ch:72,vals:[[0.41,0.63,0.43,0.21,0.14],[0.63,1.00,0.75,0.51,0.38],[0.42,0.70,0.80,0.94,0.73],[0.16,0.31,0.68,1.00,0.76],[0.09,0.15,0.38,0.58,0.41]],mode:'gray',num:255,fs:22,a:'c_array',stag:.03,hot:[[2,2]],ht:'c_notmol'},
+ch('numbers with an experimental history',1500,520,'amber','c_array+.3',{fs:28,b:'c_depend'}),
+ch('bigger number → brighter',1500,600,'lav','c_gray',{fs:28,b:'c_depend'}),
+ch('detector settings',1480,480,'coral','c_depend',{fs:26}),ch('exposure',1480,550,'coral','c_depend+.5',{fs:26}),ch('background',1480,620,'coral','c_depend+1.0',{fs:26}),ch('processing',1480,690,'coral','c_depend+1.5',{fs:26}),
+dt([[560,470],[960,630]],'#3a9d6b','c_many',{n:3,speed:.4,r:8,b:'c_before'}),dt([[560,830],[960,630]],'#e0a43a','c_many+.3',{n:3,speed:.4,r:8,b:'c_before'}),dt([[1300,630],[1000,630]],'#cf8a83','c_many+.6',{n:3,speed:.4,r:8,b:'c_before'}),
+ch('not one molecule or one cell',1500,780,'amber','c_notmol',{fs:28,b:'c_before'}),
+ch('what was labelled',480,905,'mint','c_before',{fs:30}),ch('how it was acquired',960,905,'blue','c_before+.7',{fs:30}),ch('what was transformed',1440,905,'lav','c_before+1.4',{fs:30})
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

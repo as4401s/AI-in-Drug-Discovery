@@ -1,0 +1,122 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script>
+<script>
+SCENE_INIT({ep:1,part:1,partTitle:'Biology foundations',title:'Proteins · chains that carry out jobs',foot:'Biology foundations · schematic illustrations · codons and amino-acid letters are an illustrative example · National Human Genome Research Institute concepts'},(S,C)=>{
+const {out,ramp,lin,mix,track}=WB;const c=k=>Math.max(C[k],0.05);
+const X0=700;const win=(t,a,b,d)=>out(t,a,d||.5)*(1-out(t,b,.4));
+const lprot=ico('folded-protein',330,650,470);const lc=chip('Protein',330,930,'mint',{fs:36,px:34});
+const nk=[['c_ribo','The ribosome','the cell’s <b>protein-building machinery</b>, made from RNA and proteins'],['c_mrna','Reading the message','it uses a <b>messenger RNA</b> sequence to assemble a chain of amino acids'],['c_amino','Amino acids','the smaller chemical <b>building blocks</b> of proteins'],['c_seq','Protein sequence','their <b>order</b> is the protein sequence'],['c_fold','Folding','the chain can <b>fold</b> and interact with its surroundings — that organization helps determine <b>what the protein can do</b>'],['c_react','Different jobs','some proteins help <b>chemical reactions</b> happen; others give <b>structure</b>, <b>transport</b> molecules or <b>receive signals</b>'],['c_role','A protein’s role depends on…','its <b>structure</b>, chemical <b>surroundings</b>, <b>partners</b> and <b>state</b> — not just a name in a list'],['c_drug','Why it matters for drugs','a molecule that <b>changes a protein’s activity</b> may change a cellular process'],['c_exp','Is that helpful?','to judge, we still need the <b>relevant experiment</b>'],['c_path','The main information path','DNA → RNA → protein, with <b>regulation and other interactions</b> around it']];
+const notes=NOTES({x:X0,y:226,w:1160,h:178,tfs:30,bfs:28,notes:nk.map((n,i)=>({a:c(n[0]),b:i<nk.length-1?c(nk[i+1][0])-.1:null,title:n[1],body:n[2]}))});
+const svB=svgLayer(S);arrowDefs(svB,'ar',GRN);arrowDefs(svB,'arp',LAV);arrowDefs(svB,'arc',COR);
+// ---- step 1: ribosome ----
+const rib=ico('ribosome',1000,660,380);
+const ri1=ico('rna-strand',790,800,110),ri2=ico('folded-protein',1210,800,100);
+const rc1=chip('made from RNA',790,870,'lav',{fs:28}),rc2=chip('and proteins',1210,870,'mint',{fs:28});const rc0=chip('machinery that builds proteins',1280,470,'amber',{fs:30});
+// ---- step 2: translation ----
+const COD=['AUG','GCU','UUC','AAA','GGC','CUG'],AAL=['M','A','F','K','G','L'];
+const CX=i=>840+i*150;
+const mline=WB.svg('line',{x1:CX(0)-70,x2:CX(5)+70,y1:635,y2:635,stroke:'#8b75b0','stroke-width':10,'stroke-linecap':'round'},svB);
+const cods=COD.map((s,i)=>{const P=[PAL.lav,PAL.amber,PAL.coral,PAL.blue,PAL.mint,PAL.lav][i];const e=box('',CX(i)-62,600,124,68);e.style.cssText+=`;background:${P[0]};border:4px solid ${P[1]};border-radius:16px;opacity:0;font:700 34px/60px Poppins;text-align:center;color:${INK}`;e.textContent=s;return e});
+const cpt=chip('mRNA',745,690,'lav',{fs:24,px:14}),apt=chip('amino acids',745,880,'mint',{fs:22,px:12});
+const rib2=ico('ribosome',CX(0),520,190);
+const aas=AAL.map((l,i)=>{const P=[PAL.lav,PAL.amber,PAL.coral,PAL.blue,PAL.mint,PAL.lav][i];const e=box('',CX(i)-42,780,84,84);e.style.cssText+=`;border-radius:50%;background:${P[0]};border:5px solid ${P[1]};opacity:0;font:700 40px/74px Poppins;text-align:center;color:${INK}`;e.textContent=l;return e});
+const alines=[0,1,2,3,4].map(i=>WB.svg('line',{x1:CX(i)+42,x2:CX(i+1)-42,y1:822,y2:822,stroke:'#8aa59b','stroke-width':8,'stroke-linecap':'round'},svB));
+const adl=[0,1,2,3,4,5].map(i=>WB.svg('line',{x1:CX(i),x2:CX(i),y1:672,y2:776,stroke:'#b9c7c0','stroke-width':5,'stroke-dasharray':'3 10','stroke-linecap':'round'},svB));
+const ac1=chip('amino acids = the smaller chemical building blocks',1280,935,'mint',{fs:30});
+const ac2=chip('sequence: M · A · F · K · G · L  (illustrative)',1280,935,'lav',{fs:30});
+// ---- step 3: folding ----
+const chain=ico('peptide-chain',1000,700,520),fold=ico('folded-protein',1000,700,380);
+const sm=[0,1,2].map(i=>ico('small-molecule',1650,0,150));
+const fc1=chip('the chain folds',1000,930,'mint',{fs:30}),fc2=chip('and interacts with its surroundings',1500,930,'blue',{fs:28}),fc3=chip('its organization helps decide what it can do',1280,480,'amber',{fs:30});
+// ---- step 4: jobs ----
+const JX=i=>740+i*278,JW=262;
+const jobs=[['b-mint','help chemical reactions happen','ligand-pocket',230],['b-lav','provide structure','extracellular-matrix',215],['b-amber','transport molecules','nuclear-pore',215],['b-blue','receive signals','membrane-receptor',150]].map(([cls,tt,ik,iw],i)=>({bx:box(cls,JX(i),500,JW,400),t:ctx('font:700 28px/1.2 Poppins;color:'+INK,tt,JX(i)+JW/2,790,JW-26),ic:ico(ik,JX(i)+JW/2,650,iw)}));
+const svO=svgLayer(S);const rings=[0,1,2,3].map(i=>WB.svg('circle',{fill:'none','stroke-width':7},svO));
+const jd=[0,1,2,3,4].map(i=>WB.svg('circle',{r:13,fill:i<1?COR:i<4?'#3f7f6c':COR,stroke:'#fff','stroke-width':4},svO));
+// ---- step 5: role depends ----
+const rp=ico('folded-protein',1280,700,300);
+const RC=[['its structure',1020,560,'mint'],['its chemical surroundings',1570,560,'blue'],['its partners',1030,850,'lav'],['its state',1560,850,'amber']].map(([tx0,x,y,col],i)=>({ch:chip(tx0,x,y,col,{fs:30}),x,y,ln:WB.svg('line',{stroke:['#4d8f7e','#557eaf','#8b75b0','#e0a43a'][i],'stroke-width':6,'stroke-dasharray':'3 10','stroke-linecap':'round'},svO)}));
+const rn=chip('✗  not just a name in a list',1280,955,'coral',{fs:30});
+const rsw=ico('conformational-switch',1560,925,0);
+// ---- step 6: drug ----
+const dp=ico('folded-protein',980,700,300),dm=ico('small-molecule',1400,520,190),dc=ico('animal-cell',1650,700,250);
+const gt=box('',850,880,260,24);gt.style.cssText+=';background:#fff;border:4px solid #4d8f7e;border-radius:12px;opacity:0';const gf=box('',850,880,200,24);gf.style.cssText+=';background:#4d8f7e;border-radius:12px;opacity:0';
+const gl=chip('protein activity',980,930,'mint',{fs:26});
+const dmc=chip('a molecule',1400,420,'lav',{fs:28}),dcc=chip('the cellular process may change',1650,880,'coral',{fs:26});
+const dar=WB.svg('path',{d:'M1150 700 L 1480 700',stroke:COR,'stroke-width':8,fill:'none','stroke-linecap':'round','marker-end':'url(#arc)','stroke-dasharray':'3 12'},svB);
+const dring=WB.svg('circle',{fill:'none','stroke-width':8},svO),dring2=WB.svg('circle',{fill:'none','stroke-width':8},svO);
+// ---- step 7: experiment ----
+const wp=ico('well-plate',1000,700,420);const sweep=box('',0,560,60,300);sweep.style.cssText+=';background:rgba(224,164,58,.35);border-radius:12px;opacity:0';
+const wc=chip('the relevant experiment gives the evidence',1280,935,'amber',{fs:30});const wq=ctx('font:700 160px/1 Poppins;color:#e0a43a','?',1560,600,200);
+// ---- step 8: information path ----
+const pd=ico('dna-helix',920,690,170),pr=ico('rna-strand',1300,690,230),pp=ico('folded-protein',1680,690,230);
+const pa1=WB.svg('path',{d:'M1020 690 L 1180 690',stroke:GRN,'stroke-width':9,fill:'none','stroke-linecap':'round','marker-end':'url(#ar)'},svB),pa2=WB.svg('path',{d:'M1420 690 L 1560 690',stroke:GRN,'stroke-width':9,fill:'none','stroke-linecap':'round','marker-end':'url(#ar)'},svB);
+const pl=[chip('DNA',920,830,'blue',{fs:32}),chip('RNA',1300,830,'lav',{fs:32}),chip('protein',1680,830,'mint',{fs:32})];
+const pc1=chip('transcription',1100,590,'amber',{fs:26}),pc2=chip('protein building',1490,590,'amber',{fs:26});
+const ring=WB.svg('rect',{x:770,y:510,width:1060,height:380,rx:60,fill:'none',stroke:'#e0a43a','stroke-width':6,'stroke-dasharray':'14 12','stroke-linecap':'round'},svO);
+const rdots=[0,1,2,3].map(i=>WB.svg('circle',{r:12,fill:'#e0a43a',stroke:'#fff','stroke-width':4},svO));
+const rcl=chip('regulation and other interactions around the path',1300,940,'amber',{fs:30});
+return function update(t){
+  const A=k=>c(k);
+  lprot.set({op:out(t,A('c_ribo'),.9),s:.9+.1*out(t,A('c_ribo'),.9),y:track(Math.sin(t*1.3)*8),r:track(Math.sin(t*.9)*2.5)});life(lc,t,A('c_ribo')+.4,null);
+  notes.update(t);
+  // 1 ribosome
+  const e1=A('c_mrna')-.3;
+  rib.set({op:win(t,A('c_ribo'),e1,.7),s:.85+.15*out(t,A('c_ribo'),.8),y:track(Math.sin(t*1.5)*6)});
+  ri1.set({op:win(t,A('c_ribo')+1.2,e1,.5),s:.7+.3*out(t,A('c_ribo')+1.2,.5)});ri2.set({op:win(t,A('c_ribo')+3.0,e1,.5),s:.7+.3*out(t,A('c_ribo')+3.0,.5)});
+  life(rc1,t,A('c_ribo')+1.4,e1,{dy:8});life(rc2,t,A('c_ribo')+3.2,e1,{dy:8});life(rc0,t,A('c_ribo')+.3,e1,{dy:8});
+  // 2 translation
+  const ts=A('c_mrna'),te=A('c_fold')-.3,run=lin(t,ts+.8,4.6);
+  mline.style.opacity=win(t,ts,te,.5);life(cpt,t,ts+.2,te,{dy:6});life(apt,t,ts+.5,te,{dy:6});
+  cods.forEach((e,i)=>{const p=out(t,ts+.05+.1*i,.4);e.style.opacity=p*(1-out(t,te,.4));e.style.transform=`translateY(${((1-p)*-24).toFixed(1)}px)`});
+  const rx=CX(0)+run*5*150;rib2.set({op:win(t,ts+.2,te,.6),x:rx-CX(0),y:track(Math.sin(t*4)*3)+(1-out(t,ts+.2,.6))*-30});
+  aas.forEach((e,i)=>{const at=ts+.8+i*(4.6/5)*.97;const p=out(t,at,.4);const bump=1+.12*Math.sin(Math.PI*lin(t,A('c_amino')+.3+i*.22,.5))+.12*Math.sin(Math.PI*lin(t,A('c_seq')+.3+i*.22,.5));e.style.opacity=p*(1-out(t,te,.4));e.style.transform=`scale(${((.5+.5*p)*bump).toFixed(3)})`;if(i<5){const l=alines[i];l.style.opacity=out(t,at+.3,.3)*(1-out(t,te,.4))}
+    const d=adl[i];d.style.opacity=p*(1-out(t,te,.4))});
+  life(ac1,t,A('c_amino'),A('c_seq')-.2,{dy:8});life(ac2,t,A('c_seq')+.1,te,{dy:8});
+  // 3 fold
+  const fs0=A('c_fold'),fe=A('c_react')-.3;
+  const fm=out(t,fs0+1.0,2.2);
+  chain.set({op:win(t,fs0,fe,.6)*(1-out(t,fs0+2.6,.8)),s:1-.35*fm,r:-18*fm});fold.set({op:win(t,fs0+2.4,fe,.8),s:.55+.45*out(t,fs0+2.4,.9),y:track(Math.sin(t*1.6)*5)});
+  life(fc1,t,fs0+.6,fe,{dy:8});life(fc3,t,A('c_org'),fe,{dy:8});life(fc2,t,A('c_surr0')+.5,fe,{dy:8});
+  sm.forEach((m,i)=>{const a=A('c_surr0')+.6+i*.7;const p=out(t,a,1.4);const ang=track(t*1.1+i*2.1);const tx0=mix(1700,1210+Math.cos(ang)*20,p),ty0=mix(520+i*160,700+(i-1)*150+Math.sin(ang)*10,p);m.set({op:win(t,a,fe,.4),x:tx0-1650,y:ty0});});
+  // 4 jobs
+  const js=A('c_react'),je=A('c_role')-.3;const jt=[js,A('c_struct')-.1,A('c_trans')-.1,A('c_recv')-.1];
+  jobs.forEach((j,i)=>{life(j.bx,t,jt[i]-.1,je,{dy:20});life(j.t,t,jt[i]+.15,je,{dy:8});j.ic.set({op:win(t,jt[i]+.05,je,.5),s:.8+.2*out(t,jt[i]+.05,.6),y:track(Math.sin(t*1.5+i)*5)})});
+  // dots
+  const q0=track(((t-js-1)*.5)%1);const cx0=JX(0)+JW/2;
+  jd[0].setAttribute('cx',cx0-90+q0*100);jd[0].setAttribute('cy',590+q0*50);jd[0].style.opacity=out(t,js+1,.3)*(1-out(t,je,.4))*(q0<.85?1:1-(q0-.85)/.15);
+  rings[0].style.opacity=0;pulseRing(rings[0],cx0+8,640,t,js+2.0,1.0,20,70,GRN);
+  const q3=track(((t-A('c_trans')-.4)*.6)%1);jd[1].setAttribute('cx',JX(2)+JW/2-10);jd[1].setAttribute('cy',560+q3*180);jd[1].style.opacity=out(t,A('c_trans')+.4,.3)*(1-out(t,je,.4))*Math.sin(Math.PI*q3);
+  const q3b=track(((t-A('c_trans')-.4)*.6+.5)%1);jd[2].setAttribute('cx',JX(2)+JW/2+25);jd[2].setAttribute('cy',560+q3b*180);jd[2].style.opacity=out(t,A('c_trans')+.4,.3)*(1-out(t,je,.4))*Math.sin(Math.PI*q3b);
+  const q4=track(((t-A('c_recv')-.2)*.55)%1);jd[3].setAttribute('cx',JX(3)+JW/2-70+q4*70);jd[3].setAttribute('cy',545+q4*40);jd[3].style.opacity=out(t,A('c_recv')+.2,.3)*(1-out(t,je,.4))*(q4<.8?1:1-(q4-.8)/.2);
+  pulseRing(rings[3],JX(3)+JW/2,585,t,A('c_recv')+1.2,1.0,16,60,'#557eaf');pulseRing(rings[2],JX(2)+JW/2,650,t,A('c_trans')+1.0,1.2,30,90,'#ac8b42');
+  // 5 role
+  const rs=A('c_role'),re=A('c_drug')-.3;const rt=[A('c_s1'),A('c_s2'),A('c_s3'),A('c_s4')];
+  rp.set({op:win(t,rs,re,.6),s:.85+.15*out(t,rs,.7),y:track(Math.sin(t*1.5)*6)});
+  RC.forEach((r,i)=>{life(r.ch,t,rt[i]-.1,re,{dy:8});const g=out(t,rt[i]-.1,.6);r.ln.setAttribute('x1',r.x);r.ln.setAttribute('y1',r.y+(r.y<700?30:-30));r.ln.setAttribute('x2',mix(r.x,1280+(r.x<1280?-60:60),g));r.ln.setAttribute('y2',mix(r.y+(r.y<700?30:-30),700+(r.y<700?-50:50),g));r.ln.style.opacity=win(t,rt[i]-.1,re,.1)});
+  life(rn,t,A('c_name')+.1,re,{dy:8});
+  // 6 drug
+  const ds=A('c_drug'),de=A('c_exp')-.3,mt=A('c_mol');
+  dp.set({op:win(t,ds,de,.6),s:.85+.15*out(t,ds,.7),y:track(Math.sin(t*1.5)*5),x:track(Math.sin(t*38)*5)*(lin(t,mt+1.2,.6)>0&&lin(t,mt+1.2,.6)<1?1:0)});
+  dc.set({op:win(t,ds+.5,de,.6),s:.85+.15*out(t,ds+.5,.7),y:track(Math.sin(t*1.4)*4)});
+  const fly=out(t,mt,1.3);dm.set({op:win(t,ds+1.0,de,.5),x:mix(0,-250,fly),y:mix(0,130,fly)+track(Math.sin(t*3)*4)*(1-fly)});
+  life(dmc,t,ds+1.2,mt+1.2,{dy:8});
+  [gt,gf,gl].forEach(e=>life(e,t,ds+.8,de,{dy:6}));const lev=mix(220,60,out(t,mt+1.4,1.2));gf.style.width=lev+'px';gf.style.background=lev>140?'#4d8f7e':'#b76d66';
+  pathGrow(dar,out(t,mt+2.4,.8));dar.setAttribute('stroke-dasharray','3 12');dar.style.opacity=win(t,mt+2.4,de,.1);
+  life(dcc,t,mt+3.2,de,{dy:8});pulseRing(dring,1650,700,t,mt+3.4,1.4,60,170,'#b76d66');pulseRing(dring2,1650,700,t,mt+4.4,1.4,60,170,'#b76d66');
+  // 7 experiment
+  const xs=A('c_exp'),xe=A('c_path')-.3;
+  wp.set({op:win(t,xs,xe,.6),s:.85+.15*out(t,xs,.7),y:track(Math.sin(t*1.5)*5)});
+  const sw=track(((t-xs-.8)*.35)%1);sweep.style.left=(830+sw*340)+'px';sweep.style.opacity=win(t,xs+.8,xe,.4)*Math.sin(Math.PI*sw);
+  life(wc,t,xs+.5,xe,{dy:8});wq.style.opacity=win(t,xs+.4,xe,.5)*(.7+.3*track(Math.sin(t*3)*.5+.5));
+  // 8 path
+  const ps=A('c_path');
+  pd.set({op:win(t,A('c_p1'),9999,.6),s:.85+.15*out(t,A('c_p1'),.7),y:track(Math.sin(t*1.4)*4)});pr.set({op:win(t,A('c_p2'),9999,.6),s:.85+.15*out(t,A('c_p2'),.7),y:track(Math.sin(t*1.4+1)*4)});pp.set({op:win(t,A('c_p3'),9999,.6),s:.85+.15*out(t,A('c_p3'),.7),y:track(Math.sin(t*1.4+2)*4)});
+  pathGrow(pa1,out(t,A('c_p2')-.3,.6));pathGrow(pa2,out(t,A('c_p3')-.3,.6));
+  life(pl[0],t,A('c_p1')+.2,null,{dy:8});life(pl[1],t,A('c_p2')+.2,null,{dy:8});life(pl[2],t,A('c_p3')+.2,null,{dy:8});
+  life(pc1,t,A('c_p2')+.1,null,{dy:8});life(pc2,t,A('c_p3')+.1,null,{dy:8});
+  const rg=win(t,A('c_reg'),9999,.8);ring.style.opacity=rg;life(rcl,t,A('c_reg')+.3,null,{dy:8});
+  const L=ring.getTotalLength();rdots.forEach((d,i)=>{const q=track(((t-A('c_reg'))*.12+i/4)%1);const pt=ring.getPointAtLength(L*q);d.setAttribute('cx',pt.x);d.setAttribute('cy',pt.y);d.style.opacity=rg});
+};});
+</script></body></html>

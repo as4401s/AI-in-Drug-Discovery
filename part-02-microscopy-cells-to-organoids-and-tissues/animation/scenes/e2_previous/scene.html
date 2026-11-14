@@ -1,0 +1,54 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:2,part:0,partTitle:"Introduction and contents",title:"Where we are: from sequences to observations",foot:"Recap of lesson 1 \u00b7 schematic icons \u00b7 bars illustrative"},(S,C)=>{
+
+const E1='c_notell-.3',E2='c_chain-.3';
+const SPEC={els:[
+// welcome
+cd('b-mint',560,330,800,320,'c_welcome',{b:'c_prev-.3'}),tt('AI in Drug Discovery',960,380,740,'font:700 60px/1.1 Poppins;color:'+INK,'c_welcome+.3',{b:'c_prev-.3'}),
+ch('WhiskerBrief course',960,490,'amber','c_welcome+.6',{b:'c_prev-.3',fs:34}),ch('Video 2 · microscopy',960,570,'mint','c_vid',{b:'c_prev-.3',fs:34}),
+// recap row
+ch('Lesson 1',480,236,'blue','c_prev',{b:E2,fs:30}),
+ic('animal-cell',200,370,130,'c_cells',{b:E2,bob:4}),ch('cells',200,445,'coral','c_cells+.2',{b:E2,fs:26}),
+ic('dna-helix',420,370,100,'c_dna',{b:E2,bob:4,ph:1}),ch('DNA',420,445,'blue','c_dna+.2',{b:E2,fs:26}),
+ic('rna-strand',640,370,130,'c_dna+1.2',{b:E2,bob:4,ph:2}),ch('RNA',640,445,'amber','c_dna+1.4',{b:E2,fs:26}),
+ic('folded-protein',860,370,130,'c_prot',{b:E2,bob:4,ph:3}),ch('proteins',860,445,'mint','c_prot+.2',{b:E2,fs:26}),
+// model card
+cd('b-lav',1040,300,800,420,'c_esm-.2',{b:E2}),tt('small ESM-2 protein model',1440,318,740,T2,'c_esm',{b:E2}),ic('attention-network',1200,540,180,'c_esm+.3',{b:E2,bob:4}),
+ar(1310,540,1400,540,'g','c_esm+.9',{b:E2}),
+br(1440,590,40,50,'#8b75b0','c_esm+1.1',{val:[0,1],vt:'c_esm+1.1',vd:.6,b:E2}),br(1498,520,40,120,'#8b75b0','c_esm+1.2',{val:[0,1],vt:'c_esm+1.2',vd:.6,b:E2}),br(1556,605,40,35,'#8b75b0','c_esm+1.3',{val:[0,1],vt:'c_esm+1.3',vd:.6,b:E2}),br(1614,550,40,90,'#8b75b0','c_esm+1.4',{val:[0,1],vt:'c_esm+1.4',vd:.6,b:E2}),br(1672,615,40,25,'#8b75b0','c_esm+1.5',{val:[0,1],vt:'c_esm+1.5',vd:.6,b:E2}),br(1730,570,40,70,'#8b75b0','c_esm+1.6',{val:[0,1],vt:'c_esm+1.6',vd:.6,b:E2}),
+ch('probabilities for amino acids',1440,665,'lav','c_esm+1.6',{b:E2,fs:26}),
+ch('= the model’s sequence preferences',1440,760,'amber','c_pref',{b:E2,fs:30}),
+// not answered
+cd('b-coral',80,560,420,330,'c_notell-.2',{b:E2}),ic('animal-cell',290,690,150,'c_notell',{b:E2}),tt('a living cell survived a treatment?',290,770,380,T2,'c_notell+.2',{b:E2}),{t:'cross',x1:230,y1:640,x2:350,y2:760,a:'c_notell+.7',b:E2},
+cd('b-coral',540,560,420,330,'c_notell+.3',{b:E2}),ic('small-molecule',750,690,170,'c_notell+.5',{b:E2}),tt('a medicine helped a patient?',750,770,380,T2,'c_notell+.7',{b:E2}),{t:'cross',x1:690,y1:640,x2:810,y2:760,a:'c_notell+1.2',b:E2},
+ch('not answered by those probabilities',520,925,'amber','c_notell+1.4',{b:E2,fs:28}),
+// observations
+cd('b-amber',1040,806,800,154,'c_obs-.2',{b:E2}),tt('to answer a biological question: observations',1440,824,760,T2,'c_obs',{b:E2}),ic('microscope',1160,900,100,'c_micro',{b:E2,bob:3}),ch('microscopy is one way to collect them',1530,880,'mint','c_micro+.2',{b:E2,fs:26}),
+// chain
+cd('b-blue',80,420,380,260,'c_chain',{}),tt('light',270,440,340,T1,'c_light',{}),ic('fluorescence-channels',270,570,150,'c_light+.2',{bob:4}),
+ar(466,550,534,550,'g','c_img-.5'),
+cd('b-lav',540,420,380,260,'c_img-.3'),tt('image',730,440,340,T1,'c_img'),ic('tissue-section-slide',730,570,150,'c_img+.2',{bob:4,ph:1}),
+ar(926,550,994,550,'g','c_meas-.5'),
+cd('b-amber',1000,420,380,260,'c_meas-.3'),tt('measurement',1190,440,340,T1,'c_meas'),ic('cell-segmentation-mask',1190,570,150,'c_meas+.2',{bob:4,ph:2}),
+ar(1386,550,1454,550,'g','c_concl-.5'),
+cd('b-mint',1460,420,380,260,'c_concl-.3'),tt('a carefully limited conclusion',1650,440,340,T2,'c_concl'),{t:'tick',x:1650,y:590,r:46,a:'c_concl+.5'},
+dt([[466,550],[534,550]],'c','c_img',{n:2,speed:.5,r:9}),dt([[926,550],[994,550]],'c','c_meas',{n:2,speed:.5,r:9}),dt([[1386,550],[1454,550]],'c','c_concl',{n:2,speed:.5,r:9}),
+ch('the chain we will follow today',960,780,'amber','c_chain+.3',{fs:38})
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

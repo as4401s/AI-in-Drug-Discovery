@@ -1,0 +1,88 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets2/data2.js"></script><script src="../../lib/ep2.js"></script>
+<script>
+SCENE_INIT({ep:2,part:3,partTitle:'A real pixels-to-measurements experiment',title:'A mask turns a picture into a selection',foot:'Allen Institute for Cell Science / scikit-image · CC0 · Actual saved Python run · candidate regions, not validated cell counts'},(S,K)=>{
+const {out,show,mix}=WB;
+const IM={x:100,y:240,s:440};
+const pl=PLANE(S,IM.x,IM.y,IM.s);const k=IM.s/256;
+const pl2=PLANE(S,660,IM.y,IM.s);const cap2=tx('font:600 24px/1.2 Inter;color:'+GRN,'reference · baseline T = 10,432',660,IM.y+IM.s+16,520);const cap0=tx('font:700 24px/1 Poppins;color:'+MUT,'now →',560,IM.y+IM.s/2-12,90);
+const cap=tx('font:600 24px/1.2 Inter;color:'+MUT,'nucleus channel · plane 30 · current T',IM.x,IM.y+IM.s+16,520);
+// crop rectangle (x80-85, y24-29)
+const cr=box('',IM.x+3+80*k-4,IM.y+3+24*k-4,6*k+8,6*k+8);cr.style.cssText+=';border:3px solid #b76d66;border-radius:3px;box-sizing:border-box';
+// grids
+const GX=600,GY=262,CS=44;
+function grid(x,y,vals,bin){const cells=[];for(let r=0;r<6;r++)for(let c=0;c<6;c++){const v=vals[r][c];const e=box('',x+c*CS,y+r*CS,CS-3,CS-3);
+  if(bin){const on=v>D.T;e.style.cssText+=`;background:${on?'#2f8f74':'#fff'};border:2px solid ${on?'#26765d':'#c9d6d0'};border-radius:6px;font:700 22px/${CS-7}px Poppins;text-align:center;color:${on?'#fff':'#8a9a93'}`;e.textContent=on?1:0}
+  else{const g=Math.round(255*Math.max(0,Math.min(1,(v-D.LO)/(D.HI-D.LO))));e.style.cssText+=`;background:rgb(${g},${g},${g});border-radius:6px;font:600 14px/${CS-3}px Inter;text-align:center;color:${g>130?'#183b32':'#fff'}`;e.textContent=v}
+  cells.push(e)}return cells}
+const gRaw=grid(GX,GY,D.CROP,false),gBin=grid(GX+264+110,GY,D.CROP,true);
+const gl1=tx('font:600 22px/1.2 Inter;color:'+MUT,'raw detector values<br><span style="font-weight:400">6 × 6 pixel crop</span>',GX,GY+6*CS+8,264);
+const gl2=tx('font:600 22px/1.2 Inter;color:'+MUT,'binary mask<br><span style="font-weight:400">1 = selected</span>',GX+264+110,GY+6*CS+8,264);
+const ruleBox=box('b-lav',GX+264+12,GY+82,88,100);ruleBox.style.cssText+=';border-radius:16px';
+const ruleT=tx('font:700 21px/1.25 Inter;color:'+INK+';text-align:center',`raw<br>&gt; T<br><span style="font-weight:500;color:${GRN}">→ 1</span>`,GX+264+12,GY+94,88);
+const arr1=tx('font:700 40px/1 Inter;color:#4d8f7e','→',GX+264+38,GY+188,60);
+const lineSrc=tx('font:700 20px/1 Inter;color:'+COR,'crop → 6 × 6 square on the image',GX+110,GY-34,500);
+// connector from crop on image to grid
+const sv=WB.svg('svg',{width:1920,height:1080,style:'position:absolute;left:0;top:0'},S);
+const cx=IM.x+3+83*k,cy=IM.y+3+27*k;
+const conn=WB.svg('path',{d:`M${cx} ${cy} L${GX-12} ${GY+20}`,stroke:COR,'stroke-width':3,'stroke-dasharray':'7 7',fill:'none'},sv);
+// number line / gate
+const NX=100,NY=836,NW=1120,TMAX=32000;const npx=T=>NX+T/TMAX*NW;
+const nl=box('',NX,NY,NW,8);nl.style.cssText+=';background:#cdd9d3;border-radius:4px';
+const incl=box('',NX,NY-9,NW,26);incl.style.cssText+=';background:rgba(47,143,116,.28);border-radius:6px;border-left:6px solid #26765d';
+const gate=box('',NX,NY-40,10,88);gate.style.background=COR;gate.style.borderRadius='5px';
+const gT=tx('font:700 26px/1 Poppins;color:'+AMB+';white-space:nowrap','T = 10,432',NX,NY-76);
+const nlz=tx('font:500 22px/1 Inter;color:'+MUT,'0',NX,NY+26),nlm=tx('font:500 22px/1 Inter;color:'+MUT+';text-align:right;width:260px','32,000 raw units',NX+NW-260,NY+26);
+const lex=tx('font:700 24px/1 Inter;color:#6b7f78','excluded',NX+10,NY+58),lin=tx('font:700 24px/1 Inter;color:'+GRN+';text-align:right;width:300px','included ▸',NX+NW-300,NY+58);
+const nlt=tx('font:600 24px/1 Inter;color:'+INK,'The threshold T is a gate on the intensity number line',NX,NY-110,900);
+// threshold dashboard card (right, below notes)
+const tc=box('b-lav',1260,622,580,258);const tcT=tx('font:600 24px/1 Inter;color:'+MUT,'Threshold T right now',1288,646,520);
+const tcV=tx('font:700 66px/1 Poppins;color:'+INK,'T = 10,432',1288,686,520);
+const tcS=[[K.c_thr,K.c_dim-.2,'The baseline threshold',GRN],[K.c_dim,K.c_join-.2,'Too high: the dim nucleus is mostly missed','#8b6a1a'],[K.c_join,K.c_bg-.2,'Too low: bright nuclei join — the biggest region is 8,516 px (baseline 2,101 px)',AMB],[K.c_bg,K.c_prop-.2,'Lower still: 1,023 separate fragments, background selected',AMB],[K.c_prop,null,'Back to the baseline — still just a proposal',GRN]].map(([a,b,txt,col])=>{const e=tx(`font:600 27px/1.3 Inter;color:${col};white-space:normal`,txt,1288,772,524);return {e,a,b}});
+// ring on dim nucleus (region 11 at y32,x81)
+const ring=box('',IM.x+3+81*k-34,IM.y+3+32*k-34,68,68);ring.style.cssText+=';border:4px solid #e0a43a;border-radius:50%;box-sizing:border-box';
+const ringL=tx('font:700 22px/1 Poppins;color:#8b6a1a;background:#fff;padding:3px 8px;border-radius:8px;white-space:nowrap','dim nucleus',IM.x+3+81*k+34,IM.y+3+32*k-52);
+const banner=box('b-amber',100,924,1740,50);const banT=tx('font:600 27px/50px Inter;color:'+INK+';text-align:center',"A mask is a proposal: dim objects may be missed; bright objects may merge.",100,924,1740);
+const notes=NOTEBOX(S,{x:1260,y:222,w:580,h:380,notes:[
+ {a:K.c_need,b:K.c_seg-.1,title:'Goal',body:'To measure individual regions, first <b>select their pixels</b>.'},
+ {a:K.c_seg,b:K.c_mask-.1,title:'Segmentation',body:'Deciding which pixels belong to a region we want to measure.'},
+ {a:K.c_mask,b:K.c_nuc-.1,title:'Binary mask',body:'Every pixel gets one of <b>2 labels</b>:<br>selected foreground <b>(1)</b> or background <b>(0)</b>.'},
+ {a:K.c_nuc,b:K.c_gate-.1,title:'A simple starting rule',body:'In the nucleus channel, pixels <b>above a chosen intensity threshold T</b> are foreground.'},
+ {a:K.c_gate,b:K.c_easy-.1,title:'T is a gate',body:'Place a gate on the intensity number line.<br><b>Above</b> the gate: included.<br><b>Below</b> it: excluded.'},
+ {a:K.c_easy,b:K.c_lim-.1,title:'A useful baseline',body:'The rule is <b>easy to inspect and repeat</b> — so it makes a good baseline.'},
+ {a:K.c_lim,b:K.c_prop-.1,title:'…but limited',body:'',subs:[[K.c_dim,'A <b>dim nucleus</b> can be missed'],[K.c_join,'Nearby bright nuclei can <b>join</b>'],[K.c_bg,'<b>Background</b> structures can be selected']]},
+ {a:K.c_prop,b:null,title:'Take-away',body:'The mask is the algorithm’s <b>proposal</b> about regions — not an experimentally verified answer key.'}]});
+return function update(t){
+  // image
+  const ia=show(pl.cv,t,K.c_need,.8,{dy:10});show(cap,t,K.c_need+.4,.6);
+  // threshold trajectory
+  let T=mix(28000,10432,out(t,K.c_thr,3.2));
+  T=mix(T,18000,out(t,K.c_dim-.2,1.4));T=mix(T,6000,out(t,K.c_join-.2,1.4));T=mix(T,5000,out(t,K.c_bg-.2,1.2));T=mix(T,10432,out(t,K.c_prop-.2,1.6));
+  let Tq=Math.round(T/100)*100;if(Math.abs(T-10432)<60)Tq=10432;WB.track(Tq);
+  const oa=out(t,K.c_thr,.5);
+  pl.draw({T:oa>0.02?Tq:null,alpha:+(.55*oa).toFixed(2)});
+  const ra=out(t,K.c_dim-.4,.7);pl2.draw({T:D.T,alpha:.55});pl2.cv.style.opacity=ra;cap2.style.opacity=ra;cap0.style.opacity=0;
+  // crop + grids
+  show(cr,t,K.c_mask-.6,.5,{dy:0});conn.style.opacity=out(t,K.c_mask-.4,.6)*(1-out(t,K.c_nuc,.5));
+  lineSrc.style.opacity=0;
+  const gv=out(t,K.c_mask,.5)*(1-out(t,K.c_gate-.3,.6));
+  gRaw.forEach((c,i)=>{const a=out(t,K.c_mask+.1+i*.03,.4)*(1-out(t,K.c_gate-.3,.6));c.style.opacity=a});
+  gl1.style.opacity=gv;
+  gBin.forEach((c,i)=>{const a=out(t,K.c_two+.1+i*.03,.4)*(1-out(t,K.c_gate-.3,.6));c.style.opacity=a});gl2.style.opacity=out(t,K.c_two,.5)*(1-out(t,K.c_gate-.3,.6));
+  const rv=out(t,K.c_fg-.2,.6)*(1-out(t,K.c_gate-.3,.6));ruleBox.style.opacity=rv;ruleT.style.opacity=rv;arr1.style.opacity=rv;
+  cr.style.opacity=parseFloat(cr.style.opacity||0)*(1-out(t,K.c_gate-.3,.6));
+  // number line
+  const nv=out(t,K.c_gate,.6);[nl,incl,gate,gT,nlz,nlm,lex,lin,nlt].forEach(e=>e.style.opacity=nv);
+  const px=npx(Tq);gate.style.left=(px-5)+'px';gT.style.left=Math.min(px-60,NX+NW-190)+'px';gT.textContent='T = '+Tq.toLocaleString('en-US');
+  incl.style.left=px+'px';incl.style.width=(NX+NW-px)+'px';
+  // chips
+  const tv=out(t,K.c_thr,.5);[tc,tcT,tcV].forEach(e=>e.style.opacity=tv);tcV.textContent='T = '+Tq.toLocaleString('en-US');
+  tcS.forEach(({e,a,b})=>{e.style.opacity=out(t,a,.5)*(1-(b==null?0:out(t,b,.4)))});
+  const rA=out(t,K.c_dim,.5)*(1-out(t,K.c_join-.2,.4));ring.style.opacity=rA;ringL.style.opacity=rA;
+  show(banner,t,K.c_prop+1.5,.6,{dy:0});show(banT,t,K.c_prop+1.7,.6,{dy:0});
+  notes.update(t);
+  return 0;
+};
+});
+</script></body></html>

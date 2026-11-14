@@ -1,0 +1,186 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets2/data2.js"></script><script src="../../assets2/data3.js"></script><script src="../../lib/ep2.js"></script>
+<script>
+SCENE_INIT({ep:2,part:3,partTitle:'A real pixels-to-measurements experiment',title:'Projection: one picture from a stack',foot:'Allen Institute for Cell Science / scikit-image · CC0 · Real nucleus channel · MIP = max over 60 planes · schematics are labelled'},(S,K)=>{
+const {out,show,mix,lin,track}=WB;
+const mono="'DejaVu Sans Mono',Menlo,monospace";
+function G(){return WB.svg('svg',{width:1920,height:1080,style:'position:absolute;left:0;top:0'},S)}
+function cmap(u){const st=[[68,1,84],[59,82,139],[33,145,140],[94,201,98],[253,231,37]];u=Math.max(0,Math.min(.9999,u))*4;const i=Math.floor(u),f=u-i;return [0,1,2].map(c=>st[i][c]*(1-f)+st[i+1][c]*f)}
+const mipFn=(ov)=>(l,i)=>{const b=Math.max(0,Math.min(1,(D.MIP[i]-D.MLO)/(D.MHI-D.MLO)));const a=ov*Math.min(1,b*1.8);const c=cmap(l/59);return [c[0],c[1],c[2],a]};
+// ===== common panel positions =====
+const FP={x:770,y:262,s:300},k=FP.s/256;
+const PX_=28,PY_=143;
+// ----- phase A/B: 3D stack + empty frame + MIP -----
+const st3=STACK3D(S,215,545,270,{gap:38,rx:58,rz:-30});
+const strip=document.createElement('div');strip.style.cssText=`position:absolute;left:${PX_/256*270-3}px;top:${PY_/256*270}px;width:6px;height:${st3.total}px;background:${COR};transform-origin:0 0;transform:translateZ(${st3.total}px) rotateX(-90deg);opacity:0`;st3.inner.appendChild(strip);
+const dots=st3.planes.map(p=>{const d=document.createElement('div');d.style.cssText=`position:absolute;left:${PX_/256*270-6}px;top:${PY_/256*270-6}px;width:12px;height:12px;border-radius:6px;background:${COR};border:2px solid #fff;opacity:0;transform:translateZ(${(st3.zpos(p.z)+2).toFixed(1)}px)`;st3.inner.appendChild(d);return d});
+const stCap=tx('font:600 24px/1.25 Inter;color:'+MUT+';white-space:nowrap','Z stack · 60 planes · 10 shown',210,862,420);
+const ph=box('',FP.x,FP.y,FP.s,FP.s);ph.style.cssText+=`;border:4px dashed #9fb9ad;border-radius:8px;box-sizing:content-box;background:#f4f8f6`;
+const phQ=tx('font:700 90px/1 Poppins;color:#9fb9ad;text-align:center','?',FP.x,FP.y+FP.s/2-50,FP.s);
+const mipA=PLANE(S,FP.x,FP.y,FP.s);mipA.draw({key:'mip',src:D.MIP,lo:D.MLO,hi:D.MHI});
+const mipCap=tx('font:600 24px/1.25 Inter;color:'+MUT+';white-space:normal','',FP.x,FP.y+FP.s+14,380);
+const svA=G();
+const arr=WB.svg('g',{},svA);WB.svg('path',{d:'M590 430 L740 430',stroke:GRN,'stroke-width':7,fill:'none'},arr);WB.svg('path',{d:'M730 410 L762 430 L730 450 Z',fill:GRN},arr);
+const arrL=tx('font:700 30px/1 Poppins;color:'+GRN+';white-space:nowrap','projection',590,382,160);
+// pixel marker on MIP
+const mk=box('',FP.x+3+PX_*k-8,FP.y+3+PY_*k-8,16,16);mk.style.cssText+=`;border:4px solid ${COR};border-radius:3px;box-sizing:border-box;background:rgba(255,255,255,.35)`;
+const mkL=tx('font:700 22px/1 Inter;color:#fff;background:'+COR+';border-radius:8px;padding:4px 10px;white-space:nowrap','',FP.x+3+PX_*k+16,FP.y+3+PY_*k-14,null);
+// profile chart
+const CH={x:790,y:704,w:420,h:130},VM=30000;
+const svB=G();const pg=WB.svg('g',{},svB);
+WB.svg('line',{x1:CH.x,y1:CH.y+CH.h,x2:CH.x+CH.w,y2:CH.y+CH.h,stroke:'#8aa59b','stroke-width':3},pg);
+const bw=CH.w/60;const bars=D.PROF.A.map((v,i)=>WB.svg('rect',{x:CH.x+i*bw+.6,width:bw-1.2,y:CH.y+CH.h,height:0,fill:'#9fb9d9'},pg));
+const chT=tx('font:700 23px/1.2 Inter;color:'+INK+';white-space:nowrap','values along depth at one (x, y) position',CH.x-20,CH.y-64,520);
+const chX=tx('font:600 20px/1 Inter;color:'+MUT+';white-space:nowrap','depth z  (0 → 59)',CH.x,CH.y+CH.h+12,300);
+const chM=tx('font:700 22px/1.2 Inter;color:'+COR+';white-space:nowrap','brightest: 28,215 at z = 28',CH.x+bw*28-60,CH.y-24,360);
+const rep=tx('font:600 22px/1.2 Inter;color:'+GRN+';white-space:nowrap','repeated for all 256 × 256 positions',FP.x,FP.y+FP.s+66,440);
+// ----- code card (right column) -----
+const cc=box('b-lav',1260,714,580,160);const ccT=tx('font:700 24px/1 Inter;color:'+MUT,'How it is computed (the real line)',1288,734,520);
+const ccL=tx(`font:600 25px/1.3 ${mono};color:${INK};white-space:nowrap`,'projection = stack[:, 0].max(axis=0)',1288,774,540);
+const ccS=tx(`font:500 24px/1.3 ${mono};color:${GRN};white-space:nowrap`,'(60, 256, 256) → (256, 256)',1288,816,540);
+// ----- phase C/D: tiles + big MIP -----
+const TZ=[8,30,52],TS=196;
+const tiles=TZ.map((z,i)=>{const y=244+i*212;const cv=zCanvas(z,TS,`position:absolute;left:100px;top:${y}px;border:3px solid ${INK};border-radius:6px;box-sizing:content-box`);S.appendChild(cv);
+  const l1=tx('font:700 26px/1.2 Poppins;color:'+INK+';white-space:nowrap','plane z = '+z,320,y+60,260);const l2=tx('font:600 22px/1.2 Inter;color:'+MUT+';white-space:nowrap',(z*0.29).toFixed(1)+' µm deep',320,y+100,260);return {cv,l1,l2,a:K.c_rev+i*.45}});
+const M2={x:800,y:244,s:380};
+const mipC=PLANE(S,M2.x,M2.y,M2.s);
+const mC=tx('font:600 24px/1.25 Inter;color:'+MUT+';white-space:normal','',M2.x,M2.y+M2.s+14,400);
+const svC=G();const mg=WB.svg('g',{},svC);
+WB.svg('path',{d:'M540 342 L700 460',stroke:BLU,'stroke-width':4,fill:'none','stroke-dasharray':'8 7'},mg);WB.svg('path',{d:'M540 556 L700 480',stroke:BLU,'stroke-width':4,fill:'none','stroke-dasharray':'8 7'},mg);WB.svg('path',{d:'M540 768 L700 500',stroke:BLU,'stroke-width':4,fill:'none','stroke-dasharray':'8 7'},mg);
+WB.svg('path',{d:'M690 452 L752 470 L690 488 Z',fill:BLU},mg);
+const mxL=tx('font:700 24px/1.15 Poppins;color:'+BLU+';white-space:nowrap','max<br>over z',566,440,100);
+// colour bar for depth map
+const cbar=document.createElement('canvas');cbar.width=256;cbar.height=1;cbar.style.cssText=`position:absolute;left:${M2.x}px;top:${M2.y+M2.s+54}px;width:${M2.s+6}px;height:20px;border-radius:6px;image-rendering:pixelated`;S.appendChild(cbar);
+{const g=cbar.getContext('2d'),id=g.createImageData(256,1);for(let i=0;i<256;i++){const c=cmap(i/255);id.data[i*4]=c[0];id.data[i*4+1]=c[1];id.data[i*4+2]=c[2];id.data[i*4+3]=255}g.putImageData(id,0,0)}
+const cbL=tx('font:600 20px/1 Inter;color:'+MUT+';white-space:nowrap','z = 0 (top)',M2.x,M2.y+M2.s+80,200);const cbR=tx('font:600 20px/1 Inter;color:'+MUT+';text-align:right','z = 59 (deep)',M2.x+M2.s-200,M2.y+M2.s+80,206);
+const cbT=tx('font:700 22px/1.2 Inter;color:'+INK+';white-space:nowrap','depth of each pixel’s brightest value',M2.x,M2.y+M2.s+112,420);
+const gone=tx('font:700 26px/1.25 Poppins;color:'+COR+';white-space:normal;text-align:center;background:#fff;border:3px solid '+COR+';border-radius:14px;padding:10px 12px','depth information:<br>discarded',M2.x+60,M2.y+M2.s/2-40,256);
+// ----- phase E: schematic overlap -----
+const svE=G();const eg=WB.svg('g',{},svE);
+const eT=tx('font:700 26px/1.2 Inter;color:'+INK+';white-space:nowrap','Two nuclei at different depths (schematic)',100,240,700);
+WB.svg('rect',{x:100,y:290,width:560,height:300,rx:14,fill:'#f4f8f6',stroke:'#cfdcd6','stroke-width':2},eg);
+const eA=WB.svg('ellipse',{cx:330,cy:370,rx:120,ry:46,fill:'rgba(85,126,175,.55)',stroke:BLU,'stroke-width':4},eg);
+const eB=WB.svg('ellipse',{cx:440,cy:500,rx:120,ry:46,fill:'rgba(183,109,102,.55)',stroke:COR,'stroke-width':4},eg);
+const eAL=tx('font:700 24px/1 Inter;color:'+BLU,'nucleus A',462,352,200),eBL=tx('font:700 24px/1 Inter;color:'+COR,'nucleus B',380,554,200);
+const zA=WB.svg('g',{},eg);WB.svg('line',{x1:120,y1:310,x2:120,y2:570,stroke:'#6a7f78','stroke-width':4},zA);WB.svg('path',{d:'M110 556 L120 576 L130 556 Z',fill:'#6a7f78'},zA);
+const zAL=tx('font:600 20px/1 Inter;color:'+MUT,'depth z',130,300,120);
+const pj=WB.svg('g',{},eg);
+[[210,550],[450,550]].forEach(([a,b])=>{});
+[210,330,450,560].forEach(x=>{WB.svg('line',{x1:x,y1:(x==210||x==330||x==450||x==560)?420:420,x2:x,y2:640,stroke:'#8aa59b','stroke-width':2,'stroke-dasharray':'6 6'},pj)});
+WB.svg('line',{x1:100,y1:640,x2:660,y2:640,stroke:'#8aa59b','stroke-width':3},pj);
+const footA=WB.svg('rect',{x:210,y:628,width:240,height:14,rx:7,fill:'rgba(85,126,175,.75)'},pj),footB=WB.svg('rect',{x:320,y:644,width:240,height:14,rx:7,fill:'rgba(183,109,102,.75)'},pj);
+const pjL=tx('font:600 22px/1.2 Inter;color:'+MUT+';white-space:nowrap','footprints on the projected image (side view)',100,672,560);
+// top view result
+const tvT=tx('font:700 26px/1.2 Inter;color:'+INK+';white-space:nowrap','Projected image (top view)',730,240,480);
+const tv=WB.svg('g',{},eg);
+WB.svg('rect',{x:730,y:290,width:430,height:300,rx:14,fill:'#101c18'},tv);
+const cA=WB.svg('ellipse',{cx:900,cy:440,rx:96,ry:96,fill:'rgba(255,255,255,.55)'},tv),cB=WB.svg('ellipse',{cx:990,cy:440,rx:96,ry:96,fill:'rgba(255,255,255,.55)'},tv);
+const cm=tx('font:700 26px/1.2 Poppins;color:#fff;text-align:center;text-shadow:0 1px 6px rgba(0,0,0,.7)','one merged blob?',830,420,260);
+const tvC=tx('font:600 22px/1.25 Inter;color:'+COR+';white-space:normal','two nuclei, but the projection shows one connected object',730,606,440);
+// ----- phase F: real neighbouring pixels from different depths -----
+const J={y:99,x:59};const CR=16,cs=16;
+const cr0={y:J.y-8,x:J.x-8};
+const crc=document.createElement('canvas');crc.width=CR;crc.height=CR;crc.style.cssText=`position:absolute;left:100px;top:290px;width:300px;height:300px;image-rendering:pixelated;border:3px solid ${INK};border-radius:8px`;S.appendChild(crc);
+{const g=crc.getContext('2d'),id=g.createImageData(CR,CR);for(let y=0;y<CR;y++)for(let x=0;x<CR;x++){const v=D.MIP[(cr0.y+y)*256+cr0.x+x];const gr=Math.max(0,Math.min(1,(v-D.MLO)/(D.MHI-D.MLO)))*255;const o=(y*CR+x)*4;id.data[o]=id.data[o+1]=id.data[o+2]=gr;id.data[o+3]=255}g.putImageData(id,0,0)}
+const px=CR=>0;
+const ps=300/16;
+const mA=box('',100+3+8*ps,290+3+8*ps,ps,ps),mB=box('',100+3+9*ps,290+3+8*ps,ps,ps);
+mA.style.cssText+=`;border:4px solid ${BLU};box-shadow:0 0 0 3px #fff;box-sizing:border-box`;mB.style.cssText+=`;border:4px solid ${COR};box-shadow:0 0 0 3px #fff;box-sizing:border-box`;
+const crT=tx('font:700 24px/1.2 Inter;color:'+INK+';white-space:nowrap','16 × 16 crop of the projection',100,240,420);
+const crL=tx('font:600 22px/1.3 Inter;color:'+MUT+';white-space:normal','two <b style="color:'+BLU+'">adjacent</b> <b style="color:'+COR+'">pixels</b> on a bright boundary',100,604,310);
+const svF=G();const fg=WB.svg('g',{},svF);
+function chart(x,y,w,h,vals,mi,col,id){const g=WB.svg('g',{},fg);WB.svg('line',{x1:x,y1:y+h,x2:x+w,y2:y+h,stroke:'#8aa59b','stroke-width':3},g);const b=w/60;const rs=vals.map((v,i)=>WB.svg('rect',{x:x+i*b+.6,y:y+h-v/32000*h,width:b-1.2,height:v/32000*h,fill:i==mi?col:'#c5d3e3'},g));return {g,rs}}
+const FC1={x:470,y:300,w:340,h:200},FC2={x:850,y:300,w:340,h:200};
+const cA1=chart(FC1.x,FC1.y,FC1.w,FC1.h,D3.PA,27,BLU),cB1=chart(FC2.x,FC2.y,FC2.w,FC2.h,D3.PB,41,COR);
+const fA=tx('font:700 22px/1.2 Inter;color:'+BLU+';white-space:nowrap','pixel A · peak at z = 27',FC1.x,FC1.y-40,340);const fB=tx('font:700 22px/1.2 Inter;color:'+COR+';white-space:nowrap','pixel B · peak at z = 41',FC2.x,FC2.y-40,340);
+const fAv=tx('font:600 22px/1.3 Inter;color:'+MUT+';white-space:normal','brightest value 27,551<br>≈ 7.8 µm deep',FC1.x,FC1.y+FC1.h+12,330);const fBv=tx('font:600 22px/1.3 Inter;color:'+MUT+';white-space:normal','brightest value 25,417<br>≈ 11.9 µm deep',FC2.x,FC2.y+FC2.h+12,330);
+const fS=box('b-amber',470,620,720,96);const fST=tx('font:600 26px/1.3 Inter;color:'+INK+';white-space:normal;text-align:center','Side by side in the projection — but their brightest values come from planes <b>14 steps ≈ 4 µm</b> apart.',490,634,680);
+// ----- phase G: plane vs MIP segmentation -----
+const GS=450;
+const gP=PLANE(S,100,262,GS),gM=PLANE(S,640,262,GS);
+const pal=l=>LABPAL[l%16];
+gP.draw({key:'gP0',lo:D.LO,hi:D.HI});gM.draw({key:'gM0',src:D.MIP,lo:D.MLO,hi:D.MHI});
+const gk=GS/256;
+function bb(x0,y0,x1,y1,ox,oy){const b=box('',ox+3+x0*gk-4,oy+3+y0*gk-4,(x1-x0+1)*gk+8,(y1-y0+1)*gk+8);b.style.cssText+=';border:4px solid #fff;box-shadow:0 0 0 3px #183b32;border-radius:8px;box-sizing:border-box';return b}
+const bP=bb(157,23,251,72,100,262),bM=bb(126,0,252,73,640,262);
+const gPL=tx('font:700 24px/1.2 Poppins;color:'+INK+';white-space:nowrap','plane 30',100,262+GS+18,300),gML=tx('font:700 24px/1.2 Poppins;color:'+INK+';white-space:nowrap','projection (MIP)',640,262+GS+18,300);
+const gPS=tx('font:600 22px/1.2 Inter;color:'+MUT+';white-space:nowrap','Otsu T = 10,432 · 12 retained',100,262+GS+50,440),gMS=tx('font:600 22px/1.2 Inter;color:'+MUT+';white-space:nowrap','Otsu T = 14,226 · 9 retained',640,262+GS+50,440);
+const pill='background:#fff;border:3px solid #26765d;border-radius:14px;padding:4px 16px;text-align:center;white-space:nowrap';const nP=tx('font:700 48px/1.1 Poppins;color:'+GRN+';'+pill,'12',100+GS-96,262+GS-74,null),nM=tx('font:700 48px/1.1 Poppins;color:'+GRN+';'+pill,'9',640+GS-80,262+GS-74,null);
+const merge=box('b-amber',100,262+GS+92,980,70);const mgT=tx('font:600 24px/1.3 Inter;color:'+INK+';white-space:normal','boxed: <b>two</b> separate plane regions (1,301 px + 1,200 px) fall in <b>one</b> projection region of 4,656 px — it touches the image border, so the QC rule removes it.',120,262+GS+100,940);
+// ----- phase H/I: meaning rows -----
+const rowsH=[[K.c_use,'b-mint','✓','A useful transformation','<b>maximum over depth</b> for every (y, x) — a specific meaning',INK,'mip'],[K.c_thin,'b-coral','✗','Not a photograph of a thin slice','it merges information from <b>all</b> depths',AMB,'plane'],[K.c_cnt,'b-coral','✗','Its object count is not automatically a count of all cells','MIP: <b>9</b> regions · plane 30: <b>12</b> regions — same stack',AMB,'seg']].map(([a,cls,ic,h1,h2,col,th],i)=>{const y=236+i*214;const b=box(cls,100,y,1120,196);
+  const cvv=PLANE(S,116,y+10,170);if(th=='mip')cvv.draw({key:'h1',src:D.MIP,lo:D.MLO,hi:D.MHI});else if(th=='plane')cvv.draw({key:'h2'});else cvv.draw({key:'h3',src:D.MIP,lo:D.MLO,hi:D.MHI,lab:D.LABM,colorFn:(l)=>{if(!l)return null;if(D.STM[l]==0){const c=pal(l);return [c[0],c[1],c[2],.75]}return null}});
+  const icn=tx('font:700 64px/1 Poppins;color:'+(ic=='✓'?GRN:COR),ic,330,y+24,70);const t1=tx('font:700 31px/1.2 Poppins;color:'+INK+';white-space:normal',h1,420,y+28,780);const t2=tx('font:500 28px/1.3 Inter;color:'+INK+';white-space:normal',h2,420,y+(i==2?120:100),780);
+  return {b,cvv,icn,t1,t2,a}});
+const banner=box('b-amber',100,924,1740,50);const banT=tx('font:600 27px/50px Inter;color:'+INK+';text-align:center','Projection ≠ a thin section ≠ a verified total cell count.',100,924,1740);
+const notes=NOTEBOX(S,{x:1260,y:222,w:580,h:470,tfs:32,bfs:29,notes:[
+ {a:K.c_hard,b:K.c_proj-.1,title:'One picture of a stack?',body:'A stack of <b>60 planes</b> is hard to show in a single picture.'},
+ {a:K.c_proj,b:K.c_mip-.1,title:'A projection',body:'So software often makes a <b>projection</b>: one image built from the whole stack.'},
+ {a:K.c_mip,b:K.c_rev-.1,title:'Maximum intensity projection',body:'For each image position, keep the <b>brightest value along depth</b>.',subs:[[K.c_bright+.2,'at this position: brightest = <b>28,215</b>, found at z = 28']]},
+ {a:K.c_rev,b:K.c_col-.1,title:'What it can reveal',body:'Structures that occur in <b>different planes</b> all appear in one picture.'},
+ {a:K.c_col,b:K.c_two-.1,title:'What it collapses',body:'The <b>depth</b> at which each brightest value occurred is no longer in the image.'},
+ {a:K.c_two,b:K.c_bb-.1,title:'Overlap',body:'Two separate nuclei, one above the other, may <b>overlap</b> in the projected image.'},
+ {a:K.c_bb,b:K.c_seg-.1,title:'Different depths side by side',body:'A bright boundary can come from a <b>different depth</b> than the object beside it.',subs:[[K.c_dd+1.2,'real example: two adjacent pixels peak at z = <b>27</b> and z = <b>41</b>']]},
+ {a:K.c_seg,b:K.c_use-.1,title:'Segmentation can change',body:'The same method on a projection can produce <b>different objects</b> than on one plane.',subs:[[K.c_same,'plane 30 → <b>12</b> retained regions'],[K.c_same+.8,'projection → <b>9</b> retained regions']]},
+ {a:K.c_use,b:K.c_not-.1,title:'Useful, with a specific meaning',body:'A projection is a <b>transformation</b>: its meaning is “maximum over depth”.'},
+ {a:K.c_not,b:null,title:'It is not…',body:'',subs:[[K.c_thin,'a photograph of a <b>thin slice</b>'],[K.c_cnt,'automatically an account of <b>all the cells</b> in the stack']]}]});
+return function update(t){
+  // ---- phase A/B ----
+  const aOut=1-out(t,K.c_rev-.5,.5);
+  const planeIdx=[5,0,1,2,3,4,6,7,8,9];
+  st3.planes.forEach((p,i)=>{const ord=planeIdx.indexOf(i);const v=(ord==0?out(t,K.c_hard,.6):out(t,K.c_hard+.3+ord*.2,.5))*aOut;st3.setPlane(i,v)});
+  st3.setFrame(28,out(t,K.c_bright,.6)*aOut*.0+0*0);st3.frame.style.opacity=out(t,K.c_bright,.6)*aOut;
+  stCap.style.opacity=out(t,K.c_hard+1,.6)*aOut;
+  const phA=out(t,K.c_hard+.4,.6)*aOut;ph.style.opacity=phA*(1-out(t,K.c_proj+.9,.5));phQ.style.opacity=phA*(1-out(t,K.c_proj+.6,.5));
+  const ma=out(t,K.c_proj+.9,.8)*aOut;mipA.cv.style.opacity=ma;mipCap.style.opacity=ma;
+  mipCap.innerHTML=t<K.c_mip?'a projection: one picture from the whole stack':'maximum intensity projection (MIP)';
+  svA.style.opacity=out(t,K.c_proj,.6)*(1-out(t,K.c_proj+1.8,.6))*aOut;
+  arrL.style.opacity=out(t,K.c_proj,.6)*(1-out(t,K.c_proj+1.8,.6))*aOut;
+  const ra=out(t,K.c_mip,.6)*aOut;strip.style.opacity=ra;dots.forEach((d,i)=>d.style.opacity=out(t,K.c_mip+.2+i*.05,.4)*aOut);
+  mk.style.opacity=out(t,K.c_bright+.7,.6)*aOut;mkL.style.opacity=out(t,K.c_bright+.9,.6)*aOut;mkL.innerHTML='28,215';
+  const pa=out(t,K.c_mip+.4,.6)*aOut;svB.style.opacity=pa;chT.style.opacity=pa;chX.style.opacity=pa;
+  const gr=out(t,K.c_mip+.6,1.2);bars.forEach((r,i)=>{const h=D.PROF.A[i]/VM*CH.h*gr;r.setAttribute('y',CH.y+CH.h-h);r.setAttribute('height',h);r.setAttribute('fill',i==28&&t>=K.c_bright?COR:'#9fb9d9')});
+  const hb=out(t,K.c_bright,.6)*aOut;chM.style.opacity=hb;
+  rep.style.opacity=out(t,K.c_depth+1.2,.6)*aOut;
+  cc.style.opacity=out(t,K.c_mip,.6);ccT.style.opacity=out(t,K.c_mip,.6);ccL.style.opacity=out(t,K.c_mip+.3,.6);ccS.style.opacity=out(t,K.c_mip+.9,.6);
+  // ---- phase C/D ----
+  const cI=out(t,K.c_rev,.5),cO=1-out(t,K.c_two-.5,.5),cA=cI*cO;
+  tiles.forEach(({cv,l1,l2,a})=>{const p=out(t,a,.6)*cO;cv.style.opacity=p;l1.style.opacity=l2.style.opacity=p});
+  svC.style.opacity=out(t,K.c_planes,.6)*cO;mxL.style.opacity=out(t,K.c_planes,.6)*cO;
+  const ov=out(t,K.c_col,.8)*(1-out(t,K.c_dinfo,.8));
+  mipC.draw({key:'mc'+ov.toFixed(3),src:D.MIP,lo:D.MLO,hi:D.MHI,lab:D.AM,colorFn:mipFn(ov)});
+  mipC.cv.style.opacity=out(t,K.c_planes+.4,.6)*cO;
+  mC.style.opacity=out(t,K.c_planes+.4,.6)*cO;mC.innerHTML=t<K.c_col?'the MIP shows structures from every plane':(t<K.c_dinfo?'colour = which plane held the brightest value':'plain MIP — that depth is gone');
+  const cl=out(t,K.c_col,.6)*cO;[cbar,cbL,cbR,cbT].forEach(e=>e.style.opacity=cl*(1-out(t,K.c_dinfo+.6,.5)));
+  gone.style.opacity=out(t,K.c_dinfo+.4,.6)*cO*(1-out(t,K.c_two-.8,.4));
+  // ---- phase E ----
+  const eI=out(t,K.c_two,.5),eO=1-out(t,K.c_bb-.5,.5),eA=eI*eO;
+  svE.style.opacity=eA;[eT,eAL,eBL,zAL,pjL,tvT,cm,tvC].forEach(e=>e.style.opacity=eA);
+  eA.toString;
+  eB.style.opacity=out(t,K.c_above,.6);eBL.style.opacity=out(t,K.c_above,.6)*eA;
+  const pr=out(t,K.c_over,.7);pj.style.opacity=pr;pjL.style.opacity=pr*eA;
+  tv.style.opacity=out(t,K.c_over+.2,.7);cm.style.opacity=out(t,K.c_over+1.2,.6)*eA;tvC.style.opacity=out(t,K.c_over+1.4,.6)*eA;tvT.style.opacity=out(t,K.c_over+.2,.6)*eA;
+  // ---- phase F ----
+  const fI=out(t,K.c_bb,.5),fO=1-out(t,K.c_seg-.5,.5),fA_=fI*fO;
+  crc.style.opacity=fA_;crT.style.opacity=fA_;crL.style.opacity=fA_;mA.style.opacity=out(t,K.c_bb+.5,.5)*fO;mB.style.opacity=out(t,K.c_bb+.9,.5)*fO;
+  svF.style.opacity=fA_;
+  const f1=out(t,K.c_bb+1.4,.6)*fO,f2=out(t,K.c_dd,.6)*fO;cA1.g.style.opacity=f1;fA.style.opacity=f1;fAv.style.opacity=f1;cB1.g.style.opacity=f2;fB.style.opacity=f2;fBv.style.opacity=f2;
+  const f3=out(t,K.c_dd+1.2,.6)*fO;fS.style.opacity=f3;fST.style.opacity=f3;
+  // ---- phase G ----
+  const gI=out(t,K.c_seg,.5),gO=1-out(t,K.c_use-.5,.5),gA=gI*gO;
+  const lp=out(t,K.c_run,.7),lm=lp;
+  gP.draw({key:'gP'+lp.toFixed(3),lo:D.LO,hi:D.HI,lab:D.LAB,colorFn:(l)=>{if(!l||D.ST[l]!=0)return null;const c=pal(l);return [c[0],c[1],c[2],.7*lp]}});
+  gM.draw({key:'gM'+lm.toFixed(3),src:D.MIP,lo:D.MLO,hi:D.MHI,lab:D.LABM,colorFn:(l)=>{if(!l||D.STM[l]!=0)return null;const c=pal(l);return [c[0],c[1],c[2],.7*lm]}});
+  gP.cv.style.opacity=gA;gM.cv.style.opacity=gA;[gPL,gML,gPS,gMS].forEach(e=>e.style.opacity=gA);
+  const bx=out(t,K.c_diffobj,.6)*gO;bP.style.opacity=bx;bM.style.opacity=bx;
+  const gm=out(t,K.c_diffobj+.8,.6)*gO;merge.style.opacity=gm;mgT.style.opacity=gm;
+  const nn=out(t,K.c_same,.6)*gO;nP.style.opacity=nn;nM.style.opacity=out(t,K.c_same+.8,.6)*gO;
+  // ---- phase H/I ----
+  rowsH.forEach(({b,cvv,icn,t1,t2,a},i)=>{const p=out(t,a,.6);[b,cvv.cv,icn,t1].forEach(e=>e.style.opacity=p);t2.style.opacity=out(t,a+(i==0?2.2:.7),.6);b.style.transform=`translateY(${((1-p)*12).toFixed(1)}px)`});
+  show(banner,t,K.c_all+.8,.6,{dy:0});show(banT,t,K.c_all+1.0,.6,{dy:0});
+  notes.update(t);
+  return 0;
+};
+});
+</script></body></html>

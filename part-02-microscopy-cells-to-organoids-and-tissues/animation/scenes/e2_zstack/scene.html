@@ -1,0 +1,231 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets2/data2.js"></script><script src="../../assets2/data3.js"></script><script src="../../lib/ep2.js"></script>
+<script>
+SCENE_INIT({ep:2,part:3,partTitle:'A real pixels-to-measurements experiment',title:'Looking at depth: the Z stack',foot:'Allen Institute for Cell Science / scikit-image · CC0 · Real nucleus-channel planes (60 × 256 × 256) · schematics are labelled'},(S,K)=>{
+const {out,show,mix,lin,track}=WB;
+const mono="'DejaVu Sans Mono',Menlo,monospace";
+const NS='http://www.w3.org/2000/svg';
+function G(){const sv=WB.svg('svg',{width:1920,height:1080,style:'position:absolute;left:0;top:0'},S);return sv}
+// ================= PHASE A: stack + flat plane + side view =================
+const st3=STACK3D(S,215,545,270,{gap:38,rx:58,rz:-30});
+const FP={x:770,y:262,s:320};
+const flat=zCanvas(30,FP.s,`position:absolute;left:${FP.x}px;top:${FP.y}px;border:3px solid ${INK};border-radius:8px;box-sizing:content-box`);S.appendChild(flat);
+const flatCap=tx('font:600 24px/1.25 Inter;color:'+MUT+';white-space:nowrap','',FP.x,FP.y+FP.s+16,420);
+const rowline=document.createElement('div');rowline.style.cssText=`position:absolute;left:${FP.x+3}px;top:${FP.y+3+143*FP.s/256-1}px;width:${FP.s}px;height:3px;background:${COR};opacity:0`;S.appendChild(rowline);
+const XZ={x:770,y:688,w:320};
+const xz=xzCanvas(143,XZ.w,`position:absolute;left:${XZ.x}px;top:${XZ.y}px;border:3px solid ${INK};border-radius:6px;box-sizing:content-box`);S.appendChild(xz);
+const xzline=document.createElement('div');xzline.style.cssText=`position:absolute;left:${XZ.x-8}px;width:${XZ.w+22}px;height:4px;background:${COR};border-radius:2px`;S.appendChild(xzline);
+const xzCap=tx('font:600 22px/1.25 Inter;color:'+MUT,'side view · one row (x, z)',XZ.x,XZ.y+xz._h+14,420);
+const zTag=tx('font:700 36px/1 Poppins;color:'+COR+';white-space:nowrap','',1115,FP.y+8,130);
+const zTag2=tx('font:600 24px/1.2 Inter;color:'+MUT+';white-space:nowrap','',1115,FP.y+54,130);
+const qTag=tx('font:700 90px/1 Poppins;color:'+COR,'z ?',560,500,200);
+// stack caption
+const stCap=tx('font:600 24px/1.25 Inter;color:'+MUT+';white-space:nowrap','60 planes · 10 shown',330,850,420);
+const stBr=tx('font:700 34px/1 Poppins;color:'+GRN+';white-space:nowrap;background:#e1f1ea;border:3px solid #7fbfa8;border-radius:14px;padding:8px 18px','Z stack',560,330,200);
+// Z axis arrow
+const svA=G();
+const zax=WB.svg('g',{},svA);
+WB.svg('line',{x1:92,y1:290,x2:92,y2:810,stroke:BLU,'stroke-width':6},zax);
+WB.svg('path',{d:'M80 792 L92 818 L104 792 Z',fill:BLU},zax);
+const zaxL=tx('font:700 34px/1 Poppins;color:'+BLU+';white-space:nowrap;writing-mode:vertical-rl;transform:rotate(180deg)','Z · depth',40,440,44);
+const zt0=tx('font:600 20px/1 Inter;color:'+MUT,'top (z = 0)',108,280,160),zt1=tx('font:600 20px/1 Inter;color:'+MUT,'deeper (z = 59)',108,800,200);
+// X / Y arrows on flat plane
+const xyg=WB.svg('g',{},svA);
+WB.svg('line',{x1:FP.x,y1:FP.y-18,x2:FP.x+FP.s,y2:FP.y-18,stroke:GRN,'stroke-width':6},xyg);
+WB.svg('path',{d:`M${FP.x+FP.s-14} ${FP.y-30} L${FP.x+FP.s+10} ${FP.y-18} L${FP.x+FP.s-14} ${FP.y-6} Z`,fill:GRN},xyg);
+WB.svg('line',{x1:FP.x-20,y1:FP.y,x2:FP.x-20,y2:FP.y+FP.s,stroke:GRN,'stroke-width':6},xyg);
+WB.svg('path',{d:`M${FP.x-32} ${FP.y+FP.s-14} L${FP.x-20} ${FP.y+FP.s+10} L${FP.x-8} ${FP.y+FP.s-14} Z`,fill:GRN},xyg);
+const xL=tx('font:700 30px/1 Poppins;color:'+GRN,'X',FP.x+FP.s/2-10,FP.y-62,40),yL=tx('font:700 30px/1 Poppins;color:'+GRN,'Y',FP.x-64,FP.y+FP.s/2-16,40);
+const xyNote=tx('font:600 22px/1.25 Inter;color:'+GRN+';white-space:nowrap','position across the plane',FP.x+FP.s+34,FP.y+FP.s/2-12,260);
+xyNote.style.display='none';
+const gA=[st3.root,flat,flatCap,rowline,xz,xzline,xzCap,zTag,zTag2,qTag,stCap,stBr,svA,zaxL,zt0,zt1,xL,yL];
+// ================= PHASE B: confocal schematic =================
+const svB=G();const gB=WB.svg('g',{},svB);
+const LX=520,PX=920,AY=540;
+// specimen blob
+WB.svg('rect',{x:110,y:380,width:300,height:320,rx:60,fill:'#e7f2ec',stroke:'#9bc9b8','stroke-width':3},gB);
+const spL=tx('font:600 22px/1 Inter;color:'+MUT,'specimen',128,396,160);
+// focal plane
+const fpl=WB.svg('line',{x1:270,y1:350,x2:270,y2:730,stroke:GRN,'stroke-width':3,'stroke-dasharray':'8 8'},gB);
+const fpL=tx('font:700 22px/1 Inter;color:'+GRN+';white-space:nowrap','focal plane',270-62,324,160);
+// lens
+WB.svg('ellipse',{cx:LX,cy:AY,rx:20,ry:150,fill:'#d7e5f5',stroke:BLU,'stroke-width':4},gB);
+const lnL=tx('font:600 22px/1 Inter;color:'+BLU+';white-space:nowrap','objective lens',LX-66,AY-196,200);
+// pinhole plate
+WB.svg('rect',{x:PX-8,y:AY-190,width:16,height:182,fill:INK},gB);WB.svg('rect',{x:PX-8,y:AY+8,width:16,height:182,fill:INK},gB);
+const phL=tx('font:700 24px/1 Inter;color:'+INK+';white-space:nowrap','pinhole',PX-46,AY-232,140);
+// detector
+WB.svg('rect',{x:1058,y:AY-46,width:22,height:92,rx:5,fill:'#cfe4d9',stroke:GRN,'stroke-width':3},gB);
+const dtL=tx('font:600 22px/1 Inter;color:'+GRN,'detector',1022,AY+60,120);
+// points
+function pt(x,col){return WB.svg('circle',{cx:x,cy:AY,r:9,fill:col,stroke:'#fff','stroke-width':3},gB)}
+const rays=(x0,xi,col,dash,upto)=>{const a=[];[-110,110].forEach(dy=>{const y0=AY+dy;const sl=(AY-y0)/(xi-LX);const xe=upto||xi;a.push([WB.svg('line',{x1:x0,y1:AY,x2:LX,y2:y0,stroke:col,'stroke-width':3.4,'stroke-dasharray':dash||''},gB),WB.svg('line',{x1:LX,y1:y0,x2:xe,y2:y0+sl*(xe-LX),stroke:col,'stroke-width':3.4,'stroke-dasharray':dash||''},gB)])});return a};
+const GREENR='#2a9a79',REDR='#c0574f';
+const rP=rays(270,PX,GREENR,'',PX);
+// continue beyond pinhole: diverging to the detector
+const behind=[-1,1].map(s=>WB.svg('line',{x1:PX,y1:AY,x2:1058,y2:AY+s*(110/400)*(1058-PX)*-1,stroke:GREENR,'stroke-width':3.4},gB));
+const PPt=pt(270,GREENR);
+const rQ=rays(400,1160,REDR,'',PX);const QPt=pt(400,REDR);
+const rR=rays(150,760,REDR,'8 6',PX);const RPt=pt(150,REDR);
+// blocked marks at plate
+const blk=[];[[PX-4,AY-41],[PX-4,AY+41],[PX-4,AY-73],[PX-4,AY+73]].forEach(([x,y])=>{blk.push(tx('font:700 26px/1 Inter;color:'+REDR,'×',x-22,y-14,30))});
+const lgP=tx('font:600 24px/1.25 Inter;color:'+GREENR+';white-space:normal','<b>●</b> in-focus light: converges on the pinhole and passes',120,752,480);
+const lgO=tx('font:600 24px/1.25 Inter;color:'+REDR+';white-space:normal','<b>●</b> out-of-focus light: spread over the pinhole plane — mostly blocked',660,752,520);
+const sch=tx('font:600 22px/1 Inter;color:'+MUT,'confocal light path · schematic, not to scale',110,236,560);
+// optical-section band
+const band=WB.svg('rect',{x:252,y:380,width:36,height:320,fill:'rgba(42,154,121,.34)',stroke:GRN,'stroke-width':3,rx:4},gB);
+const bandL=tx('font:700 26px/1.2 Inter;color:'+INK+';background:#e1f1ea;border:3px solid #7fbfa8;border-radius:12px;padding:8px 16px;white-space:nowrap','optical section = the thin depth that reaches the detector',120,834,760);
+const gBtx=[spL,fpL,lnL,phL,dtL,lgP,lgO,sch,bandL,...blk];
+// ================= PHASE B2: optical vs physical =================
+const svC=G();const gC=WB.svg('g',{},svC);
+function block(ox,oy,w,h,d,face,top,side){const p=(pts,f)=>WB.svg('polygon',{points:pts.map(q=>q.join(',')).join(' '),fill:f,stroke:'#4d6d63','stroke-width':3,'stroke-linejoin':'round'},gC);
+  return {front:p([[ox,oy+d],[ox+w,oy+d],[ox+w,oy+d+h],[ox,oy+d+h]],face),top:p([[ox,oy+d],[ox+d,oy],[ox+w+d,oy],[ox+w,oy+d]],top),side:p([[ox+w,oy+d],[ox+w+d,oy],[ox+w+d,oy+h],[ox+w,oy+d+h]],side)}}
+// optical block
+const b1=block(130,310,300,220,70,'#e9f3ee','#f4faf7','#d4e6dd');
+const slab1=WB.svg('polygon',{points:'130,410 200,340 500,340 430,410',fill:'rgba(42,154,121,.45)',stroke:GRN,'stroke-width':3},gC);
+const slab1f=WB.svg('polygon',{points:'130,410 430,410 430,432 130,432',fill:'rgba(42,154,121,.55)',stroke:GRN,'stroke-width':3},gC);
+const slab1s=WB.svg('polygon',{points:'430,410 500,340 500,362 430,432',fill:'rgba(42,154,121,.40)',stroke:GRN,'stroke-width':3},gC);
+// light cone
+const lc=WB.svg('polygon',{points:'250,220 380,220 430,410 200,410',fill:'rgba(250,208,110,.0)',stroke:'none'},gC);
+const o1=tx('font:700 32px/1.1 Poppins;color:'+GRN,'Optical section',130,238,440);
+const o1d=tx('font:500 26px/1.35 Inter;color:'+INK+';white-space:normal','Light selects a thin depth.<br>The sample stays whole — nothing is removed.',130,650,450);
+// physical block
+const b2=block(690,310,300,220,70,'#f6ece8','#fbf5f2','#ecdcd5');
+const slab2f=WB.svg('polygon',{points:'690,410 990,410 990,432 690,432',fill:'#f2c9c0',stroke:'#a65647','stroke-width':3,opacity:0},gC);
+const bl=WB.svg('g',{},gC);
+WB.svg('polygon',{points:'700,412 1010,398 1010,420 700,424',fill:'#b9c6c1',stroke:'#5e6f69','stroke-width':3,'stroke-linejoin':'round'},bl);
+const o2=tx('font:700 32px/1.1 Poppins;color:'+AMB,'Physical slice',690,238,440);
+const o2d=tx('font:500 26px/1.35 Inter;color:'+INK+';white-space:normal','A blade cuts the sample.<br>A real piece of material is separated.',690,650,450);
+// removed slab (drawn displaced)
+const slabOut=WB.svg('g',{},gC);
+WB.svg('polygon',{points:'1000,410 1070,340 1140,340 1070,410',fill:'#f2c9c0',stroke:'#a65647','stroke-width':3},slabOut);
+WB.svg('polygon',{points:'1000,410 1070,410 1070,432 1000,432',fill:'#eab4a9',stroke:'#a65647','stroke-width':3},slabOut);
+WB.svg('polygon',{points:'1070,410 1140,340 1140,362 1070,432',fill:'#e2a99f',stroke:'#a65647','stroke-width':3},slabOut);
+const gCall=[o1,o1d,o2,o2d];
+// ================= PHASE C: neighbouring planes =================
+const TS=190,ZS=[30,31,32,37,45];
+const tiles=ZS.map((z,i)=>{const x=100+i*232;const cv=zCanvas(z,TS,`position:absolute;left:${x}px;top:240px;border:3px solid ${i==0?COR:INK};border-radius:6px;box-sizing:content-box`);S.appendChild(cv);
+  const dz=z-30;const l1=tx('font:700 24px/1.15 Poppins;color:'+INK+';white-space:nowrap',i==0?'plane 30':`plane ${z}`,x,240+TS+14,230);
+  const l2=tx('font:600 20px/1.2 Inter;color:'+MUT+';white-space:nowrap',i==0?'reference':'+'+(dz*0.29).toFixed(2)+' µm',x,240+TS+44,230);
+  const l3=tx('font:700 26px/1 Poppins;color:'+(i==0?MUT:GRN)+';white-space:nowrap',i==0?'r = 1.00':'r = '+D3.CORR[z].toFixed(2),x,240+TS+72,230);
+  return {cv,l1,l2,l3,a:K.c_nb+i*0.35}});
+// chart
+const CH={x:170,y:612,w:620,h:190};
+const svD=G();
+const cg=WB.svg('g',{},svD);
+const ct=tx('font:700 24px/1.2 Inter;color:'+INK+';white-space:nowrap','How alike are two planes? (pixel-value correlation r with plane 30)',100,556,1000);
+WB.svg('line',{x1:CH.x,y1:CH.y+CH.h,x2:CH.x+CH.w,y2:CH.y+CH.h,stroke:'#8aa59b','stroke-width':3},cg);WB.svg('line',{x1:CH.x,y1:CH.y,x2:CH.x,y2:CH.y+CH.h,stroke:'#8aa59b','stroke-width':3},cg);
+const cpx=dz=>CH.x+dz/29*CH.w, cpy=r=>CH.y+CH.h-r*CH.h;
+[0,.5,1].forEach(v=>{WB.svg('line',{x1:CH.x-6,y1:cpy(v),x2:CH.x+CH.w,y2:cpy(v),stroke:v==0?'#8aa59b':'#e1e9e5','stroke-width':2},cg)});
+const yl=[0,.5,1].map(v=>tx('font:500 20px/1 Inter;color:'+MUT+';text-align:right',v.toFixed(1),CH.x-56,cpy(v)-10,44));
+const xl=[0,10,20,29].map(dz=>tx('font:500 20px/1 Inter;color:'+MUT+';text-align:center',(dz*0.29).toFixed(1),cpx(dz)-30,CH.y+CH.h+10,60));
+const xlt=tx('font:600 20px/1 Inter;color:'+MUT+';white-space:nowrap','distance from plane 30 (µm)',CH.x+80,CH.y+CH.h+40,420);
+const pts=[];for(let dz=0;dz<=29;dz++)pts.push([cpx(dz),cpy(D3.CORR[30+dz])]);
+const cpath=WB.svg('polyline',{points:pts.map(p=>p.join(',')).join(' '),fill:'none',stroke:BLU,'stroke-width':5,'stroke-linejoin':'round'},cg);
+const plen=cpath.getTotalLength();cpath.style.strokeDasharray=plen;
+const cdots=[1,2,7,15].map(dz=>{const c=WB.svg('circle',{cx:cpx(dz),cy:cpy(D3.CORR[30+dz]),r:9,fill:COR,stroke:'#fff','stroke-width':3},cg);return c});
+// ================= PHASE D: spacing vs resolution (full width schematic) =================
+const svE=G();const eg=WB.svg('g',{},svE);
+const LY=i=>300+i*60;
+const et=tx('font:700 26px/1.2 Inter;color:'+INK+';white-space:nowrap','Two different properties of a Z stack (schematic)',100,240,900);
+const planeLn=[0,1,2,3,4,5,6].map(i=>WB.svg('line',{x1:130,y1:LY(i),x2:700,y2:LY(i),stroke:INK,'stroke-width':5,'stroke-linecap':'round'},eg));
+const zLb=[0,3,6].map(i=>tx('font:600 20px/1 Inter;color:'+MUT,'plane '+(i==0?'k':i==3?'k + 3':'k + 6'),0,0,0));zLb.forEach(e=>e.style.display='none');
+const band2=WB.svg('rect',{x:118,y:LY(4)-96,width:594,height:192,rx:22,fill:'rgba(224,164,58,.28)',stroke:'#c98a1c','stroke-width':3,'stroke-dasharray':'8 7'},eg);
+const spB=WB.svg('path',{d:`M716 ${LY(0)} L730 ${LY(0)} L730 ${LY(1)} L716 ${LY(1)}`,stroke:GRN,'stroke-width':5,fill:'none'},eg);
+const rsB=WB.svg('path',{d:`M726 ${LY(4)-96} L740 ${LY(4)-96} L740 ${LY(4)+96} L726 ${LY(4)+96}`,stroke:'#c98a1c','stroke-width':5,fill:'none'},eg);
+const spC=box('b-mint',776,262,440,124);const spT=tx('font:700 30px/1.2 Poppins;color:'+GRN,'spacing',800,276,400);const spD=tx('font:500 26px/1.3 Inter;color:'+INK+';white-space:normal','distance between recorded planes — in this file ≈ <b>0.29 µm</b>',800,320,396);
+const rsC=box('b-amber',776,418,440,214);const rsT=tx('font:700 30px/1.2 Poppins;color:#a2690f','optical resolution',800,432,400);const rsD=tx('font:500 26px/1.3 Inter;color:'+INK+';white-space:normal','how finely the <b>instrument</b> can separate features along depth — set by the optics, not by where planes are placed',800,476,396);
+const sdS=tx('font:600 22px/1 Inter;color:'+MUT+';white-space:nowrap','schematic · the amber band is illustrative, not a measured value',130,700,900);
+const sdB=box('b-lav',100,752,1120,84);const sdBT=tx('font:600 26px/1.3 Inter;color:'+INK+';white-space:normal;text-align:center','Planes can be recorded closer together than the optics separate — then neighbouring planes overlap in what they capture.',124,770,1072);
+// ================= PHASE E: array axes =================
+const CW=1120;
+const cardE=box('b-lav',100,236,CW,170);
+const cmd=tx(`font:500 24px/1.3 ${mono};color:${INK};white-space:nowrap`,'stack = np.stack(frames).reshape(depths, channels, *frames[0].shape)',130,258,CW-60);
+const cmd2=tx(`font:600 26px/1.3 ${mono};color:${INK};white-space:nowrap`,'stack.shape → <span style="color:'+GRN+'">(60, 2, 256, 256)</span>',130,306,CW-60);
+const cmd3=tx(`font:500 24px/1.3 ${mono};color:${INK};white-space:nowrap`,'metadata ("axes") → <span style="color:'+GRN+'">"ZCYX"</span>   channels = 2 · slices = 60 · spacing = 0.29 µm',130,354,CW-60);
+const AX=[['60','axis 0','Z','depth planes','b-blue',K.c_ax],['2','axis 1','C','channels','b-coral',K.c_ch],['256','axis 2','Y','rows of the plane','b-mint',K.c_pl],['256','axis 3','X','columns of the plane','b-mint',K.c_pl]];
+const axEl=AX.map(([n,a,l,d,cls,t0],i)=>{const x=100+i*288;const b=box(cls,x,452,264,230);
+  const t1=tx('font:700 64px/1 Poppins;color:'+INK+';text-align:center',n,x,474,264);
+  const t2=tx('font:600 22px/1 Inter;color:'+MUT+';text-align:center',a,x,556,264);
+  const t3=tx('font:700 56px/1 Poppins;color:'+(i==0?BLU:i==1?COR:GRN)+';text-align:center',l,x,590,264);
+  const t4=tx('font:600 24px/1.2 Inter;color:'+INK+';text-align:center',d,x,660,264);
+  return {b,t1,t2,t3,t4,a:t0}});
+const ex=box('b-amber',100,708,CW,72);const exT=tx(`font:600 26px/72px ${mono};color:${INK};white-space:nowrap;text-align:center`,'stack[30, 0].shape → (256, 256)   <span style="font:600 24px Inter">one plane (depth 30) of one channel (0 = nuclei)</span>',100,708,CW);
+// ================= banner + notes =================
+const banner=box('b-amber',100,924,1740,50);const banT=tx('font:600 27px/50px Inter;color:'+INK+';text-align:center','Depth, channel and image plane are different axes — know the axis order before you slice.',100,924,1740);
+const facts=box('b-lav',1260,714,580,160);const factsT=tx('font:700 24px/1 Inter;color:'+MUT,'This file’s stack (real metadata)',1288,734,520);const factsL=['60 planes · 256 × 256 px · 2 channels','spacing ≈ 0.29 µm · 17.11 µm first → last plane','pixel size ≈ 0.26 µm · field ≈ 66.6 µm wide'].map((l,i)=>tx('font:600 25px/1.2 Inter;color:'+INK+';white-space:nowrap',l,1288,774+i*34,540));
+const notes=NOTEBOX(S,{x:1260,y:222,w:580,h:470,tfs:32,bfs:29,notes:[
+ {a:K.c_q,b:K.c_ser-.1,title:'Looking at depth',body:'One image plane shows position across <b>x and y</b> only. How do we examine <b>depth</b>?'},
+ {a:K.c_ser,b:K.c_zst-.1,title:'Many focal positions',body:'Acquire an image at a <b>series of focal positions</b> — one plane for each depth.'},
+ {a:K.c_zst,b:K.c_zax-.1,title:'The Z stack',body:'The resulting collection of planes is a <b>Z stack</b>. This file holds <b>60</b> planes.'},
+ {a:K.c_zax,b:K.c_xy-.1,title:'Z = depth',body:'The letter <b>Z</b> names the depth axis, from the top plane to deeper ones.'},
+ {a:K.c_xy,b:K.c_cf-.1,title:'X and Y',body:'<b>X</b> and <b>Y</b> describe positions <b>across</b> one image plane.'},
+ {a:K.c_cf,b:K.c_not-.1,title:'Confocal microscopy',body:'An optical arrangement — a <b>pinhole</b> — rejects much of the out-of-focus light.',subs:[[K.c_rej,'in-focus light passes through'],[K.c_out,'out-of-focus light is mostly blocked'],[K.c_sec,'what is collected: an <b>optical section</b>']]},
+ {a:K.c_not,b:K.c_nb-.1,title:'Not a physical slice',body:'',subs:[[K.c_not+.4,'<b>optical section</b>: selected by light; the sample stays whole'],[K.c_blade,'<b>physical slice</b>: cut from the sample with a blade']]},
+ {a:K.c_nb,b:K.c_sp-.1,title:'Neighbouring planes',body:'Nearby depth planes do <b>not</b> necessarily hold independent information.',subs:[[K.c_ind+.2,'plane 30 vs 31: r ≈ <b>0.96</b>'],[K.c_ind+1.8,'still r ≈ <b>0.74</b> seven planes (≈ 2 µm) apart']]},
+ {a:K.c_sp,b:K.c_ld-.1,title:'Spacing ≠ resolution',body:'',subs:[[K.c_sp+.3,'<b>spacing</b>: how far apart the planes were recorded (here ≈ 0.29 µm)'],[K.c_rs,'<b>optical resolution</b>: how finely the instrument separates features in depth']]},
+ {a:K.c_ld,b:null,title:'In Python',body:'After loading, we must know what each array axis means.',subs:[[K.c_ax,'axis 0 → <b>Z</b>, depth planes'],[K.c_ch,'axis 1 → <b>C</b>, channels'],[K.c_pl,'axes 2, 3 → <b>Y, X</b>, the image plane']]}]});
+return function update(t){
+  // ---- phase A ----
+  const aA=1-out(t,K.c_cf-.5,.5);
+  const planeIdx=[5,0,1,2,3,4,6,7,8,9];
+  const intro=out(t,K.c_q,.7);
+  st3.planes.forEach((p,i)=>{const ord=planeIdx.indexOf(i);let v=ord==0?intro:out(t,K.c_ser2+(ord-1)*.22,.5);v*=aA;st3.setPlane(i,v)});
+  // sweeping frame
+  const sw=lin(t,5.2,3.2),back=out(t,8.6,.9);const zf=track(t<5.2?30:(sw<1?sw*59:(1-back)*59+back*30));
+  const fa=(out(t,K.c_ser2,.4))*aA*(1-0*back);
+  st3.setFrame(zf,fa*(t<8.4?1:1-.0));
+  const zi=Math.max(0,Math.min(59,Math.round(zf)));zDraw(flat,zi);
+  xzline.style.top=(XZ.y+3+(zi+.5)*(xz._h/60)-2)+'px';
+  const vis=(e,p)=>{e.style.opacity=p};
+  vis(flat,out(t,K.c_q,.6)*aA);vis(flatCap,out(t,K.c_q+.2,.6)*aA);
+  flatCap.innerHTML=t<K.c_ser?'one image plane · z = 30':`image plane at focal position z = ${zi}`;
+  vis(rowline,out(t,K.c_ser2+1,.6)*aA);vis(xz,out(t,K.c_ser2+.6,.6)*aA);vis(xzline,out(t,K.c_ser2+.8,.5)*aA);vis(xzCap,out(t,K.c_ser2+.8,.6)*aA);
+  const zt=out(t,K.c_ser,.5)*aA;zTag.innerHTML='z = '+zi;zTag2.innerHTML=(zi*0.29).toFixed(1)+' µm';vis(zTag,zt);vis(zTag2,zt);
+  vis(qTag,out(t,K.c_q,.6)*(1-out(t,K.c_ser,.5))*aA);
+  vis(stCap,out(t,K.c_ser2+2,.6)*aA);
+  show(stBr,t,K.c_zst,.7,{dy:0});stBr.style.opacity=out(t,K.c_zst,.7)*aA;
+  vis(svA,aA);const za=out(t,K.c_zax,.7);zax.style.opacity=za;vis(zaxL,za*aA);vis(zt0,za*aA);vis(zt1,za*aA);
+  const xa=out(t,K.c_xy,.7);xyg.style.opacity=xa;vis(xL,xa*aA);vis(yL,xa*aA);
+  if(t>K.c_zst+.2&&t<K.c_zax)stBr.style.transform='scale(1.0)';
+  // ---- phase B ----
+  const bI=out(t,K.c_cf+.2,.6),bO=1-out(t,K.c_not-.5,.5);const bA=bI*bO;
+  gB.style.opacity=bA;svB.style.opacity=bA;gBtx.forEach(e=>e.style.opacity=bA);
+  const hide=e=>{e.style.opacity=0};
+  // staged reveal inside B
+  const inFoc=out(t,K.c_cf+.6,.7),rej=out(t,K.c_rej,.7),oof=out(t,K.c_out,.7),sec=out(t,K.c_sec,.7);
+  rP.forEach(a=>a.forEach(l=>l.style.opacity=inFoc));behind.forEach(l=>l.style.opacity=inFoc);PPt.style.opacity=inFoc;
+  [rQ,rR].forEach(r=>r.forEach(a=>a.forEach(l=>l.style.opacity=oof)));QPt.style.opacity=oof;RPt.style.opacity=oof;
+  blk.forEach(e=>e.style.opacity=oof*bA);
+  lgP.style.opacity=inFoc*bA;lgO.style.opacity=oof*bA;
+  band.style.opacity=sec;bandL.style.opacity=sec*bA;
+  // ---- phase B2 ----
+  const cI=out(t,K.c_not+.2,.6),cO=1-out(t,K.c_nb-.5,.5),cA=cI*cO;svC.style.opacity=cA;gCall.forEach(e=>e.style.opacity=cA);
+  const cutP=out(t,K.c_blade,.9);
+  slabOut.style.opacity=cutP;slabOut.setAttribute('transform',`translate(${(-1-0)*(1-cutP)*-80},${(1-cutP)*0})`);
+  bl.style.opacity=out(t,K.c_blade-.8,.6);bl.setAttribute('transform',`translate(${(1-cutP)*40},${(1-cutP)*-6})`);
+  slab1.style.opacity=out(t,K.c_not+.4,.6);slab1f.style.opacity=out(t,K.c_not+.4,.6);slab1s.style.opacity=out(t,K.c_not+.4,.6);
+  // ---- phase C ----
+  const nI=out(t,K.c_nb,.5),nO=1-out(t,K.c_sp-.5,.5),nA=nI*nO;
+  tiles.forEach(({cv,l1,l2,l3,a})=>{const p=out(t,a,.6)*nO;cv.style.opacity=p;l1.style.opacity=l2.style.opacity=l3.style.opacity=p;cv.style.transform=`translateY(${((1-p)*10).toFixed(1)}px)`});
+  const cc=out(t,K.c_ind-.4,.6)*nO;svD.style.opacity=cc;[ct,...yl,...xl,xlt].forEach(e=>e.style.opacity=cc);
+  const dr=lin(t,K.c_ind,3.2);cpath.style.strokeDashoffset=plen*(1-dr);
+  cdots.forEach((c,i)=>{c.style.opacity=lin(t,K.c_ind+[0.6,.9,1.8,3.0][i]-.2,.3)});
+  // ---- phase D ----
+  const dI=out(t,K.c_sp,.6)*(1-out(t,K.c_ld-.5,.5));svE.style.opacity=dI;et.style.opacity=dI;
+  const spA=out(t,K.c_sp+.3,.6),rsA=out(t,K.c_rs,.6);
+  spB.style.opacity=spA*dI;[spC,spT,spD].forEach(e=>e.style.opacity=spA*dI);
+  band2.style.opacity=rsA*dI;rsB.style.opacity=rsA*dI;[rsC,rsT,rsD,sdS].forEach(e=>e.style.opacity=rsA*dI);
+  const sdA=out(t,K.c_rs+1.6,.6)*(1-out(t,K.c_ld-.5,.5));sdB.style.opacity=sdA;sdBT.style.opacity=sdA;
+  // ---- phase E ----
+  const eI=out(t,K.c_ld,.6);[cardE,cmd,cmd2,cmd3].forEach((e,i)=>{const p=out(t,K.c_ld+.1+i*.35,.6);e.style.opacity=p});
+  axEl.forEach(({b,t1,t2,t3,t4,a},i)=>{const p0=out(t,K.c_ld+1.5+i*.2,.6),p=out(t,a,.6);b.style.opacity=p0;t1.style.opacity=p0;[t2,t3,t4].forEach(e=>{e.style.opacity=p});b.style.transform=`translateY(${((1-p0)*12).toFixed(1)}px)`});
+  const exA=out(t,K.c_pl+.8,.6);ex.style.opacity=exA;exT.style.opacity=exA;
+  show(banner,t,K.c_ax+.6,.6,{dy:0});show(banT,t,K.c_ax+.8,.6,{dy:0});
+  const fa2=out(t,K.c_zst+.4,.6)*(1-out(t,K.c_ld-.5,.5));facts.style.opacity=fa2;factsT.style.opacity=fa2;factsL.forEach(e=>e.style.opacity=fa2);
+  notes.update(t);
+  return 0;
+};
+});
+</script></body></html>

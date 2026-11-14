@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script>
+<script>
+SCENE_INIT({ep:1,part:1,partTitle:'Biology foundations',title:'The same part lives in a larger system',foot:'Biology foundations · schematic icons and a simplified person figure · National Human Genome Research Institute concepts'},(S,C)=>{
+const {out,ramp,lin,mix,track}=WB;const c=k=>Math.max(C[k],0.05);
+const win=(t,a,b,d)=>out(t,a,d||.5)*(1-out(t,b,.4));
+const nk=[['c_levels','Connecting the levels','we can now connect <b>molecules → cells → tissues → a person</b>'],['c_dna','DNA','contains <b>information</b>'],['c_rna','RNA','helps <b>carry and use</b> that information'],['c_prot','Proteins','perform many of the <b>cell’s activities</b>'],['c_but','But proteins also interact','with other proteins, small molecules, membranes and signals'],['c_tissue','Larger systems','a <b>tissue</b> contains cells interacting with one another, and a <b>person</b> contains many tissues'],['c_pred','Different levels, different questions','a prediction about <b>one protein</b> answers a different question from a prediction about a <b>cell</b>, a <b>tissue</b> or a <b>patient</b>'],['c_use','All of those levels can be useful','…'],['c_keep','Keep track','which <b>question</b> a particular model was built to answer'],['c_done','Part 1 complete','that completes our biology foundation']];
+nk[7][2]='each answers a <b>different</b> question — they are all useful';
+const notes=NOTES({x:60,y:226,w:1800,h:150,tfs:30,bfs:28,notes:nk.map((n,i)=>({a:c(n[0]),b:i<nk.length-1?c(nk[i+1][0])-.1:null,title:n[1],body:n[2]}))});
+const svB=svgLayer(S);arrowDefs(svB,'ar',GRN);arrowDefs(svB,'arp',LAV);
+const NX=i=>250+i*280,NY=560;
+const keys=[['dna-helix',125],['rna-strand',170],['folded-protein',170],['animal-cell',185],['tissue',185]];
+const nodes=keys.map(([k,w],i)=>ico(k,NX(i),NY,w));
+// person figure
+const person=WB.svg('g',{opacity:0},svB);WB.svg('circle',{cx:NX(5),cy:NY-62,r:30,fill:'#e3efff',stroke:'#557eaf','stroke-width':6},person);WB.svg('path',{d:`M${NX(5)-55} ${NY+80} L ${NX(5)-55} ${NY-5} Q ${NX(5)-55} ${NY-25} ${NX(5)-30} ${NY-25} L ${NX(5)+30} ${NY-25} Q ${NX(5)+55} ${NY-25} ${NX(5)+55} ${NY-5} L ${NX(5)+55} ${NY+80} Z`,fill:'#e3efff',stroke:'#557eaf','stroke-width':6,'stroke-linejoin':'round'},person);
+const lab=['DNA','RNA','protein','cell','tissue','person'].map((n,i)=>chip(n,NX(i),692,['blue','amber','mint','coral','lav','blue'][i],{fs:28}));
+const tg=['holds information','helps carry and use it','does many jobs','','',''].map((n,i)=>n?ctx('font:600 24px/1.2 Inter;color:'+MUT,n,NX(i),748,250):null);
+const arr=[0,1,2,3,4].map(i=>WB.svg('path',{d:`M${NX(i)+98} ${NY} L ${NX(i+1)-98} ${NY}`,stroke:GRN,'stroke-width':8,fill:'none','stroke-linecap':'round','marker-end':'url(#ar)'},svB));
+const ticks=[0,1,2,3,4,5].map(i=>{const g=WB.svg('g',{opacity:0},svB);WB.svg('circle',{cx:NX(i)+78,cy:NY-92,r:24,fill:'#4d8f7e',stroke:'#fff','stroke-width':4},g);WB.svg('path',{d:`M${NX(i)+66} ${NY-92} L ${NX(i)+75} ${NY-82} L ${NX(i)+92} ${NY-102}`,stroke:'#fff','stroke-width':6,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'},g);return g});
+// partners
+const PXs=[540,760,980,1200];const pk=[['protein-dimer',120,'other proteins'],['small-molecule',190,'small molecules'],['cell-membrane',170,'membranes'],['membrane-receptor',90,'signals']];
+const par=pk.map(([k,w,n],i)=>({ic:ico(k,PXs[i],880,w*.85),ch:chip(n,PXs[i],950,['mint','amber','blue','coral'][i],{fs:24}),ln:WB.svg('line',{x1:NX(2),y1:NY+120,x2:PXs[i],y2:790,stroke:'#8aa59b','stroke-width':5,'stroke-dasharray':'3 10','stroke-linecap':'round'},svB)}));
+// questions
+const QX=[2,3,4,5].map(i=>NX(i));const qt=['Does a molecule change this protein’s activity?','How does this cell respond to a change?','How do the cells in a tissue behave together?','Will this help a patient?'];
+const qc=qt.map((s,i)=>({bx:box('b-'+['mint','coral','lav','blue'][i],QX[i]-131,790,262,180),t:ctx('font:600 25px/1.25 Inter;color:'+INK,s,QX[i],812,226),ln:WB.svg('line',{x1:QX[i],y1:752,x2:QX[i],y2:786,stroke:'#8aa59b','stroke-width':5,'stroke-dasharray':'3 8','stroke-linecap':'round'},svB)}));
+const qring=WB.svg('circle',{fill:'none','stroke-width':8},svB);
+// keep track
+const mdl=ico('attention-network',330,860,170);const mb=box('b-amber',560,800,980,130);const mt=ctx('font:700 36px/1.2 Poppins;color:'+INK,'Which question was this model built to answer?',1050,832,900);
+const ma=WB.svg('path',{d:'M430 865 L 540 865',stroke:GRN,'stroke-width':8,fill:'none','stroke-linecap':'round','marker-end':'url(#ar)'},svB);const mq=ctx('font:700 100px/1 Poppins;color:#e0a43a','?',1700,810,120);
+// done / next
+const db=box('b-mint',240,800,640,130);const dtx=ctx('font:700 34px/1.2 Poppins;color:'+INK,'Part 1 · biology foundation complete',625,836,470);const dtk=WB.svg('g',{opacity:0},svB);WB.svg('circle',{cx:300,cy:865,r:30,fill:'#4d8f7e',stroke:'#fff','stroke-width':4},dtk);WB.svg('path',{d:'M286 865 L 296 876 L 316 852',stroke:'#fff','stroke-width':7,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'},dtk);
+const na=WB.svg('path',{d:'M900 865 L 990 865',stroke:LAV,'stroke-width':9,fill:'none','stroke-linecap':'round','marker-end':'url(#arp)'},svB);
+const nb=box('b-lav',1010,800,830,130);const nt=ctx('font:700 34px/1.2 Poppins;color:'+INK,'Part 2 · state the research problem before choosing a model',1425,822,770);
+return function update(t){
+  const A=k=>c(k);
+  const nt0=[A('c_levels')+.2,A('c_dna'),A('c_rna'),A('c_prot'),A('c_tissue')+.1,A('c_person')];
+  nodes.forEach((n,i)=>{const a=nt0[i];n.set({op:out(t,a,.6),s:.7+.3*out(t,a,.7),y:track(Math.sin(t*1.5+i)*5)*out(t,a,.6)})});
+  person.setAttribute('opacity',out(t,nt0[5],.6));
+  lab.forEach((e,i)=>life(e,t,nt0[i]+.2,null,{dy:8}));tg.forEach((e,i)=>{if(e)life(e,t,[A('c_dna')+.4,A('c_rna')+.4,A('c_prot')+.4][i],A('c_but')-.3,{dy:6})});
+  arr.forEach((a,i)=>{pathGrow(a,out(t,nt0[i+1]-.4,.5))});
+  notes.update(t);
+  // partners
+  const ps=A('c_but'),pe=A('c_pred')-.3;const pt=[A('c_p2'),A('c_sm'),A('c_mem'),A('c_sig')];
+  par.forEach((p,i)=>{const g=out(t,pt[i]-.1,.6);p.ic.set({op:win(t,pt[i]-.1,pe,.5),s:.7+.3*g,y:track(Math.sin(t*1.7+i)*5)});life(p.ch,t,pt[i]+.1,pe,{dy:8});p.ln.setAttribute('x2',mix(NX(2),PXs[i],g));p.ln.setAttribute('y2',mix(NY+120,790,g));p.ln.style.opacity=win(t,pt[i]-.1,pe,.2)});
+  // questions
+  const qs=[A('c_q1'),A('c_q2'),A('c_q3'),A('c_q4')];const qe=A('c_keep')-.3;
+  qc.forEach((q,i)=>{life(q.bx,t,qs[i]-.2,qe,{dy:20});life(q.t,t,qs[i]+.1,qe,{dy:8});const g=win(t,qs[i]-.2,qe,.4);q.ln.style.opacity=g});
+  const qi=[2,3,4,5];qs.forEach((a,i)=>{});
+  pulseRing(qring,QX[0],NY,t,A('c_q1'),1.3,60,130,'#4d8f7e');
+  ticks.forEach((g,i)=>{g.setAttribute('opacity',out(t,A('c_use')+.2+.22*i,.4)*(1-out(t,A('c_done')-.3,.4)))});
+  // keep track
+  const ks=A('c_keep'),ke=A('c_done')-.3;
+  mdl.set({op:win(t,ks,ke,.6),s:.8+.2*out(t,ks,.6),y:track(Math.sin(t*1.5)*5)});life(mb,t,ks+.3,ke,{dy:16});life(mt,t,ks+.6,ke,{dy:8});ma.style.opacity=win(t,ks+.3,ke,.3);mq.style.opacity=win(t,ks+.9,ke,.4)*(.7+.3*track(Math.sin(t*3)*.5+.5));
+  // done / next
+  const ds=A('c_done'),ns=A('c_p2next');
+  life(db,t,ds,null,{dy:16});life(dtx,t,ds+.3,null,{dy:8});dtk.setAttribute('opacity',out(t,ds+.4,.5));
+  pathGrow(na,out(t,ns-.2,.6));life(nb,t,ns,null,{dy:16});life(nt,t,ns+.3,null,{dy:8});
+};});
+</script></body></html>

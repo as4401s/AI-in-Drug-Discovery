@@ -1,0 +1,50 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:2,part:2,partTitle:"Cells, organoids and tissues",title:"Cell culture: a controlled, simplified system",foot:"Part 2 \u00b7 schematic illustration \u00b7 not measured data"},(S,C)=>{
+
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[['c_def','Cell culture','cells <b>maintained under controlled laboratory conditions</b>'],['c_flat','A common setup','cells attach to a <b>flat surface</b> and form a layer'],['c_nut','What we can do','supply <b>nutrients</b>, add a <b>treatment</b>, and image many <b>fields of view</b>'],['c_use','Useful','for repeated, relatively accessible measurements'],['c_simple','Also simplified','a <b>simplified</b> environment'],['c_flat2','A flat layer does not recreate','the 3D architecture, neighbouring cell types, mechanical conditions, or delivery barriers of the body'],['c_bad','Not a bad experiment','it means the experiment has a <b>scope</b>'],['c_conc','So our first conclusion','concerns <b>those cells</b>, <b>those conditions</b>, <b>that time</b>']]},
+els:[
+ic('petri-dish',230,560,200,'c_def',{bob:4,b:'c_flat-.3'}),ch('controlled laboratory conditions',300,680,'mint','c_def+.4',{fs:28,b:'c_flat-.3'}),
+cd('',120,690,820,18,'c_flat',{css:'background:#b9a98a;border-radius:9px',dy:0}),ch('flat surface',530,725,'amber','c_flat+.5',{fs:26}),
+cd('',108,598,84,84,'c_flat+0.20',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0,dy:-170}),
+cd('',203,598,84,84,'c_flat+0.50',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0,dy:-170}),
+cd('',298,598,84,84,'c_flat+0.80',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0,dy:-170}),
+cd('',393,598,84,84,'c_flat+1.10',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0,dy:-170}),
+cd('',488,598,84,84,'c_flat+1.40',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0,dy:-170}),
+cd('',583,598,84,84,'c_flat+1.70',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0,dy:-170}),
+cd('',678,598,84,84,'c_flat+2.00',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0,dy:-170}),
+cd('',773,598,84,84,'c_flat+2.30',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0,dy:-170}),
+
+ch('a layer of cells',530,500,'mint','c_flat+2.6',{fs:28}),
+ch('nutrients',360,470,'blue','c_nut',{fs:26,b:'c_use-.3'}),dt([[300,520],[300,590]],'#7f9fc9','c_nut+.2',{n:3,speed:.5,r:7,b:'c_use-.3'}),dt([[420,520],[420,590]],'#7f9fc9','c_nut+.5',{n:3,speed:.5,r:7,b:'c_use-.3'}),
+ch('treatment',640,470,'coral','c_nut+.8',{fs:26,b:'c_use-.3'}),dt([[640,520],[640,590]],'#cf8a83','c_nut+1.0',{n:3,speed:.5,r:7,b:'c_use-.3'}),
+cd('',1120,470,110,80,'c_nut+1.8',{css:'background:rgba(215,236,247,.7);border:4px solid #7f9fc9;border-radius:10px',dy:0,b:'c_use-.3'}),
+cd('',1250,470,110,80,'c_nut+2.0',{css:'background:rgba(215,236,247,.7);border:4px solid #7f9fc9;border-radius:10px',dy:0,b:'c_use-.3'}),
+cd('',1380,470,110,80,'c_nut+2.3',{css:'background:rgba(215,236,247,.7);border:4px solid #7f9fc9;border-radius:10px',dy:0,b:'c_use-.3'}),
+cd('',1120,570,110,80,'c_nut+2.5',{css:'background:rgba(215,236,247,.7);border:4px solid #7f9fc9;border-radius:10px',dy:0,b:'c_use-.3'}),
+cd('',1250,570,110,80,'c_nut+2.8',{css:'background:rgba(215,236,247,.7);border:4px solid #7f9fc9;border-radius:10px',dy:0,b:'c_use-.3'}),
+cd('',1380,570,110,80,'c_nut+3.0',{css:'background:rgba(215,236,247,.7);border:4px solid #7f9fc9;border-radius:10px',dy:0,b:'c_use-.3'}),
+
+ch('many fields of view',1250,690,'lav','c_nut+2.0',{fs:26,b:'c_use-.3'}),
+ch('✓ repeated, accessible measurements',1250,520,'mint','c_use',{fs:30,b:'c_simple-.3'}),
+ch('also a simplified environment',1250,520,'coral','c_simple',{fs:32}),
+ch('✗ 3D architecture',1500,610,'coral','c_arch',{fs:28}),ch('✗ neighbouring cell types',1500,680,'coral','c_arch+2.0',{fs:28}),ch('✗ mechanical conditions',1500,750,'coral','c_arch+4.0',{fs:28}),ch('✗ delivery barriers',1500,820,'coral','c_arch+5.8',{fs:28}),
+ch('✓ not a bad experiment',960,880,'mint','c_bad',{fs:34,b:'c_conc-.3'}),ch('it has a scope',1500,880,'amber','c_bad+1.5',{fs:34,b:'c_conc-.3'}),
+cd('b-amber',80,860,1760,110,'c_conc-.1'),ch('those cells',480,885,'mint','c_conc+.3',{fs:34}),ch('under those conditions',960,885,'blue','c_conc+1.5',{fs:34}),ch('at that time',1440,885,'lav','c_conc+3.0',{fs:34})
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

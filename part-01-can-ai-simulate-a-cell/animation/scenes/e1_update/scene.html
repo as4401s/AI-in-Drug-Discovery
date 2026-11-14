@@ -1,0 +1,134 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script>
+<script>
+SCENE_INIT({ep:1,part:3,partTitle:'How models learn',title:'Close the learning loop; then use the model',foot:'Parameter updates · Google ML education · Lin et al., ESM-2 / ESMFold, bioRxiv v2 (2022), Science (2023)'},(S,C)=>{
+const {el,at,show,out,ramp,mix,svg,lin}=WB;const clamp=WB.clamp;const K=C;
+function box(cls,x,y,w,h){const b=el('div','box '+cls);at(b,x,y,w,h);return b}
+function tx(css,html,x,y,w){const e=el('div','t');e.style.cssText+=';'+css;e.innerHTML=html;at(e,x,y,w);return e}
+const INK='#183b32',MUT='#60716a';
+// ================= PHASE 1 : gradient step picture =================
+const P1=[];const r1=e=>{P1.push(e);return e};
+const sv=svg('svg',{width:1920,height:1080,style:'position:absolute;left:0;top:0'},S);r1(sv);
+const defs=svg('defs',{},sv);
+const mk=(id,col)=>{const m=svg('marker',{id,viewBox:'0 0 10 10',refX:8,refY:5,markerWidth:5,markerHeight:5,orient:'auto'},defs);svg('path',{d:'M0 0L10 5L0 10z',fill:col},m)};
+mk('ahg','#26765d');mk('aha','#ac8b42');mk('ahc','#b76d66');
+const AX0=170,AX1=1000,AY0=880,AT=300;
+svg('line',{x1:AX0,y1:AY0,x2:AX1,y2:AY0,stroke:MUT,'stroke-width':4},sv);svg('line',{x1:AX0,y1:AY0,x2:AX0,y2:AT-10,stroke:MUT,'stroke-width':4},sv);
+const t1=svg('text',{x:(AX0+AX1)/2,y:AY0+48,'text-anchor':'middle','font-size':28,fill:INK,'font-weight':500},sv);t1.textContent='one parameter value  →';
+const t2=svg('text',{x:AX0-20,y:AT+30,'text-anchor':'end','font-size':28,fill:INK,'font-weight':500},sv);t2.textContent='loss';
+const XW=AX1-AX0-60, xp=x=>AX0+30+x*XW, LF=x=>0.25+2.4*(x-0.7)*(x-0.7), dLF=x=>4.8*(x-0.7), yp=L=>AY0-L*390;
+let d='';for(let i=0;i<=100;i++){const x=i/100;d+=(i?'L':'M')+xp(x).toFixed(1)+' '+yp(LF(x)).toFixed(1)}
+const curve=svg('path',{d,fill:'none',stroke:'#557eaf','stroke-width':8,'stroke-linecap':'round'},sv);
+curve.setAttribute('stroke-dasharray','2000');
+// descent positions
+const XS=[.12];for(let k=0;k<6;k++){const x=XS[k];XS.push(x-0.07*dLF(x))}
+// trail dots and step arrows
+const trail=XS.map((x,i)=>svg('circle',{r:9,fill:'#b76d66',opacity:.45,cx:xp(x),cy:yp(LF(x))},sv));
+const stepA=XS.slice(0,-1).map((x,i)=>svg('path',{d:`M${xp(x)+4} ${AY0-34} L${xp(XS[i+1])-6} ${AY0-34}`,stroke:'#b76d66','stroke-width':6,fill:'none','marker-end':'url(#ahc)','stroke-linecap':'round'},sv));
+const tang=svg('line',{x1:0,y1:0,x2:0,y2:0,stroke:'#ac8b42','stroke-width':7,'stroke-linecap':'round'},sv);
+const ball=svg('circle',{r:19,fill:'#b76d66',stroke:'#fff','stroke-width':6},sv);
+const tIn=r1(tx('font:600 28px/1.25 Inter;color:#8a6b1f','gradient: which way is<br>downhill, and how steep',500,330));
+const tMin=r1(tx('font:600 26px/1.25 Inter;color:#26765d;text-align:center;width:300px','lower loss',590,810));
+const tLoss=r1(tx('font:700 40px/1 Poppins;color:'+INK,'loss 1.06',690,262));
+const tNote=r1(tx('font:400 24px/1.3 Inter;color:'+MUT,'A real model has millions of parameters.<br>Here we picture just one.',500,420));
+// cards on the right
+const CARD=[
+ ['b-blue',250,'Gradient information','How would the loss change if<br>each parameter changed a little?',K.c_info],
+ ['b-lav',415,'A small update','Step a little in the direction<br>that should lower the loss.',K.c_grad],
+ ['b-mint',580,'The cycle continues','More examples → new loss →<br>another small update.',K.c_cycle],
+ ['b-amber',745,'Two different questions','Lower training loss is a goal.<br>Independent evaluation asks if the pattern is useful.',K.c_goal]];
+const cards=CARD.map(([cls,y,h,b,tt])=>{const bx=r1(box(cls,1070,y,770,145));const th=r1(tx('font:700 33px/1 Poppins;color:'+INK,h,1100,y+20));const tb=r1(tx('font:400 29px/1.3 Inter;color:'+INK+';white-space:normal',b,1100,y+66,712));return [bx,th,tb,tt]});
+// ================= PHASE 2 : save -> load -> infer =================
+const P2=[];const r2=e=>{P2.push(e);return e};
+const sv2=svg('svg',{width:1920,height:1080,style:'position:absolute;left:0;top:0'},S);r2(sv2);
+const d2=svg('defs',{},sv2);const m2=svg('marker',{id:'ahb',viewBox:'0 0 10 10',refX:8,refY:5,markerWidth:5.5,markerHeight:5.5,orient:'auto'},d2);svg('path',{d:'M0 0L10 5L0 10z',fill:'#26765d'},m2);
+const arT=svg('path',{d:'M612 495 L722 495',stroke:'#26765d','stroke-width':7,fill:'none','marker-end':'url(#ahb)','stroke-linecap':'round'},sv2);
+const arL=svg('path',{d:'M1140 495 L1252 495',stroke:'#26765d','stroke-width':7,fill:'none','marker-end':'url(#ahb)','stroke-linecap':'round'},sv2);
+function sliders(x,y,w,pos,col,locked,gap){gap=gap||40;return pos.map((p,i)=>{const tr=r2(box('',x,y+i*gap,w,10));tr.style.cssText+=';background:'+col+';border-radius:5px';const kn=r2(box('',x+w*p-14,y+i*gap-9,28,28));kn.style.cssText+=';background:'+(locked?'#4d8f7e':'#7a62a8')+';border:4px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.25)';return {tr,kn,x,w,p,y:y+i*gap-9}})}
+const BY=330;
+// training box
+const bT=r2(box('b-blue',80,BY,520,330));const hT=r2(tx('font:700 40px/1 Poppins;color:'+INK,'Training',108,BY+22));
+const sT=r2(tx('font:400 27px/1.3 Inter;color:'+MUT+';white-space:normal','predict → loss → gradient<br>→ small update, many times',108,BY+82,470));
+const slT=sliders(112,BY+175,456,[.25,.7,.4],'#cdbfea',false);
+const unl=r2(tx('font:600 25px/1 Inter;color:#5d4a8a','parameters keep changing',108,BY+278));
+const veil=r2(box('',80,BY,520,330));veil.style.cssText+=';background:repeating-linear-gradient(135deg,rgba(255,255,255,.80) 0 18px,rgba(240,226,224,.88) 18px 36px);border-radius:28px;border:4px dashed #b76d66';
+const veilT=r2(el('div','pill','not run in this lesson'));at(veilT,150,BY+125);veilT.style.cssText+=';background:#fff;border:4px solid #b76d66;color:#a65647;font:700 31px/1.2 Poppins;padding:14px 28px';
+// checkpoint
+const bC=r2(box('b-lav',730,BY,400,330));const hC=r2(tx('font:700 40px/1 Poppins;color:'+INK,'Checkpoint',758,BY+22));
+const sC=r2(tx('font:400 27px/1.3 Inter;color:'+MUT+';white-space:normal','the learned settings,<br>saved',758,BY+82,350));
+const slC=sliders(762,BY+175,336,[.7,.28,.8],'#bfdccf',true);
+const lockC=r2(tx('font:600 25px/1 Inter;color:#26765d','values stored · not changing',758,BY+278));
+// inference
+const bI=r2(box('b-mint',1260,BY,580,330));const hI=r2(tx('font:700 40px/1 Poppins;color:'+INK,'Inference',1288,BY+22));
+const sI=r2(tx('font:400 27px/1.3 Inter;color:'+MUT,'prediction with fixed parameters',1288,BY+82));
+const inI=r2(box('',1288,BY+150,104,130));inI.style.cssText+=';background:#fff;border:3px solid #9fb9d9;border-radius:20px';
+const inT=r2(tx('font:500 24px/1.25 Inter;color:'+INK+';text-align:center;width:104px','new<br>input',1288,BY+190));
+const mI=r2(box('',1436,BY+130,188,170));mI.style.cssText+=';background:#fff;border:3px solid #4d8f7e;border-radius:20px';
+const slI=sliders(1456,BY+178,148,[.7,.28,.8],'#bfdccf',true,34);
+const mT=r2(tx('font:600 23px/1 Inter;color:#26765d;text-align:center;width:188px','model · fixed',1436,BY+266));
+const pI=r2(box('',1668,BY+150,148,130));pI.style.cssText+=';background:#fff;border:3px solid #4d8f7e;border-radius:20px';
+const pT=r2(tx('font:500 24px/1.2 Inter;color:'+INK+';text-align:center;width:148px','prediction',1668,BY+202));
+const aI1=svg('path',{d:`M1396 ${BY+215} L1428 ${BY+215}`,stroke:'#26765d','stroke-width':6,fill:'none','marker-end':'url(#ahb)','stroke-linecap':'round'},sv2);
+const aI2=svg('path',{d:`M1628 ${BY+215} L1660 ${BY+215}`,stroke:'#26765d','stroke-width':6,fill:'none','marker-end':'url(#ahb)','stroke-linecap':'round'},sv2);
+const cap=r2(el('div','pill b-amber',''));at(cap,80,BY+372);cap.style.cssText+=';font-size:33px;padding:14px 34px;text-align:left';
+// zero-shot card
+const zb=r2(box('b-lav',80,790,1760,170));const zh=r2(tx('font:700 46px/1.1 Poppins;color:'+INK,'Zero-shot<br>variant score',116,828));
+const zs=r2(tx('font:400 31px/1.35 Inter;color:'+INK+';white-space:normal','The saved model is used as it is. It has <b>not</b> been fitted to an experimental label for the particular variant being scored. We compute this score in Part 4.',560,816,1230));
+const zbar=r2(box('',520,814,4,122));zbar.style.background='#8b75b0';
+return function update(t){
+  // ---------------- phase 1
+  const f1=1-out(t,K.c_save-.3,.7);
+  sv.style.opacity=out(t,.2,.6)*f1;
+  curve.setAttribute('stroke-dashoffset',(2000*(1-out(t,.2,1.4))).toFixed(1));
+  // ball position: steps 0..6 ; first during "small update", rest during "cycle continues"
+  const s0=K.c_dir-.2, k1=out(t,s0,1.4);
+  const sRest=lin(t,K.c_cycle,4.2);
+  const idx=Math.min(1,k1)+5*sRest; // 0..6
+  const i0=Math.min(5,Math.floor(idx)),fr=idx-i0;const ease=v=>v*v*(3-2*v);
+  const xi=mix(XS[i0],XS[i0+1],WB.track(idx>=6?1:ease(fr)));
+  const bx=idx>=6?XS[6]:xi;
+  ball.setAttribute('cx',xp(bx));ball.setAttribute('cy',yp(LF(bx)));
+  const ballIn=out(t,K.c_info-.3+.9,.6);ball.style.opacity=ballIn*f1;
+  trail.forEach((c,i)=>{c.style.opacity=(i<idx-.0?.5:0)*f1*ballIn});
+  // tangent
+  const sl=dLF(bx)*(-390)/XW; // pixel slope
+  const L=150,ux=1/Math.sqrt(1+sl*sl),uy=sl*ux;const cx=xp(bx),cy=yp(LF(bx));
+  tang.setAttribute('x1',cx-L*ux);tang.setAttribute('y1',cy-L*uy);tang.setAttribute('x2',cx+L*ux);tang.setAttribute('y2',cy+L*uy);
+  const tg=out(t,K.c_info+.6,.7)*(1-out(t,K.c_cycle+4.5,.6));tang.style.opacity=tg*f1;
+  stepA.forEach((a,i)=>{const st=i==0?K.c_dir:K.c_cycle+i*.7;a.style.opacity=out(t,st,.5)*f1});
+  // loss readout
+  tLoss.innerHTML='loss '+LF(bx).toFixed(2);
+  show(tLoss,t,K.c_info+.5,.6);
+  show(tIn,t,K.c_info+1.2,.6);tIn.style.opacity=parseFloat(tIn.style.opacity||0)*(1-out(t,K.c_grad,.5));
+  show(tMin,t,K.c_cycle+2.5,.6);show(tNote,t,K.c_info+2.5,.6);
+  cards.forEach(([bx2,th,tb,tt])=>{[bx2,th,tb].forEach(e=>show(e,t,tt-.2,.6))});
+  P1.forEach(e=>{if(e!==sv)e.style.opacity=parseFloat(e.style.opacity||0)*f1});
+  // ---------------- phase 2
+  const T2=K.c_save-.2;const g=out(t,T2,.7);
+  P2.forEach(e=>e.style.opacity=0);
+  [bT,hT,sT,unl].forEach(e=>show(e,t,T2,.7));slT.forEach(s=>{show(s.tr,t,T2,.7);show(s.kn,t,T2,.7)});
+  // training sliders wander (still updating) until "not training"
+  const act=WB.track(clamp((K.c_not-.2-t)/.4));
+  slT.forEach((s,i)=>{const w=WB.track(Math.sin(t*1.9+i*2)*.12*act*g);s.kn.style.left=(s.x+s.w*(s.p+w)-14)+'px'});
+  sv2.style.opacity=1;
+  arT.style.opacity=out(t,K.c_ckpt-.3,.6)*g;arL.style.opacity=out(t,K.c_load,.6)*g;
+  [bC,hC,sC,lockC].forEach(e=>show(e,t,K.c_ckpt-.4,.6));slC.forEach(s=>{show(s.tr,t,K.c_ckpt-.2,.6);show(s.kn,t,K.c_ckpt-.2,.6)});
+  [bI,hI,sI].forEach(e=>show(e,t,K.c_load+.3,.6));
+  [inI,inT,mI,mT,pI,pT].forEach(e=>show(e,t,K.c_inf,.6));slI.forEach(s=>{show(s.tr,t,K.c_inf,.6);show(s.kn,t,K.c_inf,.6)});
+  aI1.style.opacity=out(t,K.c_fixed-.3,.5);aI2.style.opacity=out(t,K.c_fixed+.3,.5);
+  // caption swaps
+  let msg='After training, the learned parameter values can be saved.',cc='b-amber',pc=K.c_ckpt-.3;
+  if(t>=K.c_load-.2){msg='Our code loads a saved model: the same values come back, unchanged.'}
+  if(t>=K.c_inf-.2){msg='Inference: new input → prediction. The parameters stay fixed.'}
+  if(t>=K.c_not-.2){msg='This lesson does not train a new protein model.'}
+  WB.track(msg.length);cap.innerHTML=msg;
+  const capIn=out(t,K.c_ckpt-.3,.6);cap.style.opacity=capIn*g;
+  cap.style.background=t>=K.c_not-.2?'#fbe6e3':'#fff0cf';
+  const vv=out(t,K.c_not-.2,.7);veil.style.opacity=vv;veilT.style.opacity=vv;
+  [zb,zh,zs,zbar].forEach(e=>show(e,t,K.c_zero-.2,.7));
+  // keep arrows layer behind boxes visible: ensure svg opacity is not inherited as zero
+  sv2.style.opacity=g;
+};
+});
+</script></body></html>

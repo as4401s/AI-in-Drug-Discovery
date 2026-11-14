@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:2,part:1,partTitle:"Light becomes a measurement",title:"Fluorescent labels connect signal to structure",foot:"Part 1 \u00b7 schematic pictures, not real microscope data"},(S,C)=>{
+
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[['c_label','A fluorescent label','associates a <b>signal</b> with something we want to study'],['c_nuc','One stain','may highlight <b>DNA-rich nuclei</b>'],['c_mem','A different label','may outline <b>cell membranes</b> or mark a <b>particular protein</b>'],['c_def','Two terms','the <b>nucleus</b> holds most of a typical human cell’s DNA; the <b>membrane</b> separates the cell from its surroundings'],['c_not','Limits of one channel','a bright nucleus image does <b>not</b> show every structure in the cell'],['c_gene','Limits of one channel','a membrane image does <b>not</b> reveal which genes are active'],['c_spec','Specificity','the label and its biological specificity define <b>part of the question</b>'],['c_ctrl','Controls','a stain can <b>bind imperfectly</b>'],['c_bg','Confounders','background adds light; structures can <b>overlap</b>'],['c_port','The honest picture','a <b>labelled signal</b>, not an all-knowing portrait of the cell']]},
+els:[
+cd('',80,410,560,230,'c_nuc-.1',{css:'background:#0e1a17;border:6px solid #cfd9d4',dy:0}),
+cd('',680,410,560,230,'c_mem-.1',{css:'background:#0e1a17;border:6px solid #cfd9d4',dy:0}),
+cd('',1280,410,560,230,'c_prot-.1',{css:'background:#0e1a17;border:6px solid #cfd9d4',dy:0}),
+cd('',185,465,70,70,'c_nuc+0.0',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6f0ff,#6c9cff 55%,#3f63c9);box-shadow:0 0 26px rgba(108,156,255,.8)',dy:0}),
+cd('',315,555,70,70,'c_nuc+0.1',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6f0ff,#6c9cff 55%,#3f63c9);box-shadow:0 0 26px rgba(108,156,255,.8)',dy:0}),
+cd('',435,445,70,70,'c_nuc+0.3',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6f0ff,#6c9cff 55%,#3f63c9);box-shadow:0 0 26px rgba(108,156,255,.8)',dy:0}),
+cd('',265,395,70,70,'c_nuc+0.4',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6f0ff,#6c9cff 55%,#3f63c9);box-shadow:0 0 26px rgba(108,156,255,.8)',dy:0}),
+cd('',435,565,70,70,'c_nuc+0.6',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6f0ff,#6c9cff 55%,#3f63c9);box-shadow:0 0 26px rgba(108,156,255,.8)',dy:0}),
+cd('',830,430,140,140,'c_mem+0.0',{css:'background:transparent;border-radius:50%;border:7px solid #5fd08a;box-shadow:0 0 22px rgba(95,208,138,.7)',dy:0}),
+cd('',1030,500,120,120,'c_mem+0.2',{css:'background:transparent;border-radius:50%;border:7px solid #5fd08a;box-shadow:0 0 22px rgba(95,208,138,.7)',dy:0}),
+cd('',930,400,100,100,'c_mem+0.4',{css:'background:transparent;border-radius:50%;border:7px solid #5fd08a;box-shadow:0 0 22px rgba(95,208,138,.7)',dy:0}),
+cd('',1075,425,90,90,'c_mem+0.6',{css:'background:transparent;border-radius:50%;border:7px solid #5fd08a;box-shadow:0 0 22px rgba(95,208,138,.7)',dy:0}),
+cd('',1330,440,18,18,'c_prot+0.00',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1427,501,18,18,'c_prot+0.07',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1524,562,18,18,'c_prot+0.14',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1621,453,18,18,'c_prot+0.21',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1718,514,18,18,'c_prot+0.28',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1375,575,18,18,'c_prot+0.35',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1472,466,18,18,'c_prot+0.42',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1569,527,18,18,'c_prot+0.49',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1666,588,18,18,'c_prot+0.56',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1763,479,18,18,'c_prot+0.63',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1420,540,18,18,'c_prot+0.70',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1517,601,18,18,'c_prot+0.77',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1614,492,18,18,'c_prot+0.84',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1711,553,18,18,'c_prot+0.91',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1368,444,18,18,'c_prot+0.98',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+cd('',1465,505,18,18,'c_prot+1.05',{css:'border-radius:50%;background:#ff7a70;box-shadow:0 0 14px rgba(255,122,112,.9)',dy:0}),
+
+{t:'box',x:80,y:410,w:560,h:230,css:'background:rgba(120,160,255,.28);border-radius:12px',a:'c_bg',dy:0},
+ch('DNA-rich nuclei',360,655,'blue','c_nuc+.8',{fs:28}),ch('cell membranes',960,655,'mint','c_mem+.8',{fs:28}),ch('a particular protein',1560,655,'coral','c_prot+.5',{fs:28}),
+tt('nucleus: most of the cell’s DNA',360,715,520,'font:600 24px/1.2 Inter;color:'+INK,'c_def',{b:'c_not-.3'}),tt('membrane: separates the cell from its surroundings',960,715,520,'font:600 24px/1.2 Inter;color:'+INK,'c_def+1.4',{b:'c_not-.3'}),
+ch('✗ not every structure',360,715,'coral','c_not',{fs:28,b:'c_spec-.3'}),ch('✗ not which genes are active',960,715,'coral','c_gene',{fs:28,b:'c_spec-.3'}),
+ch('the label defines part of the question',960,780,'amber','c_spec',{fs:32,b:'c_ctrl-.3'}),
+ch('controls: a stain can bind imperfectly',960,780,'mint','c_ctrl',{fs:32,b:'c_bg-.3'}),
+ch('background light',360,715,'coral','c_bg',{fs:28,b:'c_port-.3'}),ch('overlapping structures',960,715,'coral','c_bg+.7',{fs:28,b:'c_port-.3'}),
+cd('b-amber',80,860,1760,100,'c_port-.1'),tt('we measure a labelled signal, not an all-knowing portrait of the cell',960,886,1700,'font:700 34px/1.2 Poppins;color:'+INK,'c_port+.2')
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

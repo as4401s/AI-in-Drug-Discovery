@@ -1,0 +1,49 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:1,part:2,partTitle:"Define the research problem",title:"What does C797S mean?",foot:"Define the research problem \u00b7 schematic sequence strip, neighbouring letters illustrative"},(S,C)=>{
+
+const POS=['793','794','795','796','797','798','799','800','801'];
+const X=i=>447+i*114;
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[
+['c_seq','A precise label for a change','a protein sequence gives us a precise way to describe a change'],
+['c_three','C797S has three parts','the letter it starts with, the <b>position</b>, and the letter it ends with'],
+['c_means','What it means','the amino acid <b>cysteine at position 797</b> is replaced by <b>serine</b>'],
+['c_ref','Check the numbering','the position refers to a particular <b>reference sequence</b> — check it before running any code'],
+['c_chem','Why one position can matter','amino acids have <b>different chemical properties</b>'],
+['c_alone','But…','the sequence change alone does not tell us the <b>full biological consequence</b>'],
+['c_need','What we also need','a <b>method</b>, a <b>measurement</b> and an appropriate <b>comparison</b>']]},
+els:[
+...['L','G','V','D'].map((l,i)=>tl(l,X(i),450,100,'c_seq+'+(i*.15),{neutral:1})),
+tl('C',X(4),450,100,'c_seq+.6',{b:'c_rep',hot:[0],ht:'c_C',pal:'amber'}),tl('S',X(4),450,100,'c_rep+.2',{hot:[0],ht:'c_rep+.4',pal:'coral'}),
+...['A','P','E','K'].map((l,i)=>tl(l,X(5+i),450,100,'c_seq+'+(.9+i*.15),{neutral:1})),
+...POS.map((p,i)=>tt(p,X(i)+50,562,100,'font:600 24px Inter;color:'+(i==4?INK:MUT),'c_seq+.9')),
+cd('b-blue',520,650,230,140,'c_three',{b:'c_ref-.3'}),cd('b-amber',845,650,230,140,'c_three+.2',{b:'c_ref-.3'}),cd('b-coral',1170,650,230,140,'c_three+.4',{b:'c_ref-.3'}),
+tt('C',635,672,200,BIG(80),'c_C',{b:'c_ref-.3'}),tt('797',960,690,200,BIG(66),'c_797',{b:'c_ref-.3'}),tt('S',1285,672,200,BIG(80),'c_S',{b:'c_ref-.3'}),
+ch('starting letter',635,830,'blue','c_C+.3',{b:'c_ref-.3',fs:26}),ch('position',960,830,'amber','c_797+.3',{b:'c_ref-.3',fs:26}),ch('ending letter',1285,830,'coral','c_S+.3',{b:'c_ref-.3',fs:26}),
+ch('cysteine → serine',960,905,'mint','c_rep',{b:'c_ref-.3',fs:34}),
+ch('numbering follows one particular reference sequence',960,700,'amber','c_ref',{b:'c_chem-.3',fs:32}),ch('✓  check the sequence and numbering before running code',960,810,'mint','c_check',{b:'c_chem-.3',fs:32}),
+cd('b-amber',640,640,180,180,'c_chem',{b:'c_alone-.3',css:'border-radius:50%;border:5px solid #ac8b42'}),tt('C',730,672,160,BIG(96),'c_chem+.2',{b:'c_alone-.3'}),
+cd('b-coral',1100,640,180,180,'c_chem+.4',{b:'c_alone-.3',css:'border-radius:50%;border:5px solid #b76d66'}),tt('S',1190,672,160,BIG(96),'c_chem+.6',{b:'c_alone-.3'}),
+tt('≠',960,670,140,BIG(110),'c_props-.3',{b:'c_alone-.3'}),ch('different chemical properties',960,880,'lav','c_props-.2',{b:'c_alone-.3',fs:32}),
+ic('protein-mutation',640,740,330,'c_alone',{b:'c_need-.3',bob:5}),ar(830,740,1010,740,'g','c_alone+.8',{b:'c_need-.3'}),
+cd('b-coral',1040,640,560,200,'c_alone+1.2',{b:'c_need-.3'}),tt('the full biological consequence',1270,690,400,T1,'c_alone+1.5',{b:'c_need-.3'}),tt('?',1530,690,100,BIG(96),'c_alone+1.8',{b:'c_need-.3',pulse:1}),
+cd('b-mint',120,620,480,330,'c_need-.1'),ic('pipette',360,760,200,'c_need',{bob:5}),tt('a method',360,640,420,T1,'c_need+.2'),
+cd('b-amber',720,620,480,330,'c_meas-.1'),ic('well-plate',960,770,240,'c_meas',{bob:5}),tt('a measurement',960,640,420,T1,'c_meas+.2'),
+cd('b-lav',1320,620,480,330,'c_cmp-.1'),ic('protein-mutation',1560,780,260,'c_cmp',{bob:5}),tt('an appropriate comparison',1560,640,440,T1,'c_cmp+.2')
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

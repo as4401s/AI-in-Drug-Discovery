@@ -1,0 +1,37 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:2,part:2,partTitle:"Cells, organoids and tissues",title:"Choosing a sample for a drug-discovery question",foot:"Part 2 \u00b7 schematic overview \u00b7 icons conceptual"},(S,C)=>{
+
+const E3='c_egfr-.3';
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[['c_conn','Connecting to drug discovery','which sample fits which kind of question?'],['c_simple','A simple response in one cell type','a controlled culture may be a useful <b>first experiment</b>'],['c_org','Spatial organisation or internal access','an appropriate <b>organoid</b> may help investigate that aspect'],['c_tissue','Relationships among cell types','in an existing architecture: <b>tissue</b> provides another kind of evidence'],['c_comp','Complementary tools','not a universal ranking from bad to perfect'],['c_harder','Trade-off','more complicated samples bring <b>harder measurement and interpretation</b>'],['c_egfr','For our EGFR and KRAS questions','a treatment claim needs a <b>real match</b> between sample, target or variant, compound, dose, exposure time and endpoint'],['c_public','Today’s public image','is a separate <b>teaching data set</b>']]},
+els:[
+cd('b-blue',80,420,520,330,'c_simple-.2',{b:E3}),tt('a simple response in one cell type',340,440,480,T2,'c_simple'),ic('petri-dish',340,580,170,'c_simple+.3',{b:E3,bob:4}),ch('controlled culture',340,680,'blue','c_simple+.8',{fs:28,b:E3}),
+cd('b-lav',700,420,520,330,'c_org-.2',{b:E3}),tt('space or internal access matters',960,440,480,T2,'c_org'),ic('organoid',960,580,170,'c_org+.3',{b:E3,bob:4,ph:1}),ch('organoid',960,680,'lav','c_org+.8',{fs:28,b:E3}),
+cd('b-mint',1320,420,520,330,'c_tissue-.2',{b:E3}),tt('relationships in an existing architecture',1580,440,480,T2,'c_tissue'),ic('tissue',1580,580,170,'c_tissue+.3',{b:E3,bob:4,ph:2}),ch('tissue',1580,680,'mint','c_tissue+.8',{fs:28,b:E3}),
+ch('↔ complementary tools, not a ranking',960,790,'amber','c_comp',{fs:34,b:E3}),
+ch('more complicated samples: harder measurement and interpretation',960,860,'coral','c_harder',{fs:30,b:E3}),
+cd('b-blue',80,430,520,130,'c_egfr-.1'),tt('the sample',340,470,480,T2,'c_egfr+.1'),{t:'tick',x:550,y:495,r:24,a:'c_m1'},
+cd('b-lav',700,430,520,130,'c_egfr+.1'),tt('molecular target or variant',960,470,480,T2,'c_egfr+.3'),{t:'tick',x:1170,y:495,r:24,a:'c_m2'},
+cd('b-coral',1320,430,520,130,'c_egfr+.3'),tt('compound',1580,470,480,T2,'c_egfr+.5'),{t:'tick',x:1790,y:495,r:24,a:'c_m3'},
+cd('b-amber',80,590,520,130,'c_egfr+.5'),tt('dose',340,630,480,T2,'c_egfr+.7'),{t:'tick',x:550,y:655,r:24,a:'c_m4'},
+cd('b-mint',700,590,520,130,'c_egfr+.7'),tt('exposure time',960,630,480,T2,'c_egfr+.9'),{t:'tick',x:1170,y:655,r:24,a:'c_m5'},
+cd('b-blue',1320,590,520,130,'c_egfr+.9'),tt('endpoint',1580,630,480,T2,'c_egfr+1.1'),{t:'tick',x:1790,y:655,r:24,a:'c_m6'},
+ch('a treatment claim needs a real match of all six',960,770,'amber','c_m6+.8',{fs:34}),
+ch('today’s public image: a separate teaching data set',960,860,'lav','c_public',{fs:34})
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

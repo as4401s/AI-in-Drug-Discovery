@@ -1,0 +1,1 @@
+{"c_q": 0.1, "c_arch": 4.98, "c_att": 8.28, "c_inside": 10.38, "c_vec": 15.84, "c_qkv": 18.3, "c_query": 20.58, "c_key": 22.38, "c_value": 23.52, "c_cmp": 24.84, "c_keys": 26.04, "c_w": 28.56, "c_mix": 30.96, "c_plain": 33.66, "c_num": 39.06, "c_heads": 44.76, "c_layers": 48.78, "c_inspect": 52.56, "c_bright": 55.74, "c_touch": 60.72}

@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script>
+<script>
+SCENE_INIT({ep:1,part:1,partTitle:'Biology foundations',title:'Part 1 · Biology foundations',foot:'Biology foundations · schematic illustrations · National Human Genome Research Institute concepts'},(S,C)=>{
+const {out,ramp,lin,mix,track}=WB;const c=k=>Math.max(C[k],0.05);
+const sv=svgLayer(S);arrowDefs(sv,'arw',GRN);
+// badge
+const badge=box('b-blue',80,240,600,250);const bT=tx('font:600 30px/1 Inter;color:'+BLU,'Part 1 of 4',116,268);const bH=tx('font:700 54px/1.1 Poppins;color:'+INK+';white-space:normal','Biology foundations',116,316,540);
+const seg=[0,1,2,3].map(i=>{const e=box('',116+i*134,440,120,12);e.style.cssText+=';border-radius:6px;background:#cfd9d4';const f=box('',116+i*134,440,0,12);f.style.cssText+=';border-radius:6px;background:#26765d';return {e,f}});
+// prediction -> ?
+const pc=chip('A computer prediction',900,300,'blue',{fs:32,px:28,py:12});
+const pa=WB.svg('path',{d:'M1160 330 L1330 330',stroke:GRN,'stroke-width':7,fill:'none','marker-end':'url(#arw)','stroke-linecap':'round'},sv);
+const qb=box('b-coral',1350,262,300,150);const qq=ctx('font:700 100px/150px Poppins;color:#b76d66','?',1500,262,300);qq.style.lineHeight='150px';
+const qc=ctx('font:500 30px/1.25 Inter;color:'+INK,'we need to know what the “something” is',1500,430,320);
+// chain
+const labs=['Cell','DNA','RNA','Protein'],keys=['animal-cell','dna-helix','rna-strand','folded-protein'],cols=['blue','lav','amber','mint'];
+const subs=['the living unit','its stored information','working messages','molecules that do jobs'];
+const tiles=labs.map((l,i)=>{const x=80+i*450;const bx=box('b-'+cols[i],x,340,400,450);const ic=ico(keys[i],x+200,530,i==1?200:270);const lab=ctx('font:700 42px/1 Poppins;color:'+INK,l,x+200,690,360);const sb=ctx('font:500 28px/1.2 Inter;color:'+MUT,subs[i],x+200,744,380);const ring=box('',x-4,336,408,458);ring.style.cssText+=';border:6px solid #26765d;border-radius:30px;background:transparent';return {bx,ic,lab,sb,ring,x}});
+const arr=[0,1,2].map(i=>WB.svg('path',{d:`M${80+i*450+404} 565 L${80+i*450+446} 565`,stroke:GRN,'stroke-width':7,fill:'none','marker-end':'url(#arw)','stroke-linecap':'round'},sv));
+const ban=box('b-amber',80,896,1760,70);const banT=tx('font:600 34px/70px Inter;color:'+INK+';text-align:center;white-space:nowrap','Keep one question in mind: <b>what can change when we intervene?</b>',80,896,1760);
+const pip=ico('pipette',1500,470,170);const drops=[0,1,2].map(i=>{const e=document.createElement('div');e.style.cssText='position:absolute;width:22px;height:30px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#b76d66;opacity:0';S.appendChild(e);return e});const rip=WB.svg('circle',{cx:280,cy:530,r:10,fill:'none',stroke:'#b76d66','stroke-width':7},sv);const flow=WB.svg('circle',{cx:280,cy:565,r:13,fill:'#b76d66'},sv);
+return function update(t){
+  const sh=out(t,c('c_move')-.3,.7);life(badge,t,.0,null,{dy:20});badge.style.height=mix(250,76,sh)+'px';badge.style.width=mix(600,520,sh)+'px';life(bT,t,.2,null,{dy:8});bT.style.top=mix(268,254,sh)+'px';life(bH,t,.35,null,{dy:8});bH.style.opacity*=1-sh;
+  seg.forEach((s,i)=>{const y=mix(440,262,sh);s.e.style.top=y+'px';s.f.style.top=y+'px';s.e.style.left=(mix(116,330,sh)+i*mix(134,100,sh))+'px';s.f.style.left=s.e.style.left;s.e.style.width=mix(120,90,sh)+'px';s.e.style.opacity=out(t,.5+i*.1,.4);});seg[0].f.style.width=(mix(120,90,sh)*out(t,1.0,1.6))+'px';
+  // prediction block
+  const pq=1-out(t,c('c_move')-.2,.5);
+  life(pc,t,c('c_know')-.1,c('c_move')-.2,{dy:10});pa.style.opacity=out(t,c('c_know')+.5,.5)*pq;life(qb,t,c('c_know')+.8,c('c_move')-.2,{dy:10});life(qq,t,c('c_know')+1.0,c('c_move')-.2,{dy:0,s:.7});life(qc,t,c('c_know')+1.6,c('c_move')-.2,{dy:8});
+  // chain
+  const tt=[c('c_move')-.2,c('c_info')-.2,c('c_msg')-.2,c('c_mol')-.2];
+  tiles.forEach((tl,i)=>{life(tl.bx,t,tt[i],null,{dy:24,s:.96});const o=out(t,tt[i]+.2,.6);tl.ic.set({op:o,s:.75+.25*o,y:track(Math.sin(t*2.1+i*1.3)*5)*o});life(tl.lab,t,tt[i]+.3,null,{dy:8});life(tl.sb,t,tt[i]+.5,null,{dy:6});
+    const hl=out(t,tt[i]+.1,.4)*(1-out(t,i<3?tt[i+1]+.2:c('c_keep')-.2,.4));tl.ring.style.opacity=hl});
+  arr.forEach((a,i)=>a.style.opacity=out(t,tt[i+1]-.3,.4));
+  // question
+  life(ban,t,c('c_keep')-.1,null,{dy:14});life(banT,t,c('c_keep')+.2,null,{dy:8});
+  const dp=out(t,c('c_keep')+.2,1.0);pip.set({op:dp*(1-out(t,c('c_what')+4.5,.5)),x:mix(900,-1220+900,dp)*0+mix(0,-1220,dp),y:0,r:mix(0,-20,dp),s:1});
+  drops.forEach((d,i)=>{const a=c('c_what')+.1+i*.55;const p=lin(t,a,.7);d.style.left=(262+i*0)+'px';d.style.top=(mix(250,500,p))+'px';d.style.opacity=(p>0&&p<1)?1:0});
+  const rp=lin(t,c('c_what')+.8,1.0);rip.setAttribute('r',10+120*rp);rip.style.opacity=(rp>0&&rp<1)?1-rp:0;rip.setAttribute('cx',280);rip.setAttribute('cy',530);
+  const fp=out(t,c('c_what')+1.6,2.6);const fx=280+fp*1350;flow.setAttribute('cx',fx);flow.setAttribute('cy',565);flow.style.opacity=fp>0&&fp<1?1:0;
+  // tracker pulse at end
+  seg[0].f.style.background=(WB.out(t,c('c_what'),.5)>0.5&&Math.floor(track(t*3))%2==0)?'#4a9078':'#26765d';
+};
+});
+</script></body></html>

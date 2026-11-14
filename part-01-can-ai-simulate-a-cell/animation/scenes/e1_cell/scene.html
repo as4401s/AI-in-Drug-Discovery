@@ -1,0 +1,99 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script>
+<script>
+SCENE_INIT({ep:1,part:1,partTitle:'Biology foundations',title:'A cell is an organized living system',foot:'Biology foundations · schematic cell illustration · functions simplified · National Human Genome Research Institute concepts'},(S,C)=>{
+const {out,ramp,lin,mix,track}=WB;const c=k=>Math.max(C[k],0.05);
+const cell=ico('animal-cell',520,600,680);
+const sv=svgLayer(S);arrowDefs(sv,'arw',GRN);arrowDefs(sv,'arc',COR);
+const P=k=>cellAt(cell,k);
+const nuc=P('nuc'),m1=P('mito1'),m2=P('mito2'),er=P('er'),rimL=P('rimL'),rimR=P('rim'),rimT=P('rimT');
+// membrane highlight (ellipse tracing the outline)
+const rim=WB.svg('ellipse',{cx:cell.cx-6,cy:cell.cy+4,rx:cell.w*.455,ry:cell.h*.385,fill:'none',stroke:'#26765d','stroke-width':9,'stroke-dasharray':'22 14','stroke-linecap':'round',transform:`rotate(-8 ${cell.cx} ${cell.cy})`},sv);
+const rimL1=rim.getTotalLength();
+// organelle highlight rings
+const rings=[nuc,m1,er].map(p=>{const r=WB.svg('circle',{cx:p[0],cy:p[1],r:20,fill:'none','stroke-width':8,stroke:GRN},sv);return r});
+const ringsB=[nuc,m1,m2,er].map(p=>WB.svg('circle',{cx:p[0],cy:p[1],r:20,fill:'none','stroke-width':8,stroke:GRN},sv));
+// notes (right top)
+const notes=NOTES({x:960,y:236,w:880,h:238,notes:[
+ {a:c('c_unit'),b:c('c_mem')-.1,title:'A cell',body:'a small, organized unit of life — <b>our example is a human cell</b>'},
+ {a:c('c_mem'),b:c('c_inside')-.1,title:'The membrane',body:'separates the inside from the surroundings and <b>controls exchange</b> with the environment'},
+ {a:c('c_inside'),b:c('c_interact')-.1,title:'Inside: structures with jobs',body:'help <b>store information</b>, <b>supply usable energy</b> and <b>build molecules</b>'},
+ {a:c('c_interact'),b:c('c_signal')-.1,title:'The parts interact',body:'A cell is <b>not a bag of independent objects</b>'},
+ {a:c('c_signal'),b:c('c_prot')-.1,title:'Signals travel inward',body:'A signal arriving at the surface <b>can change what happens inside</b>'},
+ {a:c('c_prot'),b:c('c_harder')-.1,title:'Changes spread',body:'A change in one protein <b>can affect other processes</b>'},
+ {a:c('c_harder'),b:c('c_which')-.1,title:'Why cells are hard to predict',body:'Predicting a <b>cell’s response</b> is harder than recognizing <b>one molecule</b>'},
+ {a:c('c_which'),b:c('c_dna')-.1,title:'Measure one part at a time',body:'Which part of this connected system are we <b>actually measuring</b>?'},
+ {a:c('c_dna'),b:null,title:'Next: DNA',body:'To understand the <b>information</b> that helps organize the cell, we begin with DNA.'}]});
+// exchange particles at the membrane
+const prt=[0,1,2,3].map(i=>WB.svg('circle',{r:9,fill:i%2?BLU:COR},sv));
+// organelle cards (right lower)
+const oc=[['nucleus','Nucleus','stores information',nuc,'b-lav',c('c_store')],['mitochondrion','Mitochondria','supply usable energy',m1,'b-amber',c('c_energy')],['ribosome','Ribosomes & ER','build molecules',er,'b-mint',c('c_build')]].map(([k,h,b,pt,cls,a],i)=>{
+ const y=520+i*150;const bx=box(cls,960,y,880,132);const ic=ico(k,1050,y+66,i==1?110:100);const t1=tx('font:700 36px/1.1 Poppins;color:'+INK,h,1130,y+22);const t2=tx('font:500 31px/1.2 Inter;color:'+INK,b,1130,y+72);
+ const ln=WB.svg('line',{x1:960,y1:y+66,x2:pt[0],y2:pt[1],stroke:GRN,'stroke-width':5,'stroke-dasharray':'3 9','stroke-linecap':'round'},sv);return {bx,ic,t1,t2,ln,pt,a,y}});
+// interaction loop arrows
+const loop=[[nuc,er],[er,m1],[m1,nuc]].map(([a,b],i)=>{const mx=(a[0]+b[0])/2+(i==1?40:-20),my=(a[1]+b[1])/2+(i==1?-10:30);const p=WB.svg('path',{d:`M${a[0]} ${a[1]} Q ${mx} ${my} ${b[0]} ${b[1]}`,stroke:BLU,'stroke-width':6,fill:'none','marker-end':'url(#arw)','stroke-linecap':'round'},sv);return p});
+const lodot=[0,1,2].map(i=>WB.svg('circle',{r:9,fill:BLU},sv));
+// signal journey
+const lig=ico('small-molecule',130,430,120);const rec=ico('membrane-receptor',rimL[0]+4,rimL[1],86);
+const sigPath=[[rimL[0]+10,rimL[1]],[rimL[0]+120,rimL[1]-40],[er[0]-100,er[1]-80],[nuc[0]-20,nuc[1]+10]];
+const sg=WB.svg('polyline',{points:sigPath.map(p=>p.join(',')).join(' '),fill:'none',stroke:COR,'stroke-width':9,'stroke-linecap':'round','stroke-linejoin':'round',opacity:0},sv);
+const sgL=sg.getTotalLength();
+const sdot=WB.svg('circle',{r:13,fill:COR,stroke:'#fff','stroke-width':4},sv);
+// protein change ripple
+const pnode=WB.svg('circle',{cx:er[0],cy:er[1],r:14,fill:COR,stroke:'#fff','stroke-width':4},sv);
+const pr=[nuc,m1,rimR,m2].map(p=>WB.svg('path',{d:`M${er[0]} ${er[1]} L${p[0]} ${p[1]}`,stroke:COR,'stroke-width':6,fill:'none','stroke-dasharray':'12 9','stroke-linecap':'round'},sv));
+const pn2=[nuc,m1,rimR,m2].map(p=>WB.svg('circle',{cx:p[0],cy:p[1],r:12,fill:COR},sv));
+const pl=chip('one protein changes',er[0]+60,er[1]+90,'coral',{fs:26});
+// harder comparison cards
+const hc1=box('b-mint',960,520,420,350);const hc2=box('b-coral',1420,520,420,350);
+const h1i=ico('small-molecule',1170,650,300);const h2i=ico('animal-cell',1630,650,240);
+const h1t=ctx('font:700 34px/1.1 Poppins;color:'+INK,'one molecule',1170,760,380);const h2t=ctx('font:700 34px/1.1 Poppins;color:'+INK,'a whole cell',1630,760,380);
+const bg1=box('',990,812,360,26);bg1.style.cssText+=';background:#fff;border-radius:13px';const f1=box('',990,812,0,26);f1.style.cssText+=';background:#4d8f7e;border-radius:13px';
+const bg2=box('',1450,812,360,26);bg2.style.cssText+=';background:#fff;border-radius:13px';const f2=box('',1450,812,0,26);f2.style.cssText+=';background:#b76d66;border-radius:13px';
+const hl1=tx('font:600 24px/1 Inter;color:'+MUT,'how hard to predict',990,846);
+// measurement marker
+const mk=WB.svg('rect',{width:150,height:110,rx:20,fill:'rgba(224,164,58,.14)',stroke:'#e0a43a','stroke-width':8,'stroke-dasharray':'16 10'},sv);
+const mTargets=[rimL,nuc,m1,er,m2];
+const mq=chip('measure this part',0,0,'amber',{fs:26});
+// DNA next
+const dn=ico('dna-helix',1400,740,190);const dc=chip('next · DNA',1640,740,'lav',{fs:36,px:34,py:14});
+const zoom=WB.svg('circle',{cx:nuc[0],cy:nuc[1],r:90,fill:'none',stroke:'#8b75b0','stroke-width':9},sv);
+const zl=WB.svg('path',{d:`M${nuc[0]+80} ${nuc[1]+40} Q 1000 740 1290 740`,stroke:'#8b75b0','stroke-width':8,fill:'none','stroke-dasharray':'3 14','stroke-linecap':'round','marker-end':'url(#arw)'},sv);
+return function update(t){
+  const cI=out(t,c('c_unit'),.9);cell.set({op:cI,s:.88+.12*cI,y:track(Math.sin(t*1.4)*4)*cI});
+  notes.update(t);
+  // membrane
+  const mem=out(t,c('c_mem')+.2,1.4)*(1-out(t,c('c_inside')-.2,.5));pathGrow(rim,out(t,c('c_mem')+.2,1.6));rim.style.opacity=pathGrow&&(out(t,c('c_mem')+.2,.6)*(1-out(t,c('c_inside')-.2,.5)));
+  rim.setAttribute('stroke-dashoffset',-track(t*30));rim.setAttribute('stroke-dasharray','22 14');
+  const act=out(t,c('c_exch')-.3,.5)*(1-out(t,c('c_inside')-.2,.5));
+  prt.forEach((p,i)=>{const ph=((t*0.55+i*.25)%1);const inw=i%2==0;const ang=(-.5+i*.9);const cx=rimT[0]+ (i-1.5)*140,cy=rimT[1]+ (i%2?40:0);const a0=inw?[cx,cy-110]:[cx,cy+40],a1=inw?[cx,cy+40]:[cx,cy-110];const q=track(ph);p.setAttribute('cx',a0[0]+(a1[0]-a0[0])*q);p.setAttribute('cy',a0[1]+(a1[1]-a0[1])*q);p.style.opacity=act*Math.sin(Math.PI*q)});
+  // organelle cards + rings
+  oc.forEach((o,i)=>{const a=o.a-.1,b=c('c_interact')-.3;const bo=out(t,a,.5)*(1-out(t,b,.4));[o.bx,o.ic.e,o.t1,o.t2].forEach(e=>{e.style.opacity=bo;e.style.transform=`translateX(${((1-out(t,a,.5))*40).toFixed(1)}px)`});
+    o.ic.e.style.transform=`translateX(${((1-out(t,a,.5))*40).toFixed(1)}px) scale(${.9+.1*out(t,a,.5)})`;
+    o.ln.style.opacity=bo;const r=rings[i];pulseRing(r,o.pt[0],o.pt[1],t,a+.2,1.3,18,64,GRN);const r2=ringsB[i];pulseRing(r2,o.pt[0],o.pt[1],t,a+1.1,1.3,18,64,GRN)});
+  // loop
+  const lp=out(t,c('c_interact'),.6)*(1-out(t,c('c_signal')-.3,.4));loop.forEach((p,i)=>{pathGrow(p,out(t,c('c_interact')+i*.5,.8));p.style.opacity=lp*(p._L?1:0)});
+  lodot.forEach((d,i)=>{const L=loop[i];const q=track(((t-c('c_interact')-1.5)*.45+i/3)%1);if(!L._L)L._L=L.getTotalLength();const pt=L.getPointAtLength(L._L*q);d.setAttribute('cx',pt.x);d.setAttribute('cy',pt.y);d.style.opacity=lp*out(t,c('c_interact')+1.5,.4)});
+  // signal
+  const sA=c('c_signal');const li=out(t,sA-.1,.5)*(1-out(t,sA+1.6,.4));const lx=mix(130,rimL[0]-70,out(t,sA,1.4));lig.set({op:li,x:lx-130,y:mix(0,rimL[1]-430,out(t,sA,1.4)),s:.7});
+  rec.set({op:out(t,sA+.4,.5)*(1-out(t,c('c_prot')-.3,.5)),s:.9});
+  const sp=out(t,sA+1.7,2.6);const sOp=out(t,sA+1.6,.4)*(1-out(t,c('c_prot')-.3,.5));sg.style.opacity=sOp;sg.setAttribute('stroke-dasharray',sgL);sg.setAttribute('stroke-dashoffset',sgL*(1-sp));
+  const sp2=sg.getPointAtLength(sgL*sp);sdot.setAttribute('cx',sp2.x);sdot.setAttribute('cy',sp2.y);sdot.style.opacity=sOp;
+  pulseRing(rings[0],nuc[0],nuc[1],t,sA+4.2,1.4,18,70,COR);
+  // protein change
+  const pA=c('c_prot');const po=out(t,pA-.1,.4)*(1-out(t,c('c_harder')-.3,.5));pnode.style.opacity=po;pnode.setAttribute('r',14+track(Math.sin(t*6)*3)*po);
+  pr.forEach((p,i)=>{const g=out(t,pA+.8+i*.35,.7);const L=p.getTotalLength();p.setAttribute('stroke-dasharray','12 9');p.style.opacity=g*(1-out(t,c('c_harder')-.3,.5))});
+  pn2.forEach((p,i)=>{p.style.opacity=out(t,pA+1.2+i*.35,.5)*(1-out(t,c('c_harder')-.3,.5))});life(pl,t,pA+.2,c('c_harder')-.3,{dy:6});
+  // harder
+  const hA=c('c_harder');[hc1,h1t,h2t].forEach((e,i)=>life(e,t,hA+(i==0?0:.2),c('c_which')-.3,{dy:16}));life(hc2,t,hA+.8,c('c_which')-.3,{dy:16});
+  const o1=out(t,hA+.1,.5)*(1-out(t,c('c_which')-.3,.4)),o2=out(t,hA+.9,.5)*(1-out(t,c('c_which')-.3,.4));h1i.set({op:o1});h2i.set({op:o2});
+  [bg1,f1,hl1].forEach(e=>e.style.opacity=o1);[bg2,f2].forEach(e=>e.style.opacity=o2);f1.style.width=(360*.22*out(t,hA+.6,1))+'px';f2.style.width=(360*.95*out(t,hA+1.6,1.4))+'px';
+  // measure marker hops
+  const wA=c('c_which');const idx=Math.min(mTargets.length-1,Math.floor(Math.max(0,t-wA-.4)/1.1));const prev=Math.max(0,idx-1);const hp=out(t,wA+.4+idx*1.1,.5);const a=mTargets[prev],b=mTargets[idx];const px=mix(a[0],b[0],idx==0?1:hp),py=mix(a[1],b[1],idx==0?1:hp);
+  const mo=out(t,wA+.2,.4)*(1-out(t,c('c_dna')-.3,.4));mk.setAttribute('x',px-75);mk.setAttribute('y',py-55);mk.style.opacity=mo;life(mq,t,wA+.5,c('c_dna')-.3,{dy:0});mq.style.left=(px-mq._w/2)+'px';mq.style.top=(py+60)+'px';
+  // DNA next
+  const dA=c('c_dna');const zo=out(t,dA,.5);zoom.style.opacity=zo;zoom.setAttribute('r',90-30*out(t,dA,1.0));pathGrow(zl,out(t,dA+.4,1.0));dn.set({op:out(t,dA+1.0,.7),s:.8+.2*out(t,dA+1.0,.7),y:track(Math.sin(t*2)*6)*out(t,dA+1.0,.7)});life(dc,t,dA+1.6,null,{dy:8});
+};
+});
+</script></body></html>

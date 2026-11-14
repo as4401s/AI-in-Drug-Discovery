@@ -1,0 +1,52 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:2,part:2,partTitle:"Cells, organoids and tissues",title:"Organoids: selected features of an organ or tissue",foot:"Part 2 \u00b7 schematic illustration \u00b7 icons conceptual"},(S,C)=>{
+
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[['c_def','An organoid','a <b>3-dimensional</b> laboratory culture that organises to reproduce <b>selected features</b> of an organ or tissue'],['c_stem','Where it comes from','often grown from <b>stem cells</b> or tissue-derived <b>progenitor cells</b>'],['c_prog','Descendants','stem and progenitor cells can make more <b>specialised</b> cells with different capacities'],['c_sel','The important word','exact cell types and structures depend on the system: <b>selected</b>'],['c_not','What it is not','not a complete miniature person, not automatically a fully functioning tiny organ'],['c_use','Its usefulness','comes from the features it <b>does</b> preserve'],['c_cav','For example','cells may organise around a <b>cavity</b> or interact in a spatial arrangement a flat layer does not capture'],['c_q','Why choose one','because those particular features help answer a <b>defined question</b>']]},
+els:[
+ic('organoid',1050,610,300,'c_def',{bob:4,b:'c_cav-.3'}),ch('3D laboratory culture',1050,460,'lav','c_def+.4',{fs:30,b:'c_cav-.3'}),ch('reproduces selected features',1050,780,'mint','c_def+3.0',{fs:28,b:'c_not-.3'}),
+ic('stem-cell-differentiation',380,610,280,'c_stem',{bob:4,b:'c_use-.3'}),ch('stem cells · progenitor cells',380,780,'blue','c_stem+.5',{fs:28,b:'c_use-.3'}),
+ar(560,610,860,610,'g','c_stem+1.2',{b:'c_use-.3'}),dt([[560,610],[860,610]],'c','c_stem+1.8',{n:3,speed:.3,r:9,b:'c_use-.3'}),
+ch('under supportive conditions',710,540,'amber','c_stem+2.0',{fs:26,b:'c_use-.3'}),
+ch('more specialised descendants',710,690,'lav','c_prog',{fs:26,b:'c_use-.3'}),
+ch('the important word: “selected”',1050,780,'amber','c_sel',{fs:36,b:'c_not-.3'}),
+ch('✗ not a complete miniature person',1560,540,'coral','c_not',{fs:30,b:'c_use-.3'}),ch('✗ not automatically a working tiny organ',1560,630,'coral','c_not+2.4',{fs:30,b:'c_use-.3'}),
+ch('useful for the features it does preserve',960,830,'mint','c_use',{fs:34,b:'c_cav-.3'}),
+cd('',595,615,70,70,'c_cav+0.25',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',570,691,70,70,'c_cav+0.37',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',505,738,70,70,'c_cav+0.49',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',425,738,70,70,'c_cav+0.61',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',360,691,70,70,'c_cav+0.73',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',335,615,70,70,'c_cav+0.85',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',360,539,70,70,'c_cav+0.97',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',425,492,70,70,'c_cav+1.09',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',505,492,70,70,'c_cav+1.21',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',570,539,70,70,'c_cav+1.33',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+
+ch('cells organise around a cavity',500,830,'mint','c_cav+1.6',{fs:30}),
+cd('',1095,615,70,70,'c_cav+1.60',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',1185,615,70,70,'c_cav+1.72',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',1275,615,70,70,'c_cav+1.84',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',1365,615,70,70,'c_cav+1.96',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',1455,615,70,70,'c_cav+2.08',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+cd('',1545,615,70,70,'c_cav+2.20',{css:'background:radial-gradient(circle at 50% 50%,#7a5ea8 0 22%,#d7ecf7 24%);border:4px solid #4d8f7e;border-radius:50%',dy:0}),
+
+ch('a flat layer does not capture this',1400,830,'coral','c_cav+3.4',{fs:30}),
+cd('b-amber',80,880,1760,90,'c_q-.1'),tt('we choose an organoid because those features help answer a defined question',960,905,1700,'font:700 32px/1.2 Poppins;color:'+INK,'c_q+.2')
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

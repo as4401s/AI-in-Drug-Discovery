@@ -1,0 +1,46 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:2,part:2,partTitle:"Cells, organoids and tissues",title:"Preparation shapes what an image can answer",foot:"Part 2 \u00b7 schematic illustration \u00b7 not measured data"},(S,C)=>{
+
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[['c_chg','Preparation','changes what questions an image can answer'],['c_fixed','Fixed samples','chemical preparation <b>preserves selected structures</b> for later examination'],['c_live','Living samples','we can observe <b>changes over time</b>, but illumination and labelling can <b>disturb</b> the system'],['c_neither','Neither approach','automatically tells the <b>full story</b>'],['c_still','A still image','records one <b>state</b> under its acquisition conditions'],['c_path','It does not reveal','the <b>path</b> that produced that state'],['c_fewer','Fewer visible objects?','in a treated sample — perhaps cells died'],['c_perh','Or perhaps','they detached, the stain failed, or segmentation missed them'],['c_dist','To tell these apart','time points, appropriate labels, controls, additional measurements'],['c_ev','Decide first','what evidence we need before choosing the most dramatic interpretation']]},
+els:[
+cd('b-blue',80,420,860,340,'c_fixed-.2',{b:'c_still-.3'}),tt('fixed',510,440,800,T1,'c_fixed',{b:'c_still-.3'}),ic('animal-cell',330,610,230,'c_fixed+.3',{b:'c_still-.3',css:'filter:saturate(.5) hue-rotate(10deg)'}),ch('structures preserved for later examination',510,700,'blue','c_fixed+.8',{fs:26,b:'c_still-.3'}),
+cd('b-mint',980,420,860,340,'c_live-.2',{b:'c_still-.3'}),tt('living',1410,440,800,T1,'c_live',{b:'c_still-.3'}),
+ic('animal-cell',1100,600,120,'c_live+.3',{b:'c_still-.3',bob:3}),ic('animal-cell',1260,600,120,'c_live+1.2',{b:'c_still-.3',bob:3,css:'filter:hue-rotate(25deg)'}),ic('animal-cell',1420,600,120,'c_live+2.2',{b:'c_still-.3',bob:3,css:'filter:hue-rotate(50deg)'}),ic('animal-cell',1580,600,120,'c_live+3.2',{b:'c_still-.3',bob:3,css:'filter:hue-rotate(80deg)'}),
+ch('changes over time →',1340,690,'mint','c_live+1.0',{fs:26,b:'c_still-.3'}),
+ch('light + labels can disturb the system',1410,790,'coral','c_live+3.0',{fs:26,b:'c_still-.3'}),
+ch('neither tells the full story',960,845,'amber','c_neither',{fs:36,b:'c_still-.3'}),
+ar(200,640,1720,640,'g','c_still-.2',{dash:'16 12',head:false,b:'c_fewer-.3'}),ic('animal-cell',960,640,230,'c_still',{b:'c_fewer-.3',bob:4}),ch('one state, one moment',960,780,'lav','c_still+.5',{fs:32,b:'c_fewer-.3'}),
+ch('? how did it get here',480,560,'coral','c_path',{fs:32,b:'c_fewer-.3'}),ch('? what happens next',1440,560,'coral','c_path+1.2',{fs:32,b:'c_fewer-.3'}),
+cd('',150,430,520,300,'c_fewer-.2',{css:'background:#0e1a17;border:6px solid #cfd9d4',dy:0,b:'c_ev-.3'}),cd('',750,430,520,300,'c_fewer-.2',{css:'background:#0e1a17;border:6px solid #cfd9d4',dy:0,b:'c_ev-.3'}),
+cd('',170,450,50,50,'c_fewer-.1',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74)',dy:0,b:'c_ev-.3'}),
+cd('',283,521,50,50,'c_fewer-.1',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74)',dy:0,b:'c_ev-.3'}),
+cd('',396,592,50,50,'c_fewer-.1',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74)',dy:0,b:'c_ev-.3'}),
+cd('',509,453,50,50,'c_fewer-.1',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74)',dy:0,b:'c_ev-.3'}),
+cd('',182,524,50,50,'c_fewer-.1',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74)',dy:0,b:'c_ev-.3'}),
+cd('',295,595,50,50,'c_fewer-.1',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74)',dy:0,b:'c_ev-.3'}),
+cd('',408,456,50,50,'c_fewer-.1',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74)',dy:0,b:'c_ev-.3'}),
+cd('',770,450,50,50,'c_fewer-.1',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74)',dy:0,b:'c_ev-.3'}),
+cd('',927,539,50,50,'c_fewer-.1',{css:'border-radius:50%;background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74)',dy:0,b:'c_ev-.3'}),
+
+ch('control: many objects',410,745,'mint','c_fewer',{fs:28,b:'c_ev-.3'}),ch('treated: fewer objects',1010,745,'coral','c_fewer+.6',{fs:28,b:'c_ev-.3'}),
+ch('cells died?',1500,470,'coral','c_fewer+1.0',{fs:30,b:'c_dist-.3'}),ch('cells detached?',1500,545,'amber','c_perh',{fs:30,b:'c_dist-.3'}),ch('stain failed?',1500,620,'blue','c_perh+1.0',{fs:30,b:'c_dist-.3'}),ch('segmentation missed them?',1500,695,'lav','c_perh+2.0',{fs:30,b:'c_dist-.3'}),
+ch('time points',1500,470,'mint','c_dist',{fs:30,b:'c_ev-.3'}),ch('appropriate labels',1500,545,'blue','c_dist+.8',{fs:30,b:'c_ev-.3'}),ch('controls',1500,620,'amber','c_dist+1.6',{fs:30,b:'c_ev-.3'}),ch('additional measurements',1500,695,'lav','c_dist+2.4',{fs:30,b:'c_ev-.3'}),
+cd('b-amber',80,860,1760,110,'c_ev-.1'),tt('decide what evidence we need before choosing the most dramatic interpretation',960,885,1700,'font:700 32px/1.2 Poppins;color:'+INK,'c_ev+.2')
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

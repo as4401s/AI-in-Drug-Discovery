@@ -1,0 +1,59 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:2,part:1,partTitle:"Light becomes a measurement",title:"Two problems: background and saturation",foot:"Part 1 \u00b7 schematic bars \u00b7 values illustrative"},(S,C)=>{
+
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[['c_two','Two common problems','that make the distinction practical'],['c_bg','Background','unwanted fluorescence and a <b>detector offset</b> add signal that is not the labelled structure'],['c_noise','Noise','random fluctuations: a <b>related but distinct</b> problem'],['c_est','Needed','a <b>documented way</b> to estimate background and assess uncertainty from noise'],['c_sat','Saturation','a detector has a <b>highest recordable value</b>'],['c_reach','Once a bright region reaches that limit','stronger signals may <b>all receive the same number</b>'],['c_lost','Differences lost','changes that exist in the sample are <b>no longer in the data</b>'],['c_exp','Exposure','more exposure can make a picture look clearer <b>while saturating</b> important pixels'],['c_cont','Display contrast','changing it later <b>cannot recover</b> the missing differences'],['c_qc','Quality control','an attractive image is <b>not</b> our criterion'],['c_check','We check','raw values, settings, background and clipped regions <b>before</b> interpreting brightness']]},
+els:[
+br(220,740,70,60,'#9aa8a3','c_bg+0.00',{val:[0,1],vt:'c_bg+0.00',vd:.6,b:'c_sat-.3'}),
+br(320,740,70,60,'#9aa8a3','c_bg+0.10',{val:[0,1],vt:'c_bg+0.10',vd:.6,b:'c_sat-.3'}),
+br(320,710,70,30,'#4d8f7e','c_bg+1.30',{val:[0,1],vt:'c_bg+1.30',vd:.6,b:'c_sat-.3'}),
+br(420,740,70,60,'#9aa8a3','c_bg+0.20',{val:[0,1],vt:'c_bg+0.20',vd:.6,b:'c_sat-.3'}),
+br(420,620,70,120,'#4d8f7e','c_bg+1.40',{val:[0,1],vt:'c_bg+1.40',vd:.6,b:'c_sat-.3'}),
+br(520,740,70,60,'#9aa8a3','c_bg+0.30',{val:[0,1],vt:'c_bg+0.30',vd:.6,b:'c_sat-.3'}),
+br(520,540,70,200,'#4d8f7e','c_bg+1.50',{val:[0,1],vt:'c_bg+1.50',vd:.6,b:'c_sat-.3'}),
+br(620,740,70,60,'#9aa8a3','c_bg+0.40',{val:[0,1],vt:'c_bg+0.40',vd:.6,b:'c_sat-.3'}),
+br(620,620,70,120,'#4d8f7e','c_bg+1.60',{val:[0,1],vt:'c_bg+1.60',vd:.6,b:'c_sat-.3'}),
+br(720,740,70,60,'#9aa8a3','c_bg+0.50',{val:[0,1],vt:'c_bg+0.50',vd:.6,b:'c_sat-.3'}),
+br(720,710,70,30,'#4d8f7e','c_bg+1.70',{val:[0,1],vt:'c_bg+1.70',vd:.6,b:'c_sat-.3'}),
+br(820,740,70,60,'#9aa8a3','c_bg+0.60',{val:[0,1],vt:'c_bg+0.60',vd:.6,b:'c_sat-.3'}),
+
+{t:'wave',x:220,y:740,len:690,amp:7,wl:13,col:'c',a:'c_noise',speed:9,w:4,dur:.8,b:'c_sat-.3'},
+cd('',200,800,740,6,'c_two',{css:'background:#8aa59b;border-radius:3px',dy:0,b:'c_sat-.3'}),
+ch('background + offset',1380,470,'coral','c_bg',{fs:30,b:'c_sat-.3'}),ch('not the labelled structure',1380,550,'coral','c_bg+1.0',{fs:30,b:'c_sat-.3'}),
+ch('noise: random fluctuations',1380,640,'lav','c_noise',{fs:30,b:'c_sat-.3'}),
+ch('document how to estimate background and noise',1380,730,'mint','c_est',{fs:26,b:'c_sat-.3'}),
+ch('signal we want',560,860,'mint','c_bg+1.5',{fs:26,b:'c_sat-.3'}),ch('background',280,860,'coral','c_bg+.3',{fs:26,b:'c_sat-.3'}),
+cd('',200,820,740,6,'c_sat',{css:'background:#8aa59b;border-radius:3px',dy:0}),
+br(220,780,70,40,'#4d8f7e','c_sat+0.30',{val:[0,1],vt:'c_sat+0.30',vd:.6}),
+br(320,730,70,90,'#4d8f7e','c_sat+0.45',{val:[0,1],vt:'c_sat+0.45',vd:.6}),
+br(420,670,70,150,'#4d8f7e','c_sat+0.60',{val:[0,1],vt:'c_sat+0.60',vd:.6}),
+cd('',520,610,70,210,'c_lost+0.15',{css:'background:#b8c4bf;border-radius:10px;border:3px dashed #8a9b94',op:.45,dy:0,b:'c_exp-.3'}),
+br(520,640,70,180,'#cf8a83','c_sat+0.75',{val:[0,1],vt:'c_sat+0.75',vd:.6}),
+cd('',620,550,70,270,'c_lost+0.20',{css:'background:#b8c4bf;border-radius:10px;border:3px dashed #8a9b94',op:.45,dy:0,b:'c_exp-.3'}),
+br(620,640,70,180,'#cf8a83','c_sat+0.90',{val:[0,1],vt:'c_sat+0.90',vd:.6}),
+cd('',720,490,70,330,'c_lost+0.25',{css:'background:#b8c4bf;border-radius:10px;border:3px dashed #8a9b94',op:.45,dy:0,b:'c_exp-.3'}),
+br(720,640,70,180,'#cf8a83','c_sat+1.05',{val:[0,1],vt:'c_sat+1.05',vd:.6}),
+cd('',820,430,70,390,'c_lost+0.30',{css:'background:#b8c4bf;border-radius:10px;border:3px dashed #8a9b94',op:.45,dy:0,b:'c_exp-.3'}),
+br(820,640,70,180,'#cf8a83','c_sat+1.20',{val:[0,1],vt:'c_sat+1.20',vd:.6}),
+
+ar(190,640,950,640,'a','c_max',{dash:'14 10',head:false}),ch('highest recordable value',1250,615,'amber','c_max+.3',{fs:30,b:'c_exp-.3'}),
+ch('bright region reaches the limit',1250,700,'coral','c_reach',{fs:28,b:'c_exp-.3'}),ch('stronger signals: the same number',1250,780,'coral','c_same',{fs:28,b:'c_exp-.3'}),ch('differences are lost',1250,860,'coral','c_lost',{fs:30,b:'c_exp-.3'}),
+ch('more exposure: clearer picture, saturated pixels',1400,470,'amber','c_exp',{fs:28,b:'c_check-.3'}),ch('display contrast cannot recover them',1400,560,'coral','c_cont',{fs:28,b:'c_check-.3'}),ch('attractive image ≠ quality control',1400,650,'mint','c_qc',{fs:30,b:'c_check-.3'}),
+ch('raw values',1180,470,'blue','c_check',{fs:28}),ch('acquisition settings',1480,470,'mint','c_check+.5',{fs:28}),ch('background',1180,560,'amber','c_check+1.0',{fs:28}),ch('clipped regions',1480,560,'coral','c_check+1.5',{fs:28})
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

@@ -1,0 +1,52 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:2,part:0,partTitle:"Introduction and contents",title:"Can we trust a microscope picture?",foot:"Teaching example \u00b7 schematic pictures, not real microscope data"},(S,C)=>{
+
+const FR='background:#0e1a17;border:6px solid #cfd9d4';
+const SPEC={els:[
+cd('',120,300,740,400,'c_arrive',{css:FR}),cd('',1060,300,740,400,'c_arrive+.3',{css:FR}),
+cd('',172,352,96,96,'c_one+0.00',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);box-shadow:0 0 28px rgba(95,208,170,.7)',dy:0}),
+cd('',312,442,96,96,'c_one+0.12',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);box-shadow:0 0 28px rgba(95,208,170,.7)',dy:0}),
+cd('',452,332,96,96,'c_one+0.24',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);box-shadow:0 0 28px rgba(95,208,170,.7)',dy:0}),
+cd('',592,472,96,96,'c_one+0.36',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);box-shadow:0 0 28px rgba(95,208,170,.7)',dy:0}),
+cd('',712,372,96,96,'c_one+0.48',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);box-shadow:0 0 28px rgba(95,208,170,.7)',dy:0}),
+cd('',372,562,96,96,'c_one+0.60',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);box-shadow:0 0 28px rgba(95,208,170,.7)',dy:0}),
+cd('',552,582,96,96,'c_one+0.72',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);box-shadow:0 0 28px rgba(95,208,170,.7)',dy:0}),
+cd('',202,552,96,96,'c_one+0.84',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);box-shadow:0 0 28px rgba(95,208,170,.7)',dy:0}),
+cd('',1105,377,170,66,'c_two+0.00',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);rotate:-18deg',dy:0}),
+cd('',1295,447,170,66,'c_two+0.12',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);rotate:12deg',dy:0}),
+cd('',1475,357,170,66,'c_two+0.24',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);rotate:-8deg',dy:0}),
+cd('',1585,507,170,66,'c_two+0.36',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);rotate:25deg',dy:0}),
+cd('',1165,557,170,66,'c_two+0.48',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);rotate:8deg',dy:0}),
+cd('',1395,577,170,66,'c_two+0.60',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);rotate:-20deg',dy:0}),
+cd('',1615,347,170,66,'c_two+0.72',{css:'border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9fff0,#5fd0aa 55%,#2c8f74);rotate:15deg',dy:0}),
+cd('',1060,300,740,400,'c_two+.3',{css:'background:rgba(8,18,15,.30);border-radius:28px',b:'c_exp+0.9',dy:0}),
+cd('',1060,300,740,400,'c_two+.3',{css:'background:rgba(8,18,15,.30);border-radius:28px',b:'c_exp+1.7',dy:0}),
+cd('',1060,300,740,400,'c_two+.3',{css:'background:rgba(8,18,15,.30);border-radius:28px',b:'c_exp+2.5',dy:0}),
+
+ch('bright and round',490,725,'mint','c_one+1.4',{b:'c_med-.3',fs:30}),ch('dim and stretched',1430,725,'coral','c_two+1.4',{b:'c_med-.3',fs:30}),
+ch('“picture 2 proves the new medicine works”',1430,226,'amber','c_says',{fs:28,b:'c_before-.3'}),
+tt('?',960,400,120,BIG(190),'c_believe',{b:'c_med-.3',pulse:true}),
+ch('maybe the medicine changed the cells?',960,725,'mint','c_med',{fs:32,b:'c_cam-.2'}),
+ch('camera exposure',520,725,'amber','c_exp-.4',{fs:30,b:'c_before-.3'}),ch('the dye',960,725,'blue','c_dye-.2',{fs:30,b:'c_before-.3'}),ch('how it was displayed',1400,725,'lav','c_disp-.2',{fs:30,b:'c_before-.3'}),
+tt('exposure',400,788,160,'font:600 26px Inter;color:'+MUT,'c_exp-.4',{b:'c_before-.3'}),
+br(520,812,880,22,'#e0a43a','c_exp-.4',{dir:'right',val:[0,1],vt:'c_exp',vd:2.6,b:'c_before-.3'}),
+ch('what does the image actually measure?',960,790,'amber','c_before',{fs:38,b:'c_q-.3'}),
+cd('b-mint',80,850,1760,110,'c_q-.1'),tt('How do we turn a picture of biology into evidence we can trust?',960,872,1700,'font:700 40px/1.2 Poppins;color:'+INK,'c_q+.1')
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

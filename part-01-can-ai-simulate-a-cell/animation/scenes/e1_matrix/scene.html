@@ -1,0 +1,103 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:1,part:2,partTitle:"Define the research problem",title:"A cell becomes a row of measurements",foot:"Define the research problem \u00b7 schematic table, values illustrative, not measured data"},(S,C)=>{
+
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[
+['c_sc','Single-cell RNA sequencing','one way to gather information about individual cells'],
+['c_roughly','Very roughly','the experiment records <b>RNA linked to many genes</b> in <b>individual cells</b> — and we can organize it as a <b>table</b>'],
+['c_row','Rows and columns','each <b>row</b> is a measured <b>cell</b>; each <b>column</b> is a <b>gene</b>'],
+['c_entry','An entry','an <b>RNA count</b> or a processed <b>expression value</b>'],
+['c_many','A detailed profile','a row with many columns gives the model a <b>detailed numerical profile</b> — not a photograph of the cell'],
+['c_leaves','What it leaves out','much of the cell’s <b>protein activity</b> and its <b>physical organization</b>']]},
+els:[
+ic('animal-cell',300,650,280,'c_sc',{bob:5}),ch('single-cell RNA sequencing',300,455,'lav','c_sc+.3',{b:'c_row-.3',fs:30}),
+dt([[430,650],[600,650],[760,600]],'c','c_roughly',{n:4,speed:.3,r:10,b:'c_row-.3',trail:6}),
+tt('gene 1',832,430,100,'font:600 22px Inter;color:'+MUT,'c_table-.4'),
+tt('gene 2',944,430,100,'font:600 22px Inter;color:'+MUT,'c_table-.4'),
+tt('gene 3',1056,430,100,'font:600 22px Inter;color:'+MUT,'c_table-.4'),
+tt('gene 4',1168,430,100,'font:600 22px Inter;color:'+MUT,'c_table-.4'),
+tt('gene 5',1280,430,100,'font:600 22px Inter;color:'+MUT,'c_table-.4'),
+tt('gene 6',1392,430,100,'font:600 22px Inter;color:'+MUT,'c_table-.4'),
+tt('gene 7',1504,430,100,'font:600 22px Inter;color:'+MUT,'c_table-.4'),
+tt('gene 8',1616,430,100,'font:600 22px Inter;color:'+MUT,'c_table-.4'),
+cd('',780,470,104,70,'c_roughly+0.00',{css:'background:#b5cdc5;border-radius:10px',b:null,dy:0}),
+cd('',892,470,104,70,'c_roughly+0.06',{css:'background:#d3e1dc;border-radius:10px',b:null,dy:0}),
+cd('',1004,470,104,70,'c_roughly+0.12',{css:'background:#7ca79a;border-radius:10px',b:null,dy:0}),
+cd('',1116,470,104,70,'c_roughly+0.18',{css:'background:#e1eae6;border-radius:10px',b:null,dy:0}),
+cd('',1228,470,104,70,'c_roughly+0.24',{css:'background:#90b4a9;border-radius:10px',b:null,dy:0}),
+cd('',1340,470,104,70,'c_roughly+0.30',{css:'background:#aec8bf;border-radius:10px',b:null,dy:0}),
+cd('',1452,470,104,70,'c_roughly+0.36',{css:'background:#e3ece8;border-radius:10px',b:null,dy:0}),
+cd('',1564,470,104,70,'c_roughly+0.42',{css:'background:#95b8ad;border-radius:10px',b:null,dy:0}),
+ic('animal-cell',690,505,62,'c_roughly+0.00',{bob:3,ph:0}),
+cd('',780,546,104,70,'c_roughly+0.35',{css:'background:#e7eeeb;border-radius:10px',b:null,dy:0}),
+cd('',892,546,104,70,'c_roughly+0.41',{css:'background:#a2c0b6;border-radius:10px',b:null,dy:0}),
+cd('',1004,546,104,70,'c_roughly+0.47',{css:'background:#e1eae6;border-radius:10px',b:null,dy:0}),
+cd('',1116,546,104,70,'c_roughly+0.53',{css:'background:#dee8e4;border-radius:10px',b:null,dy:0}),
+cd('',1228,546,104,70,'c_roughly+0.59',{css:'background:#a3c1b7;border-radius:10px',b:null,dy:0}),
+cd('',1340,546,104,70,'c_roughly+0.65',{css:'background:#5d9382;border-radius:10px',b:null,dy:0}),
+cd('',1452,546,104,70,'c_roughly+0.71',{css:'background:#d8e4df;border-radius:10px',b:null,dy:0}),
+cd('',1564,546,104,70,'c_roughly+0.77',{css:'background:#c6d9d2;border-radius:10px',b:null,dy:0}),
+ic('animal-cell',690,581,62,'c_roughly+0.35',{bob:3,ph:1}),
+cd('',780,622,104,70,'c_roughly+0.70',{css:'background:#80aa9d;border-radius:10px',b:null,dy:0}),
+cd('',892,622,104,70,'c_roughly+0.76',{css:'background:#488572;border-radius:10px',b:null,dy:0}),
+cd('',1004,622,104,70,'c_roughly+0.82',{css:'background:#89b0a3;border-radius:10px',b:null,dy:0}),
+cd('',1116,622,104,70,'c_roughly+0.88',{css:'background:#a8c4bb;border-radius:10px',b:null,dy:0}),
+cd('',1228,622,104,70,'c_roughly+0.94',{css:'background:#43816f;border-radius:10px',b:null,dy:0}),
+cd('',1340,622,104,70,'c_roughly+1.00',{css:'background:#e5ede9;border-radius:10px',b:null,dy:0}),
+cd('',1452,622,104,70,'c_roughly+1.06',{css:'background:#578f7e;border-radius:10px',b:null,dy:0}),
+cd('',1564,622,104,70,'c_roughly+1.12',{css:'background:#bbd1c9;border-radius:10px',b:null,dy:0}),
+ic('animal-cell',690,657,62,'c_roughly+0.70',{bob:3,ph:2}),
+cd('',780,698,104,70,'c_roughly+1.05',{css:'background:#d4e2dc;border-radius:10px',b:null,dy:0}),
+cd('',892,698,104,70,'c_roughly+1.11',{css:'background:#d9e5e0;border-radius:10px',b:null,dy:0}),
+cd('',1004,698,104,70,'c_roughly+1.17',{css:'background:#b8cfc7;border-radius:10px',b:null,dy:0}),
+cd('',1116,698,104,70,'c_roughly+1.23',{css:'background:#5f9484;border-radius:10px',b:null,dy:0}),
+cd('',1228,698,104,70,'c_roughly+1.29',{css:'background:#ceded8;border-radius:10px',b:null,dy:0}),
+cd('',1340,698,104,70,'c_roughly+1.35',{css:'background:#88afa3;border-radius:10px',b:null,dy:0}),
+cd('',1452,698,104,70,'c_roughly+1.41',{css:'background:#7ea89b;border-radius:10px',b:null,dy:0}),
+cd('',1564,698,104,70,'c_roughly+1.47',{css:'background:#acc7be;border-radius:10px',b:null,dy:0}),
+ic('animal-cell',690,733,62,'c_roughly+1.05',{bob:3,ph:3}),
+cd('',780,774,104,70,'c_roughly+1.40',{css:'background:#8eb3a7;border-radius:10px',b:null,dy:0}),
+cd('',892,774,104,70,'c_roughly+1.46',{css:'background:#e3ebe7;border-radius:10px',b:null,dy:0}),
+cd('',1004,774,104,70,'c_roughly+1.52',{css:'background:#e3ece8;border-radius:10px',b:null,dy:0}),
+cd('',1116,774,104,70,'c_roughly+1.58',{css:'background:#c9dbd4;border-radius:10px',b:null,dy:0}),
+cd('',1228,774,104,70,'c_roughly+1.64',{css:'background:#76a496;border-radius:10px',b:null,dy:0}),
+cd('',1340,774,104,70,'c_roughly+1.70',{css:'background:#a3c1b7;border-radius:10px',b:null,dy:0}),
+cd('',1452,774,104,70,'c_roughly+1.76',{css:'background:#b7cec6;border-radius:10px',b:null,dy:0}),
+cd('',1564,774,104,70,'c_roughly+1.82',{css:'background:#87afa2;border-radius:10px',b:null,dy:0}),
+ic('animal-cell',690,809,62,'c_roughly+1.40',{bob:3,ph:4}),
+cd('',780,850,104,70,'c_roughly+1.75',{css:'background:#9ebeb4;border-radius:10px',b:null,dy:0}),
+cd('',892,850,104,70,'c_roughly+1.81',{css:'background:#b9d0c8;border-radius:10px',b:null,dy:0}),
+cd('',1004,850,104,70,'c_roughly+1.87',{css:'background:#629687;border-radius:10px',b:null,dy:0}),
+cd('',1116,850,104,70,'c_roughly+1.93',{css:'background:#73a193;border-radius:10px',b:null,dy:0}),
+cd('',1228,850,104,70,'c_roughly+1.99',{css:'background:#c3d6cf;border-radius:10px',b:null,dy:0}),
+cd('',1340,850,104,70,'c_roughly+2.05',{css:'background:#89b0a4;border-radius:10px',b:null,dy:0}),
+cd('',1452,850,104,70,'c_roughly+2.11',{css:'background:#92b6aa;border-radius:10px',b:null,dy:0}),
+cd('',1564,850,104,70,'c_roughly+2.17',{css:'background:#548d7c;border-radius:10px',b:null,dy:0}),
+ic('animal-cell',690,885,62,'c_roughly+1.75',{bob:3,ph:5}),
+
+ch('one cell per row',420,955,'blue','c_row',{b:'c_entry-.3',fs:30}),ch('one gene per column',1230,955,'mint','c_col',{b:'c_entry-.3',fs:30}),
+cd('',774,543,968,76,'c_row',{css:'border:6px solid #e0a43a;border-radius:16px;background:rgba(224,164,58,.1)',b:'c_entry-.3'}),
+cd('',998,425,116,506,'c_col',{css:'border:6px solid #4d8f7e;border-radius:16px;background:rgba(77,143,126,.1)',b:'c_entry-.3'}),
+cd('',1222,693,116,80,'c_entry',{css:'border:7px solid #b76d66;border-radius:14px;background:rgba(183,109,102,.12)',b:'c_many-.3'}),
+ch('an RNA count or expression value',1250,955,'coral','c_entry+.2',{b:'c_many-.3',fs:30}),
+cd('',774,619,968,76,'c_many',{css:'border:6px solid #e0a43a;border-radius:16px;background:rgba(224,164,58,.14)'}),
+ch('a detailed numerical profile',1250,955,'amber','c_many+.3',{b:'c_leaves-.3',fs:30}),
+ch('✗  not a photograph of the cell',700,955,'coral','c_photo',{b:'c_leaves-.3',fs:30}),
+ch('leaves out much protein activity',720,955,'coral','c_prot-1.3',{fs:28}),ch('and its physical organization',1260,955,'lav','c_org-.5',{fs:28})
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

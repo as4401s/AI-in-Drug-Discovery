@@ -1,0 +1,43 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:2,part:1,partTitle:"Light becomes a measurement",title:"Pixel spacing, resolution and display size",foot:"Part 1 \u00b7 schematic illustration \u00b7 numbers illustrative"},(S,C)=>{
+
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[['c_grid','Image grid ↔ physical space','we must connect the grid of pixels to <b>real distance</b>'],['c_spacing','Pixel spacing','distance in the sample for <b>one step</b> between neighbouring pixels'],['c_micro','Micrometres','recorded in <b>µm</b>; one micrometre is a millionth of a metre'],['c_res','Optical resolution','a different question: how close can <b>two structures</b> be and still be told apart?'],['c_samp','Finer sampling','does <b>not</b> automatically improve the optics'],['c_enl','Enlarging on a screen','adds <b>no</b> missing detail'],['c_bar','A scale bar','shows distance in the sample, <b>not</b> a promise that smaller features are resolved'],['c_three','Keep three ideas separate','<b>sampling</b>, <b>optical detail</b>, and the size we <b>display</b> the picture']]},
+els:[
+{t:'grid',x:200,y:440,cw:70,ch:70,vals:[[0.15,0.17,0.20,0.22,0.19,0.16],[0.16,0.24,0.40,0.46,0.33,0.20],[0.18,0.33,0.66,0.80,0.52,0.24],[0.18,0.32,0.62,0.75,0.49,0.24],[0.16,0.22,0.34,0.40,0.29,0.19],[0.15,0.16,0.19,0.20,0.18,0.16]],mode:'gray',a:'c_grid',stag:.03,b:'c_res-.3'},
+ar(235,430,305,430,'a','c_spacing',{head:false,b:'c_res-.3'}),ch('pixel spacing',270,382,'amber','c_spacing+.3',{fs:26,b:'c_res-.3'}),
+ch('e.g. 2 µm per step',700,500,'amber','c_spacing+1.0',{fs:30,b:'c_res-.3'}),
+cd('b-blue',640,590,640,200,'c_micro-.1',{b:'c_res-.3'}),tt('1 µm = 0.000001 m',960,620,600,T1,'c_micro+.1',{b:'c_res-.3'}),tt('one millionth of a metre',960,690,600,'font:600 28px Inter;color:'+MUT,'c_micro+.4',{b:'c_res-.3'}),
+cd('',200,880,420,6,'c_micro+.3',{css:'background:#26765d;border-radius:3px',dy:0,b:'c_res-.3'}),ch('distance in the sample',410,830,'mint','c_micro+.6',{fs:26,b:'c_res-.3'}),
+cd('',300,500,100,100,'c_res',{css:'background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74);border-radius:50%;box-shadow:0 0 30px rgba(95,208,170,.6)',dy:0,b:'c_samp-.3'}),cd('',520,500,100,100,'c_res+.2',{css:'background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74);border-radius:50%;box-shadow:0 0 30px rgba(95,208,170,.6)',dy:0,b:'c_samp-.3'}),
+ch('far apart: two structures',460,640,'mint','c_res+.6',{fs:28,b:'c_samp-.3'}),
+cd('',1190,500,100,100,'c_res+.8',{css:'background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74);border-radius:50%;box-shadow:0 0 30px rgba(95,208,170,.6)',dy:0,b:'c_samp-.3'}),cd('',1235,500,100,100,'c_res+1.0',{css:'background:radial-gradient(circle at 40% 35%,#e6fff4,#5fd0aa 60%,#2c8f74);border-radius:50%;box-shadow:0 0 30px rgba(95,208,170,.6)',dy:0,b:'c_samp-.3'}),
+ch('too close: look like one',1260,640,'coral','c_res+1.6',{fs:28,b:'c_samp-.3'}),
+tt('can the instrument tell them apart?',960,780,900,T2,'c_res+2.4',{b:'c_samp-.3'}),
+{t:'grid',x:300,y:440,cw:60,ch:60,vals:[[0.12,0.20,0.20,0.12],[0.20,0.63,0.63,0.20],[0.20,0.63,0.63,0.20],[0.12,0.20,0.20,0.12]],mode:'gray',a:'c_samp',stag:.03,b:'c_enl-.3'},
+{t:'grid',x:760,y:440,cw:30,ch:30,vals:[[0.08,0.12,0.18,0.21,0.19,0.13,0.09,0.06],[0.12,0.24,0.40,0.49,0.44,0.30,0.17,0.10],[0.18,0.40,0.69,0.88,0.83,0.60,0.35,0.18],[0.21,0.48,0.87,1.00,1.00,0.91,0.58,0.30],[0.18,0.42,0.77,1.00,1.00,1.00,0.73,0.39],[0.13,0.27,0.50,0.77,0.94,0.91,0.67,0.37],[0.08,0.14,0.26,0.41,0.55,0.57,0.45,0.26],[0.06,0.08,0.12,0.18,0.25,0.27,0.23,0.15]],mode:'gray',gap:2,a:'c_samp+.6',stag:.01,b:'c_enl-.3'},
+ch('coarse pixels',420,700,'blue','c_samp+.3',{fs:28,b:'c_enl-.3'}),ch('finer pixels',880,700,'blue','c_samp+1.0',{fs:28,b:'c_enl-.3'}),
+tt('→',620,520,100,BIG(80),'c_samp+.6',{b:'c_enl-.3'}),ch('same blurry optics',1250,520,'coral','c_samp+1.6',{fs:32,b:'c_enl-.3'}),ch('✗ finer sampling ≠ better optics',1250,610,'coral','c_samp+2.2',{fs:30,b:'c_enl-.3'}),
+ic('tissue-section-slide',420,620,130,'c_enl',{mv:{a:'c_enl+1.0',dx:260,dy:-30,s:2.4,dur:1.6},b:'c_bar-.3'}),ch('bigger on screen',850,820,'amber','c_enl+2.0',{fs:30,b:'c_bar-.3'}),ch('✗ no missing detail added',1300,700,'coral','c_enl+2.6',{fs:30,b:'c_bar-.3'}),
+ic('tissue-section-slide',700,610,320,'c_bar',{b:'c_three-.3'}),cd('',640,800,260,10,'c_bar+.5',{css:'background:#183b32;border-radius:3px',dy:0,b:'c_three-.3'}),ch('10 µm (illustrative)',770,840,'mint','c_bar+.7',{fs:28,b:'c_three-.3'}),
+ch('distance in the sample',1380,520,'mint','c_bar+.4',{fs:30,b:'c_three-.3'}),ch('✗ not a promise that smaller features are resolved',1380,610,'coral','c_bar+1.6',{fs:28,b:'c_three-.3'}),
+cd('b-blue',100,500,520,300,'c_three-.1'),tt('sampling',360,540,480,T1,'c_three+.1'),tt('how finely we sample space',360,640,440,'font:600 26px Inter;color:'+INK,'c_three+.3'),
+cd('b-lav',700,500,520,300,'c_three+.6'),tt('optical detail',960,540,480,T1,'c_three+.8'),tt('what the optics can tell apart',960,640,440,'font:600 26px Inter;color:'+INK,'c_three+1.0'),
+cd('b-amber',1300,500,520,300,'c_three+1.3'),tt('display size',1560,540,480,T1,'c_three+1.5'),tt('how large we show the picture',1560,640,440,'font:600 26px Inter;color:'+INK,'c_three+1.7')
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

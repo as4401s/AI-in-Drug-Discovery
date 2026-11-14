@@ -1,0 +1,52 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script><script src="../../lib/dsl.js"></script>
+<script>
+const ic=(k,x,y,w,a,o)=>Object.assign({t:'icon',k,x,y,w,a},o||{});
+const ch=(text,x,y,col,a,o)=>Object.assign({t:'chip',text,x,y,col,a},o||{});
+const cd=(cls,x,y,w,h,a,o)=>Object.assign({t:'card',cls,x,y,w,h,a},o||{});
+const tt=(html,x,y,w,css,a,o)=>Object.assign({t:'text',html,x,y,w,css:css||'font:600 28px/1.25 Inter;color:'+INK,a},o||{});
+const ar=(x1,y1,x2,y2,col,a,o)=>Object.assign({t:'arrow',x1,y1,x2,y2,col,a},o||{});
+const dt=(pts,col,a,o)=>Object.assign({t:'dots',pts,col,a},o||{});
+const rg=(x,y,col,a,o)=>Object.assign({t:'ring',x,y,col,a},o||{});
+const tl=(seq,x,y,w,a,o)=>Object.assign({t:'tiles',seq,x,y,w,a},o||{});
+const tk=(x,y,a,o)=>Object.assign({t:'tick',x,y,a},o||{});
+const br=(x,y,w,h,col,a,o)=>Object.assign({t:'bar',x,y,w,h,col,a},o||{});
+const T1='font:700 36px/1.1 Poppins;color:'+INK, T2='font:700 30px/1.15 Poppins;color:'+INK, BIG=(n)=>'font:700 '+n+'px/1 Poppins;color:'+INK;
+SCENE_INIT({ep:1,part:2,partTitle:"Define the research problem",title:"Specify inputs, output and a test",foot:"Define the research problem \u00b7 illustrative study design, not a new experiment \u00b7 schematic icons"},(S,C)=>{
+
+const SPEC={notes:{x:60,y:226,w:1800,h:150,list:[
+['c_ctrl','An illustrative study','a cell-response study with a <b>control group</b> and a group receiving a specified <b>intervention</b>'],
+['c_input','Input','the starting <b>cell context</b> and a description of the <b>intervention</b> — for a compound, also <b>concentration</b> and <b>exposure time</b>'],
+['c_out','Target output','the <b>RNA expression profile</b> measured afterward: which gene-associated RNA levels <b>rise</b>, <b>fall</b> or <b>stay similar</b>'],
+['c_judge','Test','compare the prediction with <b>measurements kept separate</b> from model fitting, under a suitable test design and <b>baseline</b>'],
+['c_def','What it tells us','a <b>defined cellular response</b> — it does not by itself establish that a medicine will help a patient'],
+['c_attach','Keep it attached','the cell type, intervention, measurement and evaluation <b>stay attached</b> to the result'],
+['c_next','Next','we can now introduce the proteins and experiments that recur through this course']]},
+els:[
+cd('b-blue',300,430,560,380,'c_ctrl',{b:'c_input-.3'}),tt('Control group',580,452,500,T1,'c_ctrl+.2',{b:'c_input-.3'}),ic('petri-dish',580,640,230,'c_ctrl+.3',{b:'c_input-.3',bob:5}),
+cd('b-coral',1060,430,560,380,'c_interv-.2',{b:'c_input-.3'}),tt('Intervention group',1340,452,500,T1,'c_interv-.1',{b:'c_input-.3'}),ic('petri-dish',1340,660,230,'c_interv',{b:'c_input-.3',bob:5}),
+ic('pipette',1500,520,150,'c_interv+.2',{b:'c_input-.3',bob:6}),dt([[1442,590],[1442,650]],'c','c_interv+.3',{n:2,speed:.6,r:9,b:'c_input-.3'}),
+ch('an illustrative design — not an experiment we have run',960,925,'amber','c_illus',{b:'c_input-.3',fs:30}),
+cd('b-blue',60,420,560,440,'c_input-.1'),tt('Input',340,436,520,T1,'c_input'),
+ic('animal-cell',200,600,170,'c_ctx-.2',{bob:5}),ch('starting cell context',200,720,'blue','c_ctx',{fs:24}),
+tt('+',340,560,80,BIG(70),'c_desc-.3'),
+ic('small-molecule',480,610,190,'c_desc-.2',{bob:5}),ch('the intervention',480,720,'coral','c_desc',{fs:24}),
+ch('concentration',200,790,'amber','c_conc-.2',{fs:24}),ch('exposure time',480,790,'lav','c_time-.2',{fs:24}),
+cd('b-lav',680,420,560,440,'c_out-.1'),tt('Output',960,436,520,T1,'c_out'),
+ic('expression-heatmap',960,590,250,'c_out+.3',{bob:5}),
+ch('↑ rise',790,720,'coral','c_rise-.2',{fs:26}),ch('↓ fall',940,720,'blue','c_fall-.2',{fs:26}),ch('↔ stay similar',1110,720,'lav','c_sim-.2',{fs:26}),
+ch('RNA expression profile',960,790,'mint','c_out+1.5',{fs:24}),
+cd('b-amber',1300,420,560,440,'c_judge-.1'),tt('Test',1580,436,520,T1,'c_judge'),
+ic('training-test-split',1580,590,240,'c_judge+.3',{bob:5}),
+ch('measurements kept separate',1580,720,'amber','c_sep-.2',{fs:24}),ch('a suitable test design + baseline',1580,790,'mint','c_base-.8',{fs:24}),
+ch('✓  a defined cellular response',600,905,'mint','c_def',{b:'c_attach-.3',fs:30}),
+ch('✗  not: “a medicine will help a patient”',1340,905,'coral','c_not',{b:'c_attach-.3',fs:30}),
+cd('b-mint',60,880,1800,110,'c_attach',{b:'c_next-.3'}),tt('the prediction result',960,908,560,T2,'c_attach+.2',{b:'c_next-.3'}),
+ch('cell type',250,917,'blue','c_attach+.3',{b:'c_next-.3'}),ch('intervention',520,917,'coral','c_attach+1.2',{b:'c_next-.3'}),
+ch('measurement',1400,917,'amber','c_attach+2.1',{b:'c_next-.3'}),ch('evaluation',1670,917,'lav','c_attach+3.0',{b:'c_next-.3'}),
+cd('b-lav',360,880,1200,110,'c_next'),tt('next · the proteins and experiments we will reuse',960,908,1100,T2,'c_next+.2')
+]};
+const upd=DSL(S,C,SPEC);return function update(t){upd(t)};
+});
+</script></body></html>

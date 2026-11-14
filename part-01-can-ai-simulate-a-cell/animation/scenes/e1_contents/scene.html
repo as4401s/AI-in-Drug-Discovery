@@ -1,0 +1,73 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script>
+<script>
+SCENE_INIT({ep:1,part:0,partTitle:'Introduction and contents',title:'Today’s four parts',foot:'Course roadmap · supplied 28-lesson curriculum · schematic illustrations'},(S,C)=>{
+const {out,ramp,lin,mix,track}=WB;const c=k=>C[k];
+const sv=svgLayer(S);arrowDefs(sv,'arw',GRN);let sv2=null;
+const CY=232,CH=592,CW=410;
+const cols=['blue','mint','lav','coral'];
+const cardCue=['c_p1','c_p2','c_p3','c_p4'];
+const heads=[['Biology foundations','What are cells, DNA, RNA and proteins?'],['Define the research problem','Choose inputs. Define a measurement. Ask for evidence.'],['How models learn','Example → prediction. Loss and updates. Then attention.'],['A real ESM-2 experiment','Run real code. Inspect the outputs. Explain what they mean.']];
+const cards=heads.map(([h,b],i)=>{const x=80+i*450;const P=PAL[cols[i]];const bx=box('b-'+cols[i],x,CY,CW,CH);
+ const n=tx('font:700 26px/1 Inter;letter-spacing:1px;color:'+P[1],'PART '+(i+1),x+30,CY+26);
+ const t=tx('font:700 33px/1.2 Poppins;color:'+INK+';white-space:normal',h,x+30,CY+64,CW-50);
+ const bl=tx('font:500 27px/1.35 Inter;color:'+INK+';white-space:normal',b,x+30,CY+464,CW-56);
+ return {x,bx,n,t,bl}});
+sv2=svgLayer(S);// arrows between cards
+const gaps=[0,1,2].map(i=>{const x=80+i*450+CW+4;const a=WB.svg('path',{d:`M${x} ${CY+CH/2} L${x+32} ${CY+CH/2}`,stroke:GRN,'stroke-width':6,fill:'none','marker-end':'url(#arw)','stroke-linecap':'round'},sv2);return a});
+// ---- part 1 visual : cell -> DNA/RNA -> protein
+const p1x=cards[0].x;const v1=[['animal-cell',p1x+80,CY+270,120,'cells'],['dna-helix',p1x+205,CY+265,86,'DNA · RNA'],['folded-protein',p1x+335,CY+270,120,'proteins']].map(([k,x,y,w,l])=>({ic:ico(k,x,y,w),lab:ctx('font:600 24px/1.1 Inter;color:'+INK,l,x,y+78,130),x,y}));
+const v1a=[0,1].map(i=>WB.svg('path',{d:`M${p1x+142+i*130} ${CY+270} l22 0`,stroke:BLU,'stroke-width':5,fill:'none','marker-end':'url(#arw)'},sv2));
+// ---- part 2 visual : change / measure / predict rows
+const p2x=cards[1].x;const v2=[['pipette','what we change','coral'],['expression-heatmap','what we measure','blue'],['sequence-embedding','what we predict','mint']].map(([k,l,col],i)=>{const y=CY+190+i*70;const ic=ico(k,p2x+62,y+28,70);const ch=chip(l,p2x+100+((l.length*14+40)/2),y+4,col,{fs:25,py:8});return {ic,ch}});
+// ---- part 3 visual : loss curve + attention grid
+const p3x=cards[2].x;const lx0=p3x+34,ly0=CY+190,lw=200,lh=170;
+const lAxis=WB.svg('path',{d:`M${lx0} ${ly0} L${lx0} ${ly0+lh} L${lx0+lw} ${ly0+lh}`,stroke:'#8aa59b','stroke-width':4,fill:'none'},sv2);
+const lc=WB.svg('path',{d:`M${lx0+6} ${ly0+14} C ${lx0+60} ${ly0+20}, ${lx0+70} ${ly0+120}, ${lx0+lw-8} ${ly0+lh-22}`,stroke:COR,'stroke-width':7,fill:'none','stroke-linecap':'round'},sv2);
+const ldot=WB.svg('circle',{r:10,fill:COR,cx:lx0+6,cy:ly0+14},sv2);
+const lT=tx('font:600 23px/1.1 Inter;color:'+INK,'loss falls as it learns',lx0-4,ly0+lh+10);
+const gx=p3x+262,gy=CY+196;const att=[];for(let r=0;r<5;r++)for(let k=0;k<5;k++){const v=Math.abs(Math.sin(r*2.3+k*1.7+1))*(r==k?1:.55);const e=box('',gx+k*27,gy+r*27,25,25);e.style.cssText+=`;background:rgba(139,117,176,${(.15+.85*v).toFixed(2)});border-radius:5px`;att.push(e)}
+const aT=tx('font:600 23px/1.1 Inter;color:'+INK,'attention',gx-2,gy+142);
+// ---- part 4 visual : code panel + bars
+const p4x=cards[3].x;
+const cp=box('',p4x+26,CY+186,358,128);cp.style.cssText+=';background:#183b32;border-radius:16px';
+const codeL=['seq = EGFR_window','probs = esm2(seq)','print(probs["C"])'];
+const code=codeL.map((l,i)=>{const e=tx('font:500 24px/1.25 "DejaVu Sans Mono",monospace;color:#dff2ec;white-space:pre','',p4x+44,CY+198+i*36);e._full=l;return e});
+const bars4=[['C',.017],['S',.073],['A',.05]].map(([l,v],i)=>{const y=CY+338+i*0;const bx=box('',p4x+40+i*118,CY+425,90,0);bx.style.cssText+=';background:#8b75b0;border-radius:8px 8px 0 0';bx._v=[.8,.4,.28][i];const lb=ctx('font:700 22px/1 Poppins;color:'+INK,l,p4x+85+i*118,CY+432,80);return {bx,lb}});
+// ---- signpost + chapter bar
+const post=box('',182,900,18,66);post.style.cssText+=';background:#8a6a43;border-radius:6px';
+const board=WB.el('div','t');board.style.cssText+=';left:96px;top:842px;width:640px;height:68px;background:#fff0cf;border:5px solid #ac8b42;border-radius:14px;clip-path:none;font:700 30px/58px Poppins;color:#183b32;padding-left:26px;white-space:nowrap';board.innerHTML='Part 2 · Define the research problem';
+const bar=[['Intro',117,'#cfd9d4'],['Biology',426,'#9fb9d9'],['Problem',551,'#9fd3c3'],['Learning',607,'#c9bbe6'],['Code',701,'#efb7af']];
+let bx0=800;const BW=1040;const tot=2402;const bseg=bar.map(([l,d,col],i)=>{const w=d/tot*BW;const e=box('',bx0,896,w-3,52);e.style.cssText+=`;background:${col};border-radius:12px`;const lb=ctx('font:600 22px/56px Inter;color:'+INK,i?l:'',bx0+(w-3)/2,896,w-3);lb.style.lineHeight='52px';const o={e,lb,x:bx0,w};bx0+=w;return o});
+const chT=tx('font:600 28px/1.2 Inter;color:'+INK,'Use the finished video’s chapters to jump back to any part',800,846,1040);
+const head=WB.el('div','t');
+const ph=box('',800,886,6,72);ph.style.cssText+=';background:'+COR+';border-radius:3px';
+return function update(t){
+  cards.forEach((cd,i)=>{const a=c(cardCue[i])-.1;life(cd.bx,t,a,null,{dy:30,s:.96});life(cd.n,t,a+.2,null,{dy:10});life(cd.t,t,a+.35,null,{dy:10})});
+  gaps.forEach((g,i)=>{g.style.opacity=out(t,c(cardCue[i+1])-.4,.4)});
+  // p1
+  const t1=[c('c_cells')-.1,c('c_dna')-.1,c('c_prot')-.1];
+  v1.forEach((v,i)=>{const o=out(t,t1[i],.55);v.ic.set({op:o,s:.6+.4*o,y:track(Math.sin(t*2.1+i*1.4)*4)*o});v.lab.style.opacity=o});
+  v1a.forEach((a,i)=>a.style.opacity=out(t,t1[i+1]-.25,.4));
+  life(cards[0].bl,t,c('c_each')-.1,null,{dy:8});
+  // p2
+  const t2=[c('c_p2')+.9,c('c_change'),c('c_measure')+.6];v2.forEach((v,i)=>{const o=out(t,t2[i],.55);v.ic.set({op:o,s:.7+.3*o});life(v.ch,t,t2[i]+.1,null,{dy:8})});
+  life(cards[1].bl,t,c('c_measure')+1.8,null,{dy:8});
+  // p3
+  lAxis.style.opacity=out(t,c('c_p3')+.9,.4);const lp=out(t,c('c_train')-.2,3.0);pathGrow(lc,lp);const lL=lc.getTotalLength();const pt=lc.getPointAtLength(lL*lp);ldot.setAttribute('cx',pt.x);ldot.setAttribute('cy',pt.y);ldot.style.opacity=lp>0?1:0;life(lT,t,c('c_train')+.3,null,{dy:6});
+  att.forEach((e,i)=>{e.style.opacity=out(t,c('c_attn')+i*.025,.4)});life(aT,t,c('c_attn')+.2,null,{dy:6});
+  life(cards[2].bl,t,c('c_attn')+1.2,null,{dy:8});
+  // p4
+  life(cp,t,c('c_p4')+.6,null,{dy:10});
+  code.forEach((e,i)=>{const a=c('c_p4')+1.4+i*.8;const p=lin(t,a,1.0);e.textContent=e._full.slice(0,Math.round(e._full.length*p))});
+  bars4.forEach((b,i)=>{const a=c('c_decide')+i*.35;const p=out(t,a,.9);b.bx.style.height=(95*b.bx._v*p)+'px';b.bx.style.top=(CY+425-95*b.bx._v*p)+'px';b.bx.style.opacity=p>0?1:0;b.lb.style.opacity=out(t,a,.4)});
+  life(cards[3].bl,t,c('c_decide')+1.0,null,{dy:8});
+  // signpost + chapters
+  life(post,t,c('c_sign')-.1,null,{dy:40});life(board,t,c('c_sign')+.2,null,{dx:-60,dy:0});
+  life(chT,t,c('c_chap')-.1,null,{dy:8});
+  bseg.forEach((s,i)=>{life(s.e,t,c('c_chap')+.2+i*.25,null,{dy:14});life(s.lb,t,c('c_chap')+.3+i*.25,null,{dy:14})});
+  const pp=out(t,c('c_chap')+1.6,4.0);ph.style.opacity=out(t,c('c_chap')+1.4,.4);ph.style.left=(800+pp*BW*(1426/2402))+'px';
+};
+});
+</script></body></html>

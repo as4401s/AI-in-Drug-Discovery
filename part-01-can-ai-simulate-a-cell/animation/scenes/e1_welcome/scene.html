@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../lib/wb.css"></head>
+<body><div id="canvas"></div>
+<script src="../../lib/wb.js"></script><script src="../../assets3/icons.js"></script><script src="../../lib/bio.js"></script>
+<script>
+SCENE_INIT({ep:1,part:0,partTitle:'Introduction and contents',title:'Welcome to the series',foot:'Course roadmap · supplied 28-lesson curriculum · schematic icons'},(S,C)=>{
+const {out,ramp,lin,mix,track}=WB;const c=k=>C[k];
+const sv=svgLayer(S);arrowDefs(sv,'arw',GRN);
+// Winston (right)
+const win=ico('winston-002',1570,600,500);
+// A: course card
+const cardA=box('b-mint',80,250,1110,230);
+const cT=tx('font:700 62px/1.1 Poppins;color:'+INK,'WhiskerBrief',120,274,900);
+const cT2=tx('font:600 40px/1.2 Poppins;color:'+GRN,'step-by-step course',120,350,900);
+const cT3=tx('font:500 34px/1.3 Inter;color:'+INK,'Artificial intelligence for drug discovery',120,412,1000);
+const icA=[['dna-helix',160],['folded-protein',200],['attention-network',200]].map(([k,w],i)=>ico(k,300+i*300,640,w));
+const icL=['biology','proteins','AI models'].map((l,i)=>chip(l,300+i*300,790,['blue','lav','amber'][i],{fs:28}));
+const plusA=[0,1].map(i=>ctx('font:700 56px/1 Poppins;color:'+MUT,'+',450+i*300,610,60));
+// B: the journey
+const stn=[['Basic biology','dna-helix'],['Models and math','sequence-embedding'],['Research papers','expression-heatmap'],['Practical code','molecular-graph']];
+const jx0=190,jx1=1050,jy=600;
+const jl=WB.svg('line',{x1:jx0,y1:jy,x2:jx1,y2:jy,stroke:'#cdd9d4','stroke-width':10,'stroke-linecap':'round'},sv);
+const jl2=WB.svg('line',{x1:jx0,y1:jy,x2:jx0,y2:jy,stroke:GRN,'stroke-width':10,'stroke-linecap':'round'},sv);
+const jdot=WB.svg('circle',{cx:jx0,cy:jy,r:20,fill:COR,stroke:'#fff','stroke-width':5},sv);
+const jst=stn.map(([l,k],i)=>{const x=jx0+i*(jx1-jx0)/3;const ic=ico(k,x,jy-150,k=='dna-helix'?110:170);const dot=WB.svg('circle',{cx:x,cy:jy,r:15,fill:'#fff',stroke:'#8aa59b','stroke-width':7},sv);const lab=ctx('font:600 28px/1.15 Inter;color:'+INK,l,x,jy+46,230);return {ic,dot,lab,x}});
+const jT=tx('font:600 32px/1.3 Inter;color:'+INK,'Winston guides every step of the way',130,800,1050);
+// C: 28 lessons
+const grid=[];for(let i=0;i<28;i++){const r=Math.floor(i/7),k=i%7;const e=box(i==0?'b-mint':'b-blue',150+k*150,300+r*125,120,95);e.style.cssText+=';border-radius:18px;'+(i==0?'border:5px solid #26765d':'');const n=ctx('font:700 36px/95px Poppins;color:'+(i==0?'#26765d':'#557eaf'),String(i+1),150+k*150+60,300+r*125,120);n.style.lineHeight='95px';n.style.top=(300+r*125)+'px';grid.push([e,n])}
+const gl=chip('video 1 · today',210,262,'mint',{fs:28});
+const gT=tx('font:700 40px/1.2 Poppins;color:'+INK,'A planned 28-lesson course',150,822,1000);
+// D: no prerequisites
+const nb=chip('Biology',330,430,'coral',{fs:42,px:36,py:16});const nm=chip('Machine learning',790,430,'blue',{fs:42,px:36,py:16});
+const xs=[[330],[790]].map(([x],i)=>{const w=(i?nm:nb)._w;const l=WB.svg('line',{x1:x-w/2-6,y1:450,x2:x+w/2+6,y2:450,stroke:COR,'stroke-width':8,'stroke-linecap':'round'},sv);return l});
+const startz=chip('No prior knowledge needed · start from zero',560,640,'mint',{fs:40,px:40,py:20});
+// E: three promises
+const pr=[['Important words','what each term means','b-blue','animal-cell',320],['What objects do','their jobs inside the cell','b-lav','ribosome',320],['Why each idea helps','how it answers our question','b-amber','microscope',320]].map(([h,b,cls,k,w],i)=>{const x=80+i*375;const bx=box(cls,x,270,350,470);const ic=ico(k,x+175,430,210);const t1=ctx('font:700 36px/1.2 Poppins;color:'+INK,h,x+175,560,310);const t2=ctx('font:500 30px/1.3 Inter;color:'+INK,b,x+175,650,300);return {bx,ic,t1,t2}});
+// F: four parts
+const parts=[['1','Biology foundations','blue'],['2','Define the research problem','mint'],['3','How models learn','lav'],['4','A real ESM-2 experiment','coral']].map(([n,l,col],i)=>{const x=80+i*280;const b=box('b-'+col,x,300,255,430);const nn=ctx('font:700 100px/1 Poppins;color:'+PAL[col][1],n,x+127,330,200);const ll=ctx('font:600 31px/1.25 Inter;color:'+INK,l,x+127,490,215);return {b,nn,ll}});
+const mapT=tx('font:700 44px/1.2 Poppins;color:'+INK,'Four parts · one learning path',80,790,1100);
+const ban=box('b-amber',80,924,1760,50);const banT=tx('font:600 28px/50px Inter;color:'+INK+';text-align:center','A beginner-to-practice course · biology → mathematics → models → real code',80,924,1760);
+return function update(t){
+  // Winston
+  const wI=out(t,c('c_win')-.2,.9);const bob=track(Math.sin(t*2.2)*6);win.set({x:mix(260,0,wI),y:bob*wI,op:wI,r:track(Math.sin(t*1.3)*1.2)});
+  // A
+  const aOut=1-out(t,c('c_win')-.3,.5);
+  [cardA,cT,cT2,cT3].forEach((e,i)=>life(e,t,.1+i*.25,c('c_win')-.3,{dy:14}));
+  icA.forEach((ic,i)=>{const a=1.6+i*.8;const o=out(t,a,.6)*aOut;ic.set({op:o,s:.7+.3*o,y:track(Math.sin(t*2+i)*5)*o})});icL.forEach((e,i)=>life(e,t,1.8+i*.8,c('c_win')-.3,{dy:8}));plusA.forEach((e,i)=>life(e,t,2.0+i*.8,c('c_win')-.3,{dy:0}));
+  // B
+  const bIn=out(t,c('c_win')+.2,.6),bOut=1-out(t,c('c_28')-.3,.5);const bv=bIn*bOut;
+  jl.style.opacity=bv;const prog=out(t,c('c_win')+.8,5.4);jl2.setAttribute('x2',jx0+(jx1-jx0)*prog);jl2.style.opacity=bv;jdot.setAttribute('cx',jx0+(jx1-jx0)*prog);jdot.style.opacity=bv;
+  jst.forEach((s,i)=>{const reach=prog>=i/3-.001;const a=out(t,c('c_win')+.6+i*1.7,.6)*bOut;s.ic.set({op:a,s:.8+.2*a});s.dot.style.opacity=bv;s.dot.setAttribute('fill',reach?GRN:'#fff');s.dot.setAttribute('stroke',reach?GRN:'#8aa59b');s.lab.style.opacity=a;});
+  life(jT,t,c('c_win')+1.0,c('c_28')-.3,{dy:6});
+  // C
+  grid.forEach(([e,n],i)=>{life(e,t,c('c_28')+.15+i*.05,c('c_none')-.3,{dy:10,s:.85});life(n,t,c('c_28')+.15+i*.05,c('c_none')-.3,{dy:10,s:.85})});
+  life(gl,t,c('c_28')+1.7,c('c_none')-.3,{dy:6});life(gT,t,c('c_28')+.3,c('c_none')-.3,{dy:8});
+  // D
+  life(nb,t,c('c_none')+.1,c('c_words')-.3,{dy:14});life(nm,t,c('c_none')+.5,c('c_words')-.3,{dy:14});
+  xs.forEach((l,i)=>{const p=out(t,c('c_none')+1.6+i*.4,.5)*(1-out(t,c('c_words')-.3,.4));l.style.opacity=p>0?1:0;l.setAttribute('stroke-opacity',p)});
+  life(startz,t,c('c_none')+2.6,c('c_words')-.3,{dy:14});
+  // E
+  pr.forEach((p,i)=>{const a=[c('c_words')+.1,c('c_obj')+.0,c('c_why')+.0][i];const b=c('c_4')-.3;life(p.bx,t,a,b,{dy:20});const o=out(t,a+.2,.6)*(1-out(t,b,.4));p.ic.set({op:o,s:.8+.2*o,y:track(Math.sin(t*2.4+i)*5)*o});life(p.t1,t,a+.4,b,{dy:8});life(p.t2,t,a+.8,b,{dy:8})});
+  // F
+  parts.forEach((p,i)=>{const a=c('c_4')+.2+i*.4;life(p.b,t,a,null,{dy:24,s:.9});life(p.nn,t,a+.2,null,{dy:10});life(p.ll,t,a+.4,null,{dy:8})});
+  life(mapT,t,c('c_map')-.1,null,{dy:8});
+  life(ban,t,.2,null,{dy:6});life(banT,t,.2,null,{dy:6});
+};
+});
+</script></body></html>
