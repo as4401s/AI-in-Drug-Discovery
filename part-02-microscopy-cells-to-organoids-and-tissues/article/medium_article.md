@@ -10,6 +10,10 @@ We will analyze a real fluorescence image with a simple, transparent method. We 
 
 This article follows the second video of the course: [Part 2 on YouTube](https://youtu.be/YD-tiKCHg58). All code is in the GitHub repository: [part-02-microscopy-cells-to-organoids-and-tissues](https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-02-microscopy-cells-to-organoids-and-tissues).
 
+Earlier articles in this course:
+
+- [Part 1: Can AI Simulate a Cell? Biology Basics and a First Protein Language Model with ESM-2](https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0)
+
 We will follow these steps:
 
 1. Light becomes a measurement
