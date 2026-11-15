@@ -2,7 +2,7 @@
 
 Code for the first video of the course. The video starts from the biology (cell, DNA, RNA, protein), states a research problem, explains how a model learns (training, loss, attention), and ends with a real code experiment: a small protein language model, ESM-2, scores an amino-acid change in EGFR.
 
-Video: [Part 1 on YouTube](https://youtu.be/6MPPidoDUdQ)  
+Video: [Part 1 on YouTube](https://youtu.be/nmAcM4L4XhU)  
 Article: [Can AI Simulate a Cell? on Medium](https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0)
 
 ## What is in this folder
