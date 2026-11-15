@@ -28,12 +28,14 @@ What it does
         15. Hashing and folding:   remainders after division, and a real collision at bit 1452
         16. Bits and counts:       dimethyl ether has 4 bits on and 6 occurrences
         17. Tanimoto:              the hand example, ethanol with ether, and the lactic acid pair
+        18. MACCS keys:            nine positions on for ethanol, 167 stored positions for 166 keys
       Part 4 - the auditable lab
-        18. The audit:             twenty inputs, five statuses
-        19. The exercises:         the three answers
+        19. The audit:             twenty inputs, five statuses
+        20. A join:                one measurement attached to erlotinib through its InChIKey
+        21. The exercises:         the three answers
 
 What it needs
-    Python 3.10 or newer and the standard library only. Examples 13 to 18 read the saved files in `data/outputs/`,
+    Python 3.10 or newer and the standard library only. Examples 13 to 20 read the saved files in `data/outputs/`,
     so run the script from the folder that holds `code/` and `data/`. Every number is computed on your machine.
 
 What to expect
@@ -45,7 +47,10 @@ What to expect
       17 mod 8 = 1 and 25 mod 8 = 1                                      1100037548 and 2115476908 both fold to bit 1452
       dimethyl ether: 4 bits on, 6 occurrences                           hand Tanimoto 2 / 4 = 0.5
       ethanol with dimethyl ether 1 / 9 = 0.11                           lactic acid pair 9 / 13 = 0.69 with chirality, 1.0 when chirality is left out
-      audit: 8 + 5 + 1 + 2 + 4 = 20
+      acetic acid C2H4O2, mass 60.052                                   TPSA sums 20.23, 9.23, 37.30 and 57.53
+      ethanol oxygen: 864662311 = 422198 x 2048 + 807                   acetic acid: 8 identifiers on 7 bits (bit 807)
+      benzene: 18 environments, 3 identifiers, count 6 each             MACCS ethanol: 9 positions on of 167
+      audit: 8 + 5 + 1 + 2 + 4 = 20                                     join: erlotinib key with 2.6 nM, activity 13852013
 
 Run it:
     python code/worked_examples.py
@@ -274,6 +279,12 @@ def example_7_reading_a_string():
         print(f"  {text:<6} atoms {''.join(a['element'] for a in atoms)}  bonds {[(a, b) for a, b, _ in bonds]}  "
               f"same graph as CCO: {same_graph(*reference, atoms, bonds)}")
     print("parentheses mark a branch and add zero atoms: they tell the reader where to return")
+    # Acetic acid shows the alphabet at work: a branch, a double bond and the hands rule in one string.
+    atoms, bonds = read_smiles("CC(=O)O")
+    counts = hydrogens(atoms, bonds)
+    text, mass = formula_and_mass(atoms, counts)
+    print(f"  acetic acid CC(=O)O: {len(atoms)} atoms and {len(bonds)} bonds {[(a, b, order) for a, b, order in bonds]}")
+    print(f"    hydrogens per atom {counts} -> {sum(counts)} hydrogens, formula {text}, mass {mass:.3f}")
 
 
 def example_8_rings():
@@ -360,6 +371,16 @@ def example_13_descriptors():
             get = lambda name: row[header.index(name)]
             print(f"{row[0]:<16} {float(get('MolWt')):>8.3f} {float(get('TPSA')):>7.2f} {get('HBD'):>7} {get('HBA'):>10}")
     print("same formula, same mass, different donor count and surface area: columns capture different facts")
+    # TPSA adds one fixed piece for every polar oxygen (or nitrogen). The pieces below are the ones RDKit applies to our molecules.
+    piece = {"hydroxyl O (O-H)": 20.23, "ether O (C-O-C)": 9.23, "carbonyl O (C=O)": 17.07}
+    recipe = {"ethanol": ["hydroxyl O (O-H)"], "dimethyl-ether": ["ether O (C-O-C)"],
+              "acetic-acid": ["carbonyl O (C=O)", "hydroxyl O (O-H)"],
+              "lactic-at": ["hydroxyl O (O-H)", "carbonyl O (C=O)", "hydroxyl O (O-H)"]}
+    print("TPSA as a sum of fixed pieces, compared with the saved column:")
+    for row in rows[1:]:
+        if row[0] in recipe:
+            total = round(sum(piece[name] for name in recipe[row[0]]), 2)
+            print(f"  {row[0]:<15} {' + '.join(str(piece[name]) for name in recipe[row[0]])} = {total:>5.2f}   saved {float(row[header.index('TPSA')]):>5.2f}")
 
 
 def example_14_growing_neighborhoods():
@@ -373,6 +394,10 @@ def example_14_growing_neighborhoods():
         print(f"{env['center_atom']:>6} {env['radius']:>6} {str(env['atom_indices']):<10} {env['sparse_identifier']:>18} {env['folded_bit']:>11}")
     by_radius = {r: sum(1 for e in environments if e["radius"] == r) for r in (0, 1, 2)}
     print("environments per radius:", by_radius, "(radius 2 repeats the radius-1 environment for a three-atom molecule)")
+    # Folding by hand for the oxygen: divide by the vector length and keep the remainder.
+    oxygen = next(e for e in environments if e["center_atom"] == 2 and e["radius"] == 0)["sparse_identifier"]
+    quotient, remainder = divmod(oxygen, 2048)
+    print(f"the oxygen: {oxygen} = {quotient} x 2048 + {remainder}, so it switches on bit {remainder}")
 
 
 def example_15_hashing_and_folding():
@@ -388,6 +413,18 @@ def example_15_hashing_and_folding():
     for number in (1100037548, 2115476908):
         print(f"  erlotinib identifier {number} mod 2048 = {number % 2048}")
     print("two different identifiers, one occupied bit: a genuine folding collision at bit 1452")
+    if data:
+        erlotinib = data["erlotinib"]["morgan"]
+        print(f"erlotinib: {len(erlotinib['sparse_counts'])} distinct identifiers, {erlotinib['num_on_bits']} occupied bits of 2048")
+        # Acetic acid: group the identifiers by their remainder and report any bit that holds two different identifiers.
+        acetic = [int(i) for i in data["acetic-acid"]["morgan"]["sparse_counts"]]
+        bins = {}
+        for identifier in acetic:
+            bins.setdefault(identifier % 2048, []).append(identifier)
+        print(f"acetic acid: {len(acetic)} identifiers fold into {len(bins)} bits")
+        for bit, identifiers in sorted(bins.items()):
+            if len(identifiers) > 1:
+                print(f"  collision at bit {bit}: identifiers {identifiers}")
 
 
 def example_16_bits_and_counts():
@@ -399,6 +436,10 @@ def example_16_bits_and_counts():
         counts = data[name]["morgan"]["count_vector"]
         print(f"  {name:<15} bits on {len(counts)}, total occurrences {sum(counts.values())}, counts {dict(counts)}")
     print("dimethyl ether has two identical methyl groups: bit 1057 and bit 841 each count 2, bits record presence and counts record how often")
+    benzene = data["benzene"]["morgan"]
+    print(f"  benzene: {len(benzene['environments'])} environments (6 atoms x radius 0, 1 and 2) share {len(benzene['sparse_counts'])} identifiers")
+    print(f"           sparse counts {benzene['sparse_counts']}, bits on {benzene['on_bits']}")
+    print("six identical carbons repeat every environment six times: the count vector shows it and the bit vector does not")
 
 
 def tanimoto(a, b):
@@ -420,17 +461,30 @@ def example_17_tanimoto():
     print(f"ethanol with dimethyl ether: shared {sorted(ethanol & ether)}, union {len(ethanol | ether)} -> {len(ethanol & ether)} / {len(ethanol | ether)} = {tanimoto(ethanol, ether):.3f}")
     lactic_a, lactic_b = bits("lactic-at"), bits("lactic-aat")
     print(f"lactic acid pair, chirality included: {len(lactic_a & lactic_b)} / {len(lactic_a | lactic_b)} = {tanimoto(lactic_a, lactic_b):.3f}")
+    print(f"  each partner has {len(lactic_a)} bits on; shared {len(lactic_a & lactic_b)}; only in A {sorted(lactic_a - lactic_b)}; only in B {sorted(lactic_b - lactic_a)}")
+    print(f"  union = {len(lactic_a & lactic_b)} + {len(lactic_a - lactic_b)} + {len(lactic_b - lactic_a)} = {len(lactic_a | lactic_b)}, and also {len(lactic_a)} + {len(lactic_b)} - {len(lactic_a & lactic_b)} = {len(lactic_a) + len(lactic_b) - len(lactic_a & lactic_b)}")
     payload = load("lesson_payload.json")
     if payload:
         print(f"lactic acid pair, chirality left out (saved result): {payload['stereo_comparison']['achiral_tanimoto']}")
     print("these numbers describe the overlap of two encodings, which is a separate question from potency")
 
 
+def example_18_maccs():
+    heading("18. MACCS keys: a fixed questionnaire")
+    data = load("fingerprints.json")
+    if not data:
+        print("  (run from the part folder to read the saved fingerprints.json)"); return
+    maccs = data["ethanol"]["maccs"]
+    print(f"RDKit stores {maccs['storage_bits']} positions for {maccs['public_key_numbers']} keys (position 0 is a placeholder)")
+    print(f"ethanol: {len(maccs['on_bits'])} positions on: {maccs['on_bits']}")
+    print("every molecule gets the same 167 positions, so each position asks the same question across molecules")
+
+
 # ---------------------------------------------------------------------------------------------
 # Part 4 - the auditable lab
 # ---------------------------------------------------------------------------------------------
-def example_18_the_audit():
-    heading("18. The audit: twenty rows, five statuses")
+def example_19_the_audit():
+    heading("19. The audit: twenty rows, five statuses")
     payload = load("lesson_payload.json")
     if not payload:
         print("  (run from the part folder to read the saved lesson_payload.json)"); return
@@ -441,8 +495,23 @@ def example_18_the_audit():
     print("every category keeps its reason: a salt, an alias and unreadable text each mean something different")
 
 
-def example_19_the_exercises():
-    heading("19. The three exercises")
+def example_20_a_join():
+    heading("20. A join: attach one measurement to one molecule through the compound key")
+    payload, features = load("lesson_payload.json"), OUT / "features.csv"
+    if not payload or not features.exists():
+        print("  (run from the part folder to read the saved results)"); return
+    rows = [line.split(",") for line in features.read_text().splitlines()]
+    header = rows[0]
+    structure = next(dict(zip(header, row)) for row in rows[1:] if row[0] == "erlotinib")
+    measurement = payload["prerequisites"]["separate_measured_record"]
+    print("table 1 (structure):  key", structure["standard_inchi_key"], " canonical", structure["canonical_isomeric_smiles"])
+    print("table 2 (measurement):", {k: measurement[k] for k in ("standard_inchi_key", "standard_value", "standard_units", "standard_type", "activity_id", "assay_chembl_id") if k in measurement})
+    if structure["standard_inchi_key"] == measurement["standard_inchi_key"]:
+        print("the full keys match, so the join attaches this measurement to this molecule; the feature table itself keeps structure columns only")
+
+
+def example_21_the_exercises():
+    heading("21. The three exercises")
     reference = read_smiles("CCO")
     for text in ("CCO", "OCC", "C(O)C"):
         atoms, bonds = read_smiles(text)
@@ -459,7 +528,8 @@ def main():
                     example_7_reading_a_string, example_8_rings, example_9_components,
                     example_10_parse_and_sanitize, example_11_toy_canonical, example_12_stereo_round_trip,
                     example_13_descriptors, example_14_growing_neighborhoods, example_15_hashing_and_folding,
-                    example_16_bits_and_counts, example_17_tanimoto, example_18_the_audit, example_19_the_exercises):
+                    example_16_bits_and_counts, example_17_tanimoto, example_18_maccs, example_19_the_audit,
+                    example_20_a_join, example_21_the_exercises):
         example()
     print()
     print("Done. Change a SMILES string or a bit set at the top of an example and run it again.")
