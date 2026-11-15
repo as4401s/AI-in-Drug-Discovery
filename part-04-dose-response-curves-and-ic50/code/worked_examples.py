@@ -10,9 +10,9 @@ What it does
       Part 1 - make a response measurement
         1.  Percent inhibition:   a bakery line makes 100 rolls a minute, then 60
         2.  Concentration:        five spoonfuls of syrup in one litre and in five litres
-        3.  Units:                a staircase of thousands, 4,000 nM = 4 uM, 10 nM against 1 uM
+        3.  Units:                a staircase of thousands, 0.25 uM = 250 nM, 4,000 nM = 4 uM, 10 nM against 1 uM
         4.  Dilution:             tenfold and threefold series, and the nine lesson concentrations
-        5.  Controls:             start line 1,000, finish line 100, a test well at 550
+        5.  Controls:             start line 1,000, finish line 100, the normalization recipe and seven readings
         6.  Replicates:           three wells (48, 52, 50) against three days (50, 38, 61)
       Part 2 - read the curve
         7.  Three points:         1, 10 and 100 nM on a curve with a midpoint of 10 nM
@@ -20,7 +20,7 @@ What it does
         9.  The Hill formula:     six small steps, bottom 0, top 100, midpoint 10 nM, slope 2, tested 20 nM
         10. The slope:            the same midpoint with slopes 1, 2 and 4
         11. Relative and absolute: the middle of the curve and the 50 % crossing
-        12. Potency and efficacy: compound A (5 nM, 40 %) and compound B (50 nM, 95 %)
+        12. Potency and efficacy: compound A (5 nM, 40 %) and compound B (50 nM, 95 %) at three concentrations
         13. Cheng-Prusoff:        IC50 = Ki x (1 + S / Km) for three substrate levels
         14. pIC50:                molar, log10, flip the sign
       Part 3 - fit and check in Python
@@ -46,12 +46,13 @@ What it needs
 
 What to expect
     The numbers printed below match the video (rounded):
-      percent inhibition 40 %                       4,000 nM = 4 uM, and 10 nM is 100 times lower than 1 uM
-      threefold series 1000, 333.3, 111.1, 37.0, 12.3     normalized test well 550 -> 50 %
+      percent inhibition 40 %                       0.25 uM = 250 nM, 4,000 nM = 4 uM, 10 nM is 100 times lower than 1 uM
+      threefold series 1000, 333.3, 111.1, 37.0, 12.3     readings 820, 550, 280, 1040, 80 -> 20, 50, 80, -4.4, 102.2 %
       three wells: mean 50, spread 2            three days: mean 49.67, spread 11.5
       1, 10, 100 nM -> 9 %, 50 %, 91 %          Hill example: 20 nM -> 80 %
       slope table at 5 nM: 33.33, 20, 5.88      at 20 nM: 66.67, 80, 94.12
-      absolute crossing at 200 nM               Ki 10 nM -> IC50 20, 50, 100 nM
+      absolute crossing at 200 nM               A: 20.00, 36.36, 38.10 %   B: 8.64, 47.50, 63.33 % (5, 50, 100 nM)
+      Ki 10 nM -> IC50 20, 50, 100 nM
       pIC50 6, 7, 8, 9 and 8.52, 7.30, 6.60     RMSE 2.16 against a flat baseline of 33.14
       best midpoint on the fine scan 10 nM, error 2.15     bootstrap draws 49.33, 50.67, 50.67, 50
       GR value 0.414 for both cell lines        IC50 > 10,000 nM becomes pIC50 < 5
@@ -136,6 +137,8 @@ def example_3_units():
     steps = [("molar", "M", 1), ("millimolar", "mM", 1e-3), ("micromolar", "uM", 1e-6), ("nanomolar", "nM", 1e-9)]
     for name, abbreviation, factor in steps:
         print(f"  1 {name:<11} ({abbreviation:>2}) = {factor:g} M")
+    print(f"1 uM = {1000:,} nM and 1 mM = {1_000_000:,} nM  (each step down multiplies the number by 1,000)")
+    print(f"0.25 uM x 1,000 = {0.25 * 1000:g} nM  (going down the stairs multiplies the number)")
     print(f"4,000 nM / 1,000 = {4000 / 1000:g} uM  (going up the stairs divides the number)")
     ten_nm, one_um = 10, 1 * 1000
     print(f"10 nM against 1 uM: write 1 uM as {one_um} nM first -> {one_um / ten_nm:.0f} times lower")
@@ -163,6 +166,12 @@ def example_5_controls():
     reading = 550
     print(f"a test well at {reading} is {vehicle - reading} units from the start line")
     print(f"percent inhibition = 100 x {vehicle - reading} / {distance} = {normalize(reading, vehicle, inhibited):.0f} %")
+    print("the normalization recipe, three steps: subtract from the vehicle, divide by the distance, multiply by 100")
+    first = 820
+    print(f"  reading {first}: {vehicle} - {first} = {vehicle - first}; {vehicle - first} / {distance} = {(vehicle - first) / distance:g}; x 100 = {normalize(first, vehicle, inhibited):.0f} %")
+    for reading in (1000, 550, 280, 100, 1040, 80):
+        print(f"  reading {reading:>4} -> {normalize(reading, vehicle, inhibited):6.1f} % inhibition")
+    print("values outside 0 to 100 stay exactly as they come, because they carry real information about noise")
 
 
 def example_6_replicates():
@@ -238,6 +247,12 @@ def example_12_potency_and_efficacy():
     for name, (ic50, maximum) in compounds.items():
         reaches = "reaches" if maximum > 50 else "stays below"
         print(f"compound {name}: IC50 {ic50} nM, maximum effect {maximum} %  ({reaches} 50 % inhibition)")
+    print("response of each compound at three concentrations (slope 1):")
+    print(f"{'nM':>6} {'A':>8} {'B':>8}")
+    for concentration in (5, 50, 100):
+        a = hill(concentration, 5, 1, 0, 40)
+        b = hill(concentration, 50, 1, 0, 95)
+        print(f"{concentration:>6} {a:7.2f}% {b:7.2f}%")
     print("the lower IC50 belongs to A; B reaches far more inhibition: two different questions, two pieces of evidence")
 
 
