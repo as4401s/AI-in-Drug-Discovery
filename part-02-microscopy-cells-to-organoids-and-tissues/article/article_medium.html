@@ -1,0 +1,813 @@
+<h1
+id="ai-in-drug-discovery-2-microscopy-organoids-and-image-analysis-in-python">AI
+in Drug Discovery 2: Microscopy, Organoids and Image Analysis in
+Python</h1>
+<p>If you prefer to learn in more detail or in a visual way, <a
+href="https://youtu.be/zfbtHyErKKc">watch the video for this lesson on
+YouTube</a>.</p>
+<p>In this tutorial, we will follow a microscope image from light to
+evidence. We start with fluorescence and the grid of numbers a detector
+records. Then we compare cells on a flat surface, organoids and tissue,
+and we work through a real Python experiment that turns a fluorescence
+image into a table of measurements. Finally, we look at what a learned
+segmentation model adds and which evidence it still needs. This is the
+second article in the course “AI in Drug Discovery”. It follows <a
+href="https://youtu.be/zfbtHyErKKc">the second video of the course</a>, and all
+the code sits on GitHub in the folder <a
+href="https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-02-microscopy-cells-to-organoids-and-tissues">part-02-microscopy-cells-to-organoids-and-tissues</a>.</p>
+<p>Earlier articles in this course:</p>
+<ul>
+<li><a
+href="https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0">AI
+in Drug Discovery 1: Biology, How Models Learn, Transformers and
+ESM-2</a></li>
+</ul>
+<p>The course assumes basic coding skills and a little familiarity with
+machine learning, and we introduce every important idea before we use
+it. The folder on GitHub holds two scripts:
+<code>microscopy_demo.py</code> runs the real experiment, and
+<code>worked_examples.py</code> reproduces every small calculation in
+this article, so you can check the numbers and change the inputs.</p>
+<p>The roadmap for this article is:</p>
+<ol type="1">
+<li>Light becomes a measurement: fluorescence, labels, pixels, channels,
+brightness, background, saturation and scale.</li>
+<li>Cells, organoids and tissues: what each system keeps, how samples
+are prepared, and how depth is recorded in a z stack.</li>
+<li>A real pixels-to-measurements experiment: Otsu’s threshold,
+connected regions and a measurement table.</li>
+<li>What a learned model adds: training, overlap, merges and splits,
+held-out data, synthetic images and controls.</li>
+</ol>
+<h2 id="why-a-bright-cell-needs-careful-reading">Why a Bright Cell Needs
+Careful Reading</h2>
+<p>Imagine that two microscope pictures arrive on your desk. In one, the
+cells look bright and round. In the other, they look dim and stretched.
+Someone says the second picture proves that a new medicine is working.
+Perhaps the medicine changed the cells. Perhaps someone changed the
+camera exposure, the dye or the way the picture was displayed. Before we
+ask artificial intelligence to read an image, we need to understand what
+the image measures.</p>
+<p>In the first article, a protein model gave us probabilities that
+describe its sequence preferences. For a cell’s survival or a patient’s
+benefit, we need observations of those outcomes, and microscopy is one
+way to collect them. The chain we follow runs from light to image, from
+image to measurement, and from measurement to a carefully limited
+conclusion.</p>
+<h2 id="part-1-light-becomes-a-measurement">Part 1: Light Becomes a
+Measurement</h2>
+<h3 id="fluorescence-from-an-everyday-picture">Fluorescence, from an
+Everyday Picture</h3>
+<p>Think of a yellow highlighter pen on white paper. In ordinary room
+light it looks bright and cheerful. Shine an ultraviolet lamp on it, the
+kind used to check banknotes, and the ink glows. The lamp sends in light
+that our eyes cannot see, and the ink sends back light that our eyes can
+see. That glow is fluorescence: a material takes in light of one color
+and gives out light of another color.</p>
+<p>Microscopists use the same trick with small molecules called
+fluorophores. Light goes in at a shorter wavelength, and light comes out
+at a slightly longer one. For a typical green dye, blue light of about
+490 nanometers goes in and green light of about 520 nanometers comes
+out. A nanometer is one billionth of a meter, and the wavelength is the
+distance between the crests of a light wave. Because the two colors
+differ, filters can separate them. One filter lets only the incoming
+blue light reach the sample, and a second filter in front of the
+detector lets only the outgoing green light through. The detector then
+records the glow of the labeled molecules against a dark background.</p>
+<p>The light we supply is called excitation, and the light given off
+afterward is called emission.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig01-fluorescence-filters.jpg"
+alt="Figure 1: Two filters separate the light that goes in from the light that comes out. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 1: Two filters separate the light
+that goes in from the light that comes out. Source: image created by
+author.</figcaption>
+</figure>
+<h3 id="a-label-chooses-the-question">A Label Chooses the Question</h3>
+<p>Picture a classroom where every student wears the same grey sweater.
+From the back of the room, everyone looks alike. Now suppose the violin
+players each put on a bright orange armband. At once the violinists
+stand out, and we can count them and see where they sit. A fluorescent
+label works like that armband: it marks one group, and everything else
+stays grey.</p>
+<p>Each label has a target. A nuclear stain such as DAPI attaches to
+DNA, so the nuclei glow, and a membrane label attaches to the outer
+boundary of the cell, so the outlines glow. Gene activity needs its own
+measurement. We are measuring a labeled signal, which is one carefully
+chosen view of the cell, so the first question about any picture is what
+was labeled. A sample left unlabeled and imaged under the same
+conditions shows how much glow comes from the sample itself, and we meet
+that idea again as a control.</p>
+<h3 id="from-light-to-a-grid-of-numbers">From Light to a Grid of
+Numbers</h3>
+<p>Imagine a field of small buckets set out in rows during a rainstorm.
+After one minute, we measure how much water each bucket collected.
+Buckets under a heavy shower hold a lot, and buckets in a dry corner
+hold a little. A camera detector works like that field. Each bucket is a
+pixel, the rain is light, and the exposure time is how long the buckets
+stay out.</p>
+<p>Here is a tiny example, a grid of four by four pixels. In the dim
+region, the counts are around 120. Where a bright structure sits, four
+pixels read 810, 905, 880 and 940. The computer stores these sixteen
+counts as a table of numbers and draws larger numbers as brighter shades
+of grey. The picture on the screen is that table, painted.</p>
+<p>How many different counts can one pixel hold? That depends on the bit
+depth. An 8-bit image has 2 to the power 8, or 256 levels, from 0 to
+255. A 12-bit image has 4,096 levels, and a 16-bit image has 65,536
+levels. The image in our code is stored as 16-bit whole numbers, so the
+largest value a pixel can hold is 65,535. A pixel collects light from a
+patch of the sample with many possible sources, so it is a measurement
+of that patch.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig02-pixel-grid.jpg"
+alt="Figure 2: A four by four grid of detector counts. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 2: A four by four grid of detector
+counts. Source: image created by author.</figcaption>
+</figure>
+<h3 id="channels-are-separate-measurements">Channels Are Separate
+Measurements</h3>
+<p>One image of nuclei and another of membranes are stored as separate
+channels, and each channel is its own array of intensities. Software may
+display the nuclei in purple and the membranes in green, and these
+display choices can differ from what the eye sees in the sample. The
+biological meaning of a channel comes from verified metadata that names
+what the channel holds.</p>
+<h3 id="reading-the-shape-of-an-image-stack">Reading the Shape of an
+Image Stack</h3>
+<p>Think of a filing cabinet. The cabinet has drawers, each drawer holds
+folders, and each folder holds a sheet of squared paper with a number in
+every square. To find one number, we give an address: which drawer,
+which folder, which row and which column.</p>
+<p>Our stack has the shape (60, 2, 256, 256). Read it from left to
+right: 60 depth planes, 2 channels, 256 rows and 256 columns. The
+address “depth 30, channel 0” selects one sheet of squared paper, the
+nucleus picture at depth plane 30, with 256 by 256 numbers. In numpy
+this address is <code>stack[30, 0]</code>. The shape tells us how many
+entries each axis holds, and the metadata tells us what each axis means.
+In our file the axis order is depth, channel, row, column, and channel 0
+holds the nuclei. The code confirms both facts against the real pixels
+before it uses the address.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig03-stack-address.jpg"
+alt="Figure 3: Reading the shape of an image stack as an address. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 3: Reading the shape of an image
+stack as an address. Source: image created by author.</figcaption>
+</figure>
+<h3 id="brightness-and-arbitrary-units">Brightness and Arbitrary
+Units</h3>
+<p>A kitchen scale shows grams, a unit that means the same thing in
+every kitchen. Now imagine a scale whose dial shows only a needle
+position, a number from 0 to 10,000, with the unit left blank. One apple
+on it reads 1,200, and two apples read 2,400. Within this one scale,
+doubling the apples doubles the reading, so we can compare apples with
+apples.</p>
+<p>A fluorescence image behaves like that scale. Suppose sample A reads
+1,200 and sample B reads 2,400, both imaged in the same session with the
+same settings. Sample B is twice as bright, which is a real and useful
+comparison. Now image sample A again with double the exposure time, and
+it reads 2,400, the same as B. The reading changed because the settings
+changed, so the settings must travel with the number. A calibration,
+which is a reference with a known amount of dye measured in the same
+way, tells us how brightness converts into numbers of proteins.</p>
+<h3 id="background-and-saturation-with-numbers">Background and
+Saturation, with Numbers</h3>
+<p>Imagine listening to a friend whisper in a room where a fan hums
+softly. The hum adds a steady level of sound to everything we hear. In
+an image, the background adds a steady offset to every pixel. Suppose
+the background reads 200. A dim structure shows 1,200 and a bright one
+shows 2,200. The true signals are 1,000 and 2,000, so the bright
+structure is exactly twice the dim one. The raw readings give a ratio of
+only 1.83, and subtracting the background restores the honest ratio of
+2.</p>
+<p>Saturation works like a measuring jug that holds one liter at most.
+Pour in half a liter and we read half a liter. Pour in one and a half
+liters, and the extra water spills over the top, so the jug still reads
+one liter. A 12-bit detector tops out at 4,095. Suppose three structures
+would produce 3,000, 5,000 and 9,000. The detector records 3,000, 4,095
+and 4,095. The second and third structures now look equal, although the
+third is almost twice as bright as the second. Once a pixel reaches the
+top reading, that difference is gone from the data, so quality control
+rests on the data behind the picture and starts with the raw values.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig04-background-saturation.jpg"
+alt="Figure 4: Background and saturation with numbers. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 4: Background and saturation with
+numbers. Source: image created by author.</figcaption>
+</figure>
+<h3 id="from-pixels-to-micrometers">From Pixels to Micrometers</h3>
+<p>A map has a scale bar: one centimeter on the paper stands for one
+kilometer on the ground. An image works the same way. In our file, one
+pixel stands for 0.26 micrometers. The picture is 256 pixels wide, so
+its width is 256 times 0.26, which is 66.56 micrometers. A scale bar 100
+pixels long stands for 26 micrometers.</p>
+<p>Sampling and resolution are two different things. Take a photograph
+that is slightly out of focus and scan it with a finer and finer
+scanner. We collect more pixels while the blur stays exactly as blurry.
+The scanner sets the sampling, and the focus sets the detail. In a
+microscope the optics set the detail, and for visible light the best
+optical separation is roughly 200 to 300 nanometers. Enlarging a picture
+on screen shows the same detail, only bigger, and a scale bar describes
+distance in the sample while the optics decide which small features
+appear.</p>
+<h3 id="why-area-uses-squared-units">Why Area Uses Squared Units</h3>
+<p>Imagine a square grid where each pixel is 2 micrometers wide and 2
+micrometers tall. One pixel then represents 2 times 2, which is 4 square
+micrometers, and a selected region of 25 pixels has an area of 25 times
+4, or 100 square micrometers. We multiply by the spacing in both
+directions because area spreads over two directions. In our real image
+one pixel covers 0.26 times 0.26, or 0.0676 square micrometers.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig05-pixels-to-micrometers.jpg"
+alt="Figure 5: From pixels to micrometers. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 5: From pixels to micrometers.
+Source: image created by author.</figcaption>
+</figure>
+<h2 id="part-2-cells-organoids-and-tissues">Part 2: Cells, Organoids and
+Tissues</h2>
+<h3 id="three-ways-to-study-cells">Three Ways to Study Cells</h3>
+<p>A flat map of a city shows the streets and where everything sits, and
+it unfolds easily on a table. That is a cell culture on a flat surface:
+easy to image, easy to repeat, and a clear view of the layout. The map
+leaves out the heights of the buildings, because it was designed for one
+aspect of the city. A scale model of a building is the second picture.
+It has the floors and the rooms and the way they connect in three
+dimensions, and it may leave out the plumbing and the wiring. That is an
+organoid, a small three-dimensional model that keeps selected features
+of an organ. A thin slice through a layered cake is the third picture.
+The slice shows how the layers sit next to each other and what each
+layer is made of, exactly as they were in the real cake. That is a
+tissue section, which keeps the real neighbors in their real arrangement
+in one thin cut.</p>
+<p>Each picture keeps something and leaves something out, and the skill
+is choosing the one that fits the question.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig06-three-systems.jpg"
+alt="Figure 6: Three ways to study cells. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 6: Three ways to study cells.
+Source: image created by author.</figcaption>
+</figure>
+<h3 id="a-flat-culture-has-a-scope">A Flat Culture Has a Scope</h3>
+<p>In a common cell culture, cells attach to a flat surface and form a
+layer. We can supply nutrients, add a treatment and image many fields of
+view, which makes the setup useful for repeated and accessible
+measurements. A flat layer leaves out much of the three-dimensional
+architecture, neighboring cell types and delivery barriers present in
+the body, and that is part of its design. If we measure a change in the
+shape of cultured cells, our first conclusion concerns those cells,
+under those conditions, at that time.</p>
+<h3 id="an-organoid-models-selected-features">An Organoid Models
+Selected Features</h3>
+<p>An organoid is a three-dimensional laboratory culture that organizes
+to reproduce selected features of an organ or tissue, and many are grown
+from stem cells or tissue-derived progenitor cells. The important word
+is selected: an organoid models selected organ features and stands apart
+from a whole miniature person. Cells may organize around a cavity or
+interact with neighbors in a spatial arrangement that only three
+dimensions allow, and we choose an organoid because those features help
+answer a defined question.</p>
+<p>Three dimensions also bring new difficulties. A treatment added
+outside an organoid may reach the internal regions to different degrees.
+Light must pass through material, and signal from deeper regions can be
+harder to acquire. The culture may be missing important components such
+as a functioning blood supply or parts of the immune system. These are
+properties to investigate, whatever a realistic-looking picture
+suggests. A dark center in an image is one clue, and cell death needs
+its own evidence from a suitable measurement with controls.</p>
+<h3 id="tissue-keeps-neighbors-in-place">Tissue Keeps Neighbors in
+Place</h3>
+<p>A tissue sample preserves relationships between different cell types
+and their local environment, and that context matters: a response near a
+blood vessel may differ from a response farther away. A tissue section
+is a thin slice from a larger structure, so we observe selected regions
+and selected moments of the original living system, and we describe
+where the sample came from, how it was prepared and which part was
+measured.</p>
+<h3 id="a-photograph-or-a-film">A Photograph or a Film?</h3>
+<p>A photograph freezes a moment, and we can study it as long as we
+like. A film shows how things change, although the cameras and the
+lights on the set can influence what happens. A fixed sample is like the
+photograph: chemicals preserve the structures at one moment, so we can
+examine them later in detail. A living sample is like the film: we watch
+changes over time, and the light and the labels may nudge the cells
+while we watch.</p>
+<p>A still image records a particular state, and the path that produced
+that state needs other evidence. If a treated sample contains fewer
+visible objects, perhaps cells died, perhaps they detached, perhaps the
+stain failed, or perhaps segmentation missed them. Time points, labels,
+controls and additional measurements help distinguish those
+possibilities.</p>
+<h3 id="focusing-through-depth-the-z-stack">Focusing Through Depth: the
+z Stack</h3>
+<p>Picture a glass of clear jelly with berries floating at different
+heights. Focus on the surface and take a picture. Focus a little deeper
+and take another, and another, until we have a pile of pictures, one for
+each depth. That pile is a z stack. The letter z names the depth
+direction, while x and y name the positions across each picture.</p>
+<p>Our stack has 60 planes spaced 0.29 micrometers apart. Between the
+first plane and the last there are 59 gaps, and 59 times 0.29 is 17.11
+micrometers. Plane 30, the one we analyze, sits 8.7 micrometers from the
+first plane. In an ordinary microscope a picture at one depth also
+contains blur from the planes above and below, and confocal microscopy
+reduces that blur. Imagine looking at the jelly through a small pinhole
+in a card: light from the plane in focus passes through, and the blurry
+light from other depths mostly hits the card. The result is an optical
+section, which is made with light, unlike a physical slice cut with a
+blade.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig07-confocal-pinhole.jpg"
+alt="Figure 7: Confocal microscopy lets light from the plane in focus pass through a pinhole. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 7: Confocal microscopy lets light
+from the plane in focus pass through a pinhole. Source: image created by
+author.</figcaption>
+</figure>
+<h3 id="a-maximum-projection-in-small-numbers">A Maximum Projection, in
+Small Numbers</h3>
+<p>Imagine three transparent sheets stacked on top of each other, each a
+picture with three pixels. Sheet one reads 2, 9, 1. Sheet two reads 3,
+4, 8. Sheet three reads 5, 2, 1. For each pixel position, we look
+straight down through the pile and keep the brightest value. At the
+first position the values are 2, 3 and 5, so we keep 5. At the second
+position the values are 9, 4 and 2, so we keep 9. At the third position
+they are 1, 8 and 1, so we keep 8. The projection reads 5, 9, 8.</p>
+<p>The 9 came from sheet one and the 8 came from sheet two. Two bright
+objects at different depths now sit side by side in one picture, and the
+projection records no depth. Two nuclei, one above the other, can
+overlap in the projection and form one connected shape. The projection
+is a combined picture, and its object count describes that picture
+rather than every cell in the stack. When we compare counts, we compare
+like with like: counts from the same kind of picture, analyzed with the
+same rules.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig08-max-projection.jpg"
+alt="Figure 8: A maximum projection on three tiny sheets. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 8: A maximum projection on three
+tiny sheets. Source: image created by author.</figcaption>
+</figure>
+<h3 id="choosing-the-system-for-the-question">Choosing the System for
+the Question</h3>
+<p>A simple response in a particular cell type suits a controlled
+culture as a first experiment. Spatial organization or access to
+internal regions points to an organoid. Relationships among cell types
+in an existing biological architecture point to tissue. These are
+complementary tools, each fitted to its own kind of question. For our
+course’s EGFR and KRAS questions, any treatment claim would need a real
+match between the sample, the target or variant, the compound, the dose,
+the exposure time and the endpoint.</p>
+<p>A real study makes that scope concrete. In a 2019 paper, Phan and
+colleagues described a drug-screening platform that uses patient-derived
+tumor organoids and screened 240 kinase inhibitors across four
+patient-derived cultures, with defined culture procedures and defined
+readouts. Its findings belong to that study’s own context.</p>
+<h2 id="part-3-a-real-pixels-to-measurements-experiment">Part 3: A Real
+Pixels-to-Measurements Experiment</h2>
+<h3 id="the-plan-step-by-step">The Plan, Step by Step</h3>
+<p>Our goal is a trustworthy chain from source image to measurement,
+visible and reproducible at every step. The code follows eight steps.
+First, load the image and read its shape and metadata. Second, choose
+one depth plane and one channel. Third, prepare a display version for
+our eyes. Fourth, choose a threshold and make a mask. Fifth, group
+touching pixels into regions. Sixth, apply our size and border rules.
+Seventh, measure the area and brightness of each region. Eighth, save
+the table together with the settings that produced it. We use a simple
+classical image-analysis baseline here, and artificial intelligence
+enters in part four.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig09-analysis-steps.jpg"
+alt="Figure 9: The analysis in eight steps. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 9: The analysis in eight steps.
+Source: image created by author.</figcaption>
+</figure>
+<h3 id="the-data-and-its-axes">The Data and Its Axes</h3>
+<p>Our input is a genuine fluorescence microscopy example from the Allen
+Institute, distributed in a public Python image-analysis sample-data
+collection. The file holds 60 depth planes with two channels and 256 by
+256 pixels per plane, one channel marking nuclei and the other
+membranes. Our teaching analysis measures one image, separate from any
+EGFR or KRAS experiment, and the question is narrow: can we inspect the
+channels and metadata, produce a transparent mask, and document the
+measurements and their weaknesses?</p>
+<p>The first step is to inspect the file. The loader reads the number of
+frames and the pixel density, and it rebuilds the 120 stored pages into
+the four-dimensional array.</p>
+<pre class="python"><code># a multi-page TIFF stores 60 depth planes x 2 channels as 120 consecutive pages
+frames = []
+for frame in range(image.n_frames):
+    image.seek(frame)
+    frames.append(np.array(image, dtype=np.uint16))
+
+# shape tells us the arrangement; the metadata tells us what it means
+stack = np.stack(frames).reshape(depths, channels, *frames[0].shape)</code></pre>
+<p>The metadata-bearing file and the library’s familiar sample array use
+different channel orders, so the code compares the actual pixels. In our
+file, channel 0 marks nuclei and channel 1 marks membranes, and the same
+care applies to the depth and image axes.</p>
+<h3 id="one-declared-plane-and-channel">One Declared Plane and
+Channel</h3>
+<p>Next we choose depth plane 30 and the nucleus channel. Numbering
+begins at zero, so this is the thirty-first stored plane. Choosing a
+plane is an analysis decision, so the program saves its index with the
+output. We keep the membrane channel as context, because a nuclear
+region is a piece of a cell and the membrane marks the whole cell
+outline. A teaching plane is a teaching choice, apart from any sampling
+plan, and we report openly the choice that made this example easier to
+explain.</p>
+<pre class="python"><code># depth plane 30, channel 0 = nuclei
+image = stack[SLICE_Z, 0]</code></pre>
+<h3 id="display-scaling-changes-the-view">Display Scaling Changes the
+View</h3>
+<p>To make the raw image easy to inspect, the program maps the intensity
+range from the 1st to the 99.5th percentile onto the brightness range of
+the display. This display operation stays separate from the raw array
+used for measurements, so every reported value is an original detector
+value. The picture is for seeing, and the raw data is for analysis. When
+two pictures are stretched separately, their displayed intensities live
+on different scales.</p>
+<h3 id="a-mask-turns-a-picture-into-a-selection">A Mask Turns a Picture
+into a Selection</h3>
+<p>To measure individual regions, we select their pixels, which is
+called segmentation. A binary mask assigns each pixel to selected
+foreground or background, and for the nucleus channel a simple rule is
+that pixels above a chosen threshold belong to the foreground. Imagine a
+gate on a number line, where values on one side are included and values
+on the other side are excluded. The rule is easy to inspect and repeat,
+which makes it a useful baseline. A dim nucleus may fall below the gate,
+nearby bright nuclei may join, and background structures may be
+selected, so the mask is an algorithm’s proposal about regions, to be
+checked against a reference.</p>
+<h3 id="choosing-a-threshold-with-laundry">Choosing a Threshold, with
+Laundry</h3>
+<p>Take a pile of laundry that we want to split into light clothes and
+dark clothes. We hold up each item and decide which pile it joins. A
+good split puts clearly dark items together and clearly light items
+together, and the threshold is the brightness at which we draw the line
+between the piles.</p>
+<p>Now let’s put numbers on it. Eight pixels have the brightness values
+20, 22, 24, 26, 200, 210, 220 and 230. Draw the line at 100. The dark
+pile holds four pixels with an average of 23, and the bright pile holds
+four pixels with an average of 215. The two averages are 192 apart. Now
+draw the line at 23. The dark pile holds two pixels with an average of
+21, and the bright pile holds the other six with an average of about
+152. The averages are only about 131 apart, and the bright pile now
+contains two dark pixels. The line at 100 separates the piles
+better.</p>
+<p>Otsu’s method automates this search. It tries every possible line,
+scores how well each one separates the two piles while taking the sizes
+of the piles into account, and keeps the line with the best score. It
+works from the histogram, which counts how many pixels have each
+brightness. The method works with brightness values alone.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig10-otsu-laundry.jpg"
+alt="Figure 10: Choosing a threshold, with laundry. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 10: Choosing a threshold, with
+laundry. Source: image created by author.</figcaption>
+</figure>
+<p>In the code, the histogram comes first, then a running total for
+every candidate threshold, and the score is the between-class
+variance.</p>
+<pre class="python"><code># count how many pixels have each possible value from 0 to 65535
+histogram = np.bincount(image.ravel(), minlength=65536).astype(np.float64)
+# running totals: pixels and total brightness at or below each threshold t
+count_low = np.cumsum(histogram)
+weighted_low = np.cumsum(histogram * np.arange(65536, dtype=np.float64))
+count_all = count_low[-1]
+# the score is large when the dark and bright groups are far apart and both well populated
+denominator = count_low * (count_all - count_low)
+score = np.divide(
+    (weighted_low[-1] * count_low - weighted_low * count_all) ** 2,
+    denominator, out=np.zeros(65536), where=denominator &gt; 0)
+# the best threshold is the one with the highest score
+return int(np.argmax(score))</code></pre>
+<p>The <code>worked_examples.py</code> script runs this idea on the
+eight pixels above, so we can watch the scores for ourselves. For the
+real plane, the function returns 10,432.</p>
+<h3 id="counting-islands-on-a-map">Counting Islands on a Map</h3>
+<p>Once we have a mask, we count the separate objects in it. Think of a
+satellite map where land is black and sea is white. How many islands are
+there? We scan the map, and each time we find a patch of unlabeled land,
+we give that island a new number and paint all the connected land with
+the same number.</p>
+<p>Here is a small grid of six by six with two shapes. One is a solid
+square of four selected pixels. The other is a short diagonal of three
+pixels, each touching the next only at a corner. If pixels count as
+neighbors only when they share an edge, the diagonal falls into three
+separate islands, so the grid has four objects. If corners count as
+well, the diagonal is one island, and the grid has two objects. The rule
+for neighbors changes the count, so we fix it once and report it.</p>
+<p>Our code uses the second rule, called eight-connectivity: each pixel
+has eight possible neighbors, four along the edges and four at the
+corners.</p>
+<pre class="python"><code># look at all 8 neighbours (the 3 x 3 block around the pixel)
+for dy in (-1, 0, 1):
+    for dx in (-1, 0, 1):
+        yy, xx = row + dy, column + dx
+        if 0 &lt;= yy &lt; height and 0 &lt;= xx &lt; width and mask[yy, xx] and labels[yy, xx] == 0:
+            labels[yy, xx] = label
+            queue.append((yy, xx))</code></pre>
+<p>After labeling, every region carries an identifier: 1, 2, 3 and so
+on. The identifier is a bookkeeping label for the program. If two
+touching nuclei form one connected region, the program reports one
+object where biology may hold two. If one nucleus breaks into several
+bright islands, the program may report several objects. Thresholded
+regions can also contain unselected dark holes, so their selected-pixel
+area can fall short of a complete nuclear outline.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig11-neighbor-rule.jpg"
+alt="Figure 11: The neighbor rule changes the object count. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 11: The neighbor rule changes the
+object count. Source: image created by author.</figcaption>
+</figure>
+<h3 id="size-and-border-rules">Size and Border Rules</h3>
+<p>The code records two quality-control rules. Regions smaller than 100
+pixels are removed, because tiny specks are more likely to be noise than
+nuclei. Regions that touch the border of the image are removed too,
+because an object cut off by the edge shows only part of its area.</p>
+<pre class="python"><code># keep only regions that are big enough and sit fully inside the image
+accepted = [obj for obj in objects
+            if obj[&quot;area_px&quot;] &gt;= MIN_AREA_PX and not obj[&quot;touches_edge&quot;]]</code></pre>
+<h3 id="measuring-one-region-by-hand">Measuring One Region, by Hand</h3>
+<p>Suppose a region contains six pixels with raw brightness values
+10,000, 11,000, 12,000, 13,000, 14,000 and 15,000. Each pixel is 0.26
+micrometers on a side, so one pixel has an area of 0.26 times 0.26,
+which is 0.0676 square micrometers. Six pixels give 0.4056 square
+micrometers. For the mean intensity we add the six values and divide by
+six: the sum is 75,000, and 75,000 divided by 6 is 12,500. This region
+has an area of about 0.41 square micrometers and a mean raw intensity of
+12,500 arbitrary units.</p>
+<p>Our real first region works the same way, with 1,346 pixels instead
+of six. The measurement describes brightness, and protein totals and
+drug concentration need other measurements, so we name the columns for
+what they hold: proposed nuclear-region area, mean raw intensity, plane
+and channel.</p>
+<pre class="python"><code># area in square micrometres = pixel count x pixel width x pixel height
+# mean raw intensity = average detector value of the region&#39;s pixels
+mean_au = float(image[labels == obj[&quot;label&quot;]].mean())
+rows.append({**obj, &quot;area_um2&quot;: obj[&quot;area_px&quot;] * dx_um * dy_um,
+             &quot;mean_raw_intensity_au&quot;: mean_au})</code></pre>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig12-measure-region.jpg"
+alt="Figure 12: Measuring one region by hand. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 12: Measuring one region by hand.
+Source: image created by author.</figcaption>
+</figure>
+<h3 id="reading-the-real-output">Reading the Real Output</h3>
+<p>On the declared nucleus plane, Otsu’s method chooses a threshold of
+10,432 raw intensity units. Pixels above that value form 92 connected
+regions. Our rules remove 70 regions smaller than 100 pixels and 10
+larger regions that touch the border, so 12 candidate regions remain.
+That is twelve retained two-dimensional regions under this method, and
+validated cell counts need further evidence. One retained region
+contains 1,346 pixels, which at 0.26 micrometers per pixel gives an area
+of about 90.99 square micrometers and a mean raw intensity of about
+13,530.7 arbitrary units.</p>
+<h3 id="changing-one-decision">Changing One Decision</h3>
+<p>We now make a deliberately artificial change and multiply the same
+image by one half, a mathematical transformation that stands in for a
+change of exposure. Keeping the old threshold leaves only 3 retained
+regions instead of 12. Recomputing Otsu’s threshold on the rescaled
+image gives 5,216 and recovers 12 regions with the same selection as
+before. This fixed threshold is sensitive to intensity scale, while the
+adaptive rule handled this rescaling. A stability check and an accuracy
+check ask different questions, and a method can repeat the same mistake
+very consistently.</p>
+<p>We also run the baseline on a maximum-intensity projection through
+the stack, with a threshold of 14,226, and it retains 9 regions compared
+with 12 for our selected plane. The cells are all still there. The input
+changed from one depth plane to a picture that combines the brightest
+signal along depth, so a verified total cell count in a
+three-dimensional study comes from a proper three-dimensional
+measurement and validation plan.</p>
+<h3 id="the-record-that-travels-with-the-table">The Record That Travels
+with the Table</h3>
+<p>The saved record holds what we would want someone else to receive:
+the original image and its source, the channel order, the selected
+plane, the physical spacing, the raw numeric type, the display settings,
+the threshold method, the connectivity rule, the size filter, the border
+policy and the actual output. It also states that our masks still await
+validation against expert ground truth, meaning an independently
+justified reference annotation for the intended task. Reproducible means
+that another person can repeat the procedure, and the validation
+questions come next.</p>
+<h2
+id="part-4-what-a-learned-model-adds-and-what-evidence-still-needs">Part
+4: What a Learned Model Adds, and What Evidence Still Needs</h2>
+<h3 id="how-a-segmentation-model-learns">How a Segmentation Model
+Learns</h3>
+<p>Think of an art student who learns by tracing. The teacher hands over
+a photograph together with a tracing of the correct outlines, the
+student draws a tracing and compares it with the teacher’s, and after
+thousands of photographs the student’s tracings improve.</p>
+<p>A segmentation model does the same with numbers. For every pixel it
+outputs a probability that the pixel belongs to a nucleus. In a tiny
+example, three neighboring pixels might read 0.92, 0.88 and 0.10. A cut
+at 0.5 turns them into selected, selected and background. The loss grows
+when the model’s number sits far from the reference mask. That is the
+learning loop from the first lesson, applied to images: predict, compare
+with the reference, calculate the loss and nudge the parameters. The
+model can also learn annotation errors or patterns that belong to one
+microscope, so the evaluation steps below matter. Lesson 9, on Cell
+Painting, returns to image-derived features of stained cells, and lesson
+27 returns to spatial measurements in tissue. Today we keep the idea at
+overview level.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig13-segmentation-probabilities.jpg"
+alt="Figure 13: A segmentation model outputs a probability for every pixel. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 13: A segmentation model outputs a
+probability for every pixel. Source: image created by
+author.</figcaption>
+</figure>
+<h3 id="overlap-drawn-on-a-grid">Overlap, Drawn on a Grid</h3>
+<p>Picture two sheets of tracing paper, each with some squares shaded,
+one from the model and one from the expert. We lay one on top of the
+other. The squares shaded on both sheets form the intersection, and the
+squares shaded on at least one sheet form the union. Suppose the model
+shaded 8 squares and the expert shaded 8 squares, and 6 squares are
+shaded on both. The union is 8 plus 8 minus 6, which is 10 squares,
+because the 6 shared squares would otherwise be counted twice. The score
+is 6 divided by 10, or 0.6. A perfect match scores 1, and shading
+entirely different squares scores 0. This is intersection over union,
+often shortened to IoU.</p>
+<p>The score describes how well the shaded areas agree, so we pair it
+with other checks, such as counting objects and testing on images from
+another laboratory.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig14-iou-grid.jpg"
+alt="Figure 14: Intersection over union on a grid. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 14: Intersection over union on a
+grid. Source: image created by author.</figcaption>
+</figure>
+<h3 id="merges-and-splits-with-counts">Merges and Splits, with
+Counts</h3>
+<p>Imagine a reference with four nuclei. In the model’s mask, two of
+those nuclei touch, and the model draws one outline around both. That is
+a merge: the model reports 3 objects and the reference has 4. Now
+imagine one real nucleus with a bright patch on each side, where the
+model draws two outlines. That is a split: the model reports 5 objects.
+In both cases almost every selected pixel agrees with the reference, so
+the overlap score stays high while the object count is off by one.</p>
+<p>A small table keeps score. For each image, we record how many
+reference objects were matched, merged, split or missed, and how many
+extra objects the model added. These numbers tell us where to look when
+we inspect an overlay, which is a picture with the outlines drawn on the
+original image.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig15-merges-splits.jpg"
+alt="Figure 15: Merges and splits change the count. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 15: Merges and splits change the
+count. Source: image created by author.</figcaption>
+</figure>
+<h3 id="held-out-data-with-a-practice-exam">Held-Out Data, with a
+Practice Exam</h3>
+<p>A teacher gives students a practice exam and then uses the same
+questions on the real exam. High scores follow, and they show that the
+students remember the questions. A fair exam uses new questions on the
+same topic. A model’s test set works the same way: it holds images that
+the model has never seen.</p>
+<p>Now a numbers example. Ten microscope images are each cut into 100
+small crops, which gives 1,000 crops. If we shuffle all the crops and
+pick 800 for training and 200 for testing, nearly every test crop has
+close neighbors from the same image in the training set, with the same
+lighting, the same stain and the same cells. The test is easy. If we
+choose two whole images for testing, the 200 test crops come from images
+that the model has never seen, and the score tells us much more about a
+new experiment.</p>
+<p>The same logic applies to cells in wells. A well is one small culture
+compartment in a laboratory plate. Suppose a treatment is tested in
+three wells with 1,000 cells each. That is 3,000 cells and 3 independent
+treatment experiments, because cells in one well share their conditions,
+so we judge uncertainty at the level of the wells.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig16-held-out.jpg"
+alt="Figure 16: Held-out data, with a practice exam. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 16: Held-out data, with a practice
+exam. Source: image created by author.</figcaption>
+</figure>
+<h3 id="synthetic-images-with-a-flight-simulator">Synthetic Images, with
+a Flight Simulator</h3>
+<p>A pilot trains in a flight simulator. The instructors know where
+every cloud, every runway and every gust of wind sits, because they
+placed them, and that makes it easy to check the pilot’s decisions.
+Simulated microscopy images work the same way: the creator places every
+object, so the correct outlines are known. A pilot who excels in the
+simulator still has to learn about real weather and real aircraft, and
+the gap between the simulated world and the real one is called the
+domain gap.</p>
+<p>A research example is SynOrg, by Sreenivas Bhattiprolu, a preprint
+that describes a simulator for microscopy images of organoid-like
+three-dimensional arrangements, together with labels known from the
+simulated scene. Annotating real three-dimensional microscopy is
+difficult and time-consuming, while in a simulation the creator knows
+which objects were placed where. The author also describes limitations,
+including simplified cell contacts, the absence of dividing cells and
+idealized aspects of imaging. We present it as a reported research
+method, and we did not run the simulator or reproduce its benchmark.
+Simulated images help us test and understand methods, and real annotated
+images confirm that a method works on real samples.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig17-simulator.jpg"
+alt="Figure 17: Why simulate? A flight simulator. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 17: Why simulate? A flight
+simulator. Source: image created by author.</figcaption>
+</figure>
+<h3 id="controls-with-a-taste-test">Controls, with a Taste Test</h3>
+<p>A chef adds a secret ingredient to a soup and asks ten friends
+whether it tastes better. A careful chef also serves a second bowl of
+the plain soup, prepared the same way, with the labels hidden. If
+everyone prefers the first bowl, the plain bowl shows how much of that
+preference comes from the ingredient. The control bowl is how we learn
+what the ingredient adds.</p>
+<p>In an experiment, the vehicle control plays the role of the plain
+soup. It receives the liquid that carries the compound, and all other
+conditions match. Now an imaging example with illustrative numbers. In a
+control well, 100 nuclei have brightness values from 150 to 250, and a
+fixed threshold of 120 detects all of them. In a treated well, the same
+100 nuclei are half as bright, from 75 to 125, and the same threshold
+detects only a handful. The analysis reports a big drop in object count,
+and the cause is a fixed threshold meeting dimmer nuclei.</p>
+<p>That is why we inspect overlays for every group, compare brightness
+distributions between groups, and choose the analysis rules before we
+look at the treatment results. A count changes for biological reasons
+and for analysis reasons, and controls help us separate the two.</p>
+<figure>
+<img
+src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-02-microscopy-cells-to-organoids-and-tissues/article/images/v3-fig18-controls.jpg"
+alt="Figure 18: A fixed threshold meets dimmer nuclei in the treated well. Source: image created by author." />
+<figcaption aria-hidden="true">Figure 18: A fixed threshold meets dimmer
+nuclei in the treated well. Source: image created by
+author.</figcaption>
+</figure>
+<h3 id="keeping-the-evidence-chain-connected">Keeping the Evidence Chain
+Connected</h3>
+<p>A trustworthy analysis follows a connected chain: define the
+biological question and the sample, acquire an appropriate signal under
+documented conditions, preserve the raw data and the metadata, transform
+and segment the image with declared choices, measure quantities with the
+right units and quality checks, and interpret the result within the
+controls and validation the experiment provides. Artificial intelligence
+can help with several steps, and each conclusion still needs evidence
+that connects the measurement to that particular claim. An accurate
+boundary is one piece of evidence, and binding to a target or clinical
+benefit each need their own.</p>
+<h2 id="check-your-understanding">Check Your Understanding</h2>
+<p>Here are three short questions. First, an image region contains 25
+pixels, and each pixel is 2 micrometers wide and 2 micrometers tall.
+What is its physical area? Second, two displayed pictures have different
+brightness, and each was stretched independently. Can we conclude that
+one sample holds more of the labeled protein? Third, a mask contains one
+connected object where two touching nuclei may be present. What should
+we call the reported count, and what would help check it?</p>
+<p>For the first question, one pixel represents 2 times 2, or 4 square
+micrometers, so 25 pixels represent 100 square micrometers. For the
+second, independently stretched pictures sit on two different display
+scales, so a protein-abundance difference needs the raw measurements,
+compatible acquisition and labeling, a calibration, and controls. For
+the third, we report one connected object under the declared
+segmentation rule, and we check it against the original channels, the
+depth context and a reference annotation.</p>
+<h2 id="wrap-up">Wrap-Up</h2>
+<p>A microscope image is a rich observation of a labeled biological
+sample, and its meaning depends on the label, optics, detector, scale,
+preparation and biological context. A transparent analysis turns
+selected pixels into useful measurements, and every mask and number
+stays tied to its assumptions and validation. The habit to keep is
+simple: ask what was actually measured, what changed during processing,
+and what evidence connects that measurement to the conclusion.</p>
+<p>Hope this article helps you read microscopy results with confidence.
+The next lesson asks how drug discovery chooses a biological target,
+what makes a target approachable with a treatment, and how our EGFR and
+KRAS examples fit into that process.</p>
+<h2 id="references">References</h2>
+<ol type="1">
+<li>Allen Institute for Cell Science, “cells3d” sample data, distributed
+with scikit-image (CC0). Provenance:
+https://gitlab.com/scikit-image/data/-/blob/5c090b56df3988d988ff97928e2ef2d2cbe38e1b/README.md</li>
+<li>scikit-image documentation, <code>skimage.data.cells3d</code>:
+https://scikit-image.org/docs/0.26.x/api/skimage.data.html#skimage.data.cells3d</li>
+<li>Waters, J. C. (2009). Accuracy and precision in quantitative
+fluorescence microscopy. Journal of Cell Biology.
+https://doi.org/10.1083/jcb.200903097</li>
+<li>Phan, N. et al. (2019). A simple high-throughput approach identifies
+actionable drug sensitivities in patient-derived tumor organoids.
+Communications Biology (CC BY 4.0).
+https://doi.org/10.1038/s42003-019-0305-x</li>
+<li>Bhattiprolu, S. SynOrg, bioRxiv preprint v1, 22 April 2026 (CC BY
+4.0). https://www.biorxiv.org/content/10.64898/2026.04.16.719066v1</li>
+<li>Otsu, N. (1979). A threshold selection method from gray-level
+histograms. IEEE Transactions on Systems, Man, and Cybernetics.</li>
+</ol>
