@@ -2,7 +2,7 @@
 
 Code for the second video of the course. The video follows the chain from light to image, from image to measurement, and from measurement to a carefully limited conclusion. The code turns a real fluorescence image into a measurement table with a transparent classical method (a threshold and connected regions), which gives us a clear baseline before the course introduces learned image models.
 
-Video: [AI in Drug Discovery 2: Microscopy, Organoids and Image Analysis in Python on YouTube](https://youtu.be/YD-tiKCHg58)  
+Video: [AI in Drug Discovery 2: Microscopy, Organoids and Image Analysis in Python on YouTube](https://youtu.be/zfbtHyErKKc)  
 Article: [AI in Drug Discovery 2: Microscopy, Organoids and Image Analysis in Python on Medium](https://arjun-sarkar786.medium.com/from-microscope-images-to-measurements-fluorescence-organoids-and-a-python-segmentation-baseline-6ec4ecdf5ada)
 
 The video explains what the code does and why. The line-by-line reading lives in the commented files in this folder, and the Medium article walks through the same steps in writing.
