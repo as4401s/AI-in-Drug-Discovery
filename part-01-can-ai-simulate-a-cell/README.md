@@ -9,7 +9,8 @@ Article: [Can AI Simulate a Cell? on Medium](https://arjun-sarkar786.medium.com/
 
 | Path | What it is |
 |------|------------|
-| `code/esm2_demo.py` | The experiment from Part 4 of the video. Every step has a comment that explains what it does and why. |
+| `code/esm2_demo.py` | The experiment from Part 4 of the video. Every step has a comment that explains what it does and why. The video shows the result of each step but does not read the code line by line; this file is the place to read it slowly. |
+| `code/worked_examples.py` | The small calculations from the video, step by step: the loss numbers, the one-knob gradient descent walk, the three-position attention example, and how to read the saved attention weights. Needs only numpy. |
 | `data/esm2/results.json` | The results of the run shown in the video (probabilities, scores, shapes, model revision, software versions). |
 | `data/esm2/egfr/attention.npy` | The attention weights saved for the EGFR window (6 layers x 20 heads x 63 x 63). |
 
@@ -30,9 +31,17 @@ Article: [Can AI Simulate a Cell? on Medium](https://arjun-sarkar786.medium.com/
 | EGFR C797S | 0.0172 | 0.0735 | +1.455 | the model gives S about 4.3 times the probability of C in this window |
 | KRAS G12D | 0.0628 | 0.0284 | -0.794 | the model prefers the original G in this window |
 
-These numbers describe one small model on one short window. They do not show drug binding, resistance or patient benefit. The video explains why.
+These numbers describe one small model on one short window. Drug binding, resistance and patient benefit are each measured with their own experiments, and the video explains how the score fits into that bigger picture.
 
-## How to run it
+## How to run the worked examples
+
+```
+python code/worked_examples.py
+```
+
+It prints every number used in the video (loss 1.61 and 0.22, the knob walk 0 to 0.6 to 1.08 to 1.46, attention weights of about 41, 20 and 38 percent) and a short summary of the saved EGFR attention weights.
+
+## How to run the ESM-2 experiment
 
 You need Python 3.12 or newer with `numpy`, `torch` and `transformers`, the ESM-2 8M checkpoint saved on disk, the two FASTA files (UniProt P00533 for EGFR and P01116 for KRAS) in `data/`, and the provenance file `production/MODEL_DATA_PROVENANCE.json` from the course folder. The script never downloads anything: it loads the model from local files only and stops if a file's SHA-256 fingerprint has changed.
 
