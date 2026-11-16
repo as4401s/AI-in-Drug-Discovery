@@ -2,7 +2,7 @@
 
 Code for the first video of the course. The video starts from the biology (cell, DNA, RNA, protein), states a research problem, explains how a model learns (training, loss, attention), and ends with a real code experiment: a small protein language model, ESM-2, scores an amino-acid change in EGFR.
 
-Video: [AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2 on YouTube](https://youtu.be/nmAcM4L4XhU)  
+Video: [AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2 on YouTube](https://youtu.be/n_C-w4SAVeY)  
 Article: [AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2 on Medium](https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0)
 
 ## What is in this folder

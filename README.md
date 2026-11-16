@@ -4,7 +4,7 @@ Code that accompanies the **WhiskerBrief "AI in Drug Discovery"** video course. 
 
 | Part | Video | Folder | Article |
 |------|-------|--------|---------|
-| 1 | [AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2](https://youtu.be/nmAcM4L4XhU) | [`part-01-can-ai-simulate-a-cell`](part-01-can-ai-simulate-a-cell) | [Medium](https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0) |
+| 1 | [AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2](https://youtu.be/n_C-w4SAVeY) | [`part-01-can-ai-simulate-a-cell`](part-01-can-ai-simulate-a-cell) | [Medium](https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0) |
 | 2 | [AI in Drug Discovery 2: Microscopy, Organoids and Image Analysis in Python](https://youtu.be/zfbtHyErKKc) | [`part-02-microscopy-cells-to-organoids-and-tissues`](part-02-microscopy-cells-to-organoids-and-tissues) | [Medium](https://arjun-sarkar786.medium.com/from-microscope-images-to-measurements-fluorescence-organoids-and-a-python-segmentation-baseline-6ec4ecdf5ada) |
 | 3 | AI in Drug Discovery 3: The Drug Discovery Pipeline, EGFR and KRAS G12D (video coming soon) | [`part-03-drug-discovery-targets-and-molecular-identity`](part-03-drug-discovery-targets-and-molecular-identity) | – |
 | 4 | AI in Drug Discovery 4: Dose-Response Curves, IC50 and a Python Fit (video coming soon) | [`part-04-dose-response-curves-and-ic50`](part-04-dose-response-curves-and-ic50) | – |
