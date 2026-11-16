@@ -1,0 +1,395 @@
+<h1>AI in Drug Discovery 4: Dose-Response Curves, IC50 and a Python Fit</h1>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/covers/part-04-cover.jpg" />
+<figcaption>AI in Drug Discovery, Part 4: Dose-Response Curves, IC50 and a Python Fit. Source: image created by author.</figcaption>
+</figure>
+<p>If you prefer to learn in more detail or in a visual way, <a href="VIDEO_URL">watch the video for this lesson on YouTube</a>.</p>
+<p>In this tutorial, we will learn what an IC50 tells us and what has to travel with the number so that it stays useful. We start from a bakery line and a pitcher of syrup, build a concentration-response curve from controls and repeated wells, explain its midpoint, plateaus and slope with tiny calculations, and fit a transparent Python example on a practice plate. Then we curate real potency records of erlotinib on EGFR from ChEMBL, one row at a time, and keep the meaning attached to every value.</p>
+<p>Earlier articles in this course:</p>
+<ul>
+<li><a href="https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0">AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2</a></li>
+<li><a href="https://arjun-sarkar786.medium.com/from-microscope-images-to-measurements-fluorescence-organoids-and-a-python-segmentation-baseline-6ec4ecdf5ada">AI in Drug Discovery 2: Microscopy, Organoids and Image Analysis in Python</a></li>
+<li><a href="https://medium.com/p/ba3ce9e762ea">AI in Drug Discovery 3: The Drug Discovery Pipeline, EGFR and KRAS G12D</a></li>
+</ul>
+<p>The course assumes basic coding skills and a little familiarity with machine learning, and we introduce every important idea before we use it. The folder for this lesson on GitHub, <a href="https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-04-dose-response-curves-and-ic50">part-04-dose-response-curves-and-ic50</a>, holds the code with comments in every function. <code>dose_response_lab.py</code> fits the synthetic curve, <code>curate_activities.py</code> curates the real records, <code>fetch_sources.py</code> refreshes the saved source files, <code>worked_examples.py</code> reproduces every small calculation of this article step by step, and two test files check the rules offline. The video shows what the code does and why, and the line-by-line reading lives in the commented files.</p>
+<p>The roadmap for this article is:</p>
+<ol type="1">
+<li>Make a response measurement: an enzyme assay, concentration, units, dilution, controls, normalization and replicates.</li>
+<li>Read the curve: the log axis, the IC50, the four parameters, the Hill formula, slope, relative and absolute midpoints, potency and efficacy, affinity and pIC50.</li>
+<li>Fit and check in Python: a practice plate, the error, a search, residuals, a bootstrap, a refusal rule and a growth-rate preview.</li>
+<li>Curate potency data we can trust: a return desk for activity records, bounds, assay groups and real ChEMBL rows.</li>
+</ol>
+<h2>Why a Number Needs Context</h2>
+<p>Imagine that a collaborator sends you a table with one column called IC50. The first row says 12, and the second says 3. Which compound is more potent? The answer depends on the unit (nanomolar or micromolar), on the assay (an enzyme or a living cell), on what “half” means for that curve, and on how many wells stand behind each number. A potency value is a small package of evidence, and the label we put on a table row is only as good as the context that travels with it.</p>
+<p>In the previous lesson, we built a checked identity for two teaching targets, EGFR with erlotinib and KRAS G12D with MRTX1133. Now we ask what a measured response to a compound looks like, how a curve turns into one number, and how to keep that number honest. We use two kinds of data and keep them apart on purpose. The first is a small synthetic dataset that our own program generates, so we know exactly what produced it. The second is a set of real, published records of erlotinib on EGFR that we download from ChEMBL (release 37). Two background sources shape the discussion: the Assay Guidance Manual chapter on assay operations (Beck et al., 2017) and the growth-rate inhibition study of Hafner et al. (2016).</p>
+<h2>Part 1: Make a Response Measurement</h2>
+<p>Before a curve exists, a laboratory has to produce numbers. In this part, we build the tools for reading them: what an enzyme assay reports, how much compound is present, which controls give the scale, and how repeated wells add confidence. Each idea starts with an everyday picture and a tiny calculation that you can repeat on a calculator. Every calculation of this part is reproduced in <code>worked_examples.py</code>.</p>
+<h3>An Enzyme Assay, with a Bakery Line</h3>
+<p>Picture a bakery line where workers turn dough into rolls. The workers are enzymes, and the rolls are the product. With a clear aisle, the line makes 100 rolls a minute. Now we place a few people in the aisle, and the line slows. Place more people, and it slows further. A compound that blocks an enzyme plays the role of those people in the aisle.</p>
+<p>A laboratory measures the output, because the output is the signal. Suppose the line makes 100 rolls a minute when the aisle is clear, and 60 rolls with our blockers in place. The output fell by 40 rolls, which is 40 percent of the original. We call that 40 percent inhibition. The compound is the test, the output is the readout, and the percent drop is the answer we carry forward.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig01-bakery.jpg" />
+<figcaption>Figure 1: A bakery line as a picture of an enzyme assay, with an output that falls from 100 to 60 rolls a minute. Source: image created by author.</figcaption>
+</figure>
+<p>A cell assay works like counting rolls for a whole bakery, with many lines running at once. The signal reflects everything the cell is doing. In the next sections, we build the tools for reading such signals.</p>
+<h3>Concentration, with a Juice Pitcher</h3>
+<p>Stir five spoonfuls of syrup into one litre of water, and the drink has a strength of five spoonfuls per litre. Stir the same five spoonfuls into five litres, and the strength is one spoonful per litre. The amount of syrup is identical, and the taste is very different, because taste follows the amount in each litre.</p>
+<p>A laboratory plate works the same way. Concentration means the amount of compound in each litre of liquid. We count amounts in moles, and one mole per litre is called one molar. If a well holds the same compound in half the liquid, the concentration doubles. An assay reports concentration because it describes the mixture inside the well, which is the quantity the enzyme or the cell actually meets.</p>
+<p>A dose given to a person depends on body size, on how the body absorbs the compound and on how long it stays. A concentration in a well describes a laboratory mixture. So an IC50 is a statement about a mixture, and turning it into a treatment dose takes many more steps and much more evidence.</p>
+<h3>Units, with a Staircase of Thousands</h3>
+<p>Concentration units form a staircase. Start at molar. One step down is millimolar, a thousand times smaller. One more step is micromolar, a thousand times smaller again. One more is nanomolar. So one micromolar equals 1,000 nanomolar, and one millimolar equals 1,000,000 nanomolar. Each step down multiplies the number by 1,000, because the unit shrinks by 1,000.</p>
+<p>Let’s convert with small numbers. 0.25 micromolar becomes 250 nanomolar, because we multiply by 1,000. 4,000 nanomolar becomes 4 micromolar, because we divide by 1,000. Now compare 10 nanomolar with 1 micromolar. Write both in nanomolar: 10 and 1,000. Ten is 100 times smaller than 1,000, even though the plain number 10 is larger than the plain number 1.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig02-units.jpg" />
+<figcaption>Figure 2: A staircase of units, where each step down multiplies the number by 1,000. Source: image created by author.</figcaption>
+</figure>
+<p>In our code, every dose is stored in nanomolar, and the <code>pic50</code> function converts to molar with a small table of unit multipliers. The habit to build is simple: write the unit next to every number, and convert before comparing.</p>
+<h3>Dilution, with Glasses of Squash</h3>
+<p>Making a series of concentrations is like mixing squash for a row of glasses. Pour one part of strong squash into nine parts of water, and the drink is ten times weaker. Take one part of that drink, add nine parts of water, and the next glass is ten times weaker again. A row of glasses made this way steps down by the same factor each time.</p>
+<p>In numbers, a tenfold series starting at 1,000 nanomolar goes 1,000, 100, 10, 1. A threefold series starting at 1,000 goes 1,000, 333.3, 111.1, 37.0 and 12.3. Our lesson uses about threefold steps, from 0.1 up to 1,000 nanomolar, nine concentrations in all. The exact values are 0.1, 0.3, 1, 3, 10, 30, 100, 300 and 1,000, a half-log series where every second step is a factor of ten.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig03-dilution.jpg" />
+<figcaption>Figure 3: Glasses of squash, where each glass is one tenth as strong as the one before. Source: image created by author.</figcaption>
+</figure>
+<p>A series like this covers a huge range with few wells, and every step is a multiplication by the same number. That pattern, equal ratios, is the reason a logarithmic axis fits so well, and we meet that axis in Part 2 of this article. In the code, the nine concentrations sit in one list called <code>DOSES_NM</code>.</p>
+<h3>What One Well Reports</h3>
+<p>A well reports a signal, which is a number from a detector. In an enzyme assay, the enzyme makes a product, and the product produces light. More enzyme activity gives more light, and a blocker lowers the light. We call this a falling-signal assay, because a stronger effect gives a smaller number.</p>
+<p>Other assays flip the direction. Some detection methods make light when the enzyme is blocked, so the signal rises. So before reading any number, we ask which direction the assay uses. In our lesson, we use a falling-signal assay: an untreated well reads about 1,000 units, and a fully blocked well reads about 100 units. A reading of 550 sits exactly halfway between them.</p>
+<p>Cell assays count something broader, such as how many cells are alive or how much of a protein is modified. The signal reflects the whole cell, with many proteins at work, so the answer describes the cell’s overall response. We keep that difference in mind, and Part 4 of this article separates these two kinds of experiments.</p>
+<h3>Controls, with a Start Line and a Finish Line</h3>
+<p>Think of a race. A start line and a finish line give every runner’s position a meaning. An assay has the same two lines. The start line is the vehicle control, a well with the whole experimental system and the delivery solvent, and the compound left out. It shows the signal at zero inhibition. The finish line is a fully inhibited reference, which shows the signal at 100 percent inhibition.</p>
+<p>In our teaching example, the vehicle wells read 1,000 units, and the inhibited reference wells read 100 units. The distance between the lines is 900 units. A test well reading 550 sits halfway along that distance, 450 units from the start. The same reading would mean something different if the lines sat elsewhere, so every plate carries its own controls.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig04-controls.jpg" />
+<figcaption>Figure 4: The vehicle control at 1,000 units is the start line, the inhibited reference at 100 units is the finish line, and a test well at 550 sits halfway. Source: image created by author.</figcaption>
+</figure>
+<p>These numbers come from our own program, as teaching values. Real experiments choose their reference with care: a blank well reveals background from reagents or the detector, and each method decides which well marks full inhibition.</p>
+<h3>Normalization, Step by Step</h3>
+<p>Normalization converts raw signal into percent inhibition using those two lines. The recipe has three steps. First, subtract the test signal from the vehicle signal. Second, divide by the distance between the lines, 900. Third, multiply by 100. For a test reading of 820: 1,000 minus 820 is 180. 180 divided by 900 is 0.2. Times 100 gives 20 percent inhibition.</p>
+<p>Run the other readings through the same recipe. 1,000 gives 0 percent. 550 gives 50 percent. 280 gives 80 percent. 100 gives 100 percent. A reading of 1,040 gives minus 4.4 percent, and a reading of 80 gives 102.2 percent. We keep those values exactly as they come, because they carry real information about noise.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig05-normalization.jpg" />
+<figcaption>Figure 5: The three steps of normalization applied to a reading of 820, which gives 20 percent inhibition. Source: image created by author.</figcaption>
+</figure>
+<p>Now, we’ll look at the function that does these three steps for every well. It checks that the vehicle signal is larger than the inhibited signal for a falling-signal assay, and it returns values outside 0 to 100 unchanged, so the noise stays visible for quality checks.</p>
+<pre class="python"><code>def normalize(signal, vehicle, inhibited):
+    # this assay needs the vehicle signal to be higher than the inhibited reference
+    if not np.isfinite([vehicle, inhibited]).all() or vehicle &lt;= inhibited:
+        raise ValueError(&quot;this falling-signal assay requires vehicle &gt; inhibited reference&quot;)
+    values = np.asarray(signal, dtype=float)
+    if not np.isfinite(values).all():
+        raise ValueError(&quot;signals must be finite&quot;)
+    # values outside 0-100 stay visible: clipping would hide noise and quality problems
+    return 100 * (vehicle - values) / (vehicle - inhibited)</code></pre>
+<p>The last line is the recipe: subtract from the vehicle, divide by the range, multiply by 100.</p>
+<h3>Replicates, with Cake Photos and Cakes</h3>
+<p>Imagine baking a cake and photographing it three times. The three photos agree beautifully, and they all show the same cake. Now imagine baking three separate cakes on three different days. The cakes differ a little, and they reveal how much baking itself varies. Replicates come in the same two kinds. Wells from one preparation resemble photos of one cake. Independent days resemble separate cakes.</p>
+<p>Take three wells at one concentration reading 48, 52 and 50 percent inhibition. Their mean is 50. The wells sit 2, 2 and 0 points from that mean, so the spread, called the standard deviation, is 2. Now take three separate days reading 50, 38 and 61. The mean is 49.67, nearly the same as before, and the spread is about 11.5. Day-to-day variation is the bigger story.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig06-replicates.jpg" />
+<figcaption>Figure 6: Three wells from one preparation, mean 50 and spread 2, next to three independent days of 50, 38 and 61, mean 49.67. Source: image created by author.</figcaption>
+</figure>
+<p>Our synthetic plate has three technical wells at each of nine concentrations, so it describes pipetting and detection noise. Independent days would add biological variation, and the uncertainty section later in this article returns to this point.</p>
+<h2>Part 2: Read the Curve</h2>
+<p>With normalized responses at nine concentrations, we can draw a curve. In this part, we learn to read it: where the points go, why the axis changes, what an IC50 is, what four numbers describe a curve, and what a potency value tells us. Every calculation of this part is also reproduced in <code>worked_examples.py</code>.</p>
+<h3>Plotting the First Points</h3>
+<p>Let’s build the plot with three points. At 1 nanomolar, the inhibition is about 9 percent. At 10 nanomolar, it is 50 percent. At 100 nanomolar, it is about 91 percent. Concentration goes on the horizontal axis, and percent inhibition on the vertical axis, so each concentration gives one point.</p>
+<p>A line joining the points guides the eye, and the fitted curve, which comes later, is a separate model. On an ordinary linear axis running to 1,000, these three points crowd together on the far left, and the steady climb they show is hard to see. This is the reason concentration plots use a different kind of axis, and we build that axis next. In the lesson’s figures, the individual wells appear around each mean, so you see both the average and the scatter. Keeping observations, models and guides visibly separate is a habit that protects the evidence.</p>
+<h3>The Log Axis, with a Ruler for Ratios</h3>
+<p>Picture a ruler marked at 1, 10, 100 and 1,000. On a regular ruler, those marks land at one thousandth of the length, one hundredth, one tenth and the full length. The first three marks squeeze into the left tenth of the ruler. A logarithmic ruler marks the steps differently, giving each tenfold step the same room.</p>
+<p>The recipe uses the base-ten logarithm, which counts how many tens multiply together to reach a number. The logarithm of 1 is 0, of 10 is 1, of 100 is 2, and of 1,000 is 3. Place those at 0, one third, two thirds and the full length, and the four marks sit evenly. Equal steps on this ruler mean equal ratios, so each step is ten times the previous concentration.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig07-logaxis.jpg" />
+<figcaption>Figure 7: A regular ruler crowds the marks 1, 10 and 100 into the left tenth, and a log ruler spaces them evenly. Source: image created by author.</figcaption>
+</figure>
+<p>The log ruler works like a zoom lens that gives every order of magnitude the same room. A vehicle control at zero gets its own label position, because the logarithm needs a positive number. In the code, the fit searches the logarithm of the midpoint, so the search covers small and large concentrations evenly.</p>
+<h3>The IC50, with a Half-Full Stadium</h3>
+<p>Picture a stadium that fills as fans arrive. Early on it is nearly empty, later it is nearly full, and somewhere in between it is exactly half full. If we ask when the stadium is half full, the answer is a time. An IC50 is the same kind of answer. As the compound concentration rises, the inhibition climbs from near zero toward a plateau, and the IC50 is the concentration where the response reaches its halfway mark. The abbreviation stands for half-maximal inhibitory concentration.</p>
+<p>The picture also shows why the details matter. A stadium with a different capacity has a different halfway mark, so the full level must be stated. Two stadiums can fill at different speeds, and the halfway time leaves the speed open. So the plateaus and the slope get their own knobs, which we meet next.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig08-stadium.jpg" />
+<figcaption>Figure 8: A stadium that fills over time and a response that climbs with concentration, each with a halfway mark. Source: image created by author.</figcaption>
+</figure>
+<h3>Four Parameters, with a Mixing Desk</h3>
+<p>A response model is like a mixing desk with four knobs. The first knob sets the bottom, the lowest level the response reaches at tiny concentrations. The second sets the top, the highest level at large concentrations. The third is the midpoint, the concentration halfway between bottom and top. The fourth is the slope, which sets how sharply the response climbs between the two plateaus.</p>
+<p>Turn the bottom knob, and the left end of the curve lifts or sinks. Turn the top knob, and the right end rises or falls. Turn the midpoint knob, and the whole curve slides left or right along the concentration axis. Turn the slope knob, and the climb becomes a gentle ramp or a steep step. Four numbers describe the whole curve.</p>
+<p>Fitting a curve means turning the knobs until the model follows the measured points. The numbers we read from the finished curve, especially the midpoint, summarize the data in a few values.</p>
+<h3>The Hill Formula by Hand</h3>
+<p>The mixing desk becomes a formula. In the version we use, the response is</p>
+<p>response = bottom + (top - bottom) / (1 + (midpoint / concentration) ^ slope)</p>
+<p>where all concentrations use the same unit. Let’s calculate it with whole numbers. Set the bottom to 0, the top to 100, the midpoint to 10 nanomolar and the slope to 2, and ask for the response at 20 nanomolar.</p>
+<ul>
+<li>Step 1: divide the midpoint by the tested concentration, 10 divided by 20, which is 0.5.</li>
+<li>Step 2: raise that to the slope, 0.5 squared, which is 0.25.</li>
+<li>Step 3: add 1, which gives 1.25.</li>
+<li>Step 4: divide 1 by that sum, which gives 0.8.</li>
+<li>Step 5: multiply by the range, top minus bottom, 100, which gives 80.</li>
+<li>Step 6: add the bottom, 0.</li>
+</ul>
+<p>The response at 20 nanomolar is 80 percent. Twice the midpoint concentration gives 80 percent, because the slope of 2 makes the climb steep.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig09-formula.jpg" />
+<figcaption>Figure 9: The six steps of the Hill formula for a tested concentration of 20 nanomolar, ending at 80 percent. Source: image created by author.</figcaption>
+</figure>
+<p>Now, we’ll define the same steps in Python. The function takes a concentration, a midpoint, a slope, and optional bottom and top levels, and returns the percent response.</p>
+<pre class="python"><code>def hill(concentration_nm, midpoint_nm, slope, bottom=0.0, top=100.0):
+    x = np.asarray(concentration_nm, dtype=float)
+    if np.any(~np.isfinite(x)) or np.any(x &lt; 0) or midpoint_nm &lt;= 0 or slope &lt;= 0 or top &lt;= bottom:
+        raise ValueError(&quot;positive midpoint/slope, ordered plateaus and nonnegative finite doses required&quot;)
+    # np.maximum avoids dividing by exactly zero when the concentration is 0
+    return bottom + (top - bottom) / (1 + (midpoint_nm / np.maximum(x, 1e-300)) ** slope)</code></pre>
+<p>With a midpoint of 10 nanomolar and a slope of 1, the three points of the plot follow: at 1 nanomolar the fraction is 1 / 11, about 9.09 percent, at 10 nanomolar it is exactly 50 percent, and at 100 nanomolar it is 100 / 110, about 90.91 percent.</p>
+<h3>Slope, with a Dimmer and a Switch</h3>
+<p>Think of a light controlled by a dimmer. A gentle slope behaves like a dimmer, with brightness rising gradually as you turn. A steep slope behaves like a switch, with the light jumping from dark to bright within a small turn. In both cases the halfway brightness arrives at the same dial position, which plays the role of the midpoint.</p>
+<p>Here are the numbers, with the midpoint at 10 nanomolar. At 5 nanomolar, which is half the midpoint, a slope of 1 gives 33.33 percent. A slope of 2 gives 20 percent. A slope of 4 gives 5.88 percent. At 20 nanomolar, which is twice the midpoint, a slope of 1 gives 66.67 percent, a slope of 2 gives 80 percent, and a slope of 4 gives 94.12 percent.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig10-slope.jpg" />
+<figcaption>Figure 10: Three slopes with the same midpoint of 10 nanomolar, all passing through 50 percent. Source: image created by author.</figcaption>
+</figure>
+<p>All three curves pass through 50 percent at 10 nanomolar, and they spread differently on both sides. So the midpoint alone leaves the sharpness of the transition open. A fitted slope other than 1 is a pointer to examine the assay, and cooperative binding is one explanation among several. In our code, the slope is searched between 0.3 and 3.</p>
+<h3>Relative and Absolute 50 Percent, with an Exam</h3>
+<p>Consider an exam graded out of 100 marks. A class whose best possible result is 40 marks has a halfway point of 20, half of its own best. The absolute 50-mark line sits above anything this class can reach. A compound whose curve tops out at 40 percent inhibition behaves like that class. Its relative midpoint is the concentration giving 20 percent, and the absolute 50 percent level stays out of reach.</p>
+<p>With a top of 40 and a midpoint of 10 nanomolar, the response at 10 nanomolar is 20 percent, and the curve climbs toward 40. A second example shows both numbers apart. Take a bottom of 10, a top of 70 and a midpoint of 100 nanomolar. The midpoint response is 40 percent, the middle of 10 and 70. The absolute 50 percent crossing arrives at 200 nanomolar.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig11-relabs.jpg" />
+<figcaption>Figure 11: A class that tops out at 40 marks, a curve that tops out at 40 percent, and a second curve whose absolute crossing sits at 200 nanomolar. Source: image created by author.</figcaption>
+</figure>
+<p>So a value called IC50 can mean two different things: the relative midpoint, or the absolute 50 percent crossing. Reports should state which one they use, and in our synthetic example the plateaus sit at 0 and 100, so the two coincide. The function <code>absolute_crossing</code> in the code finds the absolute value.</p>
+<pre class="python"><code>def absolute_crossing(midpoint_nm, slope, bottom, top, response=50.0):
+    # a level outside the plateaus can never be reached by this curve
+    if not bottom &lt; response &lt; top:
+        return None
+    # solve the Hill equation for the concentration at the requested response
+    return midpoint_nm * ((response - bottom) / (top - response)) ** (1 / slope)</code></pre>
+<p>For the second example, <code>absolute_crossing(100, 1, 10, 70)</code> returns 200, and for the curve that tops out at 40 percent it returns <code>None</code>.</p>
+<h3>Potency and Efficacy, with Two Cars</h3>
+<p>Imagine two cars. Car A starts moving with a light touch on the pedal, and its top speed is modest. Car B needs a firmer push, and its top speed is much higher. Potency is about how little push gets the car moving. Efficacy, the maximum effect, is about top speed. Compound A has an IC50 of 5 nanomolar and a maximum of 40 percent. Compound B has an IC50 of 50 nanomolar and a maximum of 95 percent.</p>
+<p>Let’s compare the two at three concentrations. At 5 nanomolar, A gives 20 percent and B gives 8.64. At 50 nanomolar, A gives 36.36, and B gives 47.5. At 100 nanomolar, A gives 38.1, and B gives 63.33. The lower IC50 belongs to A, and B reaches far more inhibition.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig12-potency.jpg" />
+<figcaption>Figure 12: Compound A (IC50 5 nanomolar, maximum 40 percent) and compound B (IC50 50 nanomolar, maximum 95 percent) at three concentrations. Source: image created by author.</figcaption>
+</figure>
+<p>A lower IC50 therefore describes potency for one defined comparison. Selectivity, exposure, toxicity and clinical benefit each need their own evidence. When we compare compounds, we line up the IC50 values, the maximum effects and the assay conditions side by side.</p>
+<h3>IC50 and Affinity, with a Pushing Crowd</h3>
+<p>Picture a door pushed from two sides. Our compound pushes to hold the door shut, and the natural substrate pushes to open it. The more people push from the substrate side, the more compound we need to hold the door half closed. The IC50 tracks that balance, and the compound’s own grip on the protein is a separate property called an affinity constant.</p>
+<p>For a simple competitive inhibitor, textbooks give the Cheng-Prusoff relation (Cheng and Prusoff, 1973): the IC50 equals the inhibition constant, written Ki, times one plus the substrate level S divided by its own midpoint Km.</p>
+<p>IC50 = Ki x (1 + S / Km)</p>
+<p>Take a Ki of 10 nanomolar. When the substrate equals Km, the IC50 is 20 nanomolar. At four times Km, it is 50 nanomolar. At nine times Km, it is 100 nanomolar.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig13-affinity.jpg" />
+<figcaption>Figure 13: One compound with a Ki of 10 nanomolar gives IC50 values of 20, 50 and 100 nanomolar as the substrate level rises. Source: image created by author.</figcaption>
+</figure>
+<p>The same compound, with the same grip, shows three different IC50 values, because the assay conditions changed. That is why we keep the substrate level, the timing and the method next to every value, and compare IC50 numbers only after checking those conditions.</p>
+<h3>pIC50, with a pH-Style Scale</h3>
+<p>Chemists use a friendly scale for hydrogen ion concentrations, called pH, which turns tiny concentrations into small numbers. The pIC50 does the same job for potency. The recipe: write the IC50 in molar, take the base-ten logarithm, and flip the sign. 1 micromolar is 10 to the minus 6 molar, giving 6. 100 nanomolar gives 7. 10 nanomolar gives 8. 1 nanomolar gives 9.</p>
+<p>Now some in-between values. 3 nanomolar gives 8.52. 50 nanomolar gives 7.30. 250 nanomolar gives 6.60. 2.6 nanomolar gives 8.585. Each increase of one unit on this scale means a tenfold lower concentration, so a higher pIC50 describes a more potent compound under a matching definition.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig14-pic50.jpg" />
+<figcaption>Figure 14: The pIC50 recipe: molar, base-ten logarithm, flip the sign, with values from 6 to 9. Source: image created by author.</figcaption>
+</figure>
+<p>The function converts the value to molar with a table of unit multipliers, requires a positive finite concentration, and returns the flipped logarithm. The conversion to molar is part of the definition, so we apply it first.</p>
+<pre class="python"><code>def pic50(value, unit=&quot;nM&quot;):
+    # multiplier that turns each supported unit into molar
+    factors = {&quot;M&quot;: 1.0, &quot;mM&quot;: 1e-3, &quot;uM&quot;: 1e-6, &quot;nM&quot;: 1e-9, &quot;pM&quot;: 1e-12}
+    if unit not in factors or not math.isfinite(value) or value &lt;= 0:
+        raise ValueError(&quot;pIC50 requires a positive finite concentration and supported molar unit&quot;)
+    return -math.log10(value * factors[unit])</code></pre>
+<h2>Part 3: Fit and Check in Python</h2>
+<p>Now we move from pictures and small numbers to a real computation. The program builds a practice plate whose truth we know, fits the four-parameter curve, measures the error, checks the residuals, asks how far the answer moves when wells are redrawn, and refuses to report a number when the data stop short of 50 percent.</p>
+<h3>The Map of the Code</h3>
+<p>Before we run the computation, here is a map from ideas to code. All of it lives in one file, <code>dose_response_lab.py</code>, in the folder for this lesson on GitHub.</p>
+<ul>
+<li><code>normalize</code> turns signals into percent inhibition.</li>
+<li><code>hill</code> draws the model curve.</li>
+<li><code>pic50</code> converts a concentration to its scale.</li>
+<li><code>absolute_crossing</code> finds the 50 percent level.</li>
+<li><code>synthetic_data</code> builds the practice plate.</li>
+<li><code>fit_hill</code> searches for the best midpoint and slope and checks its own quality.</li>
+<li><code>bootstrap</code> resamples wells to see how much the answer moves.</li>
+</ul>
+<p>A second file, <code>curate_activities.py</code>, does the work of Part 4 of this article, and its function <code>classify</code> decides whether each real record stays in the table. Each function has a docstring and short comments. This article walks through the same functions in order, and the video follows the same order, so each figure connects to one function that you can open and read.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig15-codemap.jpg" />
+<figcaption>Figure 15: One file for the lab, one for the curation, and the function that each idea uses. Source: image created by author.</figcaption>
+</figure>
+<h3>The Practice Plate</h3>
+<p>Let’s walk through how the program builds a practice plate. It starts from a known truth: a midpoint of 10 nanomolar, a slope of 1, and plateaus at 0 and 100. For each of the nine concentrations, it calculates the model’s percent inhibition. At 10 nanomolar, that value is exactly 50 percent. It converts the percent into a signal, with 1,000 units for zero inhibition and 100 units for full inhibition.</p>
+<p>Then it adds a small random wiggle to each well, about 12 signal units wide. A seed fixes the random sequence, so every learner who runs the code receives the same numbers. Three wells at each concentration give 27 test wells. The program normalizes them, takes the mean at each concentration, and keeps the individual wells beside the means. We know the truth that generated the plate, so we can check how close the fit comes.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig16-plate.jpg" />
+<figcaption>Figure 16: The practice plate: a known curve, a signal conversion, a seeded wiggle and 27 test wells. Source: image created by author.</figcaption>
+</figure>
+<p>The table is labeled as synthetic data, which keeps the practice plate separate from real measurements. Here are the heart lines of <code>synthetic_data</code>.</p>
+<pre class="python"><code>rng = np.random.default_rng(SEED)
+true_inhibition = hill(DOSES_NM, 10, 1)
+signals = 1000 - 900 * true_inhibition[:, None] / 100 + rng.normal(0, 12, (len(DOSES_NM), 3))</code></pre>
+<p>The seed is a single number written near the top of the file, and <code>rng.normal(0, 12, ...)</code> is the wiggle of about 12 units.</p>
+<h3>Fitting, with Darts</h3>
+<p>Fitting a curve resembles throwing darts at a board. The bullseye is the pattern in the data. Each throw is a pair of knob settings, a midpoint and a slope. After each throw, we measure how far the dart landed from the bullseye. The goal is to find the throw that lands closest, and the measuring stick for closeness is the error.</p>
+<p>We need a single number for the distance, because we compare many throws. The next sections define that number step by step: the difference at each concentration, the squares of those differences, their average, and a square root to return to percentage points. Then a search finds the throw with the smallest error.</p>
+<p>A good dart thrower improves by changing one thing at a time and watching the score. Our program does the same thing: it tries many midpoints and slopes, scores each throw with the error, and keeps the best one. The same idea powers the fitting inside many larger machine-learning methods, where the knobs can number in the millions.</p>
+<h3>The Error with Three Points</h3>
+<p>Let’s compute the error with three points. At 1, 10 and 100 nanomolar, we observe 12, 49 and 93 percent inhibition. A candidate curve predicts 9, 50 and 91. The differences, observed minus predicted, are +3, -1 and +2. We call each difference a residual.</p>
+<p>Square each residual: 9, 1 and 4. Squaring turns every difference into a positive number and gives larger misses more weight. Their average is 14 divided by 3, about 4.67. The square root of that is about 2.16, and this is the root mean squared error (RMSE), in percentage points. On average, this candidate lands about two points from the data.</p>
+<p>Compare a flat baseline that predicts 50 everywhere. Its differences are -38, -1 and +43. The squares are 1,444, 1 and 1,849, an average of 1,098, and a root of about 33.14. The curve at 2.16 beats the flat line at 33 by a wide margin, and a good fit should show that gap.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig17-error.jpg" />
+<figcaption>Figure 17: Residuals +3, -1 and +2 on a three-point example, and the typical miss of 2.16 percentage points beside 33.14 for a flat line at 50. Source: image created by author.</figcaption>
+</figure>
+<h3>Searching for the Best Midpoint</h3>
+<p>Imagine hiking on a foggy hillside, looking for the lowest valley. You test the ground at a few spots across the whole hillside, pick the lowest one, and then explore more closely around it. A grid search works the same way. We use the same three points, with a slope of 1, and test five midpoints.</p>
+<ul>
+<li>A midpoint of 1 nanomolar gives an error of 32.85.</li>
+<li>3 gives 17.94.</li>
+<li>10 gives 2.15.</li>
+<li>30 gives 17.43.</li>
+<li>100 gives 34.46.</li>
+</ul>
+<p>The lowest error sits near 10, so we zoom in around it. 7 gives 5.69, 8 gives 3.83, 9 gives 2.50, 10 gives 2.15, 11 gives 2.82, 12 gives 3.87, and 14 gives 6.06. The lowest is still 10. A coarse search, then a finer search around the best spot, is the whole idea.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig18-search.jpg" />
+<figcaption>Figure 18: A coarse scan of five midpoints and a finer scan around 10 nanomolar, with the lowest error at 10. Source: image created by author.</figcaption>
+</figure>
+<p>The program does this on a 41 by 41 grid of midpoint and slope pairs, picks the best cell, shrinks the search box around it, and repeats eight times. The function <code>fit_hill</code> contains this loop, and the search limits are written near the top of the file, in a line called <code>BOUNDS</code>.</p>
+<pre class="python"><code>for _ in range(8):
+    logs = np.linspace(low[0], high[0], 41)
+    slopes = np.linspace(low[1], high[1], 41)
+    # predicted inhibition for every grid cell at every concentration
+    prediction = 100 / (1 + 10 ** ((logs[:, None, None] - logx[None, None, :]) * slopes[None, :, None]))
+    # mean squared error for every grid cell
+    loss = np.mean((prediction - values) ** 2, axis=2)
+    # keep the cell with the smallest error and shrink the box around it
+    index = np.unravel_index(int(np.argmin(loss)), loss.shape)
+    best = np.array([logs[index[0]], slopes[index[1]]])
+    step = (high - low) / 40
+    low = np.maximum([b[0] for b in BOUNDS], best - step)
+    high = np.minimum([b[1] for b in BOUNDS], best + step)</code></pre>
+<p>This is a teaching optimizer, chosen so that every step can be read. Production work uses validated nonlinear-regression software, and fitting a curve to one dataset is a different task from training a drug-discovery model.</p>
+<p>On our practice plate, the fit recovered a midpoint of about 9.78 nanomolar and a slope of about 1.00. Because the plateaus are fixed at 0 and 100, the relative midpoint and the absolute 50 percent crossing coincide, and the pIC50 is about 8.01. The RMSE across the nine means is about 0.45 percentage points, while a flat baseline that predicts one constant response has an error of about 39.23. The curve describes this synthetic pattern far better than the constant, and the known truth of 10 nanomolar sits close to the recovered value.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig19-fit-result.jpg" />
+<figcaption>Figure 19: Real program output of the fit on the practice plate: midpoint 9.78 nanomolar, slope 1.00, pIC50 8.01 and RMSE 0.45. Source: image created by author from the saved program output.</figcaption>
+</figure>
+<h3>Residual Plots</h3>
+<p>A residual plot shows the residual at each concentration. Imagine five residuals: +3, -1, +2, -2 and +1. The signs jump around, and the sizes stay small. This scatter looks like noise, and it suggests the curve follows the data well. Now imagine five residuals: +6, +4, +1, -3 and -7. A smooth run from positive to negative shows a pattern that the model leaves unexplained.</p>
+<p>Patterns like that point to a wrong shape, such as a missing plateau, or to an experimental issue. One summary error can look small and still hide a mismatch at one end of the range. That is why we inspect the residuals against concentration, alongside the single number. In our retained plot, nine means appear, and the individual wells stay in the separate file. The function <code>fit_hill</code> returns the residual at every concentration, and the lesson’s figure plots exactly those values.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig20-residuals.jpg" />
+<figcaption>Figure 20: Two residual patterns: scattered noise and a smooth run from positive to negative. Source: image created by author.</figcaption>
+</figure>
+<h3>Bootstrap, with Names in a Hat</h3>
+<p>The fitted midpoint carries some uncertainty. Picture a hat holding three slips, one for each well at a concentration, reading 48, 52 and 50. Draw a slip, record it, put it back, and draw again, three times in all. Because each slip goes back, the same slip can appear twice. One draw might be 48, 48, 52, with a mean of 49.33. Another might be 52, 50, 50, with a mean of 50.67.</p>
+<p>A third draw of 48, 52, 52 gives 50.67 again, and a draw of 50, 50, 50 gives 50. The means wander around the original 50, and the wandering shows how much the wells could shift the mean. Our program redraws wells at all nine concentrations, recalculates the means and refits the curve, 400 times.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig21-bootstrap.jpg" />
+<figcaption>Figure 21: A hat with three slips and four draws with means 49.33, 50.67, 50.67 and 50. Source: image created by author.</figcaption>
+</figure>
+<p>The 400 fitted midpoints form a cloud. All 400 refits passed the teaching checks, and the middle 95 percent of the cloud runs from about 9.32 to 10.27 nanomolar. This interval reflects the scatter among technical wells, under our fixed controls and model. New experimental days, new biological preparations and the choice of response model add further uncertainty that this interval leaves out. The function <code>bootstrap</code> performs the redraws, and a fixed seed keeps the result repeatable.</p>
+<pre class="python"><code>rng = np.random.default_rng(SEED + 1)
+estimates = []
+for _ in range(count):
+    # choose, for each concentration, three wells at random with replacement
+    indices = rng.integers(0, wells.shape[1], size=wells.shape)
+    # average the resampled wells at each concentration, then refit the curve
+    means = np.take_along_axis(wells, indices, axis=1).mean(axis=1)
+    fit = fit_hill(doses, means)
+    if fit[&quot;status&quot;] == &quot;accepted_for_teaching&quot;:
+        estimates.append(fit[&quot;absolute_ic50_nm&quot;])</code></pre>
+<h3>Bracketing, with a Ruler That Is Too Short</h3>
+<p>Suppose you measure a table with a thirty-centimetre ruler, and the table extends past the end. The honest report says that the length is greater than 30 centimetres. A concentration series works like that ruler. Its highest concentration is the end of the ruler. If the response at the top concentration is 38 percent, then 50 percent lies beyond the ruler.</p>
+<p>Take means of 5, 14, 27, 35 and 38 percent across five concentrations. The highest mean is 38, below 50, so the data stop short of the halfway level. Our program reports that the absolute IC50 is greater than the highest tested concentration. Now take means of 22, 41 and 63 percent. 50 percent lies between the second and third, so the data bracket it, and a crossing can be estimated.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig22-bracket.jpg" />
+<figcaption>Figure 22: Five means that top out at 38 percent give a bound, and three means that cross 50 percent give a bracketed crossing. Source: image created by author.</figcaption>
+</figure>
+<p>In the code, <code>fit_hill</code> checks the data first. When the means bracket 50 percent, the fit proceeds. Otherwise it returns a status called <code>refused</code>, together with the direction of the bound.</p>
+<pre class="python"><code># refuse a precise IC50 unless the data cross 50 percent inside the tested range
+if not values.min() &lt; 50 &lt; values.max():
+    return {&quot;status&quot;: &quot;refused&quot;,
+            &quot;reasons&quot;: [&quot;absolute 50% inhibition is not bracketed by observed concentration means&quot;],</code></pre>
+<p>The quality checks that follow look at parameter limits, the error size (a teaching threshold of 5 percentage points), the plateau assumption and large dips in the series (a drop of more than 10 points). These thresholds are disclosed teaching choices for this lesson and serve as examples of a rule written down in advance. The lesson also shows the real failure outputs, where the data and the reason a number was withheld stay together.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig23-refusal.jpg" />
+<figcaption>Figure 23: Real failure outputs of the program, with the reason that a number was withheld beside each one. Source: image created by author from the saved program output.</figcaption>
+</figure>
+<h3>Why Growth Matters, with Two Cell Lines</h3>
+<p>Let’s see the growth problem with numbers. A fast cell line starts with 1,000 cells, and in an untreated dish reaches 4,000, two doublings. A slow cell line starts with 1,000 and reaches 2,000, one doubling. A drug that halves the growth rate leaves the fast line with one doubling, so 2,000 cells. The slow line gets half a doubling, which is 1,414 cells.</p>
+<p>Now compute viability, the treated count divided by the untreated count. The fast line gives 2,000 over 4,000, 50 percent. The slow line gives 1,414 over 2,000, 70.7 percent. The same drug action, halving the growth rate, shows up as two different percentages, because the lines grew differently in the untreated dish.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig24-growth.jpg" />
+<figcaption>Figure 24: One drug that halves the growth rate gives 50 percent viability for a fast line and 70.7 percent for a slow line. Source: image created by author.</figcaption>
+</figure>
+<p>Growth rate inhibition metrics, which Hafner and colleagues (2016) introduced, compare growth rates using the starting count. For both lines, the value is 2 to the power of one half, minus 1, which is 0.414. A value of 1 means growth like untreated, 0 means growth has stopped, and below 0 means cells are dying. This lesson only previews the idea, and the paper is the place to read more. The practical lesson for us is to record growth and timing context beside every potency value.</p>
+<h2>Part 4: Curate Potency Data We Can Trust</h2>
+<p>A fitted curve shows the whole experiment, and a database gives us only a row. In this part, we meet real records of erlotinib on EGFR and learn the habits that keep a potency label meaningful: check every row at a desk, keep bounds as ranges, and keep each assay in its own group.</p>
+<h3>Curation, with a Library Return Desk</h3>
+<p>Picture a library return desk. Every returned book gets checked before it goes on a shelf: the right title, the right edition, the due date, the condition. Curation of activity records follows the same habit. Each row passes through a desk that checks the compound, the target, the activity type, the number, the unit and the relation, and every decision is written down.</p>
+<p>Here are six invented teaching rows.</p>
+<ul>
+<li>A row reading equals 12 nanomolar on the purified enzyme goes on the shelf.</li>
+<li>A row reading greater than 10,000 nanomolar waits as a bound.</li>
+<li>A row stating 3 micromolar gets converted to 3,000 nanomolar, the unit our table checks for.</li>
+<li>A row from a cell assay goes to the cell shelf.</li>
+<li>A row reporting Ki is a different endpoint, so it joins the Ki shelf.</li>
+<li>A row flagged as a possible duplicate gets excluded, with the flag as the reason.</li>
+</ul>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig25-curation-desk.jpg" />
+<figcaption>Figure 25: Six invented activity rows, each with the decision that classify() gives it. Source: image created by author.</figcaption>
+</figure>
+<p>In the code, the function <code>classify</code> in <code>curate_activities.py</code> makes these decisions and records every reason it finds, so every finding stays visible behind the label. <code>worked_examples.py</code> contains a tiny teaching version of the same idea for the six invented rows, so you can change a row and watch its decision change.</p>
+<h3>The Real Records</h3>
+<p>ChEMBL records an activity with the compound, the endpoint, a value and unit, a relation such as equals or greater than, an assay, a target assignment and a source document. A database gives us an IC50 as a single row, and the original well-by-well curve stays with the paper, so we can inspect the row’s identity, unit, relation, assay and source. Our second script starts from the manifest of Part 3 of the course. It checks the schema, the EGFR accession, the exact chemical identity of erlotinib and the saved file hash, and it stops if anything differs.</p>
+<p>We download all 209 IC50 records for erlotinib on human EGFR, and we explicitly select 12 teaching cases to exercise the checks. The selection serves the lesson, and the quality of the whole database is a separate question. The rules check the exact compound and target, the activity type, a positive finite value, a supported unit and the relation. A high target-assignment confidence means that the database is confident about the target mapping, and it describes the mapping, while experimental quality and identical conditions need their own evidence.</p>
+<h3>Bounds, with a Scale That Stops at Its Limit</h3>
+<p>Picture a bathroom scale that stops at 150 kilograms. When a heavy suitcase sits on it, the display shows 150, and the real weight is 150 or more. A reported IC50 of greater than 10,000 nanomolar is such a reading. The experiment reached its top concentration, and the crossing lies beyond it.</p>
+<p>Convert it carefully. 10,000 nanomolar is 10 to the minus 5 molar. The relation, greater than, stays attached. Taking the negative logarithm flips the direction, because a larger concentration gives a smaller pIC50. So the IC50 is greater than 10 to the minus 5 molar, and the pIC50 is less than 5. Two numbers and two arrows, reported together.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig26-bound.jpg" />
+<figcaption>Figure 26: A bound of greater than 10,000 nanomolar becomes a pIC50 below 5, with the relation attached at every step. Source: image created by author.</figcaption>
+</figure>
+<p>Replacing the bound with 5 would turn a statement about a range into a precise value, so our table keeps bounds in their own group, with the relation attached. A missing value stays missing, and an unknown concentration stays unknown. In the code, the <code>pic50</code> function accepts only positive finite numbers, which keeps these cases out of the exact-value column. In <code>classify</code>, a missing number and a bound each get their own status and a written reason.</p>
+<pre class="python"><code>if row[&quot;standard_value&quot;] is None or row[&quot;standard_relation&quot;] is None:
+    reasons.append(&quot;missing numeric measurement/relation; never impute zero&quot;)
+    status = &quot;excluded_missing&quot;
+elif row[&quot;standard_relation&quot;] != &quot;=&quot;:
+    reasons.append(&quot;censored bound, not an exact IC50; retain relation and no point pIC50&quot;)
+    status = &quot;excluded_censored&quot;</code></pre>
+<h3>Assay Groups, with a Run and a Flight</h3>
+<p>A five-kilometre run and a five-kilometre flight share a number and a unit, and they are different experiences. Assays work like that. An enzyme assay and a cell assay can both report nanomolar IC50 values, and the endpoints differ. Even two enzyme assays can differ in the construct, the substrate level, the timing or the detection method.</p>
+<p>Suppose the enzyme assay gives 50 nanomolar, and the cell assay gives 200 nanomolar. The average is 125 nanomolar, a value that comes from a mixture of two different experiments. So the program keeps each assay group in its own part of the table, with its count, its values and its sources beside it.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig27-groups.jpg" />
+<figcaption>Figure 27: An enzyme value of 50 nanomolar and a cell value of 200 nanomolar, each kept in its own assay group, because their average of 125 would mix two different experiments. Source: image created by author.</figcaption>
+</figure>
+<p>When the record leaves the construct or the variant open, we keep it open and label it. The next useful step is to read the original assay descriptions, where the details live. The function <code>classify</code> and the table builder store these labels with every retained row.</p>
+<h3>What the Curation Kept</h3>
+<p>The result is deliberately modest. Of the 12 selected cases, exactly one is retained as an individual record: activity 13852013, an IC50 of 2.6 nanomolar from an assay described as wild-type EGFR, whose origin, construct and substrate concentration are still incompletely specified. The other 11 keep their exclusion reasons: 2 are censored, 2 are cell-based, 2 are possible duplicates, 2 have an unknown variant, 1 has a missing value, 1 is a T790M mutant and 1 has low target confidence. For the retained row, our pIC50 calculation (8.585027) agrees with the ChEMBL value of 8.59, which is rounded to two decimals.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-04-dose-response-curves-and-ic50/article/images/v3-fig28-curation-table.jpg" />
+<figcaption>Figure 28: What the curation kept and excluded, with a written reason for every row. Source: image created by author from the saved program output.</figcaption>
+</figure>
+<p>These decisions matter later, when we build a prediction dataset. A numerical label should represent a clear measurement question. If we mix targets, variants, endpoints or conditions casually, a computer can learn the mixture instead of the biology. The microscopy images of Part 2 of the course stay a separate story until a verified match of compound, dose and timing to this table exists.</p>
+<h2>Check Your Understanding</h2>
+<p>Here are three short exercises. Try them first, and then compare with the answers.</p>
+<ol type="1">
+<li>Convert 100 nanomolar to molar and calculate its pIC50.</li>
+<li>A curve rises from 0 to 40 percent inhibition and has a relative midpoint of 10 nanomolar. What is the inhibition at that midpoint, and where is the absolute 50 percent crossing?</li>
+<li>Open one eligible and one excluded activity row from the saved table. Find the unit, relation, assay and source of each, and say what extra context you would want before comparing the eligible value with another assay.</li>
+</ol>
+<p>Here are the answers.</p>
+<ol type="1">
+<li>100 nanomolar is 100 times 10 to the minus 9, which is 10 to the minus 7 molar. The base-ten logarithm of 10 to the minus 7 is -7, and flipping the sign gives a pIC50 of 7. So a pIC50 of 7 means an IC50 of 100 nanomolar.</li>
+<li>At the midpoint, the response is halfway between 0 and 40, which is 20 percent. The curve climbs toward 40 and stays below 50, so an absolute 50 percent crossing is absent for this compound, and its IC50 is best reported as a bound.</li>
+<li>For each row, read the unit, the relation, the assay and the source. For the eligible row, ask about the construct, the substrate level and the timing before comparing it with another compound. Then check the arithmetic and the meaning as two separate steps.</li>
+</ol>
+<h2>Wrap-Up</h2>
+<p>We can now answer the question from the start. An IC50 summarizes a specified halfway response at a concentration, under specified assay and fitting conditions. It becomes useful when the response definition, the plateaus, the tested range, the units, the uncertainty and the source stay attached. Our Python fit recovered about 9.78 nanomolar from a reproducible synthetic example, with a limited interval and explicit refusal rules, and our curation preserved real records together with the reasons to keep assays apart. In the next lesson, we ask how a molecule becomes data that a computer can use, and which aspects of its structure each representation keeps or loses. Hope this article helps all those who want to read a potency number carefully before they use it as a label.</p>
+<h2>References</h2>
+<ol type="1">
+<li>Beck B, Chen YF, Dere W, et al. Assay Operations for SAR Support. In: Assay Guidance Manual, Bookshelf NBK91994 (updated 2017). https://www.ncbi.nlm.nih.gov/books/NBK91994/</li>
+<li>Hafner M, Niepel M, Chung M, Sorger PK. Growth rate inhibition metrics correct for confounders in measuring sensitivity to cancer drugs. Nature Methods 13, 521-527 (2016). DOI: 10.1038/nmeth.3853</li>
+<li>Cheng Y, Prusoff WH. Relationship between the inhibition constant (K1) and the concentration of inhibitor which causes 50 per cent inhibition (I50) of an enzymatic reaction. Biochemical Pharmacology 22, 3099-3108 (1973).</li>
+<li>ChEMBL database (release 37): erlotinib (CHEMBL553) and human EGFR (CHEMBL203) activity records, and the ChEMBL documentation on assay types, confidence scores and pChEMBL. https://www.ebi.ac.uk/chembl</li>
+<li>Code for this article: https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-04-dose-response-curves-and-ic50</li>
+</ol>
