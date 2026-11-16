@@ -2,7 +2,8 @@
 
 Code for the third video of the course. The video asks a question that comes before any model: are the protein, the structure and the compound we name exactly the ones we think they are? The code builds a small, checked "manifest" for two teaching targets, EGFR with erlotinib and KRAS G12D with MRTX1133, from frozen public records. It is an identity foundation: docking, dose-response curves, potency prediction and target validation come in later lessons.
 
-Video: [AI in Drug Discovery 3: The Drug Discovery Pipeline, EGFR and KRAS G12D on YouTube](https://youtu.be/1OmpK0Qh-5s)
+Video: [AI in Drug Discovery 3: The Drug Discovery Pipeline, EGFR and KRAS G12D on YouTube](https://youtu.be/1OmpK0Qh-5s)  
+Article: [AI in Drug Discovery 3: The Drug Discovery Pipeline, EGFR and KRAS G12D on Medium](https://arjun-sarkar786.medium.com/ai-in-drug-discovery-3-the-drug-discovery-pipeline-egfr-and-kras-g12d-ba3ce9e762ea)
 
 The video explains what the code does and why. The line-by-line reading lives in the commented files in this folder, and the Medium article walks through the same steps in writing.
 
