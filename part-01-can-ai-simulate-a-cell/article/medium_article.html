@@ -1,0 +1,131 @@
+<h1 id="ai-in-drug-discovery-1-biology-how-models-learn-transformers-and-esm-2">AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2</h1>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/covers/part-01-cover.jpg" />
+</figure>
+<p>If you prefer to learn in more detail or in a visual way, <a href="https://youtu.be/n_C-w4SAVeY">watch the video for this lesson on YouTube</a>.</p>
+<p>In this tutorial, we will find out what it means to “simulate a cell” with artificial intelligence today. We will learn the biology we need, see how a model learns from examples, and run a small protein language model on a real protein sequence. We assume basic coding skills and a little familiarity with machine learning, and we give an everyday example whenever an idea is hard.</p>
+<p>A “virtual cell” model takes information about cells and a change we want to study, for example switching off a gene, and predicts part of the resulting cell state, usually a pattern of RNA measurements. Recent research models such as Stack (Dong et al., Arc Institute) and X-Cell (Wang et al., Xaira Therapeutics) work in this way. We introduce their ideas at overview level, and the authors’ own results are in the papers listed in the references. The code we run ourselves uses ESM-2, a protein language model from the paper “Evolutionary-scale prediction of atomic-level protein structure with a language model” (Lin et al., Science, 2023), in its smallest checkpoint, which runs on a normal CPU.</p>
+<p>This article follows <a href="https://youtu.be/n_C-w4SAVeY">the first video of the course</a>. All code is in the GitHub folder <a href="https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-01-can-ai-simulate-a-cell">part-01-can-ai-simulate-a-cell</a>, with comments in every file, and <code>worked_examples.py</code> reproduces the small calculations below so you can check every number and change the inputs. The video walks through each idea slowly, and this article keeps the short version.</p>
+<p>We will follow these steps:</p>
+<ol type="1">
+<li>Biology foundations: cells, DNA, RNA and proteins</li>
+<li>Defining the research problem</li>
+<li>How models learn: loss, gradient descent, the Transformer and attention</li>
+<li>The real code experiment with ESM-2</li>
+<li>What the score tells us</li>
+</ol>
+<h2 id="biology-foundations">Biology Foundations</h2>
+<p>A cell is a small organized unit of life, and its parts interact, so predicting how a cell responds is harder than recognizing a single molecule. DNA is a long molecule that stores genetic information, written in an order of bases labelled A, C, G and T, and a gene is a region of DNA whose information can be used to make a functional product. During transcription, the cell uses DNA as a template to make RNA, and messenger RNA carries the information towards the machinery that builds proteins. Proteins are chains of amino acids, and the order of the amino acids is the protein sequence. The chain folds, and that organization helps decide what the protein can do. Gene expression means using a gene’s information to make an RNA or protein product, and two cells with similar DNA can behave differently because they use it differently.</p>
+<figure>
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*YQZQDttVXK3VaZMR.png" alt="Figure 1: Information flows from DNA to RNA to protein, and proteins act inside cells, tissues and people. Source: image created by author (frame from the video)." />
+<figcaption aria-hidden="true">Figure 1: Information flows from DNA to RNA to protein, and proteins act inside cells, tissues and people. Source: image created by author (frame from the video).</figcaption>
+</figure>
+<p>A prediction about one protein answers a different question from a prediction about a cell, a tissue or a patient, so we always keep track of which question a model was built to answer.</p>
+<h2 id="defining-the-research-problem">Defining the Research Problem</h2>
+<p>Before we choose a model, we say what change we want, what information we have, and what observation would count as evidence. Imagine a control group and a group that receives a specified intervention, called a perturbation: researchers reduce the activity of a gene, add a compound, or change the environment. The model input is the starting cell context plus a description of the intervention, and the target output could be the RNA expression profile measured afterwards. Single-cell RNA sequencing gives a table where each row is a measured cell and each column is a gene. We judge a prediction by comparing it with measurements that were kept separate from model fitting.</p>
+<figure>
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*RNQDpKvIYwiVHIeq.png" alt="Figure 2: A cell becomes a row of numbers, one value per gene (illustrative values). Source: image created by author (frame from the video)." />
+<figcaption aria-hidden="true">Figure 2: A cell becomes a row of numbers, one value per gene (illustrative values). Source: image created by author (frame from the video).</figcaption>
+</figure>
+<p>That is one practical meaning of a virtual cell model today: predict a measured cellular response. Simulating every process in a living cell is a far more demanding goal, and we keep the two meanings apart. For models like Stack and X-Cell, an impressive output is only the start of the evaluation: we ask whether test cells were kept separate from training and whether the model beats a simple baseline.</p>
+<p>Our recurring example in this course is EGFR, a receptor involved in signals for cell division and survival. We describe one change in its sequence with the label C797S: the amino acid cysteine (C) at position 797 is replaced by serine (S). The position refers to a reference sequence, so we check the numbering before running any code. As a second case, we use KRAS and the change G12D, where glycine at position 12 becomes aspartate.</p>
+<h2 id="how-models-learn">How Models Learn</h2>
+<p>Our first model works with a protein sequence, and the same few ideas come back again and again in the course, so we go slowly and use a small example for every hard idea.</p>
+<h4 id="a-language-model-for-proteins">A Language Model for Proteins</h4>
+<p>The autocomplete on a phone suggests words such as office, party or airport after “see you at the”, because it has learned from a large amount of text which words tend to follow which. A language model learns the patterns of a sequence by predicting a piece that is missing or comes next. A protein is a chain of amino acids written with an alphabet of twenty letters, and evolution has produced millions of related sequences. Some positions are the same in almost every relative, and others change freely. We hide one letter, look at the surrounding sequence, and predict the missing one.</p>
+<h4 id="training-and-loss">Training and Loss</h4>
+<p>A trainable model makes predictions using adjustable numbers called parameters, and training changes those numbers using examples. We give the model an input with a known answer, compare the prediction with the answer using a numerical rule called a loss, and let an optimization procedure adjust the parameters a little. For a protein model, the answer comes from the sequence itself: we hide one amino acid and ask for a probability for each possible amino acid at that position.</p>
+<p>The loss is the negative natural logarithm of the probability the model gave to the correct amino acid:</p>
+<p>loss = -ln p(correct amino acid | context)</p>
+<p>A probability close to 1 gives a penalty close to 0, and a very small probability gives a large penalty. Here are two teaching examples with made-up probabilities: p = 0.20 gives a loss of about 1.609, and p = 0.80 gives about 0.223. The more confident and correct prediction has the smaller loss.</p>
+<figure>
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*tPv7VDtv8_oZwuFP.png" alt="Figure 3: With p = 0.20 the loss is about 1.609, and with p = 0.80 about 0.223. Source: image created by author (frame from the video)." />
+<figcaption aria-hidden="true">Figure 3: With p = 0.20 the loss is about 1.609, and with p = 0.80 about 0.223. Source: image created by author (frame from the video).</figcaption>
+</figure>
+<h4 id="knobs-and-gradient-descent">Knobs and Gradient Descent</h4>
+<p>Picture a mixing desk in a recording studio, covered in knobs. A neural network is like that desk: the knobs are the parameters, each one simply a number, and our small ESM-2 model has about 7.5 million of them. Before training, the knobs hold small random values, so the first predictions are close to guesses.</p>
+<p>To turn a knob in the right direction, imagine standing on a hilly landscape in thick fog. You feel the slope of the ground under your feet, take a small step downhill, and repeat. The height of the ground is the loss, and your position is the setting of a knob. This method is called gradient descent, and the word gradient simply means slope.</p>
+<p>Take a tiny model with one knob, where the loss is (knob - 3)². We start at 0, where the loss is 9 and the slope is -6. We step by one tenth of the slope, which gives 0.6 and a loss of about 5.76, then 1.08 with a loss of about 3.69, then 1.46 with about 2.36. Each step is smaller than the one before, because the ground flattens as we approach the best value. The step size comes from the learning rate, 0.1 here, and a rate that is too large can overshoot the valley while one that is too small makes the walk slow. A real model has millions of knobs, and backpropagation calculates all their slopes efficiently by working backward from the loss, like tracing a disappointing dish back through a recipe to find which ingredient mattered most.</p>
+<figure>
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*AGF_BrvEQnwshLai.jpg" alt="Figure 4: Walking downhill on a one-knob loss, each step a little smaller than the one before. Source: image created by author (frame from the video)." />
+<figcaption aria-hidden="true">Figure 4: Walking downhill on a one-knob loss, each step a little smaller than the one before. Source: image created by author (frame from the video).</figcaption>
+</figure>
+<h4 id="the-learning-loop-training-and-inference">The Learning Loop, Training and Inference</h4>
+<p>We hide some amino acids in a protein sequence, the model predicts them, we compare with the true amino acids and calculate the loss, and we nudge every knob a small step downhill. One round barely changes the model, and ESM-2 repeats the loop over millions of natural protein sequences, like a student who practices thousands of fill-in-the-blank exercises. Researchers keep some sequences aside as validation data, and if the loss on them keeps falling, the model is learning general patterns.</p>
+<p>When training finishes, the knobs are frozen and saved in a file called a checkpoint. Using a model with frozen knobs is called inference: training is studying for the exam, and inference is sitting the exam. Our code loads a checkpoint that researchers already trained and runs inference, so we train nothing in this lesson. This is also why the variant score later is called zero shot: the model answers our question without extra study on that specific variant.</p>
+<h4 id="what-is-a-transformer">What Is a Transformer?</h4>
+<p>ESM-2 is a Transformer, a type of neural network introduced in 2017 in the Google paper “Attention Is All You Need”. A Transformer takes a sequence of items, such as words or amino acids, and produces a richer, context-aware description of every item. In “the animal stayed on the pavement because it was too tired”, you know that “it” means the animal because you take the whole sentence into account, and a Transformer builds its description of “it” in the same way. Two amino acids that are far apart in the sequence can sit next to each other once the chain folds, and a Transformer lets every position look at every other position in one step.</p>
+<p>A Transformer is built from a repeating block with two parts. Attention lets every position gather information from the other positions, and a small network processes each position’s updated description. ESM-2 stacks these blocks, and our small version has six.</p>
+<figure>
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*hvmJ1lFfNFUjPFkf.jpg" alt="Figure 5: One Transformer block has an attention part and a small network, and ESM-2 stacks six of them. Source: image created by author (frame from the video)." />
+<figcaption aria-hidden="true">Figure 5: One Transformer block has an attention part and a small network, and ESM-2 stacks six of them. Source: image created by author (frame from the video).</figcaption>
+</figure>
+<h4 id="embeddings-describing-a-position-with-numbers">Embeddings: Describing a Position with Numbers</h4>
+<p>A computer describes each position with a list of numbers called an embedding. Describing a movie with three scores for action, romance and humor works the same way: a thriller might score 0.9, 0.1 and 0.2, a romantic comedy 0.1, 0.9 and 0.8, and films with similar lists are similar films. The model learns its own descriptive scores, and in our small ESM-2, every position is described by 320 numbers. After each block, the list is updated using the surrounding sequence, so the same letter can have different numbers in different places, which makes the embedding contextual.</p>
+<h4 id="attention-deciding-whom-to-listen-to">Attention: Deciding Whom to Listen To</h4>
+<p>Imagine a meeting with ten colleagues where you give the most weight to the few who know the most about the question in front of you. Attention works the same way: every position listens to all the other positions and decides how much weight to give each one, then blends what it heard into an updated description.</p>
+<p>Each position creates three short lists from its embedding. The query describes what the position is looking for, the key describes what it has to offer, and the value holds the information it shares when someone listens to it. In a library, the query is your question to the librarian, the key is the label on a book’s spine, and the value is the content of the book. The match between a query and a key is a score, calculated with a dot product: multiply the two lists number by number and add up the results.</p>
+<p>Here is a tiny example with lists of two numbers. Our position’s query is (1, 0), and the three keys are (1, 0.2), (0, 1) and (0.9, -0.1). The scores are 1, 0 and 0.9. Transformers divide each score by the square root of the list length, about 1.41 here, giving about 0.71, 0 and 0.64. A function called softmax turns these into weights that are positive and add up to 100 percent, about 41%, 20% and 38%. With values (2, 0), (0, 2) and (1, 1), the blend 0.41 × (2, 0) + 0.20 × (0, 2) + 0.38 × (1, 1) gives a new list of about (1.21, 0.79), the position’s updated description.</p>
+<figure>
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*WsHfgi71t4PHpNnT.jpg" alt="Figure 6: The attention calculation with three positions: scores, weights, and the blended new list (1.21, 0.79), with made-up numbers. Source: image created by author (frame from the video)." />
+<figcaption aria-hidden="true">Figure 6: The attention calculation with three positions: scores, weights, and the blended new list (1.21, 0.79), with made-up numbers. Source: image created by author (frame from the video).</figcaption>
+</figure>
+<h4 id="many-heads-and-many-blocks">Many Heads and Many Blocks</h4>
+<p>A model benefits from listening in several ways at once, so a Transformer runs many attention heads side by side. Each head has its own query, key and value, learned during training, like a team of reviewers reading the same page where one watches for names, another for numbers and another for the overall topic. The next block then repeats the process with the improved descriptions, like rounds of a discussion where later rounds reason with each other’s conclusions. Our small ESM-2 has 20 heads in each of 6 blocks, which gives 120 attention heads in total.</p>
+<figure>
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*ctifG9_9kNycNteT.jpg" alt="Figure 7: Every small square is one attention head: 6 blocks with 20 heads each give 120 heads. Source: image created by author (frame from the video)." />
+<figcaption aria-hidden="true">Figure 7: Every small square is one attention head: 6 blocks with 20 heads each give 120 heads. Source: image created by author (frame from the video).</figcaption>
+</figure>
+<h4 id="how-to-read-an-attention-map">How to Read an Attention Map</h4>
+<p>Every head produces a table of weights that we can draw as a picture called an attention map, a matrix of rows and columns. Each row is a position that is listening, each column is a position that can be listened to, and the color of a cell shows the weight: bright means strong attention. The weights in each row add up to 100 percent, so every row shows one position dividing its attention.</p>
+<p>To read the map, pick a row and look for its brightest cells. In the made-up sentence “the animal stayed home because it was tired”, the row for “it” is brightest in the column for “animal”. A bright diagonal means positions listening to themselves, a stripe beside it means listening to neighbors, a bright column means one position that many others listen to, and a single bright cell far from the diagonal is a long-distance link. An attention map is a clue about what a head used, and linking one bright cell to a physical contact in the folded protein takes further analysis.</p>
+<h4 id="meeting-esm-2">Meeting ESM-2</h4>
+<p>ESM stands for evolutionary scale modeling, a family of protein language models from Meta’s AI research team, trained with exactly the game we described: hide amino acids in natural sequences and predict them from the surroundings. The family runs from 8 million to 15 billion parameters, and structure information becomes clearer as the models grow. We use the smallest, with about 7.5 million parameters, 6 blocks, 20 heads per block and 320 numbers per position, and it runs on an ordinary laptop processor.</p>
+<p>ESM-2 gives a probability for every possible amino acid at a hidden position, a variant score from comparing two of them, and an embedding for every position. The tokenizer turns each letter into a number, and a final layer scores each symbol in a vocabulary of 33 tokens, which softmax turns into probabilities.</p>
+<h2 id="the-real-code-experiment">The Real Code Experiment</h2>
+<p>The script <code>esm2_demo.py</code> reads the EGFR sequence from a FASTA file, checks that position 797 really is cysteine, and cuts a window of 30 amino acids on each side of it, which gives 61 amino acids from position 767 to 827. Our results describe this model on this window. The tokenizer then turns the letters into integer ids and adds a start and an end token.</p>
+<pre class="python"><code>encoded = tokenizer(window.sequence, return_tensors=&quot;pt&quot;, add_special_tokens=True)
+token_ids = encoded[&quot;input_ids&quot;][0].tolist()
+tokens = tokenizer.convert_ids_to_tokens(token_ids)</code></pre>
+<p>Our 61 amino acids give 63 token positions, and the output has the shape (1, 63, 320): one sequence, 63 positions and 320 features.</p>
+<figure>
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*aZH5L2YYTU9DsE-G.png" alt="Figure 8: From letters to a tensor of shape 1 x 63 x 320. Source: image created by author (frame from the video)." />
+<figcaption aria-hidden="true">Figure 8: From letters to a tensor of shape 1 x 63 x 320. Source: image created by author (frame from the video).</figcaption>
+</figure>
+<p>Now we hide position 797 by replacing its token with the mask token. The model returns one raw score for every symbol in its vocabulary, and a softmax turns those scores into probabilities that add up to one.</p>
+<pre class="python"><code>masked = {key: value.clone() for key, value in encoded.items()}
+masked[&quot;input_ids&quot;][0, target_index] = tokenizer.mask_token_id
+with torch.inference_mode():
+    logits = model(**masked, return_dict=True).logits[0, target_index]
+log_probability = torch.log_softmax(logits, dim=-1)
+probability = log_probability.exp()</code></pre>
+<figure>
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*LA4NtyuL4NuNegKV.png" alt="Figure 9: The masked position and the real probabilities from our run. Source: image created by author (frame from the video)." />
+<figcaption aria-hidden="true">Figure 9: The masked position and the real probabilities from our run. Source: image created by author (frame from the video).</figcaption>
+</figure>
+<p>The variant score is the natural logarithm of the ratio of the mutant probability to the original (wild-type) probability, measured in the same masked window.</p>
+<pre class="python"><code>score = float(log_probability[mutant_id] - log_probability[wild_id])</code></pre>
+<p>A positive score means the model gives the changed amino acid more probability, and a negative score means it prefers the original. Here are the real results of our run:</p>
+<ul>
+<li>EGFR C797S: p(original) 0.0172, p(changed) 0.0735, score +1.455, so S gets about 4.3 times the probability of C</li>
+<li>KRAS G12D: p(original) 0.0628, p(changed) 0.0284, score -0.794, so the model prefers the original G</li>
+</ul>
+<p>The script also saves the attention weights as an array of shape (6, 20, 63, 63), and we can show one layer and head as a heat map. Before we trust even this limited result, the code runs three basic checks: the reference amino acid matches the downloaded sequence, the index of the hidden token accounts for the added start token, and the probabilities and tensor shapes agree with the model configuration.</p>
+<figure>
+<img src="https://miro.medium.com/v2/resize:fit:1400/0*M_ro7I-bqjzIS5Xb.png" alt="Figure 10: Attention heads from the real EGFR window, where colors show attention weights. Source: image created by author (frame from the video)." />
+<figcaption aria-hidden="true">Figure 10: Attention heads from the real EGFR window, where colors show attention weights. Source: image created by author (frame from the video).</figcaption>
+</figure>
+<h2 id="what-the-score-tells-us">What the Score Tells Us</h2>
+<p>The score tells us how this pre-trained sequence model rates two amino acids in a defined window, which can be useful information to investigate. Drug binding, resistance, cell growth and patient benefit are different endpoints, each measured with its own experiments. The sign flips between EGFR and KRAS, which reminds us to interpret the quantity we calculated and to avoid labelling every positive number as good and every negative number as bad.</p>
+<p>Now it is your turn: the repository also runs the KRAS example, and because position 12 is close to the start of the protein, we check the recorded window start and end positions.</p>
+<p>Here are three questions to test yourself. First, if a model predicts how RNA expression changes after a genetic intervention, is it predicting a protein sequence or a measured cellular response? Second, if the probability given to the correct hidden amino acid rises from 20% to 80%, does the loss go up or down? Third, if the ESM-2 score favours serine over cysteine, have we shown that a medicine will work against that variant? The answers are: a measured cellular response; the loss goes down, from about 1.61 to about 0.22; and no, the score only describes a preference of the model in this context.</p>
+<p>We started with an ambitious question, can AI simulate a cell? We now have a more precise answer: researchers build useful models of particular biological measurements and responses, while a complete virtual cell is a much larger goal.</p>
+<p>In the next part, we turn from prediction to observation, and learn what microscopy shows us about cells, organoids and tissues. Hope this article helps all those who are starting to explore AI in drug discovery.</p>
+<h2 id="references">References</h2>
+<ol type="1">
+<li>Lin, Z., Akin, H., Rao, R., et al. Evolutionary-scale prediction of atomic-level protein structure with a language model. Science 379, 1123–1130 (2023). DOI: 10.1126/science.ade2574</li>
+<li>Dong et al. Stack (Arc Institute). bioRxiv preprint (2026). DOI: 10.64898/2026.01.09.698608</li>
+<li>Wang et al. X-Cell: Scaling Causal Perturbation Prediction Across Diverse Cellular Contexts via Diffusion Language Models. bioRxiv preprint (2026). DOI: 10.64898/2026.03.18.712807</li>
+<li>ESM-2 checkpoint used in the code: facebook/esm2_t6_8M_UR50D (Hugging Face).</li>
+<li>Code for this article: https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-01-can-ai-simulate-a-cell</li>
+</ol>
