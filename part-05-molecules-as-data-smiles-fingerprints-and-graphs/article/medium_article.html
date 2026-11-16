@@ -1,10 +1,9 @@
-<h1>AI in Drug Discovery 5: Molecules as Data with SMILES, Graphs and Fingerprints</h1>
+<h1 id="ai-in-drug-discovery-5-molecules-as-data-with-smiles-graphs-and-fingerprints">AI in Drug Discovery 5: Molecules as Data with SMILES, Graphs and Fingerprints</h1>
 <figure>
 <img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/covers/part-05-cover.jpg" />
-<figcaption>AI in Drug Discovery, Part 5: Molecules as Data with SMILES, Graphs and Fingerprints. Source: image created by author.</figcaption>
 </figure>
 <p>If you prefer to learn in more detail or in a visual way, <a href="VIDEO_URL">watch the video for this lesson on YouTube</a>.</p>
-<p>In this tutorial, we will learn how a molecule written as a line of text becomes data that a program can use, while every choice stays visible. We start from a road map of three towns, turn it into a labeled graph of atoms and bonds, and count hydrogens, formulas and masses with tiny calculations. Then we read SMILES strings, check them in two layers, and build descriptors and fingerprints with worked arithmetic for hashing, folding, collisions and the Tanimoto score. Finally, we run an offline Python lab on 20 deliberately chosen input rows and read what it records.</p>
+<p>In this tutorial, we will learn how a molecule written as a line of text becomes data that a program can use, while every choice stays visible. We build a graph of atoms and bonds, read and check SMILES strings, build descriptors and fingerprints, and run an offline Python lab on 20 chosen rows.</p>
 <p>Earlier articles in this course:</p>
 <ul>
 <li><a href="https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0">AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2</a></li>
@@ -12,456 +11,227 @@
 <li><a href="https://medium.com/p/ba3ce9e762ea">AI in Drug Discovery 3: The Drug Discovery Pipeline, EGFR and KRAS G12D</a></li>
 <li><a href="https://medium.com/p/020f02845bb1">AI in Drug Discovery 4: Dose-Response Curves, IC50 and a Python Fit</a></li>
 </ul>
-<p>The course assumes basic coding skills and a little familiarity with machine learning, and we introduce every important idea before we use it. The folder for this lesson on GitHub, <a href="https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-05-molecules-as-data-smiles-fingerprints-and-graphs">part-05-molecules-as-data-smiles-fingerprints-and-graphs</a>, holds the code with comments in every function. <code>molecular_representation_lab.py</code> is the lab, <code>worked_examples.py</code> reproduces every small calculation of this article step by step using only the Python standard library, and <code>test_molecular_representation_lab.py</code> holds 22 checks. The video describes what the code does and why, and the commented files give the line-by-line reading, so you can open them whenever you like. Two newer string notations, SELFIES and SAFE, receive an overview here, and the next lesson, QSAR, builds on the representations we create today.</p>
+<p>The course assumes basic coding skills and a little familiarity with machine learning. The commented code is in the GitHub folder <a href="https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-05-molecules-as-data-smiles-fingerprints-and-graphs">part-05-molecules-as-data-smiles-fingerprints-and-graphs</a>, and <code>worked_examples.py</code> reproduces every small calculation below. The video walks through each idea slowly, and this article keeps the short version.</p>
 <p>The roadmap for this article is:</p>
 <ol type="1">
-<li>Recover the molecular graph: atoms, bonds, hydrogens, formulas, tables, renumbering, handedness and exact identities.</li>
-<li>Read and check molecular strings: SMILES, branches, rings, dots, parsing and sanitizing, canonical strings, the at sign, and an overview of SELFIES and SAFE.</li>
-<li>Build and compare fingerprints: descriptors, Morgan environments, hashing, folding, collisions, bits and counts, the Tanimoto coefficient, a chirality setting and MACCS keys.</li>
-<li>Run an auditable representation lab: a map of the functions, the audit of 20 rows, graph export, a join with a measurement, tests and their limits.</li>
+<li>Recover the molecular graph.</li>
+<li>Read and check molecular strings.</li>
+<li>Build and compare fingerprints.</li>
+<li>Run an auditable representation lab.</li>
 </ol>
-<h2>Why a Molecule Needs a Representation</h2>
-<p>Two different strings can describe the same molecule. Two different molecules can have the same formula. And two different structural features can land in the same fingerprint bit. How do we tell these situations apart? A prediction model reads numbers, while a chemist draws pictures and writes names, so every project that learns from molecules needs a step in the middle that turns one into the other. That step is a representation, and each representation keeps some information and drops other information.</p>
-<p>In the previous lesson, we fitted a reproducible synthetic concentration-response curve and recovered a midpoint of about 9.78 nanomolar. Separately, our curation of real database records kept one erlotinib measurement of 2.6 nanomolar on EGFR, with important assay information still missing. Those were two different sources of evidence. Today we need a precise representation of the molecule that belongs to a measurement. We keep the exact erlotinib and MRTX1133 identities from the third lesson. Turning a chemical string into numbers adds structure information, while potency, assay conditions and effects in people each need their own evidence.</p>
-<p>The payoff of this lesson is a representation that we can inspect and reproduce before we ask any prediction model to learn from it. Along the way, we explain the arithmetic of every step, and we record what each representation preserves and what it loses.</p>
-<h2>Part 1: Recover the Molecular Graph</h2>
-<p>Part 1 starts with the object we want to describe. An atom is a unit of a chemical element, such as carbon or oxygen. Chemical bonds are interactions that hold atoms together in a molecule. The arrangement of those bonds matters as well as the list of atoms. A convenient computer representation is a graph, where atoms become labeled nodes and bonds become labeled edges that connect pairs of nodes. We begin with ethanol, a small molecule that contains carbon, hydrogen and oxygen. Its simplicity lets us inspect every connection with the chemistry intact. Every calculation of this part is reproduced in <code>worked_examples.py</code>.</p>
-<h3>A Molecule as a Map of Towns and Roads</h3>
-<p>Imagine a road map with three towns. Two roads connect them in a line: town A to town B, and town B to town C. The map has three towns and two roads. A chemist draws a molecule in the same spirit, where each atom is a town, each bond is a road, and the whole drawing is a map of which atoms connect to which.</p>
-<p>Now we give the towns names. Call them carbon, carbon and oxygen, and let the roads be single bonds. That map is ethanol. Rename the last town carbon instead of oxygen, and the roads look the same, yet the map now describes a different molecule. So a graph holds two kinds of information, the pattern of roads and the label on every town and every road.</p>
-<p>Mathematicians call such a map a graph. The towns are nodes, and the roads are edges. For ethanol, we count three nodes and two edges. A bond label records information such as whether a bond is single or double, and a double bond is a different kind of link between the same two atoms. Circles and lines become a molecular description once the labels are added.</p>
+<h2 id="why-a-molecule-needs-a-representation">Why a Molecule Needs a Representation</h2>
+<p>Two different strings can describe the same molecule, and two different molecules can share a formula. A prediction model reads numbers while a chemist draws pictures, so every project that learns from molecules needs a step in the middle. That step is a representation, and each one keeps some information and drops other information.</p>
+<h2 id="part-1-recover-the-molecular-graph">Part 1: Recover the Molecular Graph</h2>
+<h4 id="a-molecule-as-a-map-of-towns-and-roads">A Molecule as a Map of Towns and Roads</h4>
+<p>Three towns joined by two roads in a line form a graph, where towns are nodes and roads are edges. Name the towns carbon, carbon and oxygen, with single-bond roads, and the map is ethanol. Rename the last town carbon, and the roads look the same while the molecule changes. So a graph holds the pattern of roads and the label on every town and road.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig01-towns.jpg" />
-<figcaption>Figure 1: A molecule as a map of towns and roads: the pattern of roads and the label on every town and road tell ethanol (C–C–O) from a different molecule (C–C–C). Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig01-towns.jpg" alt="Figure 1: Ethanol (C-C-O) and a different molecule (C-C-C) on the same road pattern. Source: image by author." />
+<figcaption aria-hidden="true">Figure 1: Ethanol (C-C-O) and a different molecule (C-C-C) on the same road pattern. Source: image by author.</figcaption>
 </figure>
-<p>Here, “heavy atom” means an atom other than hydrogen. Our ethanol graph has three heavy-atom nodes and two bonds. In the next sections, we count hydrogens, store the connections in tables, and meet one extra detail that a flat map misses, which is the handedness of a molecule.</p>
-<h3>Counting Hydrogens, with Hands</h3>
-<p>Where are ethanol’s hydrogens? Many chemical drawings leave some hydrogen atoms implicit, and a simple rule recovers them. Every atom has a number of hands, which chemists call valence. Carbon has four hands, nitrogen has three, oxygen has two, and hydrogen has one. A single bond is two atoms holding hands, and a double bond uses two hands of each atom. In a stable molecule, every hand is holding something.</p>
-<p>Let’s count for ethanol.</p>
-<ul>
-<li>The first carbon holds one hand with the second carbon, so three hands remain, and three hydrogens fill them.</li>
-<li>The second carbon holds hands with the first carbon and with the oxygen, so two hands remain, and two hydrogens fill them.</li>
-<li>The oxygen holds one hand with a carbon, so one hand remains, and one hydrogen fills it.</li>
-</ul>
-<p>Three plus two plus one makes six hydrogens. That count is the arithmetic behind implicit hydrogens. A drawing can leave the hydrogens out, because the hands tell us how many belong at each atom. In our code, the toolkit applies the same bookkeeping and stores a hydrogen count on every atom, so a short heavy-atom drawing keeps its hydrogens as part of the molecule. Charge, aromaticity and other cases need additional rules, and the toolkit applies them as well.</p>
+<h4 id="counting-hydrogens-formula-and-mass">Counting Hydrogens, Formula and Mass</h4>
+<p>Every atom has hands, called valence: carbon 4, nitrogen 3, oxygen 2, hydrogen 1, and in a stable molecule every hand holds something. In ethanol, the first carbon has three hands left (3 hydrogens), the second carbon two (2) and the oxygen one (1), so a drawing can leave the six hydrogens out.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig02-valence.jpg" />
-<figcaption>Figure 2: Counting hydrogens with hands: the first carbon has 4 − 1 = 3 hydrogens, the second carbon 4 − 2 = 2 and the oxygen 2 − 1 = 1. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig02-valence.jpg" alt="Figure 2: Counting hydrogens with hands: 3, 2 and 1. Source: image by author." />
+<figcaption aria-hidden="true">Figure 2: Counting hydrogens with hands: 3, 2 and 1. Source: image by author.</figcaption>
 </figure>
-<h3>From Atom Counts to a Formula and a Mass</h3>
-<p>With the hydrogens known, we can write ethanol’s formula by counting. Two carbon atoms, six hydrogens and one oxygen give C2H6O. A formula lists how many atoms of each element a molecule contains, while the connections between them are stored in the graph.</p>
-<p>The molar mass follows from the same counts. Carbon weighs about 12.011 grams per mole, hydrogen about 1.008, and oxygen about 15.999.</p>
-<ul>
-<li>Two carbons give 2 × 12.011 = 24.022.</li>
-<li>Six hydrogens give 6 × 1.008 = 6.048.</li>
-<li>One oxygen gives 15.999.</li>
-</ul>
-<p>Adding them up, we get 46.069 grams per mole. A mole is a standard count of molecules, so grams per mole converts between the weight of a sample and the number of molecules it holds. Our RDKit run reports exactly 46.069 for ethanol, the same number we just made by hand. A short calculation like this is a good habit, because it shows what a descriptor column is made of.</p>
+<p>Ethanol is C2H6O, and with carbon at 12.011, hydrogen at 1.008 and oxygen at 15.999 grams per mole, we get 24.022 + 6.048 + 15.999 = 46.069, the number RDKit reports.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig03-mass.jpg" />
-<figcaption>Figure 3: Ethanol’s molar mass built from its atom counts: 24.022 + 6.048 + 15.999 = 46.069 grams per mole. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig03-mass.jpg" alt="Figure 3: Ethanol’s molar mass from its atom counts: 46.069 grams per mole. Source: image by author." />
+<figcaption aria-hidden="true">Figure 3: Ethanol’s molar mass from its atom counts: 46.069 grams per mole. Source: image by author.</figcaption>
 </figure>
-<h3>Same Atoms, Different Connections</h3>
-<p>Here is an everyday picture for a shared formula. The words <em>listen</em> and <em>silent</em> use the same six letters, and they are different words. Ethanol and dimethyl ether are like that. Dimethyl ether has the formula C2H6O as well, but its heavy-atom chain is carbon, oxygen, carbon. Ethanol has a carbon-to-carbon bond and an oxygen at the end, while dimethyl ether has oxygen between the two carbons. These are different molecules with the same atom counts.</p>
-<p>Let’s count the hydrogens for dimethyl ether. Each end carbon is joined to the oxygen, so each carries three hydrogens. The oxygen sits between the two carbons, and both of its hands are already holding carbons. Three plus three plus zero makes six, so the formula is again C2H6O, with a mass of 46.069. Our RDKit calculation gives both molecules the same average molar mass, so a formula or a molecular-weight column is useful, and the graph adds the connectivity that tells molecules apart.</p>
-<p>The difference lives in the connections. Ethanol has a hydrogen bound to its oxygen, and dimethyl ether has zero. A hydrogen-bond donor count captures that difference, because ethanol gets one donor and dimethyl ether gets zero. So a single column can separate two molecules that share every other number we have computed so far. Keep this pair in mind, because it returns in the fingerprint part.</p>
+<h4 id="same-atoms-different-connections">Same Atoms, Different Connections</h4>
+<p>The words listen and silent share their letters, and ethanol and dimethyl ether (C-O-C) share C2H6O and a mass of 46.069. Hydrogen-bond donors separate them: ethanol has one, and dimethyl ether has zero.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig04-ether.jpg" />
-<figcaption>Figure 4: The words listen and silent, and the pair ethanol (C-C-O) and dimethyl ether (C-O-C), each with the same atoms and different connections. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig04-ether.jpg" alt="Figure 4: Listen and silent; ethanol and dimethyl ether, same atoms and different connections. Source: image by author." />
+<figcaption aria-hidden="true">Figure 4: Listen and silent; ethanol and dimethyl ether, same atoms and different connections. Source: image by author.</figcaption>
 </figure>
-<h3>Tables and the Adjacency Matrix</h3>
-<p>We can store ethanol as an atom table and a bond table. We assign local indices 0, 1 and 2 to the first carbon, the second carbon and the oxygen. The bond table holds a single bond from 0 to 1 and another from 1 to 2, and the atom table records each element together with its other attributes.</p>
-<p>An adjacency matrix is another way to record the same connections. Think of a road atlas with a table at the back. The towns run down the side and across the top, and a 1 in a cell says there is a direct road between those two towns. A 0 marks the other pairs. An adjacency matrix is exactly that table, written for the atoms of a molecule.</p>
-<p>For ethanol, we number the atoms 0, 1 and 2.</p>
-<ul>
-<li>Row 0 reads 0, 1, 0, because atom 0 touches only atom 1.</li>
-<li>Row 1 reads 1, 0, 1, because the middle carbon touches both neighbors.</li>
-<li>Row 2 reads 0, 1, 0.</li>
-</ul>
-<p>Adding each row gives 1, 2 and 1, which is the number of neighbors each atom has. The matrix mirrors across its diagonal, because a bond joins two atoms in both directions. A simple binary matrix still needs the atom labels and the bond types beside it, so the atom table stores the element for each index and the bond table stores the type of each edge.</p>
+<h4 id="tables-adjacency-and-renumbering">Tables, Adjacency and Renumbering</h4>
+<p>An adjacency matrix is the table at the back of a road atlas. For ethanol’s atoms 0, 1 and 2, the rows read 010, 101 and 010, and the row sums 1, 2 and 1 count each atom’s neighbors. The function <code>graph_data</code> exports this matrix with atom and bond tables.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig05-matrix.jpg" />
-<figcaption>Figure 5: The adjacency matrix of ethanol next to its atoms numbered 0, 1 and 2, with row sums 1, 2 and 1 equal to each atom’s number of neighbors. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig05-matrix.jpg" alt="Figure 5: The adjacency matrix of ethanol, with row sums 1, 2 and 1. Source: image by author." />
+<figcaption aria-hidden="true">Figure 5: The adjacency matrix of ethanol, with row sums 1, 2 and 1. Source: image by author.</figcaption>
 </figure>
-<p>In the lab, the function <code>graph_data</code> exports all three tables, so a later learning method can pass messages along the bonds. Here are the lines that fill the matrix.</p>
-<pre class="python"><code>adjacency = [[0] * molecule.GetNumAtoms() for _ in range(molecule.GetNumAtoms())]
-for bond in molecule.GetBonds():
-    a, b = bond.GetBeginAtomIdx(), bond.GetEndAtomIdx()
-    adjacency[a][b] = adjacency[b][a] = 1</code></pre>
-<p>The first line builds a square table of zeros. The loop visits every bond, and it writes a 1 in both directions, which creates the mirror across the diagonal. The 2D coordinates that the function also returns are display positions for drawing the graph clearly on a page. They come from a copy of the molecule, so the atom numbering of the original stays untouched.</p>
-<h3>Renumbering the Atoms</h3>
-<p>Now we start at the oxygen and number the same chain in reverse. Here is the idea as a picture. Three friends stand in a line wearing numbered shirts, 1, 2 and 3 from the left. We ask them to turn around and renumber from the other end. The line holds the same friends in the same places, and only the numbers on the shirts changed.</p>
-<p>For ethanol, the forward numbering lists carbon, carbon, oxygen as atoms 0, 1 and 2. The backward numbering lists oxygen, carbon, carbon. The matrix for each reads 010, 101, 010, because a three-atom chain looks the same from either end. The matrices match, and the atom labels moved, so a table of labels must travel with the matrix.</p>
-<p>To compare two graphs safely, we look for a mapping from one set of atom numbers to the other, and we check that every label and every bond lines up. For ethanol against its reversed numbering, such a mapping exists. For ethanol against dimethyl ether, every possible mapping breaks, because the labels or the bonds disagree. In general, two equivalent graphs can look different cell by cell until we match their atom order. Our lab tests apply this idea to a reordered ethanol.</p>
+<p>Renumbering from the oxygen end gives the same matrix with the labels moved, like friends turning around in a line and renumbering their shirts. To compare two graphs we look for a mapping that matches every label and bond: one exists for ethanol and its reversed numbering, and none exists between ethanol and dimethyl ether.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig06-reorder.jpg" />
-<figcaption>Figure 6: The two numberings of ethanol, with matrices that both read 010, 101, 010. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig06-reorder.jpg" alt="Figure 6: Two numberings of ethanol, both with matrix 010, 101, 010. Source: image by author." />
+<figcaption aria-hidden="true">Figure 6: Two numberings of ethanol, both with matrix 010, 101, 010. Source: image by author.</figcaption>
 </figure>
-<h3>Mirror Partners, with Left and Right Gloves</h3>
-<p>Even complete connectivity can leave an important distinction unresolved. Stereochemistry describes spatial arrangements that matter to chemical identity. Handedness has a familiar picture. Your left and right gloves have the same shape, the same parts and the same connections, and each fits only its own hand. Chemists call two such mirror partners stereoisomers, and they arise at an atom that carries four different groups, where the groups point in four directions around a central atom. This handedness is called chirality.</p>
-<p>Lactic acid has such an atom. The central carbon holds a methyl group, a hydroxyl group, a carboxyl group and a hydrogen. Four different groups give two arrangements that mirror each other. Both arrangements have the formula C3H6O3 and a molar mass of 90.078, and both have the same connections. A drawing of connections alone treats them as one molecule. This matters because biological binding sites are themselves structured in space, and the question of which partner is more active belongs to the relevant experiment.</p>
-<p>In our saved results, the two arrangements share the first block of their InChIKey and differ in the second block, so a program can tell them apart. That is why our lab keeps the stereochemical information with the structure, and it is one more reason to check identity before building features.</p>
+<h4 id="mirror-partners-and-the-inchikey">Mirror Partners and the InChIKey</h4>
+<p>Left and right gloves have the same parts and connections, and each fits one hand. Lactic acid has a central carbon with four different groups, which gives two mirror partners with the same formula C3H6O3, the same mass of 90.078 and the same connections. This handedness is called chirality.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig07-gloves.jpg" />
-<figcaption>Figure 7: Lactic acid and its mirror partner share the formula C3H6O3, the mass 90.078 grams per mole and the connections, and differ in handedness. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig07-gloves.jpg" alt="Figure 7: Lactic acid and its mirror partner: same connections, different handedness. Source: image by author." />
+<figcaption aria-hidden="true">Figure 7: Lactic acid and its mirror partner: same connections, different handedness. Source: image by author.</figcaption>
 </figure>
-<h3>Exact Identities and the InChIKey</h3>
-<p>The same care applies to our recurring reference compounds. Erlotinib is linked to its exact saved chemical record. For MRTX1133, we retain the specific component called 6IC from the experimental structure 7RPZ. A separate name-search record has a different stereochemical specification, including two unspecified centers in our check. We keep those records separate, since a shared name is a weak link between structures.</p>
-<p>An InChIKey is a compact identifier derived from a standardized chemical description, and it works like a passport number for a molecule. Our toolkit reads the structure, builds a standard text description, and compresses it into a short code of 27 characters. The same structure gives the same code, and a change to the structure changes the code. The code has three blocks separated by hyphens.</p>
-<ul>
-<li>The first block, 14 characters, summarizes the connections.</li>
-<li>The second block, 10 characters, adds finer details such as stereochemistry.</li>
-<li>The last character marks the protonation state.</li>
-</ul>
-<p>For lactic acid, both mirror partners share the same first block, <code>JVTAAEKCZFNVCJ</code>. Their second blocks start with <code>REOHCLBH</code> for one partner and <code>UWTATZPH</code> for the other, so the codes differ. That is how a key keeps the partners apart while still showing that they are close relatives. We compare the full keys from the sources with the keys our program calculates, and we join records only when the full keys agree. A name can point to several structures, while a full key points to one.</p>
+<p>An InChIKey is a passport number for a molecule, with 27 characters in three blocks: connections, finer details such as stereochemistry, and protonation. The lactic acid partners share the first block, <code>JVTAAEKCZFNVCJ</code>, and their second blocks start <code>REOHCLBH</code> and <code>UWTATZPH</code>. We join records only when the full keys agree, because a name can point to several structures.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig08-inchikey.jpg" />
-<figcaption>Figure 8: An InChIKey in three blocks: the first block is shared by the two lactic acid partners, and the second blocks differ (REOH against UWTA). Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig08-inchikey.jpg" alt="Figure 8: An InChIKey in three blocks: partners share the first, the second differs. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 8: An InChIKey in three blocks: partners share the first, the second differs. Source: saved program output.</figcaption>
 </figure>
-<p>Identity checking comes before feature generation, because a perfectly reproducible fingerprint of the wrong structure is still the wrong input. Here are the lines of <code>describe</code> that produce the key and the canonical string we meet in Part 2.</p>
-<pre class="python"><code>key = Chem.MolToInchiKey(molecule)
-...
-&quot;canonical_isomeric_smiles&quot;: Chem.MolToSmiles(molecule, canonical=True, isomericSmiles=True),
-&quot;standard_inchi_key&quot;: key,</code></pre>
-<p>The function returns plain Python values, so every later step can store them in a table beside the descriptors.</p>
-<h2>Part 2: Read and Check Molecular Strings</h2>
-<p>Part 2 asks how a short line of text can carry a graph. SMILES is a chemical line notation whose letters and symbols describe atoms, bonds, branches, ring connections and other attributes, and it is pronounced like the English word “smiles”. The string gives instructions for writing a graph, like directions for drawing a route. We read a few simple strings, then check them with RDKit, an open-source chemistry toolkit. The original SMILES work by Weininger and the maintained Daylight documentation give the foundations, and the actual program output tells us what our particular software recovered.</p>
-<h3>SMILES as Walking Directions</h3>
-<p>Imagine giving someone directions in words: from the station, walk to the bakery, then to the park, then to the library. The words travel in a line, and a listener who follows them redraws the route. A SMILES string works the same way. The letters are the places, and reading from left to right redraws the molecule.</p>
-<p>Different directions can lead to the same map. Starting at the library and walking back gives another sentence for the same route. In the same spirit, CCO and OCC are two spellings of ethanol. A string is a way of telling the story of a graph, one step at a time. Because many strings describe one graph, we compare molecules by rebuilding the graph from each string and comparing what we rebuilt, and raw text stays a starting point.</p>
+<h2 id="part-2-read-and-check-molecular-strings">Part 2: Read and Check Molecular Strings</h2>
+<p>SMILES is a line notation whose letters and symbols describe atoms, bonds, branches and rings (Weininger, 1988). We check strings with RDKit, an open-source chemistry toolkit.</p>
+<h4 id="smiles-as-walking-directions">SMILES as Walking Directions</h4>
+<p>Directions from the station to the bakery to the park redraw a route, and reading a SMILES string from left to right redraws the molecule. Different directions can reach the same map: <code>CCO</code> and <code>OCC</code> are two spellings of ethanol, so we compare molecules by rebuilding the graph.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig09-directions.jpg" />
-<figcaption>Figure 9: Directions that redraw a route, and two spellings of one ethanol: CCO and OCC. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig09-directions.jpg" alt="Figure 9: Directions that redraw a route, and two spellings of ethanol. Source: image by author." />
+<figcaption aria-hidden="true">Figure 9: Directions that redraw a route, and two spellings of ethanol. Source: image by author.</figcaption>
 </figure>
-<h3>The Alphabet, with Acetic Acid</h3>
-<p>Here is the small alphabet we need for that reading.</p>
-<ul>
-<li>A capital letter such as C, N or O is an atom.</li>
-<li>Two atoms written side by side are joined with a single bond.</li>
-<li>An equals sign makes a double bond.</li>
-<li>Parentheses open a branch and close it again.</li>
-<li>A digit marks a ring connection.</li>
-<li>A dot separates pieces.</li>
-<li>Square brackets hold charges, and an at sign records handedness.</li>
-</ul>
-<p>Let’s read acetic acid, written <code>CC(=O)O</code>. Atom 0 is a carbon. Atom 1 is a carbon joined to it by a single bond. The parenthesis starts a branch, an oxygen attached to atom 1 by a double bond. The branch closes, and a final oxygen attaches to atom 1 by a single bond. We have four atoms and three bonds.</p>
-<p>Now we count hydrogens with the hands rule. The first carbon has one bond, so it carries three hydrogens. The middle carbon uses one hand for the first carbon, two for the double bond and one for the last oxygen, so all four of its hands are busy. The double-bonded oxygen has used both hands. The last oxygen uses one hand, so it carries one hydrogen. That gives four hydrogens, the formula C2H4O2, and a molar mass of 60.052 grams per mole, matching our RDKit output.</p>
+<h4 id="the-alphabet-branches-and-rings">The Alphabet, Branches and Rings</h4>
+<p>A capital letter is an atom, neighbors share a single bond, an equals sign is a double bond, parentheses open a branch, a digit closes a ring like a rubber band stretched to a remembered atom, a dot separates pieces, brackets hold charges and an at sign records handedness.</p>
+<p>Acetic acid, <code>CC(=O)O</code>, has four atoms and three bonds, and the hands rule gives hydrogen counts 3, 0, 0 and 1, so C2H4O2 and 60.052 grams per mole. Benzene, <code>c1ccccc1</code>, has six atoms, and the closing digit adds a sixth bond. With one hydrogen on each carbon, the formula is C6H6 and the mass is 6 × 12.011 + 6 × 1.008 = 78.114.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig10-alphabet.jpg" />
-<figcaption>Figure 10: Reading acetic acid from its SMILES string: the hydrogen counts 3, 0, 0 and 1 for its four heavy atoms follow from the hands left on each atom. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig10-alphabet.jpg" alt="Figure 10: Reading acetic acid: hydrogen counts 3, 0, 0 and 1. Source: image by author." />
+<figcaption aria-hidden="true">Figure 10: Reading acetic acid: hydrogen counts 3, 0, 0 and 1. Source: image by author.</figcaption>
 </figure>
-<h3>Parentheses and Branches</h3>
-<p>A SMILES string can branch. In <code>C(O)C</code>, the oxygen branch attaches to the first carbon. After the branch closes, the following carbon also attaches to that first carbon. We have drawn the same three heavy atoms and the same ethanol connections using a different traversal. Parentheses mark a branch and add zero atoms. They tell the reader where to return while following the graph. That branched string is a third ethanol alias in our actual run.</p>
-<p>CCO reads as carbon, carbon, oxygen, and adjacent symbols imply single bonds in this simple case. OCC reads from the other end. We recover the same labeled connections in reverse order. Our actual parser gives all three strings the same canonical isomeric SMILES, <code>CCO</code>, with the software and settings recorded. Matching raw text would miss this equivalence, and inspecting the recovered structure explains it. More generally, a branch can contain several atoms, so keeping track of the current attachment point matters more than the visual length of the string.</p>
-<h3>Rings, with a Rubber Band</h3>
-<p>Ring notation adds a connection between two positions in the traversal. A ring digit is like a rubber band between two stops on a walk. As we walk along the string, the first time we meet a digit, we remember that atom and keep walking. When the same digit appears again, we stretch a band back to the remembered atom, and that closes the ring. The digit is a connection label that joins two atoms already in the string.</p>
-<p>Let’s count benzene, written in lower-case aromatic form as <code>c1ccccc1</code>.</p>
-<ul>
-<li>We meet six carbon letters, so there are six atoms.</li>
-<li>Walking along the string joins them with five bonds.</li>
-<li>The second digit 1 closes the ring, which adds a sixth bond.</li>
-<li>Six atoms and six bonds make a ring.</li>
-<li>Each carbon holds one hydrogen, giving six hydrogens, so the formula is C6H6.</li>
-<li>The mass is 6 × 12.011 + 6 × 1.008 = 78.114.</li>
-</ul>
-<p>Benzene can also be written with alternating single and double bonds in a Kekulé form, <code>C1=CC=CC=C1</code>. The Kekulé form gives the same counts, and RDKit writes both spellings as the same aromatic string. Aromaticity is a chemical bonding description that the toolkit assigns under a particular model, and both drawings are two ways to write that one description.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig11-ring.jpg" />
-<figcaption>Figure 11: Benzene as a ring closed by a digit: six atoms, six bonds, C6H6 and a mass of 78.114 grams per mole. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig11-ring.jpg" alt="Figure 11: Benzene as a ring closed by a digit: six atoms, six bonds. Source: image by author." />
+<figcaption aria-hidden="true">Figure 11: Benzene as a ring closed by a digit: six atoms, six bonds. Source: image by author.</figcaption>
 </figure>
-<h3>A Dot, as a Bag Holding Two Things</h3>
-<p>Picture a bag holding a key and a coin. They travel together in one bag, and they are two separate objects. A dot in SMILES is that bag. It separates two blocks of text into disconnected pieces. Sodium acetate, <code>CC(=O)[O-].[Na+]</code>, puts an acetate piece and a sodium piece in one record.</p>
-<p>Let’s count them. The acetate piece has four atoms, two carbons and two oxygens, joined by three bonds, and one of the oxygens carries a minus charge. The sodium piece is a single atom with a plus charge. Together the record has five atoms, three bonds and two connected components. The charges, minus one and plus one, add up to zero. Brackets and signs carry the charge information.</p>
-<p>RDKit parses this valid multi-component input. Our small feature matrix keeps one connected molecule per row, so this record receives the status <code>excluded_multi_component</code>, with the reason written beside it. That is a choice for this exercise, and salts are ordinary valid chemistry. A later lesson can choose a standardization rule for them. Silently choosing the largest fragment would change what we represented and would need a separate, justified policy. For now, the original string and both pieces stay in the audit.</p>
+<h4 id="a-dot-as-a-bag-holding-two-things">A Dot, as a Bag Holding Two Things</h4>
+<p>A dot is a bag holding a key and a coin. Sodium acetate, <code>CC(=O)[O-].[Na+]</code>, holds an acetate piece (four atoms, charge minus one) and a sodium piece (one atom, charge plus one): five atoms, two components, total charge zero. RDKit parses it, but our matrix keeps one connected molecule per row, so the row gets the status <code>excluded_multi_component</code> with a written reason. Salts are valid chemistry, and silently keeping the largest fragment would change what we represented.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig12-salt.jpg" />
-<figcaption>Figure 12: Sodium acetate as one record with two components: acetate with four atoms, three bonds and charge −1, and sodium with one atom and charge +1. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig12-salt.jpg" alt="Figure 12: Sodium acetate: acetate with charge -1 and sodium with +1. Source: image by author." />
+<figcaption aria-hidden="true">Figure 12: Sodium acetate: acetate with charge -1 and sodium with +1. Source: image by author.</figcaption>
 </figure>
-<h3>Two Layers of Checking</h3>
-<p>Think about two kinds of mistakes in a sentence. A sentence with a missing closing quotation mark is hard to read at all, because the grammar breaks. A sentence like “the stone drank the idea” reads smoothly, and its meaning is odd. Programs check both layers for molecules.</p>
-<p>The first layer is parsing, the grammar check. Parsing asks whether the notation can be read into a graph. A string such as <code>C1CC</code> opens a ring with the digit 1 and leaves it open, so the program stops there and records a syntax error.</p>
-<p>The second layer is sanitizing, the chemistry check. Sanitization applies the toolkit’s chemical consistency rules, including checks of bonding capacity. Valence is an atom’s bonding capacity under its assigned state. A string such as <code>CO(C)C</code> has valid grammar, so parsing succeeds, and then we count hands. The oxygen in that string touches three carbons, so it needs three hands, and oxygen has two. The chemistry check fails, and the program records the reason. A parsed graph still has to pass the chemical checks.</p>
-<p>An empty string and a missing value each get their own rejected row as well. Keep the layers in order: readable text first, then sensible chemistry. Here are the lines of <code>parse_input</code> that separate the two layers.</p>
+<h4 id="two-layers-of-checking">Two Layers of Checking</h4>
+<p>A sentence can break its grammar, or read smoothly and mean something odd, like “the stone drank the idea”. Molecules get both checks. Parsing is the grammar check: <code>C1CC</code> leaves a ring open and fails with a syntax error. Sanitizing is the chemistry check: <code>CO(C)C</code> parses, but its oxygen touches three carbons and has only two hands. An empty string and a missing value are rejected rows too.</p>
 <pre class="python"><code>molecule = Chem.MolFromSmiles(value, sanitize=False)   # step 1: syntax only
-if molecule is None:
-    return {**audit, &quot;parse_status&quot;: &quot;syntax_error&quot;, ...}, None
-problem = Chem.SanitizeMol(molecule, catchErrors=True)  # step 2: chemistry
-if int(problem):
-    return {**audit, &quot;parse_status&quot;: &quot;sanitization_error&quot;, &quot;reason&quot;: str(problem)}, None</code></pre>
-<p>The <code>sanitize=False</code> argument asks RDKit to read the syntax only, which lets us tell a syntax error from a chemistry error. The <code>catchErrors=True</code> argument returns a code instead of raising an exception, so the audit can keep the reason for every failure. The audit also keeps the stage and tells an empty string apart from a missing structure.</p>
+problem = Chem.SanitizeMol(molecule, catchErrors=True)  # step 2: chemistry</code></pre>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig13-checks.jpg" />
-<figcaption>Figure 13: Two layers of checking: an open ring digit makes the parse step fail, and an oxygen with three single-bonded carbons parses as a graph but fails sanitization. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig13-checks.jpg" alt="Figure 13: Two checks: an open ring fails parsing, an oxygen with three carbons fails sanitizing. Source: image by author." />
+<figcaption aria-hidden="true">Figure 13: Two checks: an open ring fails parsing, an oxygen with three carbons fails sanitizing. Source: image by author.</figcaption>
 </figure>
-<h3>Canonical SMILES, One Shelf Label per Molecule</h3>
-<p>A library shelves every book under one catalog number, even when readers call the book by different names. Canonicalization does that for strings. The program rebuilds the graph and writes it with one fixed rule, so every spelling of the same graph ends on the same shelf. It also helps collect our three ethanol strings under one chemical identity, instead of counting them as three independent examples.</p>
-<p>Let’s try a toy rule: pick the shortest spelling, and break ties alphabetically. Our three ethanol spellings are <code>CCO</code>, <code>OCC</code> and <code>C(O)C</code>. The first has three characters, the second has three, and the third has five. Between <code>CCO</code> and <code>OCC</code>, alphabetical order picks <code>CCO</code>. RDKit uses a more careful rule of its own, and it also writes <code>CCO</code>. In our table, three raw strings collapse to one canonical string and one InChIKey, and the raw text stays beside them.</p>
-<p>We also record the RDKit version, 2026.09.2, because a different version may choose a different spelling. So the canonical string is a reproducible shelf label for one toolkit and one set of settings. A separate standardization policy would be needed to choose how to handle salts or related forms with different hydrogen and bond assignments. We preserve the raw input beside the canonical string, so the transformation stays inspectable.</p>
+<h4 id="canonical-smiles-and-the-at-sign">Canonical SMILES and the At Sign</h4>
+<p>Canonicalization gives every molecule one catalog number: the program rebuilds the graph and writes it with one fixed rule. Our three ethanol spellings collapse into <code>CCO</code> and one InChIKey, with the raw text kept beside them.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig14-shelf.jpg" />
-<figcaption>Figure 14: Three ethanol spellings give one result: one canonical string and one InChIKey, with the raw text kept beside them and the RDKit version recorded. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig14-shelf.jpg" alt="Figure 14: Three ethanol spellings give one canonical string and one InChIKey. Source: image by author." />
+<figcaption aria-hidden="true">Figure 14: Three ethanol spellings give one canonical string and one InChIKey. Source: image by author.</figcaption>
 </figure>
-<h3>Reading the At Sign</h3>
-<p>SMILES can also encode stereochemical information. Our two lactic-acid examples use an at sign or a double at sign at the specified center. Let’s read the at sign with a picture. We stand at the first neighbor of the central atom and look toward the center. The three remaining neighbors, in the order the string lists them, appear around us either counterclockwise or clockwise. One at sign means counterclockwise, and two at signs mean clockwise.</p>
-<p>In lactic acid, <code>C[C@H](O)C(=O)O</code>, we stand at the methyl carbon. The remaining neighbors are the hydrogen, the hydroxyl and the carboxyl group, in that order. Changing one at sign to two at signs swaps counterclockwise for clockwise, and that gives the mirror partner, <code>C[C@@H](O)C(=O)O</code>. Those symbols describe a local ordering in the string, so the same at sign can mean different handedness for different traversals.</p>
-<p>Our program writes isomeric SMILES with that information retained, and its identity checks distinguish the two specified structures. If we request output with the stereochemistry removed, both strings become the identical text <code>CC(O)C(=O)O</code>. That is information loss, and the molecules remain different. Our saved run shows the loss: the two molecules look identical as text, while with chirality included their fingerprints differ. The symbols are small, and they carry real information, so our program keeps them. Unspecified stereochemistry can be valid notation while staying ineligible for our strict identity table.</p>
+<p>The at sign encodes handedness: looking from the first neighbor toward the central atom, the remaining neighbors run counterclockwise for one at sign and clockwise for two. Lactic acid <code>C[C@H](O)C(=O)O</code> and its mirror partner <code>C[C@@H](O)C(=O)O</code> differ in that symbol only, and removing it turns both into <code>CC(O)C(=O)O</code>, which loses information.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig15-at.jpg" />
-<figcaption>Figure 15: Removing the at symbols turns the two lactic acid strings into the same text, CC(O)C(=O)O. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig15-at.jpg" alt="Figure 15: Removing the at signs turns both lactic acid strings into the same text. Source: image by author." />
+<figcaption aria-hidden="true">Figure 15: Removing the at signs turns both lactic acid strings into the same text. Source: image by author.</figcaption>
 </figure>
-<h3>SELFIES and SAFE, an Overview</h3>
-<p>Researchers have proposed other molecular string representations, and we place two of them in context with an everyday picture. A word processor with spell check keeps every sentence readable, while a freehand pen allows any scribble. SELFIES plays the role of the spell checker for molecules. The original SELFIES paper by Krenn and colleagues introduced a representation designed so that strings within its supported language decode to chemically valid molecular graphs. This can help a generative system avoid many invalid strings when it edits tokens, the separate units of its text representation. The guarantee has a defined scope, and malformed or unsupported inputs and implementation details still matter.</p>
-<p>SAFE plays a different role. It organizes molecules as connected fragments while retaining the information needed to recover the structure, a bit like chapters in a book, so a model can edit one chapter and keep the rest. A fragment is a portion of the molecular graph. The original SAFE paper by Noutahi and colleagues describes particular models and experiments, and its results belong to those settings. The name labels a notation, and chemical safety needs its own testing.</p>
-<p>Both ideas stay at overview level in this lesson, and our own code uses SMILES with RDKit. They matter for generative chemistry, where a model writes new strings and a valid output is a useful starting point. Validity says the chemistry is consistent, and stability, synthesis and activity need evidence from experiments. We read the original papers and documentation for this overview, and the next lesson, QSAR, starts using the representations we build here.</p>
+<h4 id="selfies-and-safe-an-overview">SELFIES and SAFE, an Overview</h4>
+<p>SELFIES (Krenn et al., 2020) is a spell checker for molecules, because strings in its supported language decode to valid graphs. SAFE (Noutahi et al., 2024) organizes a molecule as connected fragments, like chapters a model can edit. Both stay at overview level, because our code uses SMILES with RDKit.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig16-generators.jpg" />
-<figcaption>Figure 16: SAFE as chapters: the string is grouped into fragments, and a model edits one chapter and keeps the rest. SELFIES and SAFE are overview topics here. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig16-generators.jpg" alt="Figure 16: SAFE as chapters: a model edits one fragment and keeps the rest. Source: image by author." />
+<figcaption aria-hidden="true">Figure 16: SAFE as chapters: a model edits one fragment and keeps the rest. Source: image by author.</figcaption>
 </figure>
-<h2>Part 3: Build and Compare Fingerprints</h2>
-<p>We can now recover a graph from a string and check its identity. Part 3 asks how to turn that graph into numbers for comparison or for a later learning algorithm. A feature is a chosen numerical description of an input. A vector is an ordered list of such numbers, with the same meaning assigned to each position across examples. We examine descriptors, fingerprints and graph tables. These choices expose different information to a program, and they are representations under stated rules, while experiments supply the evidence about biology.</p>
-<h3>A Fingerprint as a Checklist</h3>
-<p>Imagine a very long checklist of questions about a molecule. Is there an oxygen? Is there a ring? Is a hydrogen-bearing oxygen attached to a carbon? We tick a box for every yes. The pattern of ticks is a fingerprint, and two molecules with similar ticks share similar features.</p>
-<p>A computer likes a fixed layout, so every molecule uses the same checklist in the same order, and box 17 always asks the same question. A row of ones and zeros, one per box, becomes a vector that we can store, compare and feed into a model. There are two ways to build the checklist. Morgan fingerprints grow their questions from the molecules themselves, and MACCS keys use a fixed list written in advance. We build both in this part. We start with descriptors, which are single numbers, and then move on to fingerprints, which are long patterns.</p>
+<h2 id="part-3-build-and-compare-fingerprints">Part 3: Build and Compare Fingerprints</h2>
+<h4 id="a-fingerprint-as-a-checklist">A Fingerprint as a Checklist</h4>
+<p>Imagine a long checklist: is there an oxygen, is there a ring? We tick a box for every yes, and every molecule uses the same checklist in the same order, so the row of ones and zeros becomes a vector. Morgan fingerprints grow their questions from the molecules, and MACCS keys use a fixed list.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig17-checklist.jpg" />
-<figcaption>Figure 17: A fingerprint as a checklist: every box asks the same question for every molecule, and a row of ones and zeros becomes a vector. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig17-checklist.jpg" alt="Figure 17: A fingerprint as a checklist: every box asks the same question. Source: image by author." />
+<figcaption aria-hidden="true">Figure 17: A fingerprint as a checklist: every box asks the same question. Source: image by author.</figcaption>
 </figure>
-<h3>Descriptors Summarize Selected Properties</h3>
-<p>A molecular descriptor summarizes a chosen aspect of structure as a number. Molar mass is one example, in grams per mole, calculated from the assigned atoms. A hydrogen-bond donor count is another. A hydrogen bond is an interaction between a suitable hydrogen-bearing group and an accepting atom, and a donor count identifies the groups that meet the software’s definition, which is narrower than measuring every contact in a biological system. Our actual output gives ethanol one donor and dimethyl ether zero, although their formulas and masses match. That contrast shows why two useful columns capture different structural facts, each with its own meaning.</p>
-<p>The lab exports seven named descriptors: average molecular mass, a calculated logP, topological polar surface area, hydrogen-bond donors, hydrogen-bond acceptors, the heavy-atom count and the rotatable-bond count. Keeping each column’s definition, unit and calculation settings with its values is an important habit, because swapping two columns changes a vector’s meaning even when every entry is numerical. We retain molecular identifiers beside the feature rows and keep activity labels out of this matrix. Structural numbers describe the molecule, and assay outcomes come from experiments.</p>
-<h3>Adding Up a Polar Surface Area</h3>
-<p>Let’s look inside one descriptor by adding pieces. Topological polar surface area (TPSA) is a structure-based estimate that adds a fixed contribution for every polar nitrogen or oxygen in the molecule, according to its local surroundings. It is calculated from the two-dimensional graph and reported in square angstroms. An angstrom is a length equal to one metre divided by ten billion, so a square angstrom is an area on the molecular scale.</p>
-<p>In our molecules, three contributions appear.</p>
-<ul>
-<li>A hydroxyl oxygen, the OH of an alcohol, contributes 20.23.</li>
-<li>An ether oxygen between two carbons contributes 9.23.</li>
-<li>A double-bonded carbonyl oxygen contributes 17.07.</li>
-</ul>
-<p>Ethanol has one hydroxyl oxygen, so its value is 20.23. Dimethyl ether has one ether oxygen, so its value is 9.23. Acetic acid has a carbonyl oxygen and a hydroxyl oxygen, so 17.07 + 20.23 gives 37.30. Lactic acid has two hydroxyl oxygens and one carbonyl oxygen, and 20.23 + 17.07 + 20.23 gives 57.53. All four sums match the saved <code>features.csv</code>, so we can see what the column contains.</p>
+<h4 id="descriptors-and-polar-surface-area">Descriptors and Polar Surface Area</h4>
+<p>A descriptor summarizes one aspect of structure as a number, and the lab exports seven, such as average mass and topological polar surface area (TPSA). TPSA adds a fixed piece for each polar atom, in square angstroms: 20.23 for a hydroxyl oxygen, 9.23 for an ether oxygen and 17.07 for a carbonyl oxygen. Acetic acid gives 17.07 + 20.23 = 37.30, and lactic acid 20.23 + 17.07 + 20.23 = 57.53, matching the saved <code>features.csv</code>.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig18-tpsa.jpg" />
-<figcaption>Figure 18: Polar surface area as a sum of fixed pieces: 20.23 for a hydroxyl oxygen, 9.23 for an ether oxygen and 17.07 for a carbonyl oxygen give 37.3 square angstroms for acetic acid and 57.53 for lactic acid. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig18-tpsa.jpg" alt="Figure 18: TPSA as a sum of fixed pieces: 37.3 for acetic acid, 57.53 for lactic acid. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 18: TPSA as a sum of fixed pieces: 37.3 for acetic acid, 57.53 for lactic acid. Source: saved program output.</figcaption>
 </figure>
-<h3>Neighborhoods that Grow</h3>
-<p>Picture a neighborhood in a town. At radius 0, you know only your own house. At radius 1, you know your house and the houses next door. At radius 2, you know the neighbors of your neighbors. A Morgan fingerprint describes every atom this way, as a growing circle of its surroundings.</p>
-<p>For ethanol, the radius 0 circles are the three atoms alone: the first carbon, the second carbon and the oxygen. At radius 1, the circle around the first carbon holds atoms 0 and 1. The circle around the middle carbon holds all three atoms. The circle around the oxygen holds atoms 1 and 2. So ethanol has three circles at radius 0 and three at radius 1. At radius 2, every circle would cover atoms that a radius 1 circle already covered, so the generator adds zero new environments. Ethanol therefore has six environments in total. Each environment later turns into one number, and that number picks a position in the fingerprint.</p>
-<p>A molecular fingerprint is a numerical pattern that represents selected structural features. A Morgan fingerprint starts with information about each atom and grows descriptions of its neighborhood through connected bonds. RDKit’s initial atom information includes the element, the number of connections, the hydrogen count, the charge and ring membership, so it is richer than an element letter alone. Bond information enters the neighborhood growth. Radius 0 is the central atom’s initial environment, radius 1 incorporates information one bond away, and radius 2 incorporates a further round of neighboring atoms and bonds. Our executable fingerprint uses radius 2. This is related to the extended-connectivity fingerprint (ECFP) family introduced by Rogers and Hahn, and radius 2 is often compared with a diameter-4 ECFP description, while the precise implementation settings still matter.</p>
+<h4 id="neighborhoods-that-grow">Neighborhoods that Grow</h4>
+<p>At radius 0 you know only your own house, at radius 1 the houses next door, and at radius 2 the neighbors of your neighbors. A Morgan fingerprint describes every atom as a growing circle like this. Ethanol has three circles at radius 0 and three at radius 1, while radius 2 adds nothing new, so it has six environments. Our fingerprint uses radius 2, related to the extended-connectivity fingerprints of Rogers and Hahn (2010).</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig19-neighborhoods.jpg" />
-<figcaption>Figure 19: Neighborhoods that grow around ethanol: three circles at radius 0 ({0}, {1}, {2}) and three at radius 1 ({0, 1}, {0, 1, 2}, {1, 2}). Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig19-neighborhoods.jpg" alt="Figure 19: Growing neighborhoods around ethanol: three at radius 0, three at radius 1. Source: image by author." />
+<figcaption aria-hidden="true">Figure 19: Growing neighborhoods around ethanol: three at radius 0, three at radius 1. Source: image by author.</figcaption>
 </figure>
-<p>In the saved RDKit output, the center and radius memberships are recorded for every environment. Equivalent neighborhoods at different positions receive the same feature identifier, so repeated occurrences carry meaning. The generator can also skip redundant larger environments. For ethanol, this run retains environments at radius 0 and radius 1, and radius 2 repeats radius 1. A maximum radius sets an upper limit, and the generator keeps each distinct environment once.</p>
-<h3>Ethanol: Six Environments, Six Bits</h3>
-<p>Here are ethanol’s six environments with real numbers from our run. Each environment receives a large whole number as its identifier, produced by hashing its description.</p>
-<ul>
-<li>Atom 0 at radius 0 has the identifier 2246728737.</li>
-<li>Atom 1 at radius 0 has the identifier 2245384272.</li>
-<li>Atom 2, the oxygen, at radius 0 has the identifier 864662311.</li>
-<li>Atom 0 at radius 1, covering atoms 0 and 1, has the identifier 3542456614.</li>
-<li>Atom 1 at radius 1, covering all three atoms, has the identifier 4018048386.</li>
-<li>Atom 2 at radius 1, covering atoms 1 and 2, has the identifier 1535166686.</li>
-</ul>
-<p>The six identifiers range from about 865 million to about 4 billion. Folding turns a large identifier into a bit position. We divide by 2048 and keep the remainder. For the oxygen, 864,662,311 equals 422,198 × 2048 + 807. So the oxygen switches on bit 807. The other five environments land on bits 80, 222, 294, 1057 and 1410. Six environments switch on six bits out of 2048. The lab saves the same table in <code>fingerprints.json</code>, with the atoms of every environment listed beside its bit.</p>
+<h4 id="hashing-and-folding-with-a-coat-check">Hashing and Folding, with a Coat Check</h4>
+<p>Each environment gets a large whole-number identifier by hashing. Folding divides it by 2048 and keeps the remainder as the bit position, like a coat check with a fixed number of hooks: with eight hooks, tickets 17 and 25 both leave remainder 1 and share hook 1. For ethanol’s oxygen, 864,662,311 = 422,198 × 2048 + 807, so bit 807 switches on, and the other five environments land on bits 80, 222, 294, 1057 and 1410.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig20-ethanol-bits.jpg" />
-<figcaption>Figure 20: Ethanol’s six environments on a line of 2048 positions: bits 80, 222, 294, 807, 1057 and 1410. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig20-ethanol-bits.jpg" alt="Figure 20: Ethanol’s six environments on 2048 positions. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 20: Ethanol’s six environments on 2048 positions. Source: saved program output.</figcaption>
 </figure>
-<h3>Benzene: Symmetry Shows Up as Counts</h3>
-<p>Benzene shows how symmetry appears in a fingerprint. Its six carbons look identical, so each carbon has the same neighborhood at radius 0. That gives six identical environments with one shared identifier. At radius 1, the six circles are again identical, and at radius 2 they are identical once more. Six circles at each of three radii make 18 environments in total, and they use only three different identifiers.</p>
-<p>The count for each identifier is six. So benzene switches on three bits, 389, 1088 and 1873, and its count vector records six occurrences at each. Repetition shows how often a feature appears, while a bit shows that the feature appears.</p>
-<p>The same idea works across molecules. The hydroxyl oxygen of ethanol and the hydroxyl oxygen of acetic acid have the same neighborhood at radius 0, so they receive the same identifier, 864662311, and the same bit, 807. Equal neighborhoods give equal identifiers, and that is what makes a fingerprint comparable between molecules.</p>
+<p>Benzene shows symmetry: its six identical carbons give 18 environments that use only three identifiers, so three bits switch on with counts 6, 6 and 6. Equal neighborhoods get equal identifiers, so the hydroxyl oxygens of ethanol and acetic acid both land on bit 807.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig21-benzene.jpg" />
-<figcaption>Figure 21: Benzene’s 18 environments collapse to three identifiers with six occurrences each, so three bits are on with counts 6, 6 and 6. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig21-benzene.jpg" alt="Figure 21: Benzene: 18 environments, three identifiers with six occurrences each. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 21: Benzene: 18 environments, three identifiers with six occurrences each. Source: saved program output.</figcaption>
 </figure>
-<h3>Hashing and Folding, with a Coat Check</h3>
-<p>The fingerprint algorithm turns environment descriptions into numerical identifiers using hashing, a mapping into a bounded set of numbers. Deterministic means the same input and settings give the same result. A sparse count representation lists the observed identifiers and their counts. To make a fixed-length vector, RDKit maps these identifiers into positions in a requested number of bits. A bit is a binary entry, zero or one, and a mapped feature switches its position on.</p>
-<p>A coat check gives a picture of folding. You hand over a coat and receive a ticket with a long number. The attendant has only eight hooks, so they divide the ticket number by eight and use the remainder as the hook number. Ticket 17 leaves remainder 1, so it goes on hook 1. Ticket 25 also leaves remainder 1, so it goes on hook 1 too. Two coats share a hook, and the attendant can still see which hooks hold something.</p>
-<p>A fingerprint with 2048 hooks works the same way. For ethanol’s oxygen, the identifier divided by 2048 leaves remainder 807, so hook 807 holds a coat. The remainder is always a whole number from 0 up to 2047. Hooks keep the fingerprint a fixed length, which is what a model needs. The price is that two different features can share a hook, and a longer fingerprint with more hooks makes sharing rarer.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig22-coatcheck.jpg" />
-<figcaption>Figure 22: The coat-check rule at fingerprint size: 864,662,311 divided by 2,048 leaves remainder 807, so that identifier is stored on hook 807 of 2,048. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig22-coatcheck.jpg" alt="Figure 22: The coat-check rule: 864,662,311 divided by 2,048 leaves 807. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 22: The coat-check rule: 864,662,311 divided by 2,048 leaves 807. Source: saved program output.</figcaption>
 </figure>
-<p>In the code, the function <code>generator</code> sets the radius and the number of hooks, and <code>fingerprint_bundle</code> returns the identifiers, the counts and the bits. Here are the settings and the folding rule.</p>
-<pre class="python"><code>def generator(fp_size=2048, chirality=True):
-    return rdFingerprintGenerator.GetMorganGenerator(radius=2, fpSize=fp_size, includeChirality=chirality,
-                                                     useBondTypes=True, countSimulation=False)
-...
-&quot;folded_bit&quot;: identifier % fp_size,</code></pre>
-<p>The settings are written out in full, so the output can record them. Count simulation is a separate option for encoding frequency-related thresholds, and we leave it off and export actual count representations separately. The folding rule is one line, the remainder after division, and it is the same rule as the coat check.</p>
-<h3>Two Collisions in Our Own Results</h3>
-<p>A collision means two different features share one bit, and it differs from repetition, where one feature occurs several times. Collisions can happen even in a tiny molecule. Acetic acid has eight environments and eight different identifiers. Folding them gives seven bits, because two of the identifiers both leave remainder 807. One, 864662311, belongs to the hydroxyl oxygen, and the other, 2246699815, belongs to the carbon of the acid group.</p>
-<p>Erlotinib shows the same effect in a real drug-like molecule. It has 48 distinct identifiers and 47 occupied bits, because identifier 1,100,037,548 and identifier 2,115,476,908 both land on bit 1452. Both leave remainder 1452 when divided by 2048, which we can check on a calculator. The sparse identifiers stay in the saved file, so we can always tell which situation we are looking at. A longer fingerprint reduces collisions, and our lab keeps the original identifiers beside the folded bits.</p>
+<pre class="python"><code>&quot;folded_bit&quot;: identifier % fp_size,   # the coat-check rule in one line</code></pre>
+<h4 id="collisions-bits-and-counts">Collisions, Bits and Counts</h4>
+<p>A collision means two different features share one bit, which differs from repetition, where one feature occurs several times. Acetic acid has eight identifiers on seven bits, because its hydroxyl oxygen and acid carbon both leave remainder 807. Erlotinib has 48 identifiers on 47 bits, because two identifiers both land on bit 1452. The function <code>collision_audit</code> finds these cases.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig23-collisions.jpg" />
-<figcaption>Figure 23: A collision in our own results: erlotinib has 48 distinct identifiers on 47 occupied bits, because two identifiers share bit 1,452. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig23-collisions.jpg" alt="Figure 23: Erlotinib: 48 identifiers on 47 bits, two sharing bit 1,452. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 23: Erlotinib: 48 identifiers on 47 bits, two sharing bit 1,452. Source: saved program output.</figcaption>
 </figure>
-<p>The function <code>collision_audit</code> finds these cases by folding into a short vector, and it checks its own work against RDKit.</p>
-<pre class="python"><code>for identifier in ids:
-    bins[identifier % fp_size].append(identifier)
-collisions = [{&quot;bit&quot;: bit, &quot;sparse_ids&quot;: values} for bit, values in sorted(bins.items()) if len(values) &gt; 1]
-if sorted(bins) != bundle[&quot;on_bits&quot;]:
-    raise ValueError(&quot;Observed folded bits disagree with distinct sparse-identifier modulo mapping&quot;)</code></pre>
-<p>A collision needs two or more different identifiers in one bin, and the same identifier repeated is only repetition. The final check confirms that our own remainder rule reproduces RDKit’s on-bits exactly. Our tiny eight-bit demonstration deliberately makes the compression losses conspicuous, as a teaching setting.</p>
-<h3>Bits and Counts for Dimethyl Ether</h3>
-<p>A presence bit asks whether at least one mapped feature is present. A count asks how many recorded occurrences contribute to a feature or position under the chosen method. One occurrence and several occurrences can therefore give the same binary 1, while their counts differ. Folding can also combine contributions from different identifiers, so we preserve sparse counts separately from folded counts and binary bits.</p>
-<p>Let’s compare a bit with a count using dimethyl ether. Its two methyl groups look identical, and both attach to the same oxygen, so its environments repeat. The count vector lists bit 1057 twice, bit 841 twice, bit 695 once and bit 975 once. We count the bits: four positions are on. We add the counts: 2 + 2 + 1 + 1 = 6 occurrences. The bit vector keeps the four ones, and the count vector keeps the six occurrences.</p>
-<p>Ethanol, by comparison, has six bits on and six occurrences, because every one of its environments is different. Which one to use depends on the question. Bits suit a quick overlap, and counts suit questions about how often a feature repeats, such as how many methyl groups a molecule holds. Our lab saves both, plus the sparse counts before folding, so the next lesson can choose.</p>
+<p>A bit says a feature is present, and a count says how often. Dimethyl ether has two identical methyl groups, so bits 1057 and 841 each count twice, and bits 695 and 975 once: four bits on and 2 + 2 + 1 + 1 = 6 occurrences. Bits suit a quick overlap, and counts suit questions about repetition.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig24-counts.jpg" />
-<figcaption>Figure 24: Dimethyl ether with four bits on and six occurrences, where bits 1057 and 841 each count twice. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig24-counts.jpg" alt="Figure 24: Dimethyl ether: four bits on, six occurrences. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 24: Dimethyl ether: four bits on, six occurrences. Source: saved program output.</figcaption>
 </figure>
-<h3>Tanimoto, as Two Shopping Lists</h3>
-<p>Two people write shopping lists. Ana’s list holds bread, milk and eggs. Ben’s list holds bread, eggs and rice. They share bread and eggs, two items. Together their lists name four different items: bread, milk, eggs and rice. The overlap is two out of four, or one half. That is the Tanimoto idea in everyday clothes, the items both lists contain divided by the items either list contains. A value of 1 means identical lists, and 0 means two completely different sets of items.</p>
-<p>A fingerprint treats each switched-on bit as an item on the list. Counting the union takes one extra step. We add the sizes of the two lists, 3 + 3, and subtract the overlap of 2, so shared items are counted once. That gives 4.</p>
+<h4 id="tanimoto-as-two-shopping-lists">Tanimoto, as Two Shopping Lists</h4>
+<p>Ana’s list holds bread, milk and eggs, and Ben’s holds bread, eggs and rice. They share two items out of four different items in total (3 + 3 - 2), so the overlap is 2 / 4 = 0.5. That is the Tanimoto coefficient: shared on-bits divided by the positions on in either fingerprint.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig25-lists.jpg" />
-<figcaption>Figure 25: Two shopping lists, Ana’s and Ben’s: bread and eggs are shared, and four different items appear on either list. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig25-lists.jpg" alt="Figure 25: Two shopping lists: two shared items, four in total. Source: image by author." />
+<figcaption aria-hidden="true">Figure 25: Two shopping lists: two shared items, four in total. Source: image by author.</figcaption>
 </figure>
-<p>Now the same arithmetic on bit positions. The Tanimoto coefficient divides the number of shared on-bits by the number of positions switched on in either fingerprint. Fingerprint A has positions 1, 3 and 5 on, and fingerprint B has positions 1, 5 and 7 on. They share two positions, 1 and 5. Across both fingerprints there are four different on-positions: 1, 3, 5 and 7. Two divided by four is 0.5. Equivalently, we add the two on-bit counts and subtract the shared count to avoid counting the intersection twice. The formula here is for binary presence vectors, and an empty pair needs separately defined handling. The function <code>similarity</code> computes the value from two real fingerprints.</p>
-<pre class="python"><code>def similarity(a, b):
-    gen = generator()
-    return DataStructs.TanimotoSimilarity(gen.GetFingerprint(a), gen.GetFingerprint(b))</code></pre>
-<h3>Ethanol and Dimethyl Ether, Bit by Bit</h3>
-<p>Now we return to actual molecules and repeat the arithmetic with the real fingerprints. Ethanol switches on six bits: 80, 222, 294, 807, 1057 and 1410. Dimethyl ether switches on four bits: 695, 841, 975 and 1057. Only one bit appears in both lists, 1057, a methyl carbon seen on its own. The union holds 6 + 4 - 1 = 9 bits. So the Tanimoto similarity is 1/9, about 0.111.</p>
-<p>The two molecules share a formula and a mass, and their fingerprints overlap in one position out of nine, because their local neighborhoods differ almost everywhere. This differs from our hand example because these are the real generated fingerprints. The number describes the overlap of two encodings under our recorded settings, and changing the fingerprint family, radius, length or other settings can change a similarity score. Potency, target activity and behavior in experiments each need their own evidence.</p>
+<p>Now the real fingerprints. Ethanol has six bits on, and dimethyl ether has four. They share only bit 1057, and the union holds 6 + 4 - 1 = 9 bits, so the Tanimoto similarity is 1/9, about 0.111. The molecules share a formula and a mass, yet their local neighborhoods differ almost everywhere. A score describes two encodings under recorded settings.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig26-ether-tanimoto.jpg" />
-<figcaption>Figure 26: Ethanol and dimethyl ether bit by bit, with one shared bit, nine bits in the union and a Tanimoto similarity of 1/9 ≈ 0.111. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig26-ether-tanimoto.jpg" alt="Figure 26: Ethanol and dimethyl ether bit by bit: one shared bit, union of nine. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 26: Ethanol and dimethyl ether bit by bit: one shared bit, union of nine. Source: saved program output.</figcaption>
 </figure>
-<h3>A Chirality Setting Changes What Similarity Can See</h3>
-<p>Our lactic-acid pair shows an especially clear limitation. With chirality included, each mirror partner switches on 11 bits, and nine of those bits are shared. Each partner holds two bits that the other lacks. The union is nine shared plus two plus two, which makes 13. Equivalently, 11 + 11 - 9 gives 13. Nine divided by 13 is 0.692. The differing bits belong to neighborhoods that include the central carbon, where the two partners differ.</p>
-<p>When we switch chirality off in the Morgan calculation, the two specified structures give identical fingerprints in this run, and their binary Tanimoto is 1. The setting decides which differences the fingerprint can see. Including chirality lets this representation distinguish part of the stereochemical information that the other setting ignores. It describes handedness in the graph, while conformations and activity need other methods. We record the chirality choice explicitly with the settings, so anyone reading the similarity knows what it measured, and we treat the word fingerprint as the name of a selected summary of the graph.</p>
+<h4 id="chirality-and-maccs-keys">Chirality and MACCS Keys</h4>
+<p>With chirality included, each lactic acid partner switches on 11 bits and nine are shared, so the Tanimoto is 9 / (11 + 11 - 9) = 0.692. With chirality off, the two fingerprints are identical and the Tanimoto is 1. The setting decides which differences the fingerprint can see, so we record it.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig27-chirality.jpg" />
-<figcaption>Figure 27: Lactic acid with chirality included: each partner has 11 bits on, 9 are shared, the union is 13 and the Tanimoto similarity is 9 ÷ 13 = 0.692. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig27-chirality.jpg" alt="Figure 27: Lactic acid with chirality included: 11 bits each, 9 shared, 0.692. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 27: Lactic acid with chirality included: 11 bits each, 9 shared, 0.692. Source: saved program output.</figcaption>
 </figure>
-<h3>MACCS Keys, as a Fixed Questionnaire</h3>
-<p>Morgan is one fingerprint family among several. A questionnaire gives the picture for MACCS keys. Instead of growing questions from the molecule, the designers wrote a fixed list in advance. Each key asks one question, such as whether the molecule contains an oxygen, a ring of a given size or a particular small pattern. That differs from growing local environments and hashing their identifiers into a chosen length.</p>
-<p>RDKit stores 167 positions for the 166 keys, because position 0 is a placeholder, and we preserve that implementation detail rather than treating the vector length as evidence of 167 independently defined chemical tests. For ethanol, nine positions are on: 82, 109, 114, 139, 153, 155, 157, 160 and 164. Every other position holds zero. A MACCS vector has the same length for every molecule, so each position carries the same question across molecules. A Morgan fingerprint has its questions invented by the molecules themselves, so after folding one position can hold several features.</p>
-<pre class="python"><code>def maccs_bundle(molecule):
-    fingerprint = MACCSkeys.GenMACCSKeys(molecule)
-    return {&quot;storage_bits&quot;: len(fingerprint), &quot;public_key_numbers&quot;: 166,
-            &quot;on_bits&quot;: list(fingerprint.GetOnBits()), ...}</code></pre>
-<p>Both MACCS and Morgan are representations, and prediction models come later. Choosing between them is a hypothesis about which information will help the next task.</p>
+<p>MACCS keys are a fixed questionnaire written in advance. RDKit stores 167 positions for 166 keys, because position 0 is a placeholder, and ethanol has nine positions on. A MACCS position asks the same question for every molecule, while a folded Morgan bit can hold several features.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig28-maccs.jpg" />
-<figcaption>Figure 28: MACCS keys as a fixed questionnaire with 167 stored positions, and the nine positions that are on for ethanol. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig28-maccs.jpg" alt="Figure 28: MACCS keys: 167 stored positions, nine on for ethanol. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 28: MACCS keys: 167 stored positions, nine on for ethanol. Source: saved program output.</figcaption>
 </figure>
-<h2>Part 4: Run an Auditable Representation Lab</h2>
-<p>Part 4 joins the explanation to an actual runnable lab. We use 20 deliberately chosen input rows, including equivalent strings, distinct molecules, a salt, incomplete stereochemical specifications and explicit failures. This is a small teaching collection, designed to show every kind of decision a representation lab makes. The useful product is an inspectable chain from raw input through checked identity into named features, fingerprints and graph tables. Every exclusion keeps its reason, and every output carries the settings needed to interpret it.</p>
-<h3>A Map from Ideas to Functions</h3>
-<p>Before we run the lab, here is a map from ideas to code. All of it lives in <code>molecular_representation_lab.py</code>, in the folder for this lesson on GitHub.</p>
-<ul>
-<li><code>parse_input</code> reads each string, checks the syntax and then the chemistry, and records why a row fails.</li>
-<li><code>describe</code> returns the canonical string, the InChIKey and the descriptors.</li>
-<li><code>graph_data</code> exports atoms, bonds and the adjacency matrix.</li>
-<li><code>generator</code> sets the fingerprint recipe, with radius 2, 2048 bits and chirality on.</li>
-<li><code>fingerprint_bundle</code> returns identifiers, counts and bits.</li>
-<li><code>collision_audit</code> finds identifiers that share a bit.</li>
-<li><code>similarity</code> computes the Tanimoto score, and <code>maccs_bundle</code> builds the fixed-key fingerprint.</li>
-<li><code>validate_prerequisites</code> checks the saved inputs from the earlier lessons.</li>
-<li><code>build_payload</code> gives every row its status and assembles the tables, and <code>export_payload</code> writes them to files.</li>
-</ul>
-<p>This article follows the same order, and each part of the video connects to one or two of these functions. Each function has a docstring, and every step has a short comment.</p>
+<h2 id="part-4-run-an-auditable-representation-lab">Part 4: Run an Auditable Representation Lab</h2>
+<p>We use 20 deliberately chosen rows: equivalent strings, distinct molecules, a salt, incomplete stereochemistry and explicit failures. Every exclusion keeps its reason.</p>
+<h4 id="the-map-the-checks-and-the-run">The Map, the Checks and the Run</h4>
+<p>All of the code lives in <code>molecular_representation_lab.py</code>: <code>parse_input</code> reads each string in two layers, <code>describe</code> returns the canonical string, InChIKey and descriptors, <code>generator</code> and <code>fingerprint_bundle</code> build the Morgan fingerprint, <code>collision_audit</code> and <code>similarity</code> check and compare it, and <code>build_payload</code> assigns every row a status and writes the tables.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig29-labmap.jpg" />
-<figcaption>Figure 29: The function map of molecular_representation_lab.py, with eleven functions grouped by the idea each one serves. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig29-labmap.jpg" alt="Figure 29: The function map of the lab, grouped by idea. Source: image by author." />
+<figcaption aria-hidden="true">Figure 29: The function map of the lab, grouped by idea. Source: image by author.</figcaption>
 </figure>
-<h3>Validate Prior Artifacts First</h3>
-<p>The program first validates the retained inputs from the previous lessons. It checks artifact and schema identities, exact compound keys and saved file hashes. A file hash summarizes the bytes of a file for an integrity comparison, and it differs from a molecular fingerprint. The program also checks the selected assay and measurement records, rather than accepting any table with familiar column names. We tested a deliberately changed copied input, and the consumer refused it. These checks confirm that the lab uses the intended prerequisite, and the sources themselves supply the science. Current official compound records are retained separately as source evidence, while the actual feature calculation runs offline.</p>
-<pre class="python"><code>lock = json.loads((raw / &quot;INPUT_LOCK.json&quot;).read_text())
-for relative, expected in lock[&quot;files&quot;].items():
-    if sha(root / relative) != expected:
-        raise ValueError(&quot;Raw input snapshot hash differs: &quot; + relative)</code></pre>
-<p>The lock file lists the expected SHA-256 hash of every saved input, and the loop stops the run when a single byte differs. The same function compares the exact InChIKeys of erlotinib and the 6IC component against the official records, and it checks that Part 4’s synthetic midpoint is the one we expect.</p>
-<h3>One Isolated Local Run</h3>
-<p>The learner files include a Python program, tests, fixed inputs, source and provenance records, and the resulting tables. Our actual run uses a separately approved chemistry environment with RDKit, NumPy and Pillow. It runs locally with RDKit and keeps every chemical structure on the machine. The program reads the retained inputs, parses and audits the structures, computes representations and writes deterministic outputs. We also extracted the learner archive and reran the tests and the lab offline, and the scientific outputs reproduced exactly. Software installation is a separate prerequisite, so the tested environment is documented, and the saved results used Python 3.12 with RDKit 2026.09.2.</p>
-<p>To run it yourself, install the packages in <code>requirements.txt</code>, and then run these commands from the folder of this lesson.</p>
-<pre><code>python code/worked_examples.py
-python code/molecular_representation_lab.py
-python -m unittest discover -s code -p &quot;test_molecular_representation_lab.py&quot; -v</code></pre>
-<p><code>worked_examples.py</code> needs the standard library only, and it prints each calculation of this article under a numbered heading. With other RDKit versions, some fingerprint bit numbers or calculated descriptors can differ in the last digits.</p>
-<h3>Settings Belong to the Output</h3>
-<p>Before calculating a fingerprint, the code sets radius 2, 2048 bits, chirality included, bond types included and count simulation disabled. Explicit settings protect us from changing defaults and from accidentally comparing vectors built under different settings. The output also records the toolkit version, the descriptor definitions, the graph convention and the absence of automatic chemical standardization. If another run changes these choices, we treat it as a different representation recipe and reassess comparisons, rather than quietly joining the new numbers to an old matrix. The file <code>representation_settings.json</code> holds these records.</p>
-<h3>The Audit, as a Laundry Sort</h3>
-<p>Think about sorting laundry into baskets before washing: whites, colors, delicates, and a basket for items that need a closer look. Each basket has a reason, and the total number of items stays the same. Our audit sorts 20 input rows into five baskets in the same spirit.</p>
-<ul>
-<li><code>accepted_primary</code> holds 8 rows.</li>
-<li><code>alias</code> holds 5 rows.</li>
-<li><code>excluded_multi_component</code> holds 1 row.</li>
-<li><code>excluded_unspecified_stereo</code> holds 2 rows.</li>
-<li><code>rejected</code> holds 4 rows.</li>
-</ul>
-<p>We add them up: 8 + 5 = 13, plus 1 is 14, plus 2 is 16, plus 4 is 20. Every input row sits in exactly one basket. The tally is a check on the program itself. If the baskets summed to 19 or 21, a row would have vanished or appeared twice.</p>
+<p>The program first validates the saved inputs from earlier lessons: exact compound keys and SHA-256 file hashes, and a deliberately changed copy was refused. The fingerprint settings (radius 2, 2048 bits, chirality on) and the RDKit version are saved in <code>representation_settings.json</code>. To run it, install <code>requirements.txt</code>, then run <code>worked_examples.py</code> and <code>molecular_representation_lab.py</code>. Our saved results used Python 3.12 with RDKit 2026.09.2.</p>
+<h4 id="the-audit-as-a-laundry-sort">The Audit, as a Laundry Sort</h4>
+<p>Sorting laundry into baskets keeps the total number of items the same, and our audit sorts the 20 rows into five baskets: 8 <code>accepted_primary</code>, 5 <code>alias</code>, 1 <code>excluded_multi_component</code>, 2 <code>excluded_unspecified_stereo</code> and 4 <code>rejected</code>. The running sum 8, 13, 14, 16, 20 checks the program.</p>
+<p>The 8 primary identities are ethanol, dimethyl ether, benzene, the two lactic acid partners, acetic acid, erlotinib and the exact MRTX1133 component. The 5 aliases, such as <code>OCC</code> and <code>C(O)C</code>, must recover their parent’s canonical string and key, or the run stops. The excluded rows are the salt, an unspecified-stereo lactic acid and a name-search record for MRTX1133, and the 4 rejected rows are <code>C1CC</code>, <code>CO(C)C</code>, an empty string and a missing value. Equivalent strings count as one compound, which keeps training and test examples independent.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig30-tally.jpg" />
-<figcaption>Figure 30: Twenty input rows in five baskets (8, 5, 1, 2 and 4), with the running sum 8, 13, 14, 16, 20 as a check on the program. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig30-tally.jpg" alt="Figure 30: Twenty rows in five baskets, with the running sum as a check. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 30: Twenty rows in five baskets, with the running sum as a check. Source: saved program output.</figcaption>
 </figure>
-<p>Here is what each basket contains.</p>
-<ul>
-<li>The 8 approved unique primary identities are ethanol, dimethyl ether, benzene, the two specified lactic acid partners, acetic acid, erlotinib and the exact MRTX1133 component.</li>
-<li>The 5 aliases are <code>OCC</code> and <code>C(O)C</code> for ethanol, the Kekulé spelling of benzene, and the structure-file spellings of erlotinib and of the MRTX1133 component. Each recovers the same canonical string and the same InChIKey as its parent.</li>
-<li>The 1 excluded multi-component row is sodium acetate, which our single-component policy sets aside.</li>
-<li>The 2 excluded unspecified-stereo rows are a lactic acid with unspecified handedness and the MRTX name-search record, which we keep apart from the exact 6IC component.</li>
-<li>The 4 rejected rows are a syntax failure (<code>C1CC</code>), a sanitization failure (<code>CO(C)C</code>), an empty string and a missing value.</li>
-</ul>
-<p>These categories describe this deliberately constructed teaching collection, built to show each decision. Keeping the categories prevents an excluded salt from being confused with unreadable text, and a duplicate alias from becoming another independent sample.</p>
-<p>The status logic lives in <code>build_payload</code>. An alias must recover the same structure as its parent, or the program stops.</p>
-<pre class="python"><code>if row[&quot;role&quot;] == &quot;alias&quot;:
-    parent = next((a for a in audits if a[&quot;input_id&quot;] == row[&quot;alias_of&quot;]), None)
-    if parent is None or parent.get(&quot;canonical_isomeric_smiles&quot;) != description[&quot;canonical_isomeric_smiles&quot;] ...:
-        raise ValueError(&quot;Declared alias does not recover the same exact structure: &quot; + identity)
-    audit.update({&quot;matrix_status&quot;: &quot;alias&quot;, &quot;alias_of&quot;: row[&quot;alias_of&quot;]})
-elif description[&quot;num_components&quot;] != 1:
-    audit[&quot;matrix_status&quot;] = &quot;excluded_multi_component&quot;
-elif description[&quot;unassigned_tetrahedral_centers&quot;]:
-    audit[&quot;matrix_status&quot;] = &quot;excluded_unspecified_stereo&quot;</code></pre>
-<p>The checks run in a fixed order, and each branch writes a visible status. A declared alias that fails to recover its parent stops the run, so a mislabeled row stops the run.</p>
-<h3>Identities and Graph Export</h3>
-<p>The approved matrix includes our small examples, erlotinib and the exact MRTX1133 component from the earlier structure lesson. Alternate strings from the structural and compound sources resolve to the same respective identities under our checks. The differently specified MRTX name record stays separate, outside the strict primary matrix, and we preserve its raw structure and the reason. This matters for future joins, because an assay stays with its one exact structure, even when another molecule has a similar name. Equivalent strings count as one compound, which keeps training and test examples independent.</p>
-<p>For each successfully recovered structure, the lab exports atom attributes, bond attributes, connectivity and display coordinates, with the local atom-index convention recorded. The labeled graph can support a later graph-based learning method that passes information along bonds, and this lesson stops at the graph. Its layout is a readable two-dimensional depiction for drawing the graph. A conformational ensemble would describe multiple possible spatial arrangements, a topic for later work. The display positions preserve the recovered atom indices, so neighborhood highlights use those matching indices.</p>
-<h3>A Join, as a Library Card</h3>
-<p>Where does lesson four’s erlotinib measurement belong? It remains a separate record: 2.6 nanomolar, with its exact compound key, activity identifier, assay identifier, endpoint and source. A library card gives a picture for a join. The card number links your name to the books you borrowed. The two lists stay separate, and the number connects them. In our data, the compound key plays the part of the card number.</p>
-<p>Here are two tiny tables. The first holds erlotinib’s structure record, with its key <code>AAKJLRGGTJKAMG-UHFFFAOYSA-N</code> and its canonical string. The second holds one measurement from lesson four: 2.6 nanomolar, with activity identifier 13852013, assay identifier CHEMBL3095060, the endpoint IC50 and the source ChEMBL. A join matches the two rows on the compound key, and the combined row carries all of those fields. The join attaches the measurement to one molecule, the one whose key matches.</p>
-<p>The eight-row feature matrix holds structure columns only. Our other teaching inputs carry blank activity cells, and missing values remain missing. An honest table shows a blank where evidence is missing, and the assay context travels with every value that is present. A complete-looking numerical table would be less honest than this explicit separation of structure from measurement.</p>
+<h4 id="a-join-as-a-library-card">A Join, as a Library Card</h4>
+<p>Erlotinib’s measurement from lesson four stays a separate record: 2.6 nanomolar, activity 13852013, assay CHEMBL3095060, endpoint IC50. The compound key plays the part of a library card number, and a join on the key attaches the measurement to that one molecule. The other teaching inputs keep blank activity cells, and missing values stay missing.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig31-join.jpg" />
-<figcaption>Figure 31: A join, as a library card: erlotinib’s structure record and its 2.6 nanomolar measurement are linked by the compound key into one combined row. Source: image created by author from the saved program output.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig31-join.jpg" alt="Figure 31: A join on the compound key links structure and measurement. Source: saved program output." />
+<figcaption aria-hidden="true">Figure 31: A join on the compound key links structure and measurement. Source: saved program output.</figcaption>
 </figure>
-<h3>Tests and Their Limits</h3>
-<p>The lab’s 22 tests check meaningful properties: equivalent strings agree, different connectivity remains distinct, atom reordering preserves the labeled graph, specified stereochemistry survives, invalid inputs retain their failures, settings are explicit, and the demonstrated collision and similarity arithmetic match the outputs. We also check the exact prerequisite identities and the deterministic exports.</p>
-<p>Passing these tests establishes the tested program behavior for these cases. Synthesis, safety, target activity and clinical effect each need their own evidence. We have tested a representation pipeline, and a trained predictor needs its own tests. That boundary tells us which question the next experiment or lesson still needs to answer.</p>
-<h2>Check Your Understanding</h2>
-<p>Here are three short exercises. Try them first with the learner files, and then compare with the answers.</p>
+<h4 id="tests-and-their-limits">Tests and Their Limits</h4>
+<p>The 22 tests check that equivalent strings agree, different connectivity stays distinct, reordering preserves the graph, stereochemistry survives, invalid inputs keep their failures, and the collision and similarity arithmetic matches. They establish the tested behavior, while activity and clinical effect need their own evidence.</p>
+<h2 id="check-your-understanding">Check Your Understanding</h2>
+<p>Try these first, then compare with the answers.</p>
 <ol type="1">
-<li>Recover the heavy-atom graph from each of our three ethanol strings, and explain why the row order can change while the molecule stays the same. Compare that graph with dimethyl ether, which shares the formula.</li>
-<li>Calculate the hand example’s Tanimoto from two shared positions and four in the union, and contrast it with the actual ethanol-and-ether score of one ninth.</li>
-<li>Inspect an alias, the salt and the incompletely specified stereo record in the audit. Explain why each receives its own status, and which information a silent deletion of the reason would lose.</li>
+<li>Recover the graph from <code>CCO</code>, <code>OCC</code> and <code>C(O)C</code>, and say why the row order can change while the molecule stays the same.</li>
+<li>Compare the hand-made Tanimoto (two shared positions of four) with the real ethanol and dimethyl ether score.</li>
 </ol>
-<p>Here are the answers.</p>
-<ol type="1">
-<li><code>CCO</code> gives carbon, carbon, oxygen, with bonds from 0 to 1 and from 1 to 2. <code>OCC</code> gives oxygen, carbon, carbon, which is the same chain written from the other end. The string <code>C(O)C</code> starts at the middle carbon, branches to the oxygen and then continues to the other carbon. The row order changes the atom numbers, and a consistent mapping matches every label and bond, so the molecule stays the same. Dimethyl ether shares the formula, but its oxygen sits in the middle, so every relabeling leaves the two chains different.</li>
-<li>The hand example shares two positions, 1 and 5, out of four positions in the union, so the score is 0.5. Ethanol with dimethyl ether shares one position out of nine, which is about 0.11. The first number belongs to invented bit sets, and the second belongs to real fingerprints under our recorded settings.</li>
-<li>An alias, such as <code>OCC</code>, keeps its raw text and points to the primary row, because it names the same molecule. The salt keeps both pieces, and its reason names the single-component policy. The incomplete stereo record keeps its raw string, and its reason names the unspecified centers. A deleted reason would leave a row that stays a mystery to every later reader, so every row keeps its status and its reason.</li>
-</ol>
+<p>Answers: (1) All three give a carbon-carbon-oxygen chain, and a mapping matches every label and bond, so only the atom numbers change. (2) The hand example gives 0.5, and the real fingerprints give 1/9, about 0.11.</p>
 <figure>
-<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig32-exercises.jpg" />
-<figcaption>Figure 32: Exercise two solved: the hand example gives 2 shared ÷ 4 in the union = 0.5, and the real ethanol and dimethyl ether fingerprints give 1 ÷ 9 ≈ 0.11. Source: image created by author.</figcaption>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-05-molecules-as-data-smiles-fingerprints-and-graphs/article/images/v3-fig32-exercises.jpg" alt="Figure 32: Exercise two solved: 0.5 for the hand example, 1/9 for the real pair. Source: image by author." />
+<figcaption aria-hidden="true">Figure 32: Exercise two solved: 0.5 for the hand example, 1/9 for the real pair. Source: image by author.</figcaption>
 </figure>
-<h2>Wrap-Up</h2>
-<p>We can now answer the question from the start. A molecule becomes data through explicit representation rules. SMILES writes a graph as a string, and different traversals can describe the same structure. A labeled graph preserves connections and recorded chemical attributes, while display coordinates serve the drawing. Descriptors summarize selected properties. Fingerprints compress selected environments or structural questions into numerical patterns, with settings and possible information loss. Our actual RDKit run exposes aliases, stereochemical differences and a genuine folding collision rather than hiding them. A useful representation is one whose identity, meaning and limitations stay attached when we pass it to the next step.</p>
-<p>The next planned lesson is QSAR, where we learn a quantitative relationship between molecular structure and a defined measured activity. That needs more than today’s eight teaching identities and one separate assay record. We will need a suitable compatible measurement collection, careful handling of related compounds, and a clear distinction between fitting known data and evaluating predictions on held-out examples. Today’s exact identities, representation settings and missing-context checks are the foundation for deciding whether a later prediction result deserves trust. Hope this article helps you follow the lesson, and happy learning.</p>
-<h2>References</h2>
+<h2 id="wrap-up">Wrap-Up</h2>
+<p>A molecule becomes data through explicit representation rules. SMILES writes a graph as a string, descriptors summarize selected properties, and fingerprints compress selected environments into numerical patterns, with settings and possible information loss. Our run exposes aliases, stereochemical differences and a genuine folding collision rather than hiding them. The next lesson is QSAR, where we relate molecular structure to a defined measured activity. Hope this article helps you follow the lesson, and happy learning.</p>
+<h2 id="references">References</h2>
 <ol type="1">
-<li>Weininger D. SMILES, a chemical language and information system. 1. Introduction to methodology and encoding rules. Journal of Chemical Information and Computer Sciences 28, 31-36 (1988).</li>
+<li>Weininger D. SMILES, a chemical language and information system. J Chem Inf Comput Sci 28, 31-36 (1988).</li>
 <li>Daylight Chemical Information Systems. SMILES Theory Manual. https://www.daylight.com/dayhtml/doc/theory/theory.smiles.html</li>
-<li>Rogers D, Hahn M. Extended-connectivity fingerprints. Journal of Chemical Information and Modeling 50, 742-754 (2010).</li>
-<li>Durant JL, Leland BA, Henry DR, Nourse JG. Reoptimization of MDL keys for use in drug discovery. Journal of Chemical Information and Computer Sciences 42, 1273-1280 (2002).</li>
-<li>Heller SR, McNaught A, Pletnev I, Stein S, Tchekhovskoi D. InChI, the IUPAC International Chemical Identifier. Journal of Cheminformatics 7, 23 (2015).</li>
-<li>Ertl P, Rohde B, Selzer P. Fast calculation of molecular polar surface area as a sum of fragment-based contributions and its application to the prediction of drug transport properties. Journal of Medicinal Chemistry 43, 3714-3717 (2000).</li>
-<li>Krenn M, Haese F, Nigam A, Friederich P, Aspuru-Guzik A. Self-referencing embedded strings (SELFIES): a 100% robust molecular string representation. Machine Learning: Science and Technology 1, 045024 (2020).</li>
-<li>Noutahi E, Gabellini C, Craig M, Lim JSC, Tossou P. Gotta be SAFE: a new framework for molecular design. Digital Discovery 3, 796-804 (2024).</li>
+<li>Rogers D, Hahn M. Extended-connectivity fingerprints. J Chem Inf Model 50, 742-754 (2010).</li>
+<li>Durant JL, et al. Reoptimization of MDL keys for use in drug discovery. J Chem Inf Comput Sci 42, 1273-1280 (2002).</li>
+<li>Heller SR, et al. InChI, the IUPAC International Chemical Identifier. J Cheminform 7, 23 (2015).</li>
+<li>Ertl P, Rohde B, Selzer P. Fast calculation of molecular polar surface area. J Med Chem 43, 3714-3717 (2000).</li>
+<li>Krenn M, et al. Self-referencing embedded strings (SELFIES). Mach Learn Sci Technol 1, 045024 (2020).</li>
+<li>Noutahi E, et al. Gotta be SAFE: a new framework for molecular design. Digital Discovery 3, 796-804 (2024).</li>
 <li>RDKit: open-source cheminformatics. https://www.rdkit.org</li>
 <li>Code for this article: https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-05-molecules-as-data-smiles-fingerprints-and-graphs</li>
 </ol>
