@@ -1,0 +1,91 @@
+{
+  "acquisition": {
+    "censored_measurements": "Keep inequality relations as bounds; exact-point regression labels require the declared exact-value policy.",
+    "compatibility": "Define the experimental question first. Preserve mutants, cellular outcomes and different assay protocols separately.",
+    "continuity_candidate_only": "CHEMBL3095060; compatibility, compound count and scaffold diversity require actual verification",
+    "endpoint": "Exact IC50 in nM, transformed to pIC50 only after unit, relation and positivity checks",
+    "missingness": "Keep missing context explicit. Retain every exclusion and its reason. A missing value is not zero.",
+    "policy": "First investigate a bounded multi-compound collection from one compatible human wild-type EGFR biochemical assay",
+    "replicates": "Preserve original records and group their chemical identity; any within-condition aggregation needs a predeclared justified policy.",
+    "retain": [
+      "database release and service version",
+      "raw response bytes and SHA256",
+      "retrieval UTC and public source URL",
+      "activity ID",
+      "compound ID",
+      "raw and isomeric structural strings",
+      "complete identity key",
+      "assay ID",
+      "document ID and original DOI",
+      "target accession and variant",
+      "organism",
+      "construct",
+      "ATP/substrate conditions",
+      "exposure/incubation time",
+      "assay format",
+      "raw and standardized endpoint, value, units and relation",
+      "data validity flags",
+      "potential duplicate flag"
+    ],
+    "rights": "Preserve ChEMBL/EMBL-EBI attribution and CC BY-SA 3.0 terms for redistributed or adapted data; paper rights remain separate."
+  },
+  "comparison": {
+    "baseline": "Training-mean predictor on the exact same held-out rows as each candidate model",
+    "candidate_models": "Choose transparent, task-appropriate models in Part 7; any additional package requires approval",
+    "learned_preprocessing": "Fit imputation, scaling, selection or target transforms within training folds; apply those learned transforms to held-out inputs",
+    "metrics": [
+      "MAE",
+      "RMSE",
+      "R squared with held-out-reference mean denominator",
+      "Spearman with average ranks for ties"
+    ],
+    "retain": [
+      "per-row reference and prediction",
+      "residual sign convention",
+      "error examples",
+      "split sizes and label distribution",
+      "exact command, runtime/package versions and settings",
+      "actual outputs and hashes",
+      "variation across justified repeats when feasible"
+    ],
+    "undefined_cases": "Preserve constant-reference R squared or constant-vector Spearman as undefined with a reason"
+  },
+  "consumer_episode": 7,
+  "coverage_and_limits": {
+    "diagnostics": [
+      "nearest training-neighbour similarity using fixed representation settings",
+      "descriptor range and missingness",
+      "errors across justified chemistry/assay subgroups",
+      "activity-cliff examples if compatible measured evidence supports them"
+    ],
+    "domain_rule": "Calibrate any coverage/uncertainty rule with appropriate held-out or out-of-fold evidence; a universal similarity cutoff is not assumed",
+    "future_screening_handoff": "Pass model/split/metric definitions and applicability limits to Part 8 only after the actual Part 7 run",
+    "interpretation": "The result estimates the specified assay endpoint within the evaluated scope. Experimental confirmation and other development endpoints are separate evidence."
+  },
+  "current_evidence": {
+    "counts_or_model_scores_for_future_dataset": null,
+    "part4": "One separate retained erlotinib assay record; the 209-row raw collection contains only erlotinib across 209 assays",
+    "part5": "Eight unique structural teaching identities; feature matrix has no activity labels and is not training-ready"
+  },
+  "features_and_identity": {
+    "chemistry_policy": "Declare salts/components, stereochemistry, protonation and tautomer handling; preserve raw inputs and transformations",
+    "exact_identity_groups": "Keep aliases, replicate records and the same declared chemical identity within one partition",
+    "feature_order": "Save feature names, units, toolkit/version and fingerprint family, radius, length, chirality and other settings",
+    "recipe": "Start from the recorded Part 5 identity and representation settings and reassess them against the acquired task"
+  },
+  "partition_design": {
+    "freeze_before_fitting": "Retain immutable row/identity assignments, seed, grouping algorithm and dataset hashes",
+    "random": "A within-collection interpolation question; report train/test identity and nearest-neighbour overlap",
+    "scaffold": "A declared structural-framework stress test, conditional on enough useful groups; different cores may still be similar",
+    "study": "A study or assay-group transfer question only if that endpoint combination is scientifically justified",
+    "test": "Use held-out references for the final stated comparison after model choices are frozen",
+    "time": "Use trustworthy experimental/availability timestamps when present; label publication-year splits as a proxy",
+    "training": "Fit model parameters and the mean baseline using training labels",
+    "unavailable_design": "Record why a proposed split is unsupported; do not invent timestamps, scaffolds, extra datasets or a performance gap",
+    "validation": "Choose model settings and learned preprocessing using training/validation folds; refit transforms inside each training fold"
+  },
+  "producer_episode": 6,
+  "question": "Estimate a defined potency endpoint for new compounds within an explicit experimental and chemical scope",
+  "schema_version": "1.0.0",
+  "status": "PLANNED; dataset acquisition, model training and empirical evaluation remain future work"
+}

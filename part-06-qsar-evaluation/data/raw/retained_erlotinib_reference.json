@@ -1,0 +1,28 @@
+{
+  "activity_id": 13852013,
+  "assay_chembl_id": "CHEMBL3095060",
+  "assay_description": "Inhibition of wild type EGFR (unknown origin) expressed in baculovirus expression system using poly (Glu, Tyr) 4:1 as substrate after 60 mins by ELISA",
+  "assay_snapshot_path": "data/raw/chembl-assay-CHEMBL3095060.json",
+  "assay_snapshot_sha256": "bb26db55fa7da602c2aaa17684f79c623e9b00da19a0db639416d95e25a58b2c",
+  "database_license": "CC BY-SA 3.0",
+  "endpoint": "IC50",
+  "ic50_nm": 2.6,
+  "limitations": [
+    "ATP concentration and exact construct sequence remain unavailable in retained metadata.",
+    "This is one individual assay record; no cross-assay aggregation or common potency is calculated.",
+    "The underlying article methods were not independently reanalysed; the value is ChEMBL-curated evidence."
+  ],
+  "molecule_chembl_id": "CHEMBL553",
+  "original_article_doi": "10.1016/j.bmc.2013.09.049",
+  "original_snapshot_path": "Playlists/ai-in-drug-discovery/4/data/raw/chembl-egfr-erlotinib-ic50.json",
+  "original_snapshot_sha256": "e884ec6c4e230b0e5e13a02c526a0f99205e4b66b90f31b8a9ed7f5c5271ed64",
+  "raw_record_path": "data/raw/chembl-activity-13852013.json",
+  "raw_record_sha256": "326bec3c70e42d4a20aa3fcf544fcd496553050eb761ebcb3fee3b5ae3ecffe9",
+  "relation": "=",
+  "scope": "One retained ChEMBL-curated measured reference, separate from every numerical teaching example",
+  "source_release": "ChEMBL_37",
+  "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity/13852013.json",
+  "standard_inchikey": "AAKJLRGGTJKAMG-UHFFFAOYSA-N",
+  "target_chembl_id": "CHEMBL203",
+  "target_reference": "human EGFR P00533; assay explicitly says wild type; exact construct unavailable"
+}

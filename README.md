@@ -9,6 +9,7 @@ Code that accompanies the **WhiskerBrief "AI in Drug Discovery"** video course. 
 | 3 | [AI in Drug Discovery 3: The Drug Discovery Pipeline, EGFR and KRAS G12D](https://youtu.be/1OmpK0Qh-5s) | [`part-03-drug-discovery-targets-and-molecular-identity`](part-03-drug-discovery-targets-and-molecular-identity) | [Medium](https://arjun-sarkar786.medium.com/ai-in-drug-discovery-3-the-drug-discovery-pipeline-egfr-and-kras-g12d-ba3ce9e762ea) |
 | 4 | AI in Drug Discovery 4: Dose-Response Curves, IC50 and a Python Fit (video coming soon) | [`part-04-dose-response-curves-and-ic50`](part-04-dose-response-curves-and-ic50) | – |
 | 5 | AI in Drug Discovery 5: Molecules as Data with SMILES, Graphs and Fingerprints (video coming soon) | [`part-05-molecules-as-data-smiles-fingerprints-and-graphs`](part-05-molecules-as-data-smiles-fingerprints-and-graphs) | – |
+| 6 | AI in Drug Discovery 6: QSAR, Potency Scores and Honest Evaluation (video coming soon) | [`part-06-qsar-evaluation`](part-06-qsar-evaluation) | – |
 
 ## Layout
 

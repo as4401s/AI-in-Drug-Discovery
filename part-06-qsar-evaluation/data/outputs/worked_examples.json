@@ -1,0 +1,373 @@
+{
+  "concentration_conversion": {
+    "formula": "pIC50 = 9 - log10(IC50 in nM)",
+    "inverse_formula": "IC50 in nM = 10^(9 - pIC50)",
+    "inverse_pic50": [
+      8,
+      7,
+      6
+    ],
+    "nm": [
+      10,
+      100,
+      1000
+    ],
+    "pic50": [
+      8.0,
+      7.0,
+      6.0
+    ],
+    "roundtrip_nm": [
+      10.0,
+      100.0,
+      1000.0
+    ],
+    "scope": "Unit-conversion inputs, not new assay measurements"
+  },
+  "episode": 6,
+  "fingerprint_overlap": {
+    "first": [
+      1,
+      3,
+      5
+    ],
+    "intersection": [
+      1,
+      5
+    ],
+    "scope": "Arithmetic bit sets from Part 5, not molecule potency",
+    "second": [
+      1,
+      5,
+      7
+    ],
+    "tanimoto": 0.5,
+    "union": [
+      1,
+      3,
+      5,
+      7
+    ]
+  },
+  "identity_partition_example": {
+    "scope": "Schematic preverified identities, not compound names",
+    "summary": {
+      "test": {
+        "rows": 1,
+        "unique_identities": 1
+      },
+      "training": {
+        "rows": 2,
+        "unique_identities": 1
+      },
+      "validation": {
+        "rows": 1,
+        "unique_identities": 1
+      }
+    }
+  },
+  "illustrative_regression": {
+    "evaluation_references": [
+      6,
+      7,
+      8
+    ],
+    "intercept": 7,
+    "predictions": [
+      6.5,
+      7.0,
+      7.5
+    ],
+    "rule": "Specified line y_hat = 7 + 0.5*x; not fitted to assay data",
+    "scope": "Illustrative numerical teaching example; no experimentally measured molecule labels",
+    "scores": {
+      "absolute_errors": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "mae": 0.3333333333333333,
+      "mse": 0.16666666666666666,
+      "r2": 0.75,
+      "r2_status": "defined",
+      "reference_mean": 7.0,
+      "residual_convention": "prediction minus reference",
+      "residuals": [
+        0.5,
+        0.0,
+        -0.5
+      ],
+      "rmse": 0.408248290463863,
+      "squared_errors": [
+        0.25,
+        0.0,
+        0.25
+      ],
+      "sse": 0.5,
+      "tss": 2.0
+    },
+    "slope": 0.5,
+    "x": [
+      -1.0,
+      0.0,
+      1.0
+    ]
+  },
+  "individual_log_error": {
+    "absolute_pic50_error": 0.5,
+    "fold_ratio": 3.1622776601683795,
+    "scope": "Concentration ratio for one absolute pIC50 error",
+    "shifted_absolute_pic50_error": 2,
+    "shifted_fold_ratio": 100.0
+  },
+  "knob_learning": {
+    "bowl_grid": [
+      {
+        "loss": 9.0,
+        "parameter": 0
+      },
+      {
+        "loss": 4.0,
+        "parameter": 1
+      },
+      {
+        "loss": 1.0,
+        "parameter": 2
+      },
+      {
+        "loss": 0.0,
+        "parameter": 3
+      }
+    ],
+    "display_rounding_decimal_places": 12,
+    "gradient": "2 * (w - 3)",
+    "learning_rate": 0.1,
+    "loss": "(w - 3)^2",
+    "scope": "Generic optimization arithmetic, separate from molecular prediction",
+    "trace": [
+      {
+        "gradient": -6.0,
+        "loss": 9.0,
+        "parameter": 0.0,
+        "step": 0
+      },
+      {
+        "gradient": -4.8,
+        "loss": 5.76,
+        "parameter": 0.6,
+        "step": 1
+      },
+      {
+        "gradient": -3.84,
+        "loss": 3.6864,
+        "parameter": 1.08,
+        "step": 2
+      },
+      {
+        "gradient": -3.072,
+        "loss": 2.359296,
+        "parameter": 1.464,
+        "step": 3
+      }
+    ]
+  },
+  "measured_reference": {
+    "activity_id": 13852013,
+    "assay_chembl_id": "CHEMBL3095060",
+    "assay_description": "Inhibition of wild type EGFR (unknown origin) expressed in baculovirus expression system using poly (Glu, Tyr) 4:1 as substrate after 60 mins by ELISA",
+    "assay_snapshot_path": "data/raw/chembl-assay-CHEMBL3095060.json",
+    "assay_snapshot_sha256": "bb26db55fa7da602c2aaa17684f79c623e9b00da19a0db639416d95e25a58b2c",
+    "database_license": "CC BY-SA 3.0",
+    "endpoint": "IC50",
+    "ic50_nm": 2.6,
+    "limitations": [
+      "ATP concentration and exact construct sequence remain unavailable in retained metadata.",
+      "This is one individual assay record; no cross-assay aggregation or common potency is calculated.",
+      "The underlying article methods were not independently reanalysed; the value is ChEMBL-curated evidence."
+    ],
+    "molecule_chembl_id": "CHEMBL553",
+    "original_article_doi": "10.1016/j.bmc.2013.09.049",
+    "original_snapshot_path": "Playlists/ai-in-drug-discovery/4/data/raw/chembl-egfr-erlotinib-ic50.json",
+    "original_snapshot_sha256": "e884ec6c4e230b0e5e13a02c526a0f99205e4b66b90f31b8a9ed7f5c5271ed64",
+    "pic50": 8.585026652029182,
+    "raw_record_path": "data/raw/chembl-activity-13852013.json",
+    "raw_record_sha256": "326bec3c70e42d4a20aa3fcf544fcd496553050eb761ebcb3fee3b5ae3ecffe9",
+    "relation": "=",
+    "scope": "One retained ChEMBL-curated measured reference, separate from every numerical teaching example",
+    "source_release": "ChEMBL_37",
+    "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity/13852013.json",
+    "standard_inchikey": "AAKJLRGGTJKAMG-UHFFFAOYSA-N",
+    "target_chembl_id": "CHEMBL203",
+    "target_reference": "human EGFR P00533; assay explicitly says wild type; exact construct unavailable"
+  },
+  "neighbour_diagnostic": {
+    "nearest_distance": 0.2,
+    "nearest_similarity": 0.8,
+    "scope": "Schematic similarities; no calibrated acceptance threshold",
+    "similarities_to_training": [
+      0.8,
+      0.5,
+      0.2
+    ]
+  },
+  "schema_version": "1.0.0",
+  "scope": "QSAR concepts and checked arithmetic; no empirical potency model training or benchmark",
+  "shifted_ranking": {
+    "predictions": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "ranking": {
+      "predicted_ranks": [
+        1.0,
+        2.0,
+        3.0,
+        4.0
+      ],
+      "reference_ranks": [
+        1.0,
+        2.0,
+        3.0,
+        4.0
+      ],
+      "rho": 1.0,
+      "status": "defined"
+    },
+    "references": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "scope": "Illustrative numerical teaching example; no experimentally measured molecule labels",
+    "scores": {
+      "absolute_errors": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "mae": 2.0,
+      "mse": 4.0,
+      "r2": -2.2,
+      "r2_status": "defined",
+      "reference_mean": 7.5,
+      "residual_convention": "prediction minus reference",
+      "residuals": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "rmse": 2.0,
+      "squared_errors": [
+        4.0,
+        4.0,
+        4.0,
+        4.0
+      ],
+      "sse": 16.0,
+      "tss": 5.0
+    }
+  },
+  "training_mean_baseline": {
+    "evaluation_references": [
+      6,
+      7,
+      8
+    ],
+    "fitted_mean": 6.0,
+    "predictions": [
+      6.0,
+      6.0,
+      6.0
+    ],
+    "ranking": {
+      "predicted_ranks": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "reference_ranks": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "rho": null,
+      "status": "undefined_constant_rank_vector"
+    },
+    "scope": "Illustrative numerical teaching example; no experimentally measured molecule labels",
+    "scores": {
+      "absolute_errors": [
+        0.0,
+        1.0,
+        2.0
+      ],
+      "mae": 1.0,
+      "mse": 1.6666666666666667,
+      "r2": -1.5,
+      "r2_status": "defined",
+      "reference_mean": 7.0,
+      "residual_convention": "prediction minus reference",
+      "residuals": [
+        0.0,
+        -1.0,
+        -2.0
+      ],
+      "rmse": 1.2909944487358056,
+      "squared_errors": [
+        0.0,
+        1.0,
+        4.0
+      ],
+      "sse": 5.0,
+      "tss": 2.0
+    },
+    "training_labels": [
+      5,
+      6,
+      7
+    ]
+  },
+  "tree_and_forest_overview": {
+    "forest_mean": 7.0,
+    "leaf_mean": 7.0,
+    "leaf_training_values": [
+      6,
+      8
+    ],
+    "scope": "Specified numerical leaf/ensemble arithmetic; models not fitted",
+    "specified_tree_predictions": [
+      6,
+      7,
+      8
+    ]
+  },
+  "untied_ranking": {
+    "n": 4,
+    "predicted_ranks": [
+      1.0,
+      3.0,
+      2.0,
+      4.0
+    ],
+    "rank_difference_squared_sum": 2.0,
+    "rank_differences": [
+      0.0,
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "reference_ranks": [
+      1.0,
+      2.0,
+      3.0,
+      4.0
+    ],
+    "rho": 0.8,
+    "scope": "Illustrative numerical teaching example; no experimentally measured molecule labels",
+    "status": "defined"
+  }
+}
