@@ -7,6 +7,11 @@ teaching examples, with no invented measured labels attached to molecules.
 The separate 2.6 nM erlotinib record keeps its original assay provenance.
 This concepts companion fits a training-mean baseline; the displayed line,
 tree leaves and forest values are specified arithmetic, not trained QSARs.
+
+The sections follow the five parts of the video: (1) define the prediction,
+(2) learn a rule, (3) choose a fair test, (4) read the score, (5) check the
+support. Every function has a plain-language docstring and a short comment on
+each step, so you can read the code as a worked example.
 """
 from __future__ import annotations
 
@@ -49,7 +54,7 @@ def nm_from_pic50(pic50: float) -> float:
     return concentration
 
 
-def squared_knob_loss(parameter: float) -> float:
+def squared_parameter_loss(parameter: float) -> float:
     """Evaluate the same generic squared objective for the bowl and learning walk."""
     return float((parameter - 3)**2)
 
@@ -130,6 +135,91 @@ def spearman_scores(reference: Sequence[float], predicted: Sequence[float]) -> d
             "rho": rho, "status": status}
 
 
+def descent_path(start: float, learning_rate: float, steps: int) -> list[dict[str, float]]:
+    """Walk the teaching bowl downhill and record each state.
+
+    One update is: new w = w - learning rate * derivative, where the derivative
+    of the loss (w - 3)^2 is 2 * (w - 3).  Comparing learning rates shows why a
+    step that is too small is slow and a step that is too large overshoots.
+    """
+    if steps < 1:
+        raise ValueError("steps must be a positive integer")
+    w = float(start)
+    path = []
+    for _ in range(steps + 1):
+        path.append({"w": round(w, 12), "loss": round(squared_parameter_loss(w), 12)})
+        w = w - learning_rate * 2 * (w - 3)  # step opposite the slope
+    return path
+
+
+def updates_per_epoch(example_count: int, batch_size: int) -> int:
+    """Count the updates in one epoch: one update for each batch of examples."""
+    if example_count < 1 or batch_size < 1:
+        raise ValueError("example_count and batch_size must be positive integers")
+    # A final smaller batch still triggers an update, so round up.
+    return -(-example_count // batch_size)
+
+
+def boosting_round(targets: Sequence[float], share: float = 0.5) -> dict[str, list[float]]:
+    """One boosting round on three or more targets.
+
+    Start with the mean as the first prediction, find the remaining difference
+    (target minus prediction) and add a small share of it as a correction.
+    """
+    target = numeric_vector(targets, "targets")
+    first = np.full(target.shape, float(np.mean(target)))  # simple first prediction
+    remaining = target - first                              # what is still wrong
+    corrected = first + share * remaining                   # add a small correction
+    return {"targets": target.tolist(), "first_prediction": first.tolist(),
+            "remaining": remaining.tolist(), "correction": (share * remaining).tolist(),
+            "new_prediction": corrected.tolist()}
+
+
+def centre_with_training_mean(training: Sequence[float], held_aside: Sequence[float]) -> dict[str, Any]:
+    """Fit centring on the training values only, then apply it to held-aside values.
+
+    The leaked version averages every value, so the held-aside molecule helps to
+    set its own scale; the report keeps both numbers next to each other.
+    """
+    train = numeric_vector(training, "training values")
+    held = numeric_vector(held_aside, "held-aside values")
+    mean_train = float(np.mean(train))                       # the fitted quantity
+    leaked_mean = float(np.mean(np.concatenate([train, held])))
+    return {"training_mean": mean_train, "centred_training": (train - mean_train).tolist(),
+            "centred_held_aside": (held - mean_train).tolist(), "leaked_mean_for_comparison": leaked_mean}
+
+
+def mae_by_distance_group(distances: Sequence[float], absolute_errors: Sequence[float],
+                          edges: Sequence[float]) -> list[dict[str, Any]]:
+    """Group held-aside molecules by nearest-neighbour distance and average their errors.
+
+    ``edges`` are the group boundaries.  If the error rises with distance, a
+    distance threshold has evidence behind it.
+    """
+    distance = numeric_vector(distances, "distances")
+    error = numeric_vector(absolute_errors, "absolute errors")
+    if distance.shape != error.shape:
+        raise ValueError("Each distance needs one absolute error")
+    groups = []
+    for low, high in zip(edges[:-1], edges[1:]):
+        chosen = (distance >= low) & (distance < high)
+        groups.append({"distance_from": low, "distance_to": high, "molecules": int(chosen.sum()),
+                       "mae": float(error[chosen].mean()) if chosen.any() else None})
+    return groups
+
+
+def interval_coverage(references: Sequence[float], lower: Sequence[float], upper: Sequence[float]) -> dict[str, Any]:
+    """Count how often held-aside references fall inside their proposed intervals."""
+    ref = numeric_vector(references, "references")
+    low = numeric_vector(lower, "lower bounds")
+    high = numeric_vector(upper, "upper bounds")
+    if not (ref.shape == low.shape == high.shape):
+        raise ValueError("Each reference needs one lower and one upper bound")
+    inside = (ref >= low) & (ref <= high)
+    return {"inside": int(inside.sum()), "total": int(ref.size), "coverage": float(inside.mean()),
+            "outside_rows": [int(i) + 1 for i in np.flatnonzero(~inside)]}
+
+
 def check_identity_partitions(partitions: Mapping[str, Sequence[str]]) -> dict[str, dict[str, int]]:
     """Refuse an exact supplied identity appearing in more than one partition.
 
@@ -161,11 +251,11 @@ def build_payload() -> dict[str, Any]:
     predictions = (7 + 0.5 * line_inputs).tolist()
     baseline = training_mean_predictions(training_labels, len(references))
 
-    # Reuse the earlier course's generic knob, independently of molecular data.
+    # Reuse the earlier course's generic parameter, independently of molecular data.
     parameter, trace = 0.0, []
     for step in range(4):
         trace.append({"step": step, "parameter": round(parameter, 12),
-                      "loss": round(squared_knob_loss(parameter), 12),
+                      "loss": round(squared_parameter_loss(parameter), 12),
                       "gradient": round(2 * (parameter - 3), 12)})
         parameter -= 0.1 * 2 * (parameter - 3)
 
@@ -182,8 +272,14 @@ def build_payload() -> dict[str, Any]:
     # This real record is retained separately from all illustrative labels.
     measured = json.loads((ROOT / "data/raw/retained_erlotinib_reference.json").read_text())
     measured["pic50"] = pic50_from_nm(measured["ic50_nm"])
+    # Schematic held-aside rows for the distance-group and interval examples (invented, labelled as such).
+    schematic_distances = [0.05, 0.10, 0.30, 0.35, 0.55, 0.60, 0.80, 0.90]
+    schematic_errors = [0.2, 0.4, 0.4, 0.5, 0.7, 0.8, 1.1, 1.2]
+    schematic_references = [6.1, 7.4, 5.2, 8.0, 6.6, 7.1, 5.9, 8.4, 6.9, 7.7]
+    schematic_predictions = [6.0, 7.0, 6.9, 7.8, 6.5, 7.3, 6.2, 8.0, 7.2, 7.5]
+    half_width = 0.9
     return {
-        "schema_version": "1.0.0", "episode": 6,
+        "schema_version": "1.1.0", "episode": 6,
         "scope": "QSAR concepts and checked arithmetic; no empirical potency model training or benchmark",
         "concentration_conversion": {"scope": "Unit-conversion inputs, not new assay measurements",
             "formula": "pIC50 = 9 - log10(IC50 in nM)", "nm": [10, 100, 1000],
@@ -191,10 +287,10 @@ def build_payload() -> dict[str, Any]:
             "inverse_formula": "IC50 in nM = 10^(9 - pIC50)",
             "inverse_pic50": [8, 7, 6], "roundtrip_nm": [nm_from_pic50(value) for value in [8, 7, 6]]},
         "measured_reference": measured,
-        "knob_learning": {"scope": "Generic optimization arithmetic, separate from molecular prediction",
+        "parameter_learning": {"scope": "Generic optimization arithmetic, separate from molecular prediction",
             "loss": "(w - 3)^2", "gradient": "2 * (w - 3)", "learning_rate": 0.1,
             "trace": trace, "display_rounding_decimal_places": 12,
-            "bowl_grid": [{"parameter": value, "loss": squared_knob_loss(value)} for value in [0, 1, 2, 3]]},
+            "bowl_grid": [{"parameter": value, "loss": squared_parameter_loss(value)} for value in [0, 1, 2, 3]]},
         "training_mean_baseline": {"scope": arithmetic_scope,
             "training_labels": training_labels, "fitted_mean": float(np.mean(training_labels)),
             "evaluation_references": references, "predictions": baseline,
@@ -221,6 +317,23 @@ def build_payload() -> dict[str, Any]:
         "neighbour_diagnostic": {"scope": "Schematic similarities; no calibrated acceptance threshold",
             "similarities_to_training": neighbours, "nearest_similarity": max(neighbours),
             "nearest_distance": round(1 - max(neighbours), 12)},
+        "learning_rate_comparison": {"scope": "Generic optimization arithmetic on the (w - 3)^2 bowl",
+            "rate_0.1": descent_path(0, 0.1, 3), "rate_0.5": descent_path(0, 0.5, 1),
+            "rate_1.1": descent_path(0, 1.1, 2),
+            "derivative_at_0": 2 * (0 - 3), "derivative_at_5": 2 * (5 - 3)},
+        "batches_and_epochs": {"scope": "Counting example", "examples": 1000, "batch_size": 100,
+            "updates_per_epoch": updates_per_epoch(1000, 100)},
+        "boosting_round": {"scope": arithmetic_scope, **boosting_round([4, 6, 8], 0.5)},
+        "training_only_centring": {"scope": arithmetic_scope,
+            **centre_with_training_mean([4, 6, 8], [10])},
+        "neighbour_distance_groups": {"scope": "Schematic invented rows; no calibrated acceptance threshold",
+            "distances": schematic_distances, "absolute_errors": schematic_errors,
+            "groups": mae_by_distance_group(schematic_distances, schematic_errors, [0.0, 0.25, 0.5, 0.75, 1.0])},
+        "interval_coverage": {"scope": "Schematic invented rows for a stated 90 percent interval",
+            "references": schematic_references, "predictions": schematic_predictions, "half_width": half_width,
+            **interval_coverage(schematic_references,
+                                (np.array(schematic_predictions) - half_width).tolist(),
+                                (np.array(schematic_predictions) + half_width).tolist())},
         "tree_and_forest_overview": {"scope": "Specified numerical leaf/ensemble arithmetic; models not fitted",
             "leaf_training_values": [6, 8], "leaf_mean": float(np.mean([6, 8])),
             "specified_tree_predictions": [6, 7, 8], "forest_mean": float(np.mean([6, 7, 8]))},

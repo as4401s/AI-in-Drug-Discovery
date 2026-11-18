@@ -47,10 +47,10 @@ class WorkedExamplesTests(unittest.TestCase):
             lab.nm_from_pic50(float("nan"))
 
     def test_loss_bowl_and_update_trace_use_the_same_objective(self):
-        """The drawn loss bowl must evaluate the very objective used by the knob walk."""
+        """The drawn loss bowl must evaluate the very objective used by the parameter walk."""
         payload = self.lab().build_payload()
-        self.assertIn("bowl_grid", payload["knob_learning"])
-        self.assertEqual(payload["knob_learning"]["bowl_grid"], [
+        self.assertIn("bowl_grid", payload["parameter_learning"])
+        self.assertEqual(payload["parameter_learning"]["bowl_grid"], [
             {"parameter": 0, "loss": 9}, {"parameter": 1, "loss": 4},
             {"parameter": 2, "loss": 1}, {"parameter": 3, "loss": 0}])
 
@@ -107,8 +107,8 @@ class WorkedExamplesTests(unittest.TestCase):
         """Changed optimization or residual definitions must change a checked result."""
         lab = self.lab()
         payload = lab.build_payload()
-        self.assertEqual([row["parameter"] for row in payload["knob_learning"]["trace"]], [0, 0.6, 1.08, 1.464])
-        self.assertEqual([row["loss"] for row in payload["knob_learning"]["trace"]], [9, 5.76, 3.6864, 2.359296])
+        self.assertEqual([row["parameter"] for row in payload["parameter_learning"]["trace"]], [0, 0.6, 1.08, 1.464])
+        self.assertEqual([row["loss"] for row in payload["parameter_learning"]["trace"]], [9, 5.76, 3.6864, 2.359296])
         self.assertAlmostEqual(payload["illustrative_regression"]["scores"]["mae"], 1 / 3)
         self.assertEqual(payload["illustrative_regression"]["scores"]["r2"], 0.75)
         self.assertAlmostEqual(payload["untied_ranking"]["rho"], 0.8)
@@ -116,6 +116,54 @@ class WorkedExamplesTests(unittest.TestCase):
         self.assertAlmostEqual(payload["measured_reference"]["pic50"], 8.585026652029182)
         self.assertIn("shifted_fold_ratio", payload["individual_log_error"])
         self.assertEqual(payload["individual_log_error"]["shifted_fold_ratio"], 100)
+
+    def test_learning_rate_comparison_matches_the_video(self):
+        """Rate 0.5 lands on three; rate 1.1 overshoots and the loss rises."""
+        lab = self.lab()
+        small = lab.descent_path(0, 0.1, 3)
+        self.assertEqual([row["w"] for row in small], [0, 0.6, 1.08, 1.464])
+        self.assertEqual(lab.descent_path(0, 0.5, 1)[-1], {"w": 3, "loss": 0})
+        large = lab.descent_path(0, 1.1, 2)
+        self.assertEqual([row["w"] for row in large], [0, 6.6, -1.32])
+        self.assertEqual([row["loss"] for row in large], [9, 12.96, 18.6624])
+        with self.assertRaises(ValueError):
+            lab.descent_path(0, 0.1, 0)
+
+    def test_epoch_counts_updates_per_batch(self):
+        """One thousand examples in batches of one hundred give ten updates."""
+        lab = self.lab()
+        self.assertEqual(lab.updates_per_epoch(1000, 100), 10)
+        self.assertEqual(lab.updates_per_epoch(1050, 100), 11)
+        with self.assertRaises(ValueError):
+            lab.updates_per_epoch(0, 100)
+
+    def test_boosting_adds_half_of_the_remaining_difference(self):
+        """Targets 4, 6, 8 start at 6, leave -2, 0, +2 and move to 5, 6, 7."""
+        round_ = self.lab().boosting_round([4, 6, 8], 0.5)
+        self.assertEqual(round_["first_prediction"], [6, 6, 6])
+        self.assertEqual(round_["remaining"], [-2, 0, 2])
+        self.assertEqual(round_["new_prediction"], [5, 6, 7])
+
+    def test_centring_uses_the_training_mean_only(self):
+        """A held-aside value of ten becomes four, not three, so it does not set its own scale."""
+        result = self.lab().centre_with_training_mean([4, 6, 8], [10])
+        self.assertEqual(result["training_mean"], 6)
+        self.assertEqual(result["centred_training"], [-2, 0, 2])
+        self.assertEqual(result["centred_held_aside"], [4])
+        self.assertEqual(result["leaked_mean_for_comparison"], 7)
+
+    def test_distance_groups_and_interval_coverage(self):
+        """Error rises with distance in the schematic rows, and nine of ten references fall inside."""
+        payload = self.lab().build_payload()
+        maes = [group["mae"] for group in payload["neighbour_distance_groups"]["groups"]]
+        self.assertEqual(maes, sorted(maes))
+        for got, want in zip(maes, [0.3, 0.45, 0.75, 1.15]):
+            self.assertAlmostEqual(got, want)
+        coverage = payload["interval_coverage"]
+        self.assertEqual((coverage["inside"], coverage["total"]), (9, 10))
+        self.assertEqual(coverage["outside_rows"], [3])
+        with self.assertRaises(ValueError):
+            self.lab().interval_coverage([1, 2], [0], [3, 4])
 
 
 if __name__ == "__main__":

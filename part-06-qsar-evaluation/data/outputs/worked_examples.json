@@ -1,4 +1,38 @@
 {
+  "batches_and_epochs": {
+    "batch_size": 100,
+    "examples": 1000,
+    "scope": "Counting example",
+    "updates_per_epoch": 10
+  },
+  "boosting_round": {
+    "correction": [
+      -1.0,
+      0.0,
+      1.0
+    ],
+    "first_prediction": [
+      6.0,
+      6.0,
+      6.0
+    ],
+    "new_prediction": [
+      5.0,
+      6.0,
+      7.0
+    ],
+    "remaining": [
+      -2.0,
+      0.0,
+      2.0
+    ],
+    "scope": "Illustrative numerical teaching example; no experimentally measured molecule labels",
+    "targets": [
+      4.0,
+      6.0,
+      8.0
+    ]
+  },
   "concentration_conversion": {
     "formula": "pIC50 = 9 - log10(IC50 in nM)",
     "inverse_formula": "IC50 in nM = 10^(9 - pIC50)",
@@ -120,7 +154,176 @@
     "shifted_absolute_pic50_error": 2,
     "shifted_fold_ratio": 100.0
   },
-  "knob_learning": {
+  "interval_coverage": {
+    "coverage": 0.9,
+    "half_width": 0.9,
+    "inside": 9,
+    "outside_rows": [
+      3
+    ],
+    "predictions": [
+      6.0,
+      7.0,
+      6.9,
+      7.8,
+      6.5,
+      7.3,
+      6.2,
+      8.0,
+      7.2,
+      7.5
+    ],
+    "references": [
+      6.1,
+      7.4,
+      5.2,
+      8.0,
+      6.6,
+      7.1,
+      5.9,
+      8.4,
+      6.9,
+      7.7
+    ],
+    "scope": "Schematic invented rows for a stated 90 percent interval",
+    "total": 10
+  },
+  "learning_rate_comparison": {
+    "derivative_at_0": -6,
+    "derivative_at_5": 4,
+    "rate_0.1": [
+      {
+        "loss": 9.0,
+        "w": 0.0
+      },
+      {
+        "loss": 5.76,
+        "w": 0.6
+      },
+      {
+        "loss": 3.6864,
+        "w": 1.08
+      },
+      {
+        "loss": 2.359296,
+        "w": 1.464
+      }
+    ],
+    "rate_0.5": [
+      {
+        "loss": 9.0,
+        "w": 0.0
+      },
+      {
+        "loss": 0.0,
+        "w": 3.0
+      }
+    ],
+    "rate_1.1": [
+      {
+        "loss": 9.0,
+        "w": 0.0
+      },
+      {
+        "loss": 12.96,
+        "w": 6.6
+      },
+      {
+        "loss": 18.6624,
+        "w": -1.32
+      }
+    ],
+    "scope": "Generic optimization arithmetic on the (w - 3)^2 bowl"
+  },
+  "measured_reference": {
+    "activity_id": 13852013,
+    "assay_chembl_id": "CHEMBL3095060",
+    "assay_description": "Inhibition of wild type EGFR (unknown origin) expressed in baculovirus expression system using poly (Glu, Tyr) 4:1 as substrate after 60 mins by ELISA",
+    "assay_snapshot_path": "data/raw/chembl-assay-CHEMBL3095060.json",
+    "assay_snapshot_sha256": "bb26db55fa7da602c2aaa17684f79c623e9b00da19a0db639416d95e25a58b2c",
+    "database_license": "CC BY-SA 3.0",
+    "endpoint": "IC50",
+    "ic50_nm": 2.6,
+    "limitations": [
+      "ATP concentration and exact construct sequence remain unavailable in retained metadata.",
+      "This is one individual assay record; no cross-assay aggregation or common potency is calculated.",
+      "The underlying article methods were not independently reanalysed; the value is ChEMBL-curated evidence."
+    ],
+    "molecule_chembl_id": "CHEMBL553",
+    "original_article_doi": "10.1016/j.bmc.2013.09.049",
+    "original_snapshot_path": "Playlists/ai-in-drug-discovery/4/data/raw/chembl-egfr-erlotinib-ic50.json",
+    "original_snapshot_sha256": "e884ec6c4e230b0e5e13a02c526a0f99205e4b66b90f31b8a9ed7f5c5271ed64",
+    "pic50": 8.585026652029182,
+    "raw_record_path": "data/raw/chembl-activity-13852013.json",
+    "raw_record_sha256": "326bec3c70e42d4a20aa3fcf544fcd496553050eb761ebcb3fee3b5ae3ecffe9",
+    "relation": "=",
+    "scope": "One retained ChEMBL-curated measured reference, separate from every numerical teaching example",
+    "source_release": "ChEMBL_37",
+    "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity/13852013.json",
+    "standard_inchikey": "AAKJLRGGTJKAMG-UHFFFAOYSA-N",
+    "target_chembl_id": "CHEMBL203",
+    "target_reference": "human EGFR P00533; assay explicitly says wild type; exact construct unavailable"
+  },
+  "neighbour_diagnostic": {
+    "nearest_distance": 0.2,
+    "nearest_similarity": 0.8,
+    "scope": "Schematic similarities; no calibrated acceptance threshold",
+    "similarities_to_training": [
+      0.8,
+      0.5,
+      0.2
+    ]
+  },
+  "neighbour_distance_groups": {
+    "absolute_errors": [
+      0.2,
+      0.4,
+      0.4,
+      0.5,
+      0.7,
+      0.8,
+      1.1,
+      1.2
+    ],
+    "distances": [
+      0.05,
+      0.1,
+      0.3,
+      0.35,
+      0.55,
+      0.6,
+      0.8,
+      0.9
+    ],
+    "groups": [
+      {
+        "distance_from": 0.0,
+        "distance_to": 0.25,
+        "mae": 0.30000000000000004,
+        "molecules": 2
+      },
+      {
+        "distance_from": 0.25,
+        "distance_to": 0.5,
+        "mae": 0.45,
+        "molecules": 2
+      },
+      {
+        "distance_from": 0.5,
+        "distance_to": 0.75,
+        "mae": 0.75,
+        "molecules": 2
+      },
+      {
+        "distance_from": 0.75,
+        "distance_to": 1.0,
+        "mae": 1.15,
+        "molecules": 2
+      }
+    ],
+    "scope": "Schematic invented rows; no calibrated acceptance threshold"
+  },
+  "parameter_learning": {
     "bowl_grid": [
       {
         "loss": 9.0,
@@ -171,46 +374,7 @@
       }
     ]
   },
-  "measured_reference": {
-    "activity_id": 13852013,
-    "assay_chembl_id": "CHEMBL3095060",
-    "assay_description": "Inhibition of wild type EGFR (unknown origin) expressed in baculovirus expression system using poly (Glu, Tyr) 4:1 as substrate after 60 mins by ELISA",
-    "assay_snapshot_path": "data/raw/chembl-assay-CHEMBL3095060.json",
-    "assay_snapshot_sha256": "bb26db55fa7da602c2aaa17684f79c623e9b00da19a0db639416d95e25a58b2c",
-    "database_license": "CC BY-SA 3.0",
-    "endpoint": "IC50",
-    "ic50_nm": 2.6,
-    "limitations": [
-      "ATP concentration and exact construct sequence remain unavailable in retained metadata.",
-      "This is one individual assay record; no cross-assay aggregation or common potency is calculated.",
-      "The underlying article methods were not independently reanalysed; the value is ChEMBL-curated evidence."
-    ],
-    "molecule_chembl_id": "CHEMBL553",
-    "original_article_doi": "10.1016/j.bmc.2013.09.049",
-    "original_snapshot_path": "Playlists/ai-in-drug-discovery/4/data/raw/chembl-egfr-erlotinib-ic50.json",
-    "original_snapshot_sha256": "e884ec6c4e230b0e5e13a02c526a0f99205e4b66b90f31b8a9ed7f5c5271ed64",
-    "pic50": 8.585026652029182,
-    "raw_record_path": "data/raw/chembl-activity-13852013.json",
-    "raw_record_sha256": "326bec3c70e42d4a20aa3fcf544fcd496553050eb761ebcb3fee3b5ae3ecffe9",
-    "relation": "=",
-    "scope": "One retained ChEMBL-curated measured reference, separate from every numerical teaching example",
-    "source_release": "ChEMBL_37",
-    "source_url": "https://www.ebi.ac.uk/chembl/api/data/activity/13852013.json",
-    "standard_inchikey": "AAKJLRGGTJKAMG-UHFFFAOYSA-N",
-    "target_chembl_id": "CHEMBL203",
-    "target_reference": "human EGFR P00533; assay explicitly says wild type; exact construct unavailable"
-  },
-  "neighbour_diagnostic": {
-    "nearest_distance": 0.2,
-    "nearest_similarity": 0.8,
-    "scope": "Schematic similarities; no calibrated acceptance threshold",
-    "similarities_to_training": [
-      0.8,
-      0.5,
-      0.2
-    ]
-  },
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "scope": "QSAR concepts and checked arithmetic; no empirical potency model training or benchmark",
   "shifted_ranking": {
     "predictions": [
@@ -330,6 +494,19 @@
       6,
       7
     ]
+  },
+  "training_only_centring": {
+    "centred_held_aside": [
+      4.0
+    ],
+    "centred_training": [
+      -2.0,
+      0.0,
+      2.0
+    ],
+    "leaked_mean_for_comparison": 7.0,
+    "scope": "Illustrative numerical teaching example; no experimentally measured molecule labels",
+    "training_mean": 6.0
   },
   "tree_and_forest_overview": {
     "forest_mean": 7.0,
