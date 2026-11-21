@@ -1,0 +1,211 @@
+<h1 id="ai-in-drug-discovery-7-train-and-validate-egfr-qsar-models-in-python">AI in Drug Discovery 7: Train and Validate EGFR QSAR Models in Python</h1>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/covers/part-07-cover.jpg" />
+</figure>
+<p>If you prefer to learn in more detail or in a visual way, <a href="VIDEO_URL">watch the video for this lesson on YouTube</a>.</p>
+<p>In this tutorial, we will turn 170 measured EGFR molecules into a table, train four kinds of prediction model on it, and test each one on unseen structures. We then wrap every prediction in a calibrated range and save the exact model that the next lesson reloads for screening. We assume basic coding skills and a little familiarity with machine learning; every important idea arrives as a picture, a small calculation and then its proper name. The commented <a href="https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-07-qsar-python">Part 7 code</a> repeats each hand calculation in <code>worked_examples.py</code>.</p>
+<p>Earlier articles in this course:</p>
+<ol type="1">
+<li><a href="https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0">AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2</a></li>
+<li><a href="https://arjun-sarkar786.medium.com/from-microscope-images-to-measurements-fluorescence-organoids-and-a-python-segmentation-baseline-6ec4ecdf5ada">AI in Drug Discovery 2: Microscopy, Organoids and Image Analysis in Python</a></li>
+<li><a href="https://arjun-sarkar786.medium.com/ai-in-drug-discovery-3-the-drug-discovery-pipeline-egfr-and-kras-g12d-ba3ce9e762ea">AI in Drug Discovery 3: The Drug Discovery Pipeline, EGFR and KRAS G12D</a></li>
+<li><a href="https://arjun-sarkar786.medium.com/ai-in-drug-discovery-4-dose-response-curves-ic50-and-a-python-fit-020f02845bb1">AI in Drug Discovery 4: Dose-Response Curves, IC50 and a Python Fit</a></li>
+<li><a href="https://medium.com/p/652af920c64e">AI in Drug Discovery 5: Molecules as Data with SMILES, Graphs and Fingerprints</a></li>
+<li><a href="https://medium.com/p/fc08ec6b6289">AI in Drug Discovery 6: QSAR, Potency Scores and Honest Evaluation</a></li>
+</ol>
+<p>Part 6 defined a QSAR model and an honest test. Here we run that procedure on real measurements: a list from a discovery team goes in, a predicted potency comes out, and an exam on unseen compounds tells us how far to trust it (Figure 1). We work in five steps:</p>
+<ol type="1">
+<li>Assay and features</li>
+<li>Splits and model selection</li>
+<li>Four model families</li>
+<li>Held-out results and uncertainty</li>
+<li>The KRAS challenge and the model handoff</li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-01.png" alt="Figure 1. Structure goes in, predicted potency comes out, and an exam follows. Source: video frame." />
+<figcaption aria-hidden="true">Figure 1. Structure goes in, predicted potency comes out, and an exam follows. Source: video frame.</figcaption>
+</figure>
+<h2 id="assay-and-features">1. Assay and Features</h2>
+<h4 id="the-kinase-assay-and-the-ic50">The Kinase Assay and the IC50</h4>
+<p>EGFR is a kinase, an enzyme that moves a phosphate group from ATP onto other proteins. In a kinase assay we add a compound and watch the enzyme’s signal fall. The concentration that gives half of the maximum inhibition is the IC50. A tenth of the concentration for the same effect means a tenfold more potent compound (Figure 2), so a lower IC50 means higher potency.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-02.png" alt="Figure 2. Two dose-response curves: the green compound reaches half inhibition at 10 nM, the blue one at 100 nM. Source: video frame." />
+<figcaption aria-hidden="true">Figure 2. Two dose-response curves: the green compound reaches half inhibition at 10 nM, the blue one at 100 nM. Source: video frame.</figcaption>
+</figure>
+<h4 id="from-concentration-to-pic50">From Concentration to pIC50</h4>
+<p>Equal steps on a log scale mean equal ratios, so we convert each IC50 into pIC50 using the shortcut for nanomolar values: pIC50 = 9 − log10(IC50 in nM). A 100 nM compound gives 9 − 2 = 7, a 10 nM compound gives 9 − 1 = 8, and reversing the formula turns pIC50 8 back into 10 nM (Figure 3). Higher pIC50 means higher potency, and one unit is a tenfold concentration change.</p>
+<pre class="python"><code># pIC50 = 9 - log10(IC50 in nM): 100 nM gives 7, 10 nM gives 8.
+potency = 9 - np.log10([100, 10])</code></pre>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-03.png" alt="Figure 3. Ten times less concentration adds one pIC50 unit. Source: video frame." />
+<figcaption aria-hidden="true">Figure 3. Ten times less concentration adds one pIC50 unit. Source: video frame.</figcaption>
+</figure>
+<h4 id="one-row-per-structure">One Row per Structure</h4>
+<p>Our cohort comes from one ChEMBL assay, CHEMBL3705421 from document CHEMBL3638799 in release 37, run with a fixed ATP concentration. It holds 173 records, and some structures were measured more than once. We keep one row per structure and take the median pIC50 of its repeats; for an even count that is the mean of the middle two values, so 7.0, 7.2, 7.6 and 7.8 give 7.4. The 173 records become 170 structures, each identified by its full structure key (Figure 4). Mutants such as C797S return in lessons 24 and 25.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-04.png" alt="Figure 4. Repeated measurements collapse to the median pIC50 of each structure. Source: video frame." />
+<figcaption aria-hidden="true">Figure 4. Repeated measurements collapse to the median pIC50 of each structure. Source: video frame.</figcaption>
+</figure>
+<h4 id="a-numeric-row-for-each-molecule">A Numeric Row for Each Molecule</h4>
+<p>Models read numbers, so every molecule becomes one row of features. From Part 5 we reuse 2,048 Morgan bits that mark local atom patterns, 167 MACCS keys that mark common substructures, and 7 descriptors (molecular weight, logP, polar surface area, hydrogen-bond donors and acceptors, heavy-atom count and rotatable bonds). Each row holds 2,048 + 167 + 7 = 2,222 values, so the table has 170 rows and 2,222 columns (Figure 5). Potency stays in a separate column as the target. The graph model later reads atoms and bonds for the same 170 identities.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-05.png" alt="Figure 5. Fingerprint bits and descriptors join into 2,222 features per compound. Source: video frame." />
+<figcaption aria-hidden="true">Figure 5. Fingerprint bits and descriptors join into 2,222 features per compound. Source: video frame.</figcaption>
+</figure>
+<h2 id="splits-and-model-selection">2. Splits and Model Selection</h2>
+<h4 id="three-roles-for-the-data">Three Roles for the Data</h4>
+<p>The development set fits the models and chooses their settings. The calibration set measures how far off a fitted model is, which gives the range around a new prediction. The test set is the final exam, opened once at the end (Figure 6). Think of ten flash cards: six for study, two for the range and two sealed in an envelope.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-06.png" alt="Figure 6. Development fits the model, calibration sets the range and the test set holds the final questions. Source: video frame." />
+<figcaption aria-hidden="true">Figure 6. Development fits the model, calibration sets the range and the test set holds the final questions. Source: video frame.</figcaption>
+</figure>
+<h4 id="the-random-identity-split">The Random Identity Split</h4>
+<p>The first exam is a random identity split. Every unique structure goes to exactly one role, so a reordered version of the same molecule stays on one side. The group key decides what travels together: the molecule for a random split, the scaffold for a scaffold split.</p>
+<pre class="python"><code>    if scheme == &quot;random&quot;:
+        keys = identities
+    elif scheme == &quot;scaffold&quot;:
+        keys = scaffolds</code></pre>
+<p>The random split gives 102 development, 34 calibration and 34 test molecules. Close relatives can still sit on both sides: three test scaffolds also appear in development (Figure 7), so this exam asks for another molecule from a familiar family.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-07.png" alt="Figure 7. A random split keeps whole identities together while close relatives can land on both sides. Source: video frame." />
+<figcaption aria-hidden="true">Figure 7. A random split keeps whole identities together while close relatives can land on both sides. Source: video frame.</figcaption>
+</figure>
+<h4 id="the-scaffold-split">The Scaffold Split</h4>
+<p>A Bemis–Murcko scaffold is the ring system of a molecule plus the linkers between rings. Benzene and toluene share the benzene framework, since toluene adds only a methyl branch. In a scaffold split every member of a scaffold goes to the same side, so the test set holds cores that are new to development (Figure 8).</p>
+<p>Our 170 molecules fall into 23 scaffolds, and one anilinoquinazoline core alone holds 130 of them. The scaffold split gives 142 development, 11 calibration and 17 test molecules, with zero scaffolds shared between sets. This exam matches a real project question: will the rule work on a new chemical series?</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-08.png" alt="Figure 8. Benzene and toluene share a framework, so a scaffold split sends both to the same side. Source: video frame." />
+<figcaption aria-hidden="true">Figure 8. Benzene and toluene share a framework, so a scaffold split sends both to the same side. Source: video frame.</figcaption>
+</figure>
+<h4 id="cross-validation-on-development-data">Cross-Validation on Development Data</h4>
+<p>To choose settings we use cross-validation on the development molecules only. We fit on some groups, check on the rest, rotate three times and average the three check errors. In the scaffold version a scaffold family stays together in every fold, so each check is an exam on unfamiliar cores.</p>
+<p>The actual folds are uneven because of the large family: fold 1 fits on 12 molecules and checks on 130, while folds 2 and 3 fit on 136 and check on 6 (Figure 9). Each fold contributes one third of the average, and we read the selected settings as choices for this exercise.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-09.png" alt="Figure 9. Scaffold cross-validation on 142 development molecules gives folds of 130, 6 and 6 check compounds. Source: video frame." />
+<figcaption aria-hidden="true">Figure 9. Scaffold cross-validation on 142 development molecules gives folds of 130, 6 and 6 check compounds. Source: video frame.</figcaption>
+</figure>
+<h2 id="four-model-families">3. Four Model Families</h2>
+<h4 id="trees-and-forests">Trees and Forests</h4>
+<p>A regression tree asks one yes-or-no question about a feature and stores the average of the training answers in each leaf. With answers 6 and 7 on the left and 8 and 9 on the right, the leaves predict 6.5 and 8.5, and a new molecule receives the value on its side (Figure 10).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-10.png" alt="Figure 10. A regression tree asks one question and averages the answers stored in each leaf. Source: video frame." />
+<figcaption aria-hidden="true">Figure 10. A regression tree asks one question and averages the answers stored in each leaf. Source: video frame.</figcaption>
+</figure>
+<p>A Random Forest averages many such trees. Three trees that predict 6, 7 and 8 give (6 + 7 + 8) ÷ 3 = 7. We compare four settings for tree depth and smallest leaf size with the development folds, and the lowest mean validation error is 0.614, from unrestricted depth with a smallest leaf of 1 (Figure 11). The error here is the mean absolute error, MAE, which Section 4 defines.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-11.png" alt="Figure 11. Four forest settings, three checks each; the lowest mean validation error is 0.614. Source: video frame." />
+<figcaption aria-hidden="true">Figure 11. Four forest settings, three checks each; the lowest mean validation error is 0.614. Source: video frame.</figcaption>
+</figure>
+<h4 id="boosting-and-xgboost">Boosting and XGBoost</h4>
+<p>Boosting builds trees one after another, and each new tree learns the correction that the earlier predictions still need. Take two molecules with measured values 6 and 8 and start by predicting 7 for both. The residual is observed minus predicted, so the residuals are −1 and +1. A small tree learns those corrections, and a learning rate of ½ adds half of each: the new predictions are 6.5 and 7.5 and the squared error falls from 1 to 0.25 (Figure 12).</p>
+<pre class="python"><code>residual = observed - first
+boosted = first + 0.5 * residual</code></pre>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-12.png" alt="Figure 12. Boosting adds a fraction of each residual to move predictions toward the measurements. Source: video frame." />
+<figcaption aria-hidden="true">Figure 12. Boosting adds a fraction of each residual to move predictions toward the measurements. Source: video frame.</figcaption>
+</figure>
+<p>XGBoost is a fast, regularized version of this idea. We vary tree depth (2 or 4) and learning rate (0.05 or 0.12) on the same 2,222 columns, and depth 2 with rate 0.12 gives the lowest mean validation error, 0.573 (Figure 13). Random Forest averages independent trees while XGBoost learns corrections, so the two offer different evidence for the ensemble later.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-13.png" alt="Figure 13. A four-cell grid of tree depth and learning rate; depth 2 with rate 0.12 wins at 0.573. Source: video frame." />
+<figcaption aria-hidden="true">Figure 13. A four-cell grid of tree depth and learning rate; depth 2 with rate 0.12 wins at 0.573. Source: video frame.</figcaption>
+</figure>
+<h4 id="a-small-neural-network">A Small Neural Network</h4>
+<p>A neural network passes numbers through layers of weights. Our teaching network has one input, two hidden units and one output, every weight is 1, and each unit uses a ReLU, which keeps positive values and turns negative ones into zero. Input 1 flows to output 1. The target is 2, so the signed error is 1 − 2 = −1 and the squared error is 1 (Figure 14).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-14.png" alt="Figure 14. A forward pass through a tiny network, then the signed error against the target. Source: video frame." />
+<figcaption aria-hidden="true">Figure 14. A forward pass through a tiny network, then the signed error against the target. Source: video frame.</figcaption>
+</figure>
+<p>To improve, the network follows the slope of the loss backward. The gradient is that slope for one parameter: for squared error it is 2 × error = −2, and a learning rate of 0.1 moves the weight against it, so new weight = 1 − 0.1 × (−2) = 1.2 and the loss falls from 1 to 0.64 (Figure 15). Backpropagation repeats this arithmetic for every weight.</p>
+<pre class="python"><code>gradient = 2 * (prediction - target)
+next_weight = 1.0 - 0.1 * gradient</code></pre>
+<p>On our real table we compare two layouts and two regularization strengths; the lowest mean validation error is 0.681, from one hidden layer of 16 units. Some runs reached the iteration limit, and the library reports an optimization warning for those.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-15.png" alt="Figure 15. One gradient step moves the weight from 1 to 1.2; the grid on the right compares four network settings. Source: video frame." />
+<figcaption aria-hidden="true">Figure 15. One gradient step moves the weight from 1 to 1.2; the grid on the right compares four network settings. Source: video frame.</figcaption>
+</figure>
+<h4 id="a-graph-model">A Graph Model</h4>
+<p>A fingerprint records which patterns appear somewhere in a molecule; a graph keeps the bonds, so neighbors can pass messages. For the chain C–C–O with features 1, 1 and 2, each atom hears the mean of its neighbors: 1, (1 + 2) ÷ 2 = 1.5 and 1 (Figure 16).</p>
+<pre class="python"><code>neighboring = np.array([node[1], (node[0] + node[2]) / 2, node[1]])
+hidden = np.maximum(0.5 * node + neighboring, 0)</code></pre>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-16.png" alt="Figure 16. Each atom receives the mean of its neighbors’ features. Source: video frame." />
+<figcaption aria-hidden="true">Figure 16. Each atom receives the mean of its neighbors’ features. Source: video frame.</figcaption>
+</figure>
+<p>Each atom combines its own value (weight 0.5) with the neighbor summary (weight 1), giving 1.5, 2 and 2. Pooling averages the atoms into 1.83, and a final linear step turns that into the prediction 6.2 (Figure 17). On our data the best graph settings reach a mean validation error of 0.612 with width 24 and 180 training steps.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-17.png" alt="Figure 17. Own value plus neighbor summary, pooled by the mean into the prediction 6.2, and the grid of graph settings. Source: video frame." />
+<figcaption aria-hidden="true">Figure 17. Own value plus neighbor summary, pooled by the mean into the prediction 6.2, and the grid of graph settings. Source: video frame.</figcaption>
+</figure>
+<h2 id="held-out-results-and-uncertainty">4. Held-Out Results and Uncertainty</h2>
+<h4 id="measuring-the-size-of-a-miss">Measuring the Size of a Miss</h4>
+<p>Now the test set opens. The miss for each molecule is the predicted value minus the measured value, so a positive miss means the model guessed too high. For measured values 6, 7, 8 and predictions 6, 8, 7 the misses are 0, +1 and −1. MAE is the mean absolute miss, (0 + 1 + 1) ÷ 3 ≈ 0.67. RMSE squares the misses first, so large misses count more: √((0 + 1 + 1) ÷ 3) ≈ 0.82 (Figure 18).</p>
+<pre class="python"><code>errors = estimates - actual
+&quot;mae&quot;: float(np.abs(errors).mean()),</code></pre>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-18.png" alt="Figure 18. Three held-out answers show how MAE and RMSE summarize the misses. Source: video frame." />
+<figcaption aria-hidden="true">Figure 18. Three held-out answers show how MAE and RMSE summarize the misses. Source: video frame.</figcaption>
+</figure>
+<p>Two more scores complete the picture. R² compares the model with predicting the mean for everyone, and R² = 0 means equal to that reference. Spearman correlation asks whether molecules land in the same order; in our three-molecule example the first ranks lowest in both lists while the second and third swap, which gives 0.5.</p>
+<h4 id="parity-plots-and-the-median-baseline">Parity Plots and the Median Baseline</h4>
+<p>A parity plot puts measured pIC50 on the horizontal axis and predicted pIC50 on the vertical axis, so every dot is a held-out example and the diagonal is perfect agreement. The ensemble, a mean of three tabular fits (Random Forest, XGBoost and the neural network), reaches an average miss of 0.55 on the random exam (34 compounds) and 0.64 on the scaffold exam (17 compounds) in Figure 19.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-19.png" alt="Figure 19. Predicted against measured pIC50 for the random exam (left) and the scaffold exam (right). Source: video frame." />
+<figcaption aria-hidden="true">Figure 19. Predicted against measured pIC50 for the random exam (left) and the scaffold exam (right). Source: video frame.</figcaption>
+</figure>
+<p>A fair report also shows a simple baseline: the development median predicted for every molecule. On the scaffold exam the baseline reaches a test MAE of 0.48, the smallest in the table, while Random Forest gives 0.61, XGBoost 0.63, the neural network 0.92 and the graph model 0.51 (Figure 20). On the random exam the picture is closer: median 0.556, Random Forest 0.525.</p>
+<p>On unfamiliar scaffolds the simple median predicts better than the fitted models. That is the purpose of the scaffold exam: it shows how much apparent skill carries over to a new chemical series. With 17 test molecules in five scaffolds, we read these numbers as a first look.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-20.png" alt="Figure 20. Scaffold-exam parity plots for four models with test MAE, next to the median baseline of 0.48. Source: video frame." />
+<figcaption aria-hidden="true">Figure 20. Scaffold-exam parity plots for four models with test MAE, next to the median baseline of 0.48. Source: video frame.</figcaption>
+</figure>
+<h4 id="a-calibrated-range-around-each-prediction">A Calibrated Range Around Each Prediction</h4>
+<p>A prediction becomes more useful with a range, and the calibration set provides it through split conformal calibration. For each calibration scaffold we keep its largest absolute error as the group score, sort the scores, and take the ceil((n + 1) × coverage)-th smallest.</p>
+<p>Toy numbers show the steps. Four calibration scaffolds have worst errors 0.15, 0.25, 0.40 and 0.80. For an 80% target the rank is 0.8 × (4 + 1) = 4, so the half-width is 0.80 and a prediction of 7 gives the interval 7 ± 0.8, from 6.2 to 7.8 (Figure 21).</p>
+<pre class="python"><code>    ordered = sorted(maximum.values())
+    rank = ceil((len(ordered)+1) * coverage)</code></pre>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-21.png" alt="Figure 21. The fourth of four ordered scores becomes the half-width of the interval. Source: video frame." />
+<figcaption aria-hidden="true">Figure 21. The fourth of four ordered scores becomes the half-width of the interval. Source: video frame.</figcaption>
+</figure>
+<p>Our real scaffold split has five calibration scaffolds with scores 0.35, 0.38, 0.45, 1.51 and 1.62. The rank is ceil(6 × 0.8) = 5, so the largest score, 1.62, becomes the half-width. The interval covered 16 of the 17 test molecules and 4 of the 5 test scaffolds (Figure 22). One pIC50 unit is a tenfold change in concentration, so 1.62 is a broad range: the probe molecule predicted at 7.65 receives the interval 6.04 to 9.27.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-22.png" alt="Figure 22. Five calibration scores give a half-width of 1.62; 16 of 17 test molecules fall inside. Source: video frame." />
+<figcaption aria-hidden="true">Figure 22. Five calibration scores give a half-width of 1.62; 16 of 17 test molecules fall inside. Source: video frame.</figcaption>
+</figure>
+<h4 id="asking-how-familiar-a-structure-is">Asking How Familiar a Structure Is</h4>
+<p>An interval measures how far off past predictions were; a second question asks how familiar a new structure is. Tanimoto similarity compares two fingerprints: the on-bits they share divided by the on-bits in either one. For every development molecule we find its nearest development neighbor, and we set the cutoff at the lowest tenth of those similarities, about 0.59 (Figure 23). A candidate below the cutoff overlaps little with the training structures, so we flag it, and we carry both the interval and the similarity into the screening lesson.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-23.png" alt="Figure 23. Similarity asks about overlap; the interval asks about past errors; the cutoff is the tenth percentile. Source: video frame." />
+<figcaption aria-hidden="true">Figure 23. Similarity asks about overlap; the interval asks about past errors; the cutoff is the tenth percentile. Source: video frame.</figcaption>
+</figure>
+<h2 id="the-kras-challenge-and-the-model-handoff">5. The KRAS Challenge and the Model Handoff</h2>
+<h4 id="a-small-kras-g12d-challenge">A Small KRAS G12D Challenge</h4>
+<p>We repeat the recipe on a challenge set of 23 KRAS G12D compounds from one recombinant human protein assay, with the same features, split rules and metrics. The random exam has 5 test molecules and an ensemble MAE of about 0.79; the scaffold exam has 4 test molecules and an MAE of about 1.15 (Figure 24).</p>
+<p>The four scaffold-test errors are 0.78, 2.26, 0.44 and 1.13, so one large miss lifts the average from 0.78 to 1.15. With so few molecules we read the individual errors and keep the assay context in view.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-24.png" alt="Figure 24. The KRAS G12D challenge set with random and scaffold parity plots. Source: video frame." />
+<figcaption aria-hidden="true">Figure 24. The KRAS G12D challenge set with random and scaffold parity plots. Source: video frame.</figcaption>
+</figure>
+<h4 id="freezing-the-model-for-part-8">Freezing the Model for Part 8</h4>
+<p>The last step saves exactly the model that will go forward. The ensemble trained on the 142 development molecules of the scaffold split goes into one file, <code>egfr_qsar_model.joblib</code>, with three fitted estimators, the development fingerprints and the calibration width. A manifest records the assay CHEMBL3705421, the feature recipe, the package versions (Python 3.12, scikit-learn 1.7.2, XGBoost 3.0.5, RDKit 2025.9.6) and a SHA-256 fingerprint of the file: 0fb37847a2303f9af14683b36b5098344b8bb8ab8840bc00b113b361e2db90d1. The stored support cutoff is a nearest-neighbor Tanimoto of 0.588.</p>
+<p>Loading a joblib file can run code, so we load only a model we built or whose fingerprint we verified. The loader compares the fingerprint with the manifest first.</p>
+<pre class="python"><code>    if sha256(data).hexdigest() != manifest[&quot;model_sha256&quot;]:
+        raise ValueError(&quot;The saved model SHA-256 differs from its manifest&quot;)</code></pre>
+<p>A separate process then scores three reference molecules (CHEMBL3671564, CHEMBL3671481 and CHEMBL3671478) and returns 7.65, 6.54 and 8.04. The largest difference from the in-memory run is 0.0, so the saved file reproduces the checked model (Figure 25).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-07-qsar-python/article/images/figure-25.png" alt="Figure 25. The saved model, its manifest and three matching predictions from a separate process. Source: video frame." />
+<figcaption aria-hidden="true">Figure 25. The saved model, its manifest and three matching predictions from a separate process. Source: video frame.</figcaption>
+</figure>
+<h2 id="practice-and-the-next-lab">Practice and the Next Lab</h2>
+<p>Run <code>python code/worked_examples.py</code> to print the arithmetic of this article, then change one setting at a time, such as the split seed, and watch which numbers move.</p>
+<p>In Part 8 we start from this exact checked file and screen a separate collection of structures. The model estimates potency, the interval and the similarity cutoff show how far to trust each estimate, and a diversity rule picks the candidates for a plate of real experiments. Hope this article helps you train, test and report a model fairly.</p>
+<h2 id="references">References</h2>
+<ul>
+<li>ChEMBL/EMBL-EBI. <a href="https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3705421.json">Assay CHEMBL3705421</a> and document CHEMBL3638799, ChEMBL_37; CC BY-SA 3.0.</li>
+<li>Bemis, G. W. and Murcko, M. A. <em>The Properties of Known Drugs. 1. Molecular Frameworks.</em> Journal of Medicinal Chemistry, 1996. <a href="https://doi.org/10.1021/jm9602928">DOI: 10.1021/jm9602928</a>.</li>
+<li>Rogers, D. and Hahn, M. <em>Extended-Connectivity Fingerprints.</em> Journal of Chemical Information and Modeling, 2010. <a href="https://doi.org/10.1021/ci100050t">DOI: 10.1021/ci100050t</a>.</li>
+<li>Breiman, L. <em>Random Forests.</em> Machine Learning, 2001. <a href="https://doi.org/10.1023/A:1010933404324">DOI: 10.1023/A:1010933404324</a>.</li>
+<li>Chen, T. and Guestrin, C. <em>XGBoost: A Scalable Tree Boosting System.</em> KDD, 2016. <a href="https://doi.org/10.1145/2939672.2939785">DOI: 10.1145/2939672.2939785</a>.</li>
+<li>Gilmer, J. et al. <em>Neural Message Passing for Quantum Chemistry.</em> ICML, 2017. <a href="https://arxiv.org/abs/1704.01212">arXiv:1704.01212</a>.</li>
+<li>Angelopoulos, A. N. and Bates, S. <em>A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification.</em> 2021. <a href="https://arxiv.org/abs/2107.07511">arXiv:2107.07511</a>.</li>
+</ul>
