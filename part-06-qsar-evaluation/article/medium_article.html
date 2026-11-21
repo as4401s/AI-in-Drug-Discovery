@@ -1,0 +1,192 @@
+<h1 id="ai-in-drug-discovery-6-qsar-potency-scores-and-honest-evaluation">AI in Drug Discovery 6: QSAR, Potency Scores and Honest Evaluation</h1>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/covers/part-06-cover.jpg" />
+</figure>
+<p>If you prefer to learn in more detail or in a visual way, <a href="VIDEO_URL">watch the video for this lesson on YouTube</a>.</p>
+<p>In this tutorial, we will connect a molecular representation to a measured endpoint, watch a small prediction rule learn from examples, and decide which evidence makes its scores trustworthy. We assume basic coding skills and a little familiarity with machine learning; every important idea arrives as a picture, a small calculation and then its proper name. The commented <a href="https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-06-qsar-evaluation">Part 6 code</a> reproduces each calculation in <code>worked_examples.py</code>.</p>
+<p>Earlier articles in this course:</p>
+<ol type="1">
+<li><a href="https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0">AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2</a></li>
+<li><a href="https://arjun-sarkar786.medium.com/from-microscope-images-to-measurements-fluorescence-organoids-and-a-python-segmentation-baseline-6ec4ecdf5ada">AI in Drug Discovery 2: Microscopy, Organoids and Image Analysis in Python</a></li>
+<li><a href="https://arjun-sarkar786.medium.com/ai-in-drug-discovery-3-the-drug-discovery-pipeline-egfr-and-kras-g12d-ba3ce9e762ea">AI in Drug Discovery 3: The Drug Discovery Pipeline, EGFR and KRAS G12D</a></li>
+<li><a href="https://arjun-sarkar786.medium.com/ai-in-drug-discovery-4-dose-response-curves-ic50-and-a-python-fit-020f02845bb1">AI in Drug Discovery 4: Dose-Response Curves, IC50 and a Python Fit</a></li>
+<li><a href="https://medium.com/p/652af920c64e">AI in Drug Discovery 5: Molecules as Data with SMILES, Graphs and Fingerprints</a></li>
+</ol>
+<p>Part 4 retained one erlotinib assay record, and Part 5 turned twenty structural inputs into eight unique identities with SMILES, graphs and fingerprints. Here we connect those foundations in five steps:</p>
+<ol type="1">
+<li>Define the prediction</li>
+<li>Learn a rule</li>
+<li>Choose a fair test</li>
+<li>Read the score</li>
+<li>Check the support</li>
+</ol>
+<h2 id="define-the-prediction">1. Define the Prediction</h2>
+<h4 id="four-words-four-jobs">Four Words, Four Jobs</h4>
+<p>A quantitative structure–activity relationship, shortened to QSAR, has four words with four jobs. Quantitative means numbers. Structure is a specified chemical description, such as the fingerprint from Part 5. Activity is a measured response that matters to our question. Relationship is the rule that links the two, so a QSAR model takes a structure description in and gives an activity estimate out.</p>
+<p>Picture a machine with a slot on top and a display on the front: what we drop in is the input, its entries are the features, the displayed number is the prediction, and everything inside is the rule.</p>
+<p>To teach the rule, we need examples with known answers, like flash cards: the feature row is the front, and the measured value on the back is the target. A clear task states this representation, for this endpoint, under this experimental setting, and we call that statement the contract (Figure 1).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-01.png" alt="Figure 1. Features on the front, the measured target on the back. Source: video frame." />
+<figcaption aria-hidden="true">Figure 1. Features on the front, the measured target on the back. Source: video frame.</figcaption>
+</figure>
+<h4 id="an-endpoint-with-an-address">An Endpoint With an Address</h4>
+<p>An assay is an experiment that measures a response. Test how much of a medicine halves an enzyme’s activity, and the concentration at that halfway point is the IC50, the half maximal inhibitory concentration. A smaller IC50 means less compound is needed, so the compound is more potent in that assay.</p>
+<p>An IC50 also carries an experimental address: the protein variant, the assay format, the exposure time and the chemical conditions. A biochemical assay uses an isolated target and a cell assay uses living cells, so they answer related but different questions (Figure 2). Keep the address and source identifiers beside the value; a curation policy decides how repeated rows join the task, and a reported “greater than 10 µM” is a bound, so value, unit and relation travel together.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-02.png" alt="Figure 2. The endpoint keeps its assay context. Source: video frame." />
+<figcaption aria-hidden="true">Figure 2. The endpoint keeps its assay context. Source: video frame.</figcaption>
+</figure>
+<h4 id="the-logarithmic-ladder-and-pic50">The Logarithmic Ladder and pIC50</h4>
+<p>Potency values span many orders of magnitude, so we want a scale where equal steps mean equal ratios. Picture a ladder where each rung multiplies the concentration by ten: rung 0 is 1 nM, rung 1 is 10 nM, rung 2 is 100 nM. The rung number is the base ten logarithm of the concentration.</p>
+<p>We define pIC50 in three steps: write the IC50 in moles per litre, take the base ten logarithm, and change the sign. For nanomolar values the shortcut is pIC50 = 9 − log10(IC50 in nM), so 10, 100 and 1000 nM become 8, 7 and 6 (Figure 3). Every tenfold increase in IC50 lowers pIC50 by exactly one, and a higher pIC50 means a more potent compound in the same assay.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-03.png" alt="Figure 3. Ten, 100 and 1000 nM become pIC50 8, 7 and 6. Source: video frame." />
+<figcaption aria-hidden="true">Figure 3. Ten, 100 and 1000 nM become pIC50 8, 7 and 6. Source: video frame.</figcaption>
+</figure>
+<p>Our retained erlotinib record, 2.6 nM, becomes 9 − 0.415 ≈ 8.585 and stays attached to activity 13852013 and assay CHEMBL3095060: wild-type EGFR, a 60-minute ELISA format, with the exact construct and ATP concentration still open (Figure 4). This single record illustrates the contract and the conversion; every other number in the lesson is a labelled teaching example.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-04.png" alt="Figure 4. The transformed value keeps the original record identity. Source: video; ChEMBL/EMBL-EBI, CC BY-SA 3.0." />
+<figcaption aria-hidden="true">Figure 4. The transformed value keeps the original record identity. Source: video; ChEMBL/EMBL-EBI, CC BY-SA 3.0.</figcaption>
+</figure>
+<h4 id="regression-classification-and-ranking">Regression, Classification and Ranking</h4>
+<p>Picture a shelf of books: estimating each thickness is regression, labelling each thick or thin is classification, and lining them up is ranking. pIC50 is a regression target, and ranking matters because a useful shortlist depends on order.</p>
+<p>A grid with one row per molecule and one column per feature is a matrix, named X; its shape lists rows first, so 100 molecules with 2048 fingerprint positions give (100, 2048). The target vector y holds one reference value per row, shape (100,), and the chemical identifier links row seven of X to entry seven of y (Figure 5).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-05.png" alt="Figure 5. Shapes check alignment; identifiers match rows to molecules. Source: video frame." />
+<figcaption aria-hidden="true">Figure 5. Shapes check alignment; identifiers match rows to molecules. Source: video frame.</figcaption>
+</figure>
+<h2 id="learn-a-rule">2. Learn a Rule</h2>
+<h4 id="predict-compare-adjust">Predict, Compare, Adjust</h4>
+<p>A student practises with known answers, compares an attempt with the answer and adjusts the method. Supervised learning follows the same loop: input, prediction, comparison with the target, loss, parameter update, repeat (Figure 6). Inference applies the learned rule to a new input. Parameters are settings learned from examples, such as a line’s intercept and slope; hyperparameters are choices made beforehand, such as the learning rate or a tree’s depth.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-06.png" alt="Figure 6. Training improves a rule with references; inference applies it. Source: video frame." />
+<figcaption aria-hidden="true">Figure 6. Training improves a rule with references; inference applies it. Source: video frame.</figcaption>
+</figure>
+<p>The error of one example is prediction minus target. Squaring counts misses in both directions alike, so errors of 1 and 2 cost 1 and 4, and the mean squared error averages these costs into the loss: one number saying how far the rule sits from the targets.</p>
+<h4 id="a-bowl-with-one-parameter">A Bowl With One Parameter</h4>
+<p>Take one parameter, w, with target 3, and loss L(w) = (w − 3)². Settings 0, 1, 2 and 3 give losses 9, 4, 1 and 0, a bowl with its lowest point at w = 3 (Figure 7). Moving w downhill is learning, and searching for the best parameter values by a loss is called optimization.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-07.png" alt="Figure 7. Teaching numbers in a loss bowl. Source: video frame." />
+<figcaption aria-hidden="true">Figure 7. Teaching numbers in a loss bowl. Source: video frame.</figcaption>
+</figure>
+<p>Walking downhill in fog, we feel the ground tilt. For a curve, the slope at one point is the derivative; here it is 2 × (w − 3), which gives −6 at w = 0 and +4 at w = 5. The derivative points uphill, so we step the opposite way, and with many parameters the gradient collects every parameter’s slope.</p>
+<p>The learning rate sets the step size: new w = w − learning rate × derivative. With rate 0.1, starting at w = 0, the first derivative is −6, so the step is −0.6 and w becomes 0.6 with loss 5.76. The second update gives w = 1.08 (loss 3.6864) and the third gives w = 1.464 (loss 2.359296), so three updates take the loss from 9 to about 2.36 (Figure 8).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-08.png" alt="Figure 8. Each update is linked to its resulting loss. Source: video frame." />
+<figcaption aria-hidden="true">Figure 8. Each update is linked to its resulting loss. Source: video frame.</figcaption>
+</figure>
+<p>The rate shapes the path: small steps are steady but slow, rate 0.5 lands exactly on 3 in this simple bowl, and rate 1.1 jumps past the bottom to 6.6, so the loss rises from 9 to 12.96 (Figure 9).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-09.png" alt="Figure 9. Too small is slow; too large overshoots. Source: video frame." />
+<figcaption aria-hidden="true">Figure 9. Too small is slow; too large overshoots. Source: video frame.</figcaption>
+</figure>
+<p>Real datasets use a batch of examples per update, and an epoch is one pass through all of them: 1000 examples in batches of 100 give 10 updates per epoch.</p>
+<h4 id="overfitting-baselines-and-three-kinds-of-rule">Overfitting, Baselines and Three Kinds of Rule</h4>
+<p>Overfitting means fitting the quirks of the training examples at the expense of useful patterns; the warning sign is a training loss that keeps falling while the validation loss starts to rise (Figure 10). Regularization limits flexibility, through a maximum tree depth or a penalty on large coefficients, and validation chooses how much.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-10.png" alt="Figure 10. Schematic with invented numbers. Source: video frame." />
+<figcaption aria-hidden="true">Figure 10. Schematic with invented numbers. Source: video frame.</figcaption>
+</figure>
+<p>A training-mean baseline keeps a score honest: targets 5, 6 and 7 have mean 6, so it predicts 6 for every new input, and any model has to beat it on the same evaluation molecules.</p>
+<p>Three rules show how models differ. A line predicts b + w·x; our specified rule 7 + 0.5x maps x = −1, 0, 1 to 6.5, 7 and 7.5. A regression tree asks feature questions and predicts the mean of its leaf, so leaf targets 6 and 8 give 7. A random forest averages many trees, so predictions 6, 7 and 8 average to 7 and the quirks of any single tree fade. Boosting works in sequence and has its own section next.</p>
+<h4 id="gradient-boosting-and-neural-networks">Gradient Boosting and Neural Networks</h4>
+<p>Boosting builds small trees one after another, and its full name, gradient boosting, links it to the loop above. For squared error, the slope of the loss is proportional to prediction minus target, so the residual, target minus prediction, points downhill. Each round fits a small tree to the residuals and adds a fraction of it, the learning rate. With targets 4, 6 and 8 and a rate of ½, round zero predicts the mean, 6, and the residuals are −2, 0 and +2. Round one predicts 5, 6 and 7, the new residuals are −1, 0 and +1, and round two predicts 4.5, 6 and 7.5: the error halves each round (Figure 11).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-11.png" alt="Figure 11. Each round adds half of the residual. Source: video frame." />
+<figcaption aria-hidden="true">Figure 11. Each round adds half of the residual. Source: video frame.</figcaption>
+</figure>
+<p>XGBoost is a fast implementation that adds a regularization term to the squared error, penalizing complicated trees; Part 7 chooses its learning rate and tree depth with validation.</p>
+<p>A neural network is a different kind of rule: layers of small units, each forming a weighted sum of its inputs, so the parameters are weights, and then passing the sum through a simple bend called an activation function. A tree ensemble splits the input with yes or no questions and averages the leaves, while a network multiplies and adds and learns its weights by gradient descent. Tree ensembles are a strong start for a table of fingerprint bits, and a network with many weights has limited room on 170 compounds. Part 7 trains a random forest, XGBoost, a small neural network and a graph model on the same split.</p>
+<h2 id="choose-a-fair-test">3. Choose a Fair Test</h2>
+<h4 id="study-rehearsal-and-a-final-exam">Study, Rehearsal and a Final Exam</h4>
+<p>Training examples are the study material, validation is the rehearsal for choosing a strategy, and the test partition is the final exam. Ten molecules might split into 6 for training, 2 for validation and 2 for test. We open the test partition once, at a planned moment, so the score describes a reproducible procedure (Figure 12).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-12.png" alt="Figure 12. Development and final assessment have separate jobs. Source: video frame." />
+<figcaption aria-hidden="true">Figure 12. Development and final assessment have separate jobs. Source: video frame.</figcaption>
+</figure>
+<h4 id="keep-related-records-together">Keep Related Records Together</h4>
+<p>CCO and OCC encode the same checked ethanol identity, so aliases and replicates travel together into one partition, and the companion code verifies this for every supplied identity (Figure 13). Leakage occurs when reserved information reaches fitting or selection, like an exam answer slipping into practice.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-13.png" alt="Figure 13. Grouping handles repeated identities before fitting. Source: video frame." />
+<figcaption aria-hidden="true">Figure 13. Grouping handles repeated identities before fitting. Source: video frame.</figcaption>
+</figure>
+<p>Learned preprocessing needs the same care: training values 4, 6 and 8 have mean 6, so a held-aside 10 becomes 10 − 6 = 4, and a mean over all four values would let the held-aside molecule help set its own scale.</p>
+<h4 id="match-the-split-to-the-future-question">Match the Split to the Future Question</h4>
+<p>A random split asks how well the rule predicts more examples that resemble this collection; save the seed so anyone can repeat it. A scaffold is the ring-and-linker core of a molecule, and the common recipe is the Bemis–Murcko framework of Guy Bemis and Mark Murcko (1996). Picture a tree stripped of leaves and twigs: the side chains fall away, and the rings and linkers remain. For erlotinib, the two ether chains and the ethynyl group drop out, leaving the quinazoline rings, the N–H linker and the benzene ring (Figure 14), which RDKit writes as <code>c1ccc(Nc2ncnc3ccccc23)cc1</code>. Every molecule with those rings and that linker receives the same string.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-14.png" alt="Figure 14. The Bemis–Murcko scaffold of erlotinib and its SMILES string. Source: video frame." />
+<figcaption aria-hidden="true">Figure 14. The Bemis–Murcko scaffold of erlotinib and its SMILES string. Source: video frame.</figcaption>
+</figure>
+<p>In our EGFR collection, 170 compounds share only 23 scaffolds: the anilinoquinazoline core holds 130 (76%) and 17 scaffolds hold one compound each (Figure 15). A scaffold split moves whole groups, so group sizes decide how balanced the partitions can be (Figure 16). Different cores can still share chemistry, so inspect actual neighbours as well.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-15.png" alt="Figure 15. Real scaffold counts of the EGFR collection. Source: video frame." />
+<figcaption aria-hidden="true">Figure 15. Real scaffold counts of the EGFR collection. Source: video frame.</figcaption>
+</figure>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-16.png" alt="Figure 16. The scaffold definition decides which transfer question we ask. Source: video frame." />
+<figcaption aria-hidden="true">Figure 16. The scaffold definition decides which transfer question we ask. Source: video frame.</figcaption>
+</figure>
+<p>A time split closes the notebook at a date and evaluates later examples; check what the date means, because publication year and the time a result became available describe different events (Figure 17). Cross-validation repeats the question across rotating folds, refitting preprocessing inside each. We freeze the evaluation question first, then save row assignments, seeds, grouping rules and predictions.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-17.png" alt="Figure 17. Temporal evidence depends on meaningful dates. Source: video frame." />
+<figcaption aria-hidden="true">Figure 17. Temporal evidence depends on meaningful dates. Source: video frame.</figcaption>
+</figure>
+<h2 id="read-the-score">4. Read the Score</h2>
+<h4 id="residuals-mae-and-rmse">Residuals, MAE and RMSE</h4>
+<p>Take references 6, 7 and 8 with predictions 6.5, 7 and 7.5. A residual is prediction minus reference: +0.5, 0 and −0.5. Plotting references horizontally and predictions vertically, perfect agreement lies on the diagonal (Figure 18).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-18.png" alt="Figure 18. Signs keep the direction of each miss. Source: video frame." />
+<figcaption aria-hidden="true">Figure 18. Signs keep the direction of each miss. Source: video frame.</figcaption>
+</figure>
+<p>The absolute value keeps the size of each miss: 0.5, 0 and 0.5, which add to 1. The mean absolute error (MAE) divides by three, giving 1/3 ≈ 0.333. Squaring gives larger errors extra weight: 0.25, 0 and 0.25 add to 0.5, the mean is 1/6, and the root mean squared error (RMSE) is √(1/6) ≈ 0.408 (Figure 19). In pIC50 units, an absolute error of 0.5 is a concentration ratio of 10^0.5 ≈ 3.16.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-19.png" alt="Figure 19. Square, average, then take the root. Source: video frame." />
+<figcaption aria-hidden="true">Figure 19. Square, average, then take the root. Source: video frame.</figcaption>
+</figure>
+<h4 id="r²-and-two-different-means">R² and Two Different Means</h4>
+<p>Our training-mean baseline predicts 6, 6, 6 for the same references, giving MAE 1 and RMSE √(5/3) ≈ 1.291.</p>
+<p>R² = 1 − SSE/TSS. SSE is the sum of squared errors, 0.5 for the line. TSS is the total squared variation of the evaluation references around their own mean, 7, which gives 2. So R² = 1 − 0.5/2 = 0.75. The baseline has SSE 5, so its R² is 1 − 5/2 = −1.5 (Figure 20). Two means play two roles: the baseline uses the training mean, 6, while the metric uses the evaluation mean, 7.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-20.png" alt="Figure 20. Fitting a predictor and computing a metric use different information. Source: video frame." />
+<figcaption aria-hidden="true">Figure 20. Fitting a predictor and computing a metric use different information. Source: video frame.</figcaption>
+</figure>
+<h4 id="order-versus-value">Order Versus Value</h4>
+<p>A rank is a position in an ordered list, with rank 1 for the lowest value. Reference ranks 1, 2, 3, 4 against predicted ranks 1, 3, 2, 4 swap the middle pair. The squared rank differences sum to 2, and for untied ranks Spearman ρ = 1 − 6Σd²/[n(n² − 1)] = 1 − 12/60 = 0.8. A value of 1 means identical order.</p>
+<p>Now add 2 to references 6, 7, 8, 9 to make predictions 8, 9, 10, 11. The order is perfect, so Spearman is 1. Yet MAE and RMSE are both 2, and R² is −2.2, because a two-unit pIC50 shift is a hundredfold concentration ratio (Figure 21). Each score answers its own question, so we choose metrics from the decision we face.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-21.png" alt="Figure 21. Useful ordering and accurate values need their own evaluation. Source: video frame." />
+<figcaption aria-hidden="true">Figure 21. Useful ordering and accurate values need their own evaluation. Source: video frame.</figcaption>
+</figure>
+<h2 id="check-the-support">5. Check the Support</h2>
+<h4 id="domain-neighbours-and-calibration">Domain, Neighbours and Calibration</h4>
+<p>An applicability domain is the region that the training evidence supports: chemistry, endpoint, feature values and experimental conditions. A domain earns trust when predictions inside it beat predictions outside it on held-aside molecules. The OECD validation principles (2004) ask for a defined domain alongside a defined endpoint, algorithm and performance measures.</p>
+<p>Fingerprints give a simple familiarity diagnostic. Two hand-made fingerprints that share 2 positions out of a union of 4 have Tanimoto similarity 2/4 = 0.5, and the Tanimoto distance is one minus the similarity. Part 5’s real fingerprints give two examples (Figure 22): ethanol and dimethyl ether share 1 of 9 positions, so the similarity is 1/9 ≈ 0.11 and the distance about 0.89; the two lactic acid mirror images switch on 11 positions each and share 9, so the union is 13, the similarity 9/13 ≈ 0.69 and the distance about 0.31, which makes them near neighbours although their InChIKeys differ.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-22.png" alt="Figure 22. Tanimoto distances from lesson-five numbers. Source: video frame." />
+<figcaption aria-hidden="true">Figure 22. Tanimoto distances from lesson-five numbers. Source: video frame.</figcaption>
+</figure>
+<p>As an applicability domain, compute the distance from a new candidate to every training molecule and keep the smallest, the nearest neighbour distance. A candidate farther away than most held-aside molecules were deserves extra care and an experiment before anyone trusts its prediction. Grouping held-aside molecules by distance and computing the MAE in each group shows whether error rises with it, and we record the fingerprint family, its settings and the endpoint, because the threshold belongs to that combination.</p>
+<h4 id="activity-cliffs-and-uncertainty">Activity Cliffs and Uncertainty</h4>
+<p>Two nearly identical keys can behave differently at one lock. An activity cliff pairs high structural similarity with a large activity difference under declared criteria, and Figure 1 of Hu, Stumpfe and Bajorath shows how different definitions select different pairs (Figure 23). Its blue labels are pKi, kept in original units, and their preferred definition is a size-restricted matched molecular pair: one localised substitution plus a stated potency difference.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-23.png" alt="Figure 23. Detail from Hu, Stumpfe and Bajorath (2013), Figure 1, CC BY 3.0; video frame. The blue labels retain pKi." />
+<figcaption aria-hidden="true">Figure 23. Detail from Hu, Stumpfe and Bajorath (2013), Figure 1, CC BY 3.0; video frame. The blue labels retain pKi.</figcaption>
+</figure>
+<p>Disagreement and error are different quantities: the spread across a forest’s trees describes their disagreement, and trees that share a bias can agree while all missing the reference. A calibrated interval is checked by counting how often held-aside references fall inside it: 90% intervals should hold about 9 in 10 references (Figure 24). We report the method, the calibration data and the observed coverage.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-06-qsar-evaluation/article/images/figure-24.png" alt="Figure 24. Schematic with invented numbers: 9 of 10 references fall inside. Source: video frame." />
+<figcaption aria-hidden="true">Figure 24. Schematic with invented numbers: 9 of 10 references fall inside. Source: video frame.</figcaption>
+</figure>
+<h2 id="practice-and-the-next-lab">Practice and the Next Lab</h2>
+<p>Try three tasks: convert 100 nM to pIC50 (answer 9 − 2 = 7); calculate the residuals and MAE for references 6, 7, 8 and predictions 6.5, 7, 7.5 (+0.5, 0 and −0.5, MAE 1/3); and explain how a list can have perfect rank agreement with shifted values (a shift of 2 keeps Spearman at 1 while MAE and RMSE equal 2).</p>
+<p><code>python code/worked_examples.py</code> prints and saves the arithmetic of this article, and <code>python -m unittest discover -s code -p 'test_*.py' -v</code> runs sixteen tests that check every example above.</p>
+<p>Part 7 inspects a compatible multi-compound collection first: we keep structures, full identities, assay identifiers, conditions and relations, freeze intended use, grouping, baseline and metrics, and save individual predictions. These examples teach mechanisms; the next lesson reports real coverage and fitted results. Hope this article helps you connect a potency score to the evidence behind it.</p>
+<h2 id="references">References</h2>
+<ul>
+<li>OECD. <em>Principles for the Validation, for Regulatory Purposes, of (Quantitative) Structure–Activity Relationship Models.</em> 2004. <a href="https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/assessment-of-chemicals/oecd-principles-for-the-validation-for-regulatory-purposes-of-quantitative-structure-activity-relationship-models.pdf">Validation principles</a>.</li>
+<li>Sheridan, R. P. <em>Time-Split Cross-Validation as a Method for Estimating the Goodness of Prospective Prediction.</em> Journal of Chemical Information and Modeling, 2013. <a href="https://doi.org/10.1021/ci400084k">DOI: 10.1021/ci400084k</a>.</li>
+<li>Hu, Y., Stumpfe, D. and Bajorath, J. <em>Advancing the Activity Cliff Concept.</em> F1000Research, 2013. <a href="https://doi.org/10.12688/f1000research.2-199.v1">DOI: 10.12688/f1000research.2-199.v1</a>.</li>
+<li>RDKit. <a href="https://www.rdkit.org/docs/source/rdkit.Chem.Scaffolds.MurckoScaffold.html">Murcko scaffold API</a>.</li>
+<li>scikit-learn developers. <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">Model evaluation</a> and <a href="https://scikit-learn.org/stable/modules/cross_validation.html">cross-validation</a>.</li>
+<li>ChEMBL/EMBL-EBI. <a href="https://www.ebi.ac.uk/chembl/api/data/activity/13852013.json">Retained activity 13852013</a>, ChEMBL_37; CC BY-SA 3.0.</li>
+</ul>
