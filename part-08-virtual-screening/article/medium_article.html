@@ -1,0 +1,216 @@
+<h1 id="ai-in-drug-discovery-8-virtual-screening-and-chemical-diversity-in-python">AI in Drug Discovery 8: Virtual Screening and Chemical Diversity in Python</h1>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/covers/part-08-cover.jpg" />
+</figure>
+<p>If you prefer to learn in more detail or in a visual way, <a href="VIDEO_URL">watch the video for this lesson on YouTube</a>.</p>
+<p>In this tutorial, we will reload the saved EGFR model from Part 7 and use it to choose twenty compounds from a frozen library of 456 structures. We screen the same collection two ways: one shortlist follows predicted potency alone, and the other keeps a minimum potency rule and spends the same twenty slots on structurally different compounds. We then compare the two lists. We assume basic coding skills and a little familiarity with machine learning; every important idea arrives as a picture, a small calculation and then its proper name. The commented <a href="https://github.com/as4401s/AI-in-Drug-Discovery/tree/main/part-08-virtual-screening">Part 8 code</a> repeats each hand calculation in <code>worked_examples.py</code> and runs the full screen in <code>screen_library.py</code>.</p>
+<p>Earlier articles in this course:</p>
+<ol type="1">
+<li><a href="https://arjun-sarkar786.medium.com/can-ai-simulate-a-cell-biology-basics-and-a-first-protein-language-model-with-esm-2-2ae9087f40b0">AI in Drug Discovery 1: Biology, How Models Learn, Transformers and ESM-2</a></li>
+<li><a href="https://arjun-sarkar786.medium.com/from-microscope-images-to-measurements-fluorescence-organoids-and-a-python-segmentation-baseline-6ec4ecdf5ada">AI in Drug Discovery 2: Microscopy, Organoids and Image Analysis in Python</a></li>
+<li><a href="https://arjun-sarkar786.medium.com/ai-in-drug-discovery-3-the-drug-discovery-pipeline-egfr-and-kras-g12d-ba3ce9e762ea">AI in Drug Discovery 3: The Drug Discovery Pipeline, EGFR and KRAS G12D</a></li>
+<li><a href="https://arjun-sarkar786.medium.com/ai-in-drug-discovery-4-dose-response-curves-ic50-and-a-python-fit-020f02845bb1">AI in Drug Discovery 4: Dose-Response Curves, IC50 and a Python Fit</a></li>
+<li><a href="https://medium.com/p/652af920c64e">AI in Drug Discovery 5: Molecules as Data with SMILES, Graphs and Fingerprints</a></li>
+<li><a href="https://medium.com/p/fc08ec6b6289">AI in Drug Discovery 6: QSAR, Potency Scores and Honest Evaluation</a></li>
+<li><a href="https://medium.com/p/a63c49586c4d">AI in Drug Discovery 7: Train and Validate EGFR QSAR Models in Python</a></li>
+</ol>
+<p>Imagine you can measure twenty more compounds. If the top of the score list is crowded with nearly identical molecules, twenty measurements may answer one narrow question, while compounds with different structures can teach us about a wider part of the library (Figure 1). We work in five steps:</p>
+<ol type="1">
+<li>From the saved model to an eligible library</li>
+<li>Fingerprint similarity and distance</li>
+<li>Butina sphere exclusion</li>
+<li>MaxMin diversity selection</li>
+<li>The screening run and follow-up</li>
+</ol>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-01.png" alt="Figure 1. One collection, two shortlists: top scores versus a potency floor plus structural difference. Source: video frame." />
+<figcaption aria-hidden="true">Figure 1. One collection, two shortlists: top scores versus a potency floor plus structural difference. Source: video frame.</figcaption>
+</figure>
+<h2 id="from-the-saved-model-to-an-eligible-library">1. From the Saved Model to an Eligible Library</h2>
+<h4 id="a-prediction-chooses-the-next-measurements">A Prediction Chooses the Next Measurements</h4>
+<p>A tenfold change in IC50 changes pIC50 by one unit, so 100 nM gives pIC50 7 and 10 nM gives pIC50 8. The model estimates this value from structure, and a later assay shows how close the estimate was (Figure 2). In Part 7 the measurements already existed and we opened them to measure error. Now a prediction decides which new measurements look interesting.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-02.png" alt="Figure 2. A pIC50 of 7 is 100 nM and 8 is 10 nM; a later assay checks the estimate. Source: video frame." />
+<figcaption aria-hidden="true">Figure 2. A pIC50 of 7 is 100 nM and 8 is 10 nM; a later assay checks the estimate. Source: video frame.</figcaption>
+</figure>
+<h4 id="the-candidate-file">The Candidate File</h4>
+<p>Our candidate file combines 95 catalogue structures with 361 separately generated virtual analogues, 456 rows in all. After removing known matches, the remaining rows have no measured EGFR value within the declared lookup scope. An empty measured value stays empty, because a zero would be an observation on the pIC50 scale. Each row keeps a separate predicted value and its model provenance (Figure 3).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-03.png" alt="Figure 3. 456 candidates, an empty measured column and a separate prediction. Source: video frame." />
+<figcaption aria-hidden="true">Figure 3. 456 candidates, an empty measured column and a separate prediction. Source: video frame.</figcaption>
+</figure>
+<h4 id="reloading-the-exact-model">Reloading the Exact Model</h4>
+<p>A checksum, like one sent with a worksheet from a colleague, shows whether a file changed. The loader opens the joblib file only after its SHA-256 checksum matches the manifest, and the screen script adds its own check for the exact model verified at the end of Part 7.</p>
+<pre class="python"><code>    if manifest_on_disk[&quot;model_sha256&quot;] != MODEL_SHA256:
+        raise ValueError(&quot;Video 8 requires the exact model verified at the end of Video 7&quot;)</code></pre>
+<p>The file holds the fitted random forest, XGBoost model and multilayer perceptron. One feature row goes in and each estimator returns one estimate. If they predict 6, 7 and 8, then 6 + 7 + 8 = 21 and 21 ÷ 3 = 7 is the ensemble prediction (Figure 4).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-04.png" alt="Figure 4. One feature row in, three estimates out, one ensemble average. Source: video frame." />
+<figcaption aria-hidden="true">Figure 4. One feature row in, three estimates out, one ensemble average. Source: video frame.</figcaption>
+</figure>
+<h4 id="gate-1-a-potency-floor">Gate 1: A Potency Floor</h4>
+<p>The first gate keeps candidates with a predicted pIC50 of at least 7, an estimated IC50 of about 100 nM or lower. A candidate at 6.9 falls below, while 7.1 and exactly 7.0 clear it (Figure 5). Three numbers are declared before any score is opened:</p>
+<pre class="python"><code># Gate 1: a candidate needs a predicted pIC50 of at least 7 (IC50 about 100 nM or lower).
+POTENCY_FLOOR = 7.0
+# Sphere radius for Butina clustering: molecules closer than 0.20 (Tanimoto distance) share a cluster.
+BUTINA_DISTANCE = 0.20
+# The shortlist length that was declared before looking at any scores.
+SELECTION_BUDGET = 20</code></pre>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-05.png" alt="Figure 5. Gate 1 keeps predicted pIC50 of 7 or higher. Source: video frame." />
+<figcaption aria-hidden="true">Figure 5. Gate 1 keeps predicted pIC50 of 7 or higher. Source: video frame.</figcaption>
+</figure>
+<h2 id="fingerprint-similarity-and-distance">2. Fingerprint Similarity and Distance</h2>
+<h4 id="counting-shared-bits">Counting Shared Bits</h4>
+<p>In a binary fingerprint, a bit set to 1 marks a feature that is present. Molecule 1 has bits 1, 3 and 5 on, and molecule 2 has bits 1, 5 and 7 on. The shared bits form the intersection, {1, 5}, with 2 members. The union holds every distinct bit found in either molecule, {1, 3, 5, 7}, so its count is 4 (Figure 6). In Python, <code>&amp;</code> gives the intersection and <code>|</code> gives the union of two sets.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-06.png" alt="Figure 6. Two tiny fingerprints share bits 1 and 5; the union holds four bits. Source: video frame." />
+<figcaption aria-hidden="true">Figure 6. Two tiny fingerprints share bits 1 and 5; the union holds four bits. Source: video frame.</figcaption>
+</figure>
+<h4 id="tanimoto-similarity-and-distance">Tanimoto Similarity and Distance</h4>
+<p>The Tanimoto coefficient, also called Jaccard similarity, divides the shared bits by the bits found in either molecule: 2 ÷ 4 = 0.5. Identical lists give 1, and lists without a shared bit give 0. We turn similarity into distance by subtracting from one, so our pair has distance 1 − 0.5 = 0.5. High similarity means close together, and high distance means far apart (Figure 7).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-07.png" alt="Figure 7. Similarity is shared divided by either; distance is one minus similarity. Source: video frame." />
+<figcaption aria-hidden="true">Figure 7. Similarity is shared divided by either; distance is one minus similarity. Source: video frame.</figcaption>
+</figure>
+<h4 id="gate-2-is-the-candidate-familiar-to-the-model">Gate 2: Is the Candidate Familiar to the Model?</h4>
+<p>The second gate asks whether a candidate looks familiar. We compare its fingerprint with every development molecule and keep the largest similarity, the nearest training similarity. Neighbors at 0.3, 0.6 and 0.5 give 0.6.</p>
+<p>Part 7 fixed the support cutoff at 0.588 from development data, the lower tenth percentile of nearest-other-scaffold similarities, so our practice candidate at 0.6 clears the gate (Figure 8). The scaffold error and the interval still matter when we interpret a score. We keep rows that clear both gates:</p>
+<pre class="python"><code>    active = [row for row in scores if row[&quot;passes_potency&quot;] and row[&quot;passes_applicability&quot;]]</code></pre>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-08.png" alt="Figure 8. Gate 2 keeps candidates with nearest training similarity of 0.588 or higher. Source: video frame." />
+<figcaption aria-hidden="true">Figure 8. Gate 2 keeps candidates with nearest training similarity of 0.588 or higher. Source: video frame.</figcaption>
+</figure>
+<h4 id="a-second-use-of-distance-pairs-in-the-shortlist">A Second Use of Distance: Pairs in the Shortlist</h4>
+<p>Familiarity compares a candidate with the training data. With two candidates the question changes: how much do the two tests repeat one another? A tiny pair distance suggests close analogues, and a large one spreads the shortlist. The Part 7 interval, about ±1.62 in pIC50, stays separate and travels with every selected score (Figure 9).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-09.png" alt="Figure 9. Familiarity compares with training data; pair distance compares two candidates. Source: video frame." />
+<figcaption aria-hidden="true">Figure 9. Familiarity compares with training data; pair distance compares two candidates. Source: video frame.</figcaption>
+</figure>
+<h4 id="the-distance-table">The Distance Table</h4>
+<p>A pairwise distance table lists every candidate along the top and down the side. The distance from A to B equals the distance from B to A, and each candidate has distance 0 from itself. Counting each pair once gives n × (n − 1) ÷ 2, so three candidates give 3 × 2 ÷ 2 = 3 pairs (Figure 10). The code fills one triangle with RDKit and mirrors it into the other half.</p>
+<pre class="python"><code>        row = DataStructs.BulkTanimotoSimilarity(vector, vectors[:index], returnDistance=True)
+        distances[index, :index] = distances[:index, index] = row</code></pre>
+<p>The table uses the Morgan bit vector throughout.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-10.png" alt="Figure 10. A symmetric table: three candidates, three unique pairs. Source: video frame." />
+<figcaption aria-hidden="true">Figure 10. A symmetric table: three candidates, three unique pairs. Source: video frame.</figcaption>
+</figure>
+<h2 id="butina-sphere-exclusion">3. Butina Sphere Exclusion</h2>
+<h4 id="spheres-around-real-molecules">Spheres Around Real Molecules</h4>
+<p>Place a compass on one point: every point within the radius belongs to its neighborhood, and in chemistry the radius is a fingerprint distance. The center is the centroid, a real library member whose structure we can look up and order. The algorithm counts neighbors, takes the molecule with the most, assigns it and its neighbors to a cluster and removes them. With reordering on, the next count uses only the candidates still available (Figure 11).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-11.png" alt="Figure 11. A sphere groups the neighbors within the distance threshold. Source: video frame." />
+<figcaption aria-hidden="true">Figure 11. A sphere groups the neighbors within the distance threshold. Source: video frame.</figcaption>
+</figure>
+<h4 id="a-five-molecule-example">A Five-Molecule Example</h4>
+<p>Use five tiny fingerprints: A has bits 1 and 2, B has 1, 2 and 3, C has 1 and 3, D has 8 and 9, and E has 8, 9 and 10. A to B is 1 − 2/3 ≈ 0.33, and B to C is also 0.33. A and C share only bit 1 among the union {1, 2, 3}, so their distance is 2/3 ≈ 0.67. D to E is 0.33, and every distance between the two groups is 1 (Figure 12). The neighborhood threshold is 0.34.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-12.png" alt="Figure 12. Five tiny fingerprints and their distance table. Source: video frame." />
+<figcaption aria-hidden="true">Figure 12. Five tiny fingerprints and their distance table. Source: video frame.</figcaption>
+</figure>
+<h4 id="choosing-the-centers">Choosing the Centers</h4>
+<p>Counting neighbors, A has one (B), B has two (A and C), C has one (B), and D and E have one each. B has the most, so the first cluster is {B, A, C}; A and C both sit inside B’s sphere even though they are 0.67 apart. After removing them, D and E tie with one neighbor each, and RDKit breaks the tie by the larger index in the input order. E comes later, so E becomes the center: {E, D} (Figure 13).</p>
+<p>In Python we pass the distances, the number of structures and the threshold. One flag says the input holds distances, and the other recomputes neighbor counts after each cluster. The output is a sequence of groups of row positions with the centroid first, and a group of one is still a cluster.</p>
+<pre class="python"><code>    return Butina.ClusterData(distances, len(distances), cutoff, isDistData=True, reordering=True)</code></pre>
+<p>The real screen uses a cutoff of 0.20, a similarity of at least 0.80 inside each sphere.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-13.png" alt="Figure 13. B wins the first sphere, then E wins the second by input order. Source: video frame." />
+<figcaption aria-hidden="true">Figure 13. B wins the first sphere, then E wins the second by input order. Source: video frame.</figcaption>
+</figure>
+<h2 id="maxmin-diversity-selection">4. MaxMin Diversity Selection</h2>
+<h4 id="the-largest-of-the-smallest-distances">The Largest of the Smallest Distances</h4>
+<p>Picture choosing books that cover different subjects. A new title that resembles a book already chosen repeats that slot. So for each option we find the smallest of its distances to the chosen list, which shows how close it comes to its most similar earlier choice, and we select the option whose minimum is largest. A candidate X at 0.2 from chosen compound P and 0.8 from chosen compound Q has a minimum of 0.2 (Figure 14). The code ranks candidates this way, with potency and ID only breaking ties.</p>
+<pre class="python"><code>        distance_and_neighbor = {
+            index: min((float(distances[index, selected]), rows[selected][&quot;compound_id&quot;]) for selected in chosen)
+            for index in remaining
+        }
+        # Rank by that nearest distance (largest first); potency and ID only break ties.
+        ranked = sorted(remaining, key=lambda index: (-distance_and_neighbor[index][0], *score_order(index)))</code></pre>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-14.png" alt="Figure 14. Keep the smallest distance to the chosen list, then take the largest. Source: video frame." />
+<figcaption aria-hidden="true">Figure 14. Keep the smallest distance to the chosen list, then take the largest. Source: video frame.</figcaption>
+</figure>
+<h4 id="filling-three-slots-from-five-options">Filling Three Slots from Five Options</h4>
+<p>Five cluster representatives clear both gates, with predicted pIC50 values of 8.0 for A, 7.9 for B, 7.7 for C, 7.6 for D and 7.4 for E, and we choose three. We seed with the highest score, A. Each option then has one distance to consider: B is 0.33 from A, C is 1.00, D is 0.67 and E is 1.00. C and E tie, so the higher predicted score decides, and C (7.7) takes slot two over E (7.4) (Figure 15).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-15.png" alt="Figure 15. Seed A, then C wins the tie with E on predicted score. Source: video frame." />
+<figcaption aria-hidden="true">Figure 15. Seed A, then C wins the tie with E on predicted score. Source: video frame.</figcaption>
+</figure>
+<p>Try it yourself: for B, D and E, keep the shorter distance to {A, C}. B is close to A, so its minimum is 0.33. D is 0.67 from both, and E is 1.00 from both, so slot three goes to E (Figure 16); a fourth slot would recalculate with A, C and E.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-16.png" alt="Figure 16. With A and C chosen, E has the largest minimum and takes slot three. Source: video frame." />
+<figcaption aria-hidden="true">Figure 16. With A and C chosen, E has the largest minimum and takes slot three. Source: video frame.</figcaption>
+</figure>
+<h4 id="score-only-versus-maxmin">Score Only Versus MaxMin</h4>
+<p>The score-only list takes A, B and C. B is close to A, and the three pair distances are 0.33, 1.00 and 1.00, a mean of about 0.78. The MaxMin list takes A, C and E, and all three pairs have distance 1.00 in this made-up table (Figure 17). The gain is separation in fingerprint space; neither a score nor this distance says how a compound behaves in a cell. The same summary works for any list, by averaging the distance of every pair:</p>
+<pre class="python"><code>    pair_distances = [float(distances[a, b]) for a, b in combinations(chosen, 2)]</code></pre>
+<p>Ashton and colleagues compared MaxMin dissimilarity-based selection with k-means cluster-based selection on a file of 44,295 compounds, which gives context for the distance rule.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-17.png" alt="Figure 17. Toy lists at the same budget: mean pair distance 0.78 versus 1.00. Source: video frame." />
+<figcaption aria-hidden="true">Figure 17. Toy lists at the same budget: mean pair distance 0.78 versus 1.00. Source: video frame.</figcaption>
+</figure>
+<h2 id="the-screening-run-and-follow-up">5. The Screening Run and Follow-Up</h2>
+<h4 id="freezing-the-library">Freezing the Library</h4>
+<p>We opened seventeen fixed structure searches in the ChEMBL catalogue, covering each of the 13 development scaffold groups of the saved model. We then inspected all 58,847 activity records attached to the human EGFR target, checking molecule IDs, parent IDs and the connectivity block of the standard InChIKey, which keeps a recorded measurement from returning under an alternate identity. We also removed matches from both measured Part 7 cohorts. That leaves 95 small molecules whose experimental EGFR potencies remain missing within this lookup (Figure 18).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-18.png" alt="Figure 18. Seventeen searches and 58,847 activity records leave 95 catalogue molecules. Source: video frame." />
+<figcaption aria-hidden="true">Figure 18. Seventeen searches and 58,847 activity records leave 95 catalogue molecules. Source: video frame.</figcaption>
+</figure>
+<h4 id="virtual-analogues">Virtual Analogues</h4>
+<p>An analogue is a related structure with a small change, like replacing one side group on a pictured ring. The code starts from development structures, replaces an aromatic hydrogen with a methyl, fluorine or chlorine group or exchanges a terminal halogen, and RDKit checks each new graph. We reject duplicates and known molecules and keep up to 72 proposals per scaffold. That gives 361 virtual proposals, and 361 + 95 = 456 inputs (Figure 19). A valid graph answers the structure question; a real supplier, synthesis and assay would establish availability and activity.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-19.png" alt="Figure 19. 361 virtual analogues plus 95 catalogue structures make 456 inputs. Source: video frame." />
+<figcaption aria-hidden="true">Figure 19. 361 virtual analogues plus 95 catalogue structures make 456 inputs. Source: video frame.</figcaption>
+</figure>
+<h4 id="both-gates-on-real-scores">Both Gates on Real Scores</h4>
+<p>Reloading the saved ensemble gives all 456 rows a predicted potency, interval and nearest training neighbor. On the point estimate alone, 163 meet the floor of 7, and 365 meet the stored familiarity cutoff. We keep the intersection: 162 rows clear both gates (Figure 20). The overlap holds 203 familiar-only rows, 1 potency-only row and 90 rows that pass neither. All 162 eligible rows come from the virtual panel, and each of the 95 catalogue entries fell short of at least one rule, which is an outcome of this lab and these declared gates.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-20.png" alt="Figure 20. 163 pass the potency gate, 365 the familiarity gate, 162 both. Source: video frame." />
+<figcaption aria-hidden="true">Figure 20. 163 pass the potency gate, 365 the familiarity gate, 162 both. Source: video frame.</figcaption>
+</figure>
+<h4 id="clustering-the-eligible-set">Clustering the Eligible Set</h4>
+<p>For 162 rows, the symmetric table holds 162 × 161 ÷ 2 = 13,041 unique comparisons. Butina at the fixed cutoff of 0.20 returns 74 clusters, of which 46 hold a single candidate and the largest holds 11 (Figure 21). That gives 74 centroid structures to consider for 20 slots. The input order follows the compound identifier, so ties resolve reproducibly, and the code keeps every cluster’s membership for auditing.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-21.png" alt="Figure 21. 162 eligible candidates give 13,041 pairs and 74 Butina clusters. Source: video frame." />
+<figcaption aria-hidden="true">Figure 21. 162 eligible candidates give 13,041 pairs and 74 Butina clusters. Source: video frame.</figcaption>
+</figure>
+<h4 id="the-first-choices">The First Choices</h4>
+<p>The highest-scoring centroid, virtual candidate V8V-00323, seeds MaxMin. Its predicted pIC50 is about 8.09, its nearest training similarity about 0.87 and its interval runs from about 6.47 to 9.71. That range comes from the calibration rather than an assay of this molecule, so an estimate near 8 still needs an experiment.</p>
+<p>The farthest remaining centroid is V8V-00301, at a distance of 0.625 and a predicted pIC50 of about 7.07, so the second pick broadens the list while staying above 7. For slot three, V8V-00214 has a minimum distance of 0.600, just ahead of V8V-00213 at 0.596, and takes the slot (Figure 22). The code records every distance and the ordered options, so we can check the next step by the same rule.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-22.png" alt="Figure 22. The seed V8V-00323 and its distances to the other centroids. Source: video frame." />
+<figcaption aria-hidden="true">Figure 22. The seed V8V-00323 and its distances to the other centroids. Source: video frame.</figcaption>
+</figure>
+<h4 id="two-lists-of-the-same-size">Two Lists of the Same Size</h4>
+<p>Each method gets 20 selections from the same eligible rows. The mean pair distance is about 0.428 for the score-only list and 0.550 for cluster representatives followed by MaxMin; a higher mean means the pairs share less of their fingerprint. The closest pair is about 0.115 in the score-only list and 0.385 in the diverse list. The lists share only the first pick, and mean predicted pIC50 is about 7.75 for score alone and 7.34 for the diverse screen, which quantifies what the broader selection traded in model score (Figure 23).</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-23.png" alt="Figure 23. The two real lists of 20: mean pair distance, closest pair, mean predicted pIC50. Source: video frame." />
+<figcaption aria-hidden="true">Figure 23. The two real lists of 20: mean pair distance, closest pair, mean predicted pIC50. Source: video frame.</figcaption>
+</figure>
+<p>A heat map assigns a color to each number in the distance table. The diagonal is pale because a molecule has distance 0 from itself, and darker green means larger distance on one shared scale. The score list has more pale off-diagonal patches, while the MaxMin set spreads its choices farther apart (Figure 24). A second kind of measurement is needed to learn cell effects.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-24.png" alt="Figure 24. Distance heat maps of both lists on one color scale. Source: video frame." />
+<figcaption aria-hidden="true">Figure 24. Distance heat maps of both lists on one color scale. Source: video frame.</figcaption>
+</figure>
+<h4 id="the-output-file-with-provenance">The Output File with Provenance</h4>
+<p>The file <code>egfr_20_diverse_hits.csv</code> gives each row a rank, the candidate ID, a structure key and the SMILES text, which keep the identity stable when we join another dataset later, plus its predicted potency and interval, nearest development similarity, cluster and model identity. The first selection’s distance is blank, because the shortlist was empty at the seed. Measured potency is blank on all 20 rows, and two status columns tell later lessons what is pending (Figure 25).</p>
+<pre class="python"><code>            writer.writerow({**row, &quot;source_release&quot;: &quot;ChEMBL_37&quot;, &quot;screen_target_assay&quot;: manifest[&quot;target_assay&quot;],
+                             &quot;model_sha256&quot;: manifest[&quot;model_sha256&quot;], &quot;library_sha256&quot;: library_sha,
+                             &quot;cell_painting_status&quot;: &quot;pending_match&quot;, &quot;admet_status&quot;: &quot;pending_evaluation&quot;})</code></pre>
+<p>The companion <code>verify_screen.py</code> re-derives all 20 MaxMin steps and replays the screen to byte-identical files.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/as4401s/AI-in-Drug-Discovery/medium-assets/part-08-virtual-screening/article/images/figure-25.png" alt="Figure 25. The first four rows of the output file; measured potency stays blank. Source: video frame." />
+<figcaption aria-hidden="true">Figure 25. The first four rows of the output file; measured potency stays blank. Source: video frame.</figcaption>
+</figure>
+<h2 id="practice-and-the-next-lab">Practice and the Next Lab</h2>
+<p>Run <code>python code/worked_examples.py</code> to print this article’s arithmetic and <code>python code/screen_library.py</code> for the full screen, then change <code>BUTINA_DISTANCE</code> and watch the cluster count move.</p>
+<p>In Part 9 we begin with Cell Painting, where marking several features inside each cell gives a profile of the cell’s response. Part 10 searches for independently measured imaging profiles of the shortlist IDs, and a record stays pending until identity and context match exactly. Part 12 turns to absorption, distribution, metabolism, excretion and toxicity. Hope this article helps you screen a library and report the selection fairly.</p>
+<h2 id="references">References</h2>
+<ul>
+<li>ChEMBL/EMBL-EBI. Target CHEMBL203 activity records and catalogue similarity search, ChEMBL_37; CC BY-SA 3.0. Zdrazil, B. et al. <em>The ChEMBL Database in 2023.</em> Nucleic Acids Research, 2024. <a href="https://doi.org/10.1093/nar/gkad1004">DOI: 10.1093/nar/gkad1004</a>.</li>
+<li>Rogers, D. and Hahn, M. <em>Extended-Connectivity Fingerprints.</em> Journal of Chemical Information and Modeling, 2010. <a href="https://doi.org/10.1021/ci100050t">DOI: 10.1021/ci100050t</a>.</li>
+<li>Butina, D. <em>Unsupervised Data Base Clustering Based on Daylight’s Fingerprint and Tanimoto Similarity: A Fast and Automated Way To Cluster Small and Large Data Sets.</em> Journal of Chemical Information and Computer Sciences, 1999. <a href="https://doi.org/10.1021/ci9803381">DOI: 10.1021/ci9803381</a>.</li>
+<li>Ashton, M. et al. <em>Identification of Diverse Database Subsets using Property-Based and Fragment-Based Molecular Descriptions.</em> Quantitative Structure-Activity Relationships, 2002. <a href="https://doi.org/10.1002/qsar.200290002">DOI: 10.1002/qsar.200290002</a>.</li>
+<li>RDKit: open-source cheminformatics. <a href="https://www.rdkit.org">rdkit.org</a>.</li>
+</ul>
