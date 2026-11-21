@@ -1,0 +1,78 @@
+{
+ "selfies_version": "2.1.1",
+ "round_trip": {
+  "ethanol": {
+   "smiles": "CCO",
+   "selfies": "[C][C][O]",
+   "tokens": 3,
+   "same_molecule": true
+  },
+  "dimethyl ether": {
+   "smiles": "COC",
+   "selfies": "[C][O][C]",
+   "tokens": 3,
+   "same_molecule": true
+  },
+  "acetic acid": {
+   "smiles": "CC(=O)O",
+   "selfies": "[C][C][=Branch1][C][=O][O]",
+   "tokens": 6,
+   "same_molecule": true
+  },
+  "benzene": {
+   "smiles": "c1ccccc1",
+   "selfies": "[C][=C][C][=C][C][=C][Ring1][=Branch1]",
+   "tokens": 8,
+   "same_molecule": true
+  },
+  "lactic acid (one mirror image)": {
+   "smiles": "C[C@H](O)C(=O)O",
+   "selfies": "[C][C@H1][Branch1][C][O][C][=Branch1][C][=O][O]",
+   "tokens": 10,
+   "same_molecule": true
+  },
+  "erlotinib": {
+   "smiles": "COCCOc1cc2ncnc(Nc3cccc(C#C)c3)c2cc1OCCOC",
+   "selfies": "[C][O][C][C][O][C][=C][C][=N][C][=N][C][Branch1][=C][N][C][=C][C][=C][C][Branch1][Ring1][C][#C][=C][Ring1][Branch2][=C][Ring1][#C][C][=C][Ring2][Ring1][Ring1][O][C][C][O][C]",
+   "tokens": 40,
+   "same_molecule": true
+  }
+ },
+ "edit_experiment": {
+  "molecules": 170,
+  "edits_per_molecule": 20,
+  "total_edits": 3400,
+  "seed": 7,
+  "smiles_alphabet_size": 22,
+  "selfies_alphabet_size": 24,
+  "smiles_valid_edits": 479,
+  "selfies_valid_edits": 3400,
+  "smiles_valid_fraction": 0.1409,
+  "selfies_valid_fraction": 1.0
+ },
+ "safe": {
+  "available": true,
+  "molecules": {
+   "ethanol": {
+    "error": "SAFEFragmentationError: Slicing algorithms did not return any bonds that can be cut !"
+   },
+   "dimethyl ether": {
+    "error": "SAFEFragmentationError: Slicing algorithms did not return any bonds that can be cut !"
+   },
+   "acetic acid": {
+    "error": "SAFEFragmentationError: Slicing algorithms did not return any bonds that can be cut !"
+   },
+   "benzene": {
+    "error": "SAFEFragmentationError: Slicing algorithms did not return any bonds that can be cut !"
+   },
+   "lactic acid (one mirror image)": {
+    "error": "SAFEFragmentationError: Slicing algorithms did not return any bonds that can be cut !"
+   },
+   "erlotinib": {
+    "safe": "c1%10ncnc2cc8c9cc12.C#Cc1cccc%11c1.C4C5.C6C7.N%10%11.O48.O5C.O69.O7C",
+    "fragments": 9,
+    "round_trip_same_molecule": true
+   }
+  }
+ }
+}
