@@ -31,6 +31,7 @@ The script prints genuine JSON and writes the same deterministic payload (schema
 | Learning rate 1.1 from w = 0 | w 6.6 (loss 12.96), then −1.32 (loss 18.6624) |
 | 1000 examples in batches of 100 | 10 updates per epoch |
 | Boosting targets [4, 6, 8], share 0.5 | first prediction 6; remaining −2, 0, +2; new prediction 5, 6, 7 |
+| Boosting targets [4, 6, 8], share 0.5, two rounds | round 0 predicts 6; round 1 predicts 5, 6, 7; round 2 predicts 4.5, 6, 7.5; the remaining difference halves each round |
 | Training labels [5, 6, 7] | fitted mean 6 |
 | That baseline on references [6, 7, 8] | MAE 1; RMSE 1.2909944487358056; R² −1.5 |
 | Specified line 7 + 0.5x at x = −1, 0, 1 | predictions [6.5, 7, 7.5] |
@@ -42,10 +43,14 @@ The script prints genuine JSON and writes the same deterministic payload (schema
 | Centring training values 4, 6, 8 with the training mean | mean 6; centred −2, 0, +2; held-aside 10 becomes 4; all-four mean 7 shown for comparison |
 | Bit sets {1, 3, 5} and {1, 5, 7} | Tanimoto 2/4 = 0.5 |
 | Schematic neighbour similarities 0.8, 0.5, 0.2 | nearest distance 1 − 0.8 = 0.2 |
+| Ethanol (6 positions on) and dimethyl ether (4 on), 1 shared | union 9; Tanimoto 1/9 ≈ 0.111; distance 8/9 ≈ 0.889 |
+| Lactic acid mirror images (11 positions on each), 9 shared | union 13; Tanimoto 9/13 ≈ 0.692; distance 4/13 ≈ 0.308 |
 | Schematic error by distance group (eight invented rows) | MAE 0.3, 0.45, 0.75, 1.15 |
 | Ten invented references inside 90% intervals | 9 of 10 inside, coverage 0.9, row 3 outside |
 | Leaf references [6, 8] | leaf mean 7 |
 | Specified tree predictions [6, 7, 8] | forest average 7 |
+
+The scaffold counts shown in the video (170 EGFR compounds in 23 Bemis–Murcko scaffolds, 130 of them in `c1ccc(Nc2ncnc3ccccc23)cc1`, 17 scaffolds with one compound each) come from the Part 7 run; they are saved in `part-07-qsar-python/data/trained/egfr_evaluation.json`.
 
 Residuals consistently mean **prediction minus reference**. R² uses the evaluation references' mean, 7, in its denominator. The fitted baseline uses the training mean, 6. Keeping these quantities separate is the point of the example.
 

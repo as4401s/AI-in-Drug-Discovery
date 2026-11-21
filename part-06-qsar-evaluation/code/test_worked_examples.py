@@ -116,6 +116,12 @@ class WorkedExamplesTests(unittest.TestCase):
         self.assertAlmostEqual(payload["measured_reference"]["pic50"], 8.585026652029182)
         self.assertIn("shifted_fold_ratio", payload["individual_log_error"])
         self.assertEqual(payload["individual_log_error"]["shifted_fold_ratio"], 100)
+        ethanol = payload["tanimoto_distance_lesson5"]["ethanol_vs_dimethyl_ether"]
+        self.assertEqual((ethanol["shared"], ethanol["union"]), (1, 9))
+        self.assertAlmostEqual(ethanol["distance"], 8 / 9)
+        lactic = payload["tanimoto_distance_lesson5"]["lactic_acid_mirror_images"]
+        self.assertEqual((lactic["shared"], lactic["union"]), (9, 13))
+        self.assertAlmostEqual(lactic["similarity"], 9 / 13)
 
     def test_learning_rate_comparison_matches_the_video(self):
         """Rate 0.5 lands on three; rate 1.1 overshoots and the loss rises."""
@@ -143,6 +149,9 @@ class WorkedExamplesTests(unittest.TestCase):
         self.assertEqual(round_["first_prediction"], [6, 6, 6])
         self.assertEqual(round_["remaining"], [-2, 0, 2])
         self.assertEqual(round_["new_prediction"], [5, 6, 7])
+        later = self.lab().boosting_rounds([4, 6, 8], 0.5, 2)["rounds"]
+        self.assertEqual([row["prediction"] for row in later], [[6, 6, 6], [5, 6, 7], [4.5, 6, 7.5]])
+        self.assertEqual(later[2]["remaining"], [-0.5, 0, 0.5])  # the remaining difference halves each round
 
     def test_centring_uses_the_training_mean_only(self):
         """A held-aside value of ten becomes four, not three, so it does not set its own scale."""

@@ -175,6 +175,40 @@ def boosting_round(targets: Sequence[float], share: float = 0.5) -> dict[str, li
             "new_prediction": corrected.tolist()}
 
 
+def boosting_rounds(targets: Sequence[float], share: float = 0.5, rounds: int = 2) -> dict[str, Any]:
+    """Repeat the boosting round and keep every round's predictions.
+
+    Round 0 predicts the mean.  Each later round adds a share of what is still
+    wrong (target minus prediction), so with a share of 0.5 the remaining
+    difference halves every round.  Real boosting fits a small tree to the
+    remaining differences; here they are added directly to show the arithmetic.
+    """
+    target = numeric_vector(targets, "targets")
+    prediction = np.full(target.shape, float(np.mean(target)))   # round 0: the mean
+    history = [{"round": 0, "prediction": prediction.tolist(), "remaining": (target - prediction).tolist()}]
+    for number in range(1, rounds + 1):
+        prediction = prediction + share * (target - prediction)  # add a share of the remaining difference
+        history.append({"round": number, "prediction": prediction.tolist(),
+                        "remaining": (target - prediction).tolist()})
+    return {"targets": target.tolist(), "share": share, "rounds": history}
+
+
+def tanimoto_from_counts(first_on: int, second_on: int, shared: int) -> dict[str, float | int]:
+    """Tanimoto similarity and distance from counts of switched-on fingerprint positions.
+
+    The union holds every position switched on in at least one fingerprint, so
+    union = first_on + second_on - shared.  The distance is one minus the similarity.
+    """
+    if first_on < 0 or second_on < 0 or shared < 0 or shared > min(first_on, second_on):
+        raise ValueError("counts must be non-negative and shared cannot exceed either fingerprint")
+    union = first_on + second_on - shared
+    if union == 0:
+        raise ValueError("two empty fingerprints have no defined similarity")
+    similarity = shared / union
+    return {"first_on": first_on, "second_on": second_on, "shared": shared, "union": union,
+            "similarity": similarity, "distance": 1 - similarity}
+
+
 def centre_with_training_mean(training: Sequence[float], held_aside: Sequence[float]) -> dict[str, Any]:
     """Fit centring on the training values only, then apply it to held-aside values.
 
@@ -324,6 +358,10 @@ def build_payload() -> dict[str, Any]:
         "batches_and_epochs": {"scope": "Counting example", "examples": 1000, "batch_size": 100,
             "updates_per_epoch": updates_per_epoch(1000, 100)},
         "boosting_round": {"scope": arithmetic_scope, **boosting_round([4, 6, 8], 0.5)},
+        "boosting_rounds": {"scope": arithmetic_scope, **boosting_rounds([4, 6, 8], 0.5, 2)},
+        "tanimoto_distance_lesson5": {"scope": "Position counts from the Part 5 lesson, not molecule potency",
+            "ethanol_vs_dimethyl_ether": tanimoto_from_counts(6, 4, 1),
+            "lactic_acid_mirror_images": tanimoto_from_counts(11, 11, 9)},
         "training_only_centring": {"scope": arithmetic_scope,
             **centre_with_training_mean([4, 6, 8], [10])},
         "neighbour_distance_groups": {"scope": "Schematic invented rows; no calibrated acceptance threshold",

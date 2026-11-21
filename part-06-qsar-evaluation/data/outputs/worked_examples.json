@@ -33,6 +33,56 @@
       8.0
     ]
   },
+  "boosting_rounds": {
+    "rounds": [
+      {
+        "prediction": [
+          6.0,
+          6.0,
+          6.0
+        ],
+        "remaining": [
+          -2.0,
+          0.0,
+          2.0
+        ],
+        "round": 0
+      },
+      {
+        "prediction": [
+          5.0,
+          6.0,
+          7.0
+        ],
+        "remaining": [
+          -1.0,
+          0.0,
+          1.0
+        ],
+        "round": 1
+      },
+      {
+        "prediction": [
+          4.5,
+          6.0,
+          7.5
+        ],
+        "remaining": [
+          -0.5,
+          0.0,
+          0.5
+        ],
+        "round": 2
+      }
+    ],
+    "scope": "Illustrative numerical teaching example; no experimentally measured molecule labels",
+    "share": 0.5,
+    "targets": [
+      4.0,
+      6.0,
+      8.0
+    ]
+  },
   "concentration_conversion": {
     "formula": "pIC50 = 9 - log10(IC50 in nM)",
     "inverse_formula": "IC50 in nM = 10^(9 - pIC50)",
@@ -435,6 +485,25 @@
       "sse": 16.0,
       "tss": 5.0
     }
+  },
+  "tanimoto_distance_lesson5": {
+    "ethanol_vs_dimethyl_ether": {
+      "distance": 0.8888888888888888,
+      "first_on": 6,
+      "second_on": 4,
+      "shared": 1,
+      "similarity": 0.1111111111111111,
+      "union": 9
+    },
+    "lactic_acid_mirror_images": {
+      "distance": 0.3076923076923077,
+      "first_on": 11,
+      "second_on": 11,
+      "shared": 9,
+      "similarity": 0.6923076923076923,
+      "union": 13
+    },
+    "scope": "Position counts from the Part 5 lesson, not molecule potency"
   },
   "training_mean_baseline": {
     "evaluation_references": [
