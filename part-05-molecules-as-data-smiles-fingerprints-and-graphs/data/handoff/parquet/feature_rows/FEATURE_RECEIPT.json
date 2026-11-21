@@ -1,0 +1,29 @@
+{
+  "chembl_release": "ChEMBL_37",
+  "cohort_lock_sha256": "06207f8b787fb6adbaefdc17267a45a683eb0d9438dc3b95c76816cc3e7cda8e",
+  "cohorts": {
+    "egfr": {
+      "feature_file": "egfr_feature_rows.json",
+      "feature_file_sha256": "4673f2a301448a7503cfb752c3486e48528be31990b4d768eaf7c5d3d4bf9cf2",
+      "label_file_sha256": "2a416598eb91c6a94e05e19cfc04a443e0e57bc0fde616848a71e22cfbf412ab",
+      "rows": 170
+    },
+    "kras_g12d": {
+      "feature_file": "kras_g12d_feature_rows.json",
+      "feature_file_sha256": "7011fc551f8dddf168cda76e53d20b99cdaf784d0e14e8e22cdde47fb59d1cd4",
+      "label_file_sha256": "2b9e50f821be7a9b54dc97bedcbf500d4b870d40bdbbb9fa11417832fe6d8f5e",
+      "rows": 23
+    }
+  },
+  "feature_source": "AI in Drug Discovery Chapter 5 molecular_representation_lab.py",
+  "maccs_storage_bits": 167,
+  "morgan": {
+    "countSimulation": false,
+    "fpSize": 2048,
+    "includeChirality": true,
+    "radius": 2,
+    "useBondTypes": true
+  },
+  "rdkit_version": "2025.09.6",
+  "schema_version": 1
+}

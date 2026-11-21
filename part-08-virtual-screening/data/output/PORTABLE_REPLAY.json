@@ -1,0 +1,32 @@
+{
+  "archive_bytes": 1031960,
+  "commands_passed": [
+    [
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "code"
+    ],
+    [
+      "code/worked_examples.py"
+    ],
+    [
+      "code/saved_model.py",
+      "data/model/MODEL_MANIFEST.json"
+    ],
+    [
+      "code/screen_library.py",
+      "--library",
+      "data/source/COMBINED_LIBRARY.json",
+      "--manifest",
+      "data/model/MODEL_MANIFEST.json",
+      "--output",
+      "run"
+    ]
+  ],
+  "byte_identical_outputs": {
+    "egfr_20_diverse_hits.csv": true,
+    "SCREEN_REPORT.json": true
+  }
+}

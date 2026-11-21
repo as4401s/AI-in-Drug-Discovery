@@ -1,0 +1,2037 @@
+{
+  "cohort": {
+    "assay": "CHEMBL3705421",
+    "target": "CHEMBL203",
+    "protein": "P00533",
+    "variant": null,
+    "document": "CHEMBL3638799",
+    "records": 173,
+    "context": "Human EGFR kinase activity in the Tyrosine Kinase Assay Kit Green assay; no variant annotation in the source.",
+    "curated_identities": 170,
+    "excluded_activity_rows": 0,
+    "activity_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL3705421&standard_type=IC50&standard_relation=%3D&standard_units=nM&limit=1000&order_by=activity_id",
+    "assay_url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3705421.json",
+    "document_url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL3638799.json",
+    "sha256": {
+      "activities.json": "9b657017bfd2631fd4461df83c9b5534f258bed65641909c69ed90a4198de618",
+      "assay.json": "1dc8d0149607510895dab828d88d69992cc5e27418aabc29efd6cdefdac5f564",
+      "document.json": "4d1c9ed18dba04e43671aee8b2f3fc55bad91aef9815acf3b79cccd320d38313",
+      "labels.json": "2a416598eb91c6a94e05e19cfc04a443e0e57bc0fde616848a71e22cfbf412ab",
+      "exclusions.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  },
+  "seed": 31,
+  "input_shape": [
+    170,
+    2222
+  ],
+  "scaffold_counts": {
+    "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)N1CCNCC1": 3,
+    "c1ccc(Nc2ncnc3ccccc23)cc1": 130,
+    "O=C(CN1CCNCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+    "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CCCN1": 4,
+    "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1": 11,
+    "c1ccc(Nc2ncnc3cc(OCCNc4nccs4)ccc23)cc1": 1,
+    "O=C(CN1CCOCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+    "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)c1ccc[nH]1": 1,
+    "O=C(CCN1CCCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 3,
+    "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)c1cccs1": 1,
+    "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CC1": 1,
+    "c1cncc(COc2ccc(Nc3ncnc4ccccc34)cc2)c1": 1,
+    "O=C(CN1CCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+    "c1cncc(Nc2ncnc3ccccc23)c1": 1,
+    "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)N1CCOCC1": 2,
+    "c1ccc(Nc2ncnc3cc(OCC4=NCCO4)ccc23)cc1": 1,
+    "c1ccc(Nc2ncnc3cc(OC4CCCNC4)ccc23)cc1": 1,
+    "O=C(CN1CCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+    "O=C1NCC(COc2ccc3c(Nc4ccccc4)ncnc3c2)O1": 1,
+    "O=C(CN1CC=CC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+    "O=C(CN1CCCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+    "c1ccc(Nc2ncnc3cc(OCc4ccncc4)ccc23)cc1": 1,
+    "c1ccc(Nc2ncnc3cc(OC4CCNC4)ccc23)cc1": 1
+  },
+  "splits": {
+    "random": {
+      "scheme": "random",
+      "membership": {
+        "development": {
+          "compounds": 102,
+          "scaffolds": 11,
+          "scaffold_counts": {
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)N1CCNCC1": 3,
+            "c1ccc(Nc2ncnc3ccccc23)cc1": 78,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CCCN1": 2,
+            "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1": 10,
+            "O=C(CCN1CCCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 2,
+            "O=C(CN1CCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "c1cncc(Nc2ncnc3ccccc23)c1": 1,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)N1CCOCC1": 2,
+            "c1ccc(Nc2ncnc3cc(OCC4=NCCO4)ccc23)cc1": 1,
+            "O=C(CN1CCCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "c1ccc(Nc2ncnc3cc(OCc4ccncc4)ccc23)cc1": 1
+          }
+        },
+        "calibration": {
+          "compounds": 34,
+          "scaffolds": 10,
+          "scaffold_counts": {
+            "c1ccc(Nc2ncnc3ccccc23)cc1": 25,
+            "O=C(CN1CCNCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "O=C(CN1CCOCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)c1ccc[nH]1": 1,
+            "O=C(CCN1CCCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)c1cccs1": 1,
+            "c1cncc(COc2ccc(Nc3ncnc4ccccc34)cc2)c1": 1,
+            "O=C(CN1CCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "O=C1NCC(COc2ccc3c(Nc4ccccc4)ncnc3c2)O1": 1,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CCCN1": 1
+          }
+        },
+        "test": {
+          "compounds": 34,
+          "scaffolds": 8,
+          "scaffold_counts": {
+            "c1ccc(Nc2ncnc3ccccc23)cc1": 27,
+            "c1ccc(Nc2ncnc3cc(OCCNc4nccs4)ccc23)cc1": 1,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CCCN1": 1,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CC1": 1,
+            "c1ccc(Nc2ncnc3cc(OC4CCCNC4)ccc23)cc1": 1,
+            "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1": 1,
+            "O=C(CN1CC=CC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "c1ccc(Nc2ncnc3cc(OC4CCNC4)ccc23)cc1": 1
+          }
+        }
+      },
+      "membership_identities": {
+        "development": [
+          "AHAJHWAHRBXVFH-UHFFFAOYSA-N",
+          "ANFPFYSQIJYLHA-UHFFFAOYSA-N",
+          "ARBSTGKTOSHPOE-UHFFFAOYSA-N",
+          "AVWUQSBIDMSXKK-UHFFFAOYSA-N",
+          "AXWQPHKBZRUJSS-LBPRGKRZSA-N",
+          "AXWQPHKBZRUJSS-UHFFFAOYSA-N",
+          "AYRINFKNJPHSKZ-UHFFFAOYSA-N",
+          "AZWGHQIJMYOUGY-UHFFFAOYSA-N",
+          "BJQOPTDJQILKBE-UHFFFAOYSA-N",
+          "BTYFROXGYQVTDB-UHFFFAOYSA-N",
+          "BZVKQRRVFARJOO-UHFFFAOYSA-N",
+          "CANUXFBJESAWLP-UHFFFAOYSA-N",
+          "CFOUMODXZDZQSQ-UHFFFAOYSA-N",
+          "COTCOYMOTSGNJY-UHFFFAOYSA-N",
+          "CRPONWBREIIKIJ-UHFFFAOYSA-N",
+          "CUKHNNMXTRUTGY-UHFFFAOYSA-N",
+          "CVUZHHCFPFIVKB-UHFFFAOYSA-N",
+          "DDQQLDVFRBXYBU-UHFFFAOYSA-N",
+          "DYYFQDXLUYZKPP-UHFFFAOYSA-N",
+          "FQIQGTLQUPPSRD-UHFFFAOYSA-N",
+          "FROYTOQPRFQLJH-UHFFFAOYSA-N",
+          "GENOBEOZZLHYRL-UHFFFAOYSA-N",
+          "GNZCXFIXXQWSSZ-UHFFFAOYSA-N",
+          "GRBIBILPWGFKCS-CYBMUJFWSA-N",
+          "GRBIBILPWGFKCS-UHFFFAOYSA-N",
+          "GUFBSFFWXVLWCF-UHFFFAOYSA-N",
+          "HCNASUOYSCKZNG-UHFFFAOYSA-N",
+          "HFPYKICVHQECPZ-UHFFFAOYSA-N",
+          "HRMPHPPMLURQFC-UHFFFAOYSA-N",
+          "HXCZCEAQVPKCAF-UHFFFAOYSA-N",
+          "JKFAFNGFEBNHQY-UHFFFAOYSA-N",
+          "JRVWLHJZBRHYIL-UHFFFAOYSA-N",
+          "JVCLZAIVGDIVLO-UHFFFAOYSA-N",
+          "KBHOZTNSGNVWQF-UHFFFAOYSA-N",
+          "KEOKRCKVDHLVOO-UHFFFAOYSA-N",
+          "KOVLLCNIJRZXSU-UHFFFAOYSA-N",
+          "KXWGCUQJTHVLTN-UHFFFAOYSA-N",
+          "LAJAGNNRQYMPDT-UHFFFAOYSA-N",
+          "LQZIDSSLBIXXRD-UHFFFAOYSA-N",
+          "LRZJFGQTXFKLHL-UHFFFAOYSA-N",
+          "LYDMZKUPEIUXHG-UHFFFAOYSA-N",
+          "LZAXPBKXHBEHAS-UHFFFAOYSA-N",
+          "MASSBJVLAZTBSY-UHFFFAOYSA-N",
+          "MAXJTBAHZSUMAV-UHFFFAOYSA-N",
+          "MHPAMQNXZMJMLZ-UHFFFAOYSA-N",
+          "MLSWVVZNGKLNPB-UHFFFAOYSA-N",
+          "MSXNFZGSSBGIKB-UHFFFAOYSA-N",
+          "MTPCBGCWGDTUPD-UHFFFAOYSA-N",
+          "MWSSSMXMJMXNIJ-UHFFFAOYSA-N",
+          "NCWOITZVEWWDCD-UHFFFAOYSA-N",
+          "NFWFBDDHXYCYHP-UHFFFAOYSA-N",
+          "NLQQNMZMFMGGET-UHFFFAOYSA-N",
+          "OFLPGWWOQOMMAK-UHFFFAOYSA-N",
+          "OHXVMYFKIJOOLR-UHFFFAOYSA-N",
+          "OSTKLEYGNLUETG-UHFFFAOYSA-N",
+          "OZCTZZBPWFFISD-UHFFFAOYSA-N",
+          "PDIFYYQHVFGSAI-UHFFFAOYSA-N",
+          "PGZSGIRUWAIJMW-UHFFFAOYSA-N",
+          "PPNPTLLSQTYHSE-UHFFFAOYSA-N",
+          "PSPLRUCSARYWEJ-UHFFFAOYSA-N",
+          "QASOHECZVDQOIK-UHFFFAOYSA-N",
+          "QCROOTBGMAHVGX-UHFFFAOYSA-N",
+          "QIAQUEWCLIWXJA-UHFFFAOYSA-N",
+          "QYXDMOYCHRRSMH-UHFFFAOYSA-N",
+          "RBVDARIRGNJNFG-UHFFFAOYSA-N",
+          "RFLCMWQKNNQDPU-UHFFFAOYSA-N",
+          "RHGWXTYSJLZTBJ-UHFFFAOYSA-N",
+          "RHPPSEKINPIOTC-UHFFFAOYSA-N",
+          "RIFKDQITWFTYJS-UHFFFAOYSA-N",
+          "RLCCESPCQUPJAN-UHFFFAOYSA-N",
+          "RLISPUUHADIREB-UHFFFAOYSA-N",
+          "RVHJFVOVALAVIJ-UHFFFAOYSA-N",
+          "RWBZRZZVHCQBPV-UHFFFAOYSA-N",
+          "RWZGZLPZVJTIAS-UHFFFAOYSA-N",
+          "SFSSJAHDZCXDRO-UHFFFAOYSA-N",
+          "SNBZJZUPCUEFMH-UHFFFAOYSA-N",
+          "SOYOGGAXHRNJSO-UHFFFAOYSA-N",
+          "SPELKVATJBMWHZ-UHFFFAOYSA-N",
+          "SUPFKVRCENJLNR-UHFFFAOYSA-N",
+          "TZDAEWGVZVGBPE-UHFFFAOYSA-N",
+          "UDBLADDGFQBCCT-UHFFFAOYSA-N",
+          "UGPMTGRGGQYKIB-UHFFFAOYSA-N",
+          "UGQFWYMJDDLZLM-UHFFFAOYSA-N",
+          "UIKREWNIYFBAFO-UHFFFAOYSA-N",
+          "UIMWWLHPSZWOBD-UHFFFAOYSA-N",
+          "UNFSZGKSDKZSHK-UHFFFAOYSA-N",
+          "UVUWLFQIXSVZBI-UHFFFAOYSA-N",
+          "VHQAZGVURZXKGM-UHFFFAOYSA-N",
+          "VNJIDIZIWFGYFN-UHFFFAOYSA-N",
+          "VXXSTZLCZOCSDY-UHFFFAOYSA-N",
+          "VZMZAYAKDHWCNK-UHFFFAOYSA-N",
+          "XAISGNDPHUTFTD-UHFFFAOYSA-N",
+          "XCGXIKJHGROCJB-UHFFFAOYSA-N",
+          "XMXFPUFSKWPYBL-UHFFFAOYSA-N",
+          "XOJPXZWMZWFJFS-UHFFFAOYSA-N",
+          "XQNPQCDWAUIUPF-UHFFFAOYSA-N",
+          "XRHZCKCSIVHXIK-UHFFFAOYSA-N",
+          "YEDYIUXXVIDJPB-UHFFFAOYSA-N",
+          "YJTSMQVXARPZGP-UHFFFAOYSA-N",
+          "YMDWARQKAFASNA-UHFFFAOYSA-N",
+          "ZEIPSBCNYPQWSX-UHFFFAOYSA-N",
+          "ZSDKABQQQPOUIS-UHFFFAOYSA-N"
+        ],
+        "calibration": [
+          "AVINRNFZBJEYNB-UHFFFAOYSA-N",
+          "AXWQPHKBZRUJSS-GFCCVEGCSA-N",
+          "AYCVHMDIHRQBDR-UHFFFAOYSA-N",
+          "BDGBUNQPUJHMAM-UHFFFAOYSA-N",
+          "BVCQMVAUBMWNAI-UHFFFAOYSA-N",
+          "CXPFXSZABUYPDJ-UHFFFAOYSA-N",
+          "DTTIJFZDEJYJJU-UHFFFAOYSA-N",
+          "FFMVKPOWYKTXJH-UHFFFAOYSA-N",
+          "FYZZYOSCIAZCBA-UHFFFAOYSA-N",
+          "FZPKPBLYVQTKPP-UHFFFAOYSA-N",
+          "GANZOBRZAGYPGJ-UHFFFAOYSA-N",
+          "GAONTQMLYXNEGT-UHFFFAOYSA-N",
+          "HUFVZUNTJJLXLG-UHFFFAOYSA-N",
+          "JCPZKXGIFPYHHJ-UHFFFAOYSA-N",
+          "JCZWCPLKQPNPTP-UHFFFAOYSA-N",
+          "JLRRXORWMUQGQX-UHFFFAOYSA-N",
+          "KARDRLFZPWJXEI-UHFFFAOYSA-N",
+          "KLGKOFYRMVUFIH-UHFFFAOYSA-N",
+          "OELVTHONNCJUEV-UHFFFAOYSA-N",
+          "OIPVBSQFFJQZSU-UHFFFAOYSA-N",
+          "PJTNXYFSQNXMMA-UHFFFAOYSA-N",
+          "QEEAABFVJCOYPN-UHFFFAOYSA-N",
+          "QKEQHMZWPIXXEY-UHFFFAOYSA-N",
+          "QQNYFZMXLDOHEF-UHFFFAOYSA-N",
+          "RIGSMDFVBGSWIZ-UHFFFAOYSA-N",
+          "RZLHXVSQWOPUOD-UHFFFAOYSA-N",
+          "UJQBDJHFABZCBZ-UHFFFAOYSA-N",
+          "URGDWDVOUMUUID-UHFFFAOYSA-N",
+          "XKROSFHVZFKVQN-UHFFFAOYSA-N",
+          "YNLXJJCFNYBGEB-UHFFFAOYSA-N",
+          "YOHNLHXVSFTRLR-UHFFFAOYSA-N",
+          "YSZALBLOXLXRCK-UHFFFAOYSA-N",
+          "ZMTLVNLUQRLETC-UHFFFAOYSA-N",
+          "ZRODGYIOYZYWNC-UHFFFAOYSA-N"
+        ],
+        "test": [
+          "BNKGZNXIORHJHK-UHFFFAOYSA-N",
+          "DDJVPPJAZUNTIE-UHFFFAOYSA-N",
+          "DPSBYADGWLEODU-UHFFFAOYSA-N",
+          "DTNINSLBWVYZJC-UHFFFAOYSA-N",
+          "FUDZVMAAPBVLTJ-UHFFFAOYSA-N",
+          "GRBIBILPWGFKCS-ZDUSSCGKSA-N",
+          "GTDDUMDJAUSXRI-UHFFFAOYSA-N",
+          "HEYAJCDUBCQMPG-UHFFFAOYSA-N",
+          "HFETUOIHWSJPSY-UHFFFAOYSA-N",
+          "JLWNHWBYVLABOU-UHFFFAOYSA-N",
+          "KDCWCHYNUNBAEU-UHFFFAOYSA-N",
+          "LAPPKGYTRPDHPM-UHFFFAOYSA-N",
+          "NQECTGFZOQWBSF-UHFFFAOYSA-N",
+          "ODIVICGOEIOVIQ-UHFFFAOYSA-N",
+          "PFRACGZLZAHSRL-UHFFFAOYSA-N",
+          "PNENUMJQDWNJEW-UHFFFAOYSA-N",
+          "PPYSXGBNOGMWKR-UHFFFAOYSA-N",
+          "QEWGTHVMSDULHL-UHFFFAOYSA-N",
+          "QOLLSSWROWSEGI-UHFFFAOYSA-N",
+          "QWIUMUFIKLQVQM-UHFFFAOYSA-N",
+          "RHNPQUDHHOMHDW-UHFFFAOYSA-N",
+          "SHRZDXFZUPQARN-UHFFFAOYSA-N",
+          "UCGXLPHREMHIFF-UHFFFAOYSA-N",
+          "UQBFLJPRNOOVSR-UHFFFAOYSA-N",
+          "VAYPWRLVYXYEQY-UHFFFAOYSA-N",
+          "VWJOQIGDVVMABO-UHFFFAOYSA-N",
+          "WKGRZWRDIRBFPN-UHFFFAOYSA-N",
+          "WTKHKEHPGMXSBH-UHFFFAOYSA-N",
+          "YEPJSPZWMLQZDI-UHFFFAOYSA-N",
+          "YHAXBZNUIZZLFJ-UHFFFAOYSA-N",
+          "YLOOVLOMQTYREV-UHFFFAOYSA-N",
+          "YRLMDFYRQYWKJM-UHFFFAOYSA-N",
+          "ZBOCBASKJOBZTN-UHFFFAOYSA-N",
+          "ZUDNAVLBOYSKME-UHFFFAOYSA-N"
+        ]
+      },
+      "development_test_scaffold_overlap": [
+        "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CCCN1",
+        "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+        "c1ccc(Nc2ncnc3ccccc23)cc1"
+      ],
+      "cross_validation_folds": [
+        {
+          "fit_rows": 68,
+          "check_rows": 34,
+          "scaffold_overlap": 4
+        },
+        {
+          "fit_rows": 68,
+          "check_rows": 34,
+          "scaffold_overlap": 3
+        },
+        {
+          "fit_rows": 68,
+          "check_rows": 34,
+          "scaffold_overlap": 5
+        }
+      ],
+      "settings": {
+        "random_forest": {
+          "selected": {
+            "max_depth": 5,
+            "min_samples_leaf": 3
+          },
+          "candidates": [
+            {
+              "settings": {
+                "max_depth": 5,
+                "min_samples_leaf": 1
+              },
+              "fold_mae": [
+                0.5663671763798174,
+                0.6086303886109491,
+                0.43655537627128843
+              ],
+              "mean_fold_mae": 0.5371843137540183
+            },
+            {
+              "settings": {
+                "max_depth": 5,
+                "min_samples_leaf": 3
+              },
+              "fold_mae": [
+                0.5705673089668417,
+                0.6204543814911829,
+                0.4016401975460823
+              ],
+              "mean_fold_mae": 0.530887296001369
+            },
+            {
+              "settings": {
+                "max_depth": null,
+                "min_samples_leaf": 1
+              },
+              "fold_mae": [
+                0.58358886561788,
+                0.6173530420642007,
+                0.43722053466009864
+              ],
+              "mean_fold_mae": 0.5460541474473931
+            },
+            {
+              "settings": {
+                "max_depth": null,
+                "min_samples_leaf": 3
+              },
+              "fold_mae": [
+                0.570933669354553,
+                0.6239443999999146,
+                0.4077228661038489
+              ],
+              "mean_fold_mae": 0.5342003118194388
+            }
+          ]
+        },
+        "xgboost": {
+          "selected": {
+            "learning_rate": 0.05,
+            "max_depth": 2
+          },
+          "candidates": [
+            {
+              "settings": {
+                "learning_rate": 0.05,
+                "max_depth": 2
+              },
+              "fold_mae": [
+                0.5889326307000857,
+                0.6394804241756191,
+                0.4395069434413583
+              ],
+              "mean_fold_mae": 0.5559733327723544
+            },
+            {
+              "settings": {
+                "learning_rate": 0.05,
+                "max_depth": 4
+              },
+              "fold_mae": [
+                0.5989583036855582,
+                0.6480065109828701,
+                0.43678093423359304
+              ],
+              "mean_fold_mae": 0.5612485829673405
+            },
+            {
+              "settings": {
+                "learning_rate": 0.12,
+                "max_depth": 2
+              },
+              "fold_mae": [
+                0.6360091934384475,
+                0.6405711330765196,
+                0.47310238280313816
+              ],
+              "mean_fold_mae": 0.5832275697727017
+            },
+            {
+              "settings": {
+                "learning_rate": 0.12,
+                "max_depth": 4
+              },
+              "fold_mae": [
+                0.6419906583676367,
+                0.6737377519846725,
+                0.523534770383989
+              ],
+              "mean_fold_mae": 0.6130877269120993
+            }
+          ]
+        },
+        "mlp": {
+          "selected": {
+            "alpha": 0.15,
+            "hidden_layer_sizes": [
+              16
+            ]
+          },
+          "candidates": [
+            {
+              "settings": {
+                "alpha": 0.01,
+                "hidden_layer_sizes": [
+                  16
+                ]
+              },
+              "fold_mae": [
+                0.778845637060175,
+                0.6018710033583002,
+                0.6743089973446296
+              ],
+              "mean_fold_mae": 0.6850085459210349
+            },
+            {
+              "settings": {
+                "alpha": 0.01,
+                "hidden_layer_sizes": [
+                  24,
+                  8
+                ]
+              },
+              "fold_mae": [
+                0.7504233574655745,
+                0.7118293505640159,
+                0.7753264420077873
+              ],
+              "mean_fold_mae": 0.745859716679126
+            },
+            {
+              "settings": {
+                "alpha": 0.15,
+                "hidden_layer_sizes": [
+                  16
+                ]
+              },
+              "fold_mae": [
+                0.7420616977031801,
+                0.6133391280942111,
+                0.5695097309787037
+              ],
+              "mean_fold_mae": 0.6416368522586984
+            },
+            {
+              "settings": {
+                "alpha": 0.15,
+                "hidden_layer_sizes": [
+                  24,
+                  8
+                ]
+              },
+              "fold_mae": [
+                0.7356717308439714,
+                0.6852549820915866,
+                0.553198464655206
+              ],
+              "mean_fold_mae": 0.658041725863588
+            }
+          ]
+        },
+        "gnn": {
+          "selected": {
+            "steps": 180,
+            "width": 12
+          },
+          "candidates": [
+            {
+              "settings": {
+                "steps": 180,
+                "width": 12
+              },
+              "fold_mae": [
+                0.5866568143793572,
+                0.6192781141647956,
+                0.4049194205675602
+              ],
+              "mean_fold_mae": 0.5369514497039043
+            },
+            {
+              "settings": {
+                "steps": 180,
+                "width": 24
+              },
+              "fold_mae": [
+                0.5885991977948418,
+                0.6192842353505064,
+                0.4075018312554056
+              ],
+              "mean_fold_mae": 0.5384617548002514
+            },
+            {
+              "settings": {
+                "steps": 360,
+                "width": 12
+              },
+              "fold_mae": [
+                0.5866782106708386,
+                0.619378101774384,
+                0.4048749517481204
+              ],
+              "mean_fold_mae": 0.5369770880644477
+            },
+            {
+              "settings": {
+                "steps": 360,
+                "width": 24
+              },
+              "fold_mae": [
+                0.5887707159399641,
+                0.6196022446821446,
+                0.4073564614554412
+              ],
+              "mean_fold_mae": 0.53857647402585
+            }
+          ]
+        }
+      },
+      "test_metrics": {
+        "development_median": {
+          "mae": 0.5556547225270551,
+          "rmse": 0.6859880976953588,
+          "r2": -0.04074017206119529,
+          "spearman": null
+        },
+        "random_forest": {
+          "mae": 0.525088152875185,
+          "rmse": 0.6566295087623114,
+          "r2": 0.04643577489397932,
+          "spearman": 0.2882263839283619
+        },
+        "xgboost": {
+          "mae": 0.5668934046244376,
+          "rmse": 0.686502581459527,
+          "r2": -0.04230184554113037,
+          "spearman": 0.10596333372008213
+        },
+        "mlp": {
+          "mae": 0.597749132916399,
+          "rmse": 0.7425560648902388,
+          "r2": -0.2194602728505588,
+          "spearman": 0.19923553223270854
+        },
+        "gnn": {
+          "mae": 0.5555190350758612,
+          "rmse": 0.6819195558322524,
+          "r2": -0.028431683513409967,
+          "spearman": -0.13318046705655345
+        },
+        "ensemble": {
+          "mae": 0.5471315814802266,
+          "rmse": 0.6717566855829163,
+          "r2": 0.001994000106572358,
+          "spearman": 0.22232422399567017
+        }
+      },
+      "test_predictions": [
+        {
+          "identity": "BNKGZNXIORHJHK-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671509",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.040958607678906,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.300049126145222,
+            "xgboost": 7.327185153961182,
+            "mlp": 7.293775101367124,
+            "gnn": 7.378651179862006,
+            "ensemble": 7.307003127157842
+          },
+          "nearest_development": "NCWOITZVEWWDCD-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8714285714285714,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "DDJVPPJAZUNTIE-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676373",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 6.653647025549361,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.359035465964718,
+            "xgboost": 7.3895368576049805,
+            "mlp": 7.789552299483634,
+            "gnn": 7.368408503795858,
+            "ensemble": 7.512708207684444
+          },
+          "nearest_development": "SOYOGGAXHRNJSO-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.7631578947368421,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "DPSBYADGWLEODU-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671560",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCCNc4nccs4)ccc23)cc1",
+          "observed_pic50": 6.530177984021837,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.3579884725328535,
+            "xgboost": 7.478513717651367,
+            "mlp": 7.436675672817931,
+            "gnn": 7.3887274083052725,
+            "ensemble": 7.424392621000717
+          },
+          "nearest_development": "XCGXIKJHGROCJB-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.75,
+          "ensemble_in_interval": false
+        },
+        {
+          "identity": "DTNINSLBWVYZJC-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671487",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 8.397940008672037,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.546081758399052,
+            "xgboost": 7.557431221008301,
+            "mlp": 8.273121744972872,
+            "gnn": 7.379188104848946,
+            "ensemble": 7.792211574793408
+          },
+          "nearest_development": "RWBZRZZVHCQBPV-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.953125,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "FUDZVMAAPBVLTJ-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671547",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 6.062482107982653,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.494167527071704,
+            "xgboost": 7.315108776092529,
+            "mlp": 7.207215789082352,
+            "gnn": 7.380519302485052,
+            "ensemble": 7.338830697415528
+          },
+          "nearest_development": "BTYFROXGYQVTDB-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.7910447761194029,
+          "ensemble_in_interval": false
+        },
+        {
+          "identity": "GRBIBILPWGFKCS-ZDUSSCGKSA-N",
+          "compound_id": "CHEMBL3676376",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.778603387030115,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.250538268781337,
+            "xgboost": 7.365843772888184,
+            "mlp": 7.244843535501239,
+            "gnn": 7.371368357116216,
+            "ensemble": 7.287075192390254
+          },
+          "nearest_development": "GRBIBILPWGFKCS-CYBMUJFWSA-N",
+          "tanimoto_to_development": 0.8947368421052632,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "GTDDUMDJAUSXRI-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671556",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.161150909262744,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.273087509203716,
+            "xgboost": 7.359625816345215,
+            "mlp": 6.72942996590744,
+            "gnn": 7.3783461075973795,
+            "ensemble": 7.120714430485457
+          },
+          "nearest_development": "AXWQPHKBZRUJSS-LBPRGKRZSA-N",
+          "tanimoto_to_development": 0.8285714285714286,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "HEYAJCDUBCQMPG-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671544",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 6.600326278518962,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.372855871226478,
+            "xgboost": 7.351314067840576,
+            "mlp": 7.728819836374135,
+            "gnn": 7.370311701391539,
+            "ensemble": 7.484329925147063
+          },
+          "nearest_development": "FROYTOQPRFQLJH-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.84,
+          "ensemble_in_interval": false
+        },
+        {
+          "identity": "HFETUOIHWSJPSY-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671567",
+          "scaffold": "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CCCN1",
+          "observed_pic50": 5.709075440617246,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.287926605558711,
+            "xgboost": 7.261229515075684,
+            "mlp": 7.243370500730894,
+            "gnn": 7.375701573509269,
+            "ensemble": 7.2641755404550965
+          },
+          "nearest_development": "BTYFROXGYQVTDB-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.7272727272727273,
+          "ensemble_in_interval": false
+        },
+        {
+          "identity": "JLWNHWBYVLABOU-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671537",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 6.185752404268079,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.235608223874889,
+            "xgboost": 7.499393939971924,
+            "mlp": 6.9756477213902,
+            "gnn": 7.374353134714015,
+            "ensemble": 7.2368832950790045
+          },
+          "nearest_development": "YJTSMQVXARPZGP-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8157894736842105,
+          "ensemble_in_interval": false
+        },
+        {
+          "identity": "KDCWCHYNUNBAEU-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671494",
+          "scaffold": "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CC1",
+          "observed_pic50": 8.096910013008056,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.365152088397505,
+            "xgboost": 7.181468963623047,
+            "mlp": 7.7010884278297915,
+            "gnn": 7.377868388034777,
+            "ensemble": 7.415903159950115
+          },
+          "nearest_development": "CUKHNNMXTRUTGY-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8028169014084507,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "LAPPKGYTRPDHPM-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676357",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 8.397940008672037,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.746316497626939,
+            "xgboost": 7.787714958190918,
+            "mlp": 7.96150805794746,
+            "gnn": 7.377720282790167,
+            "ensemble": 7.831846504588438
+          },
+          "nearest_development": "MLSWVVZNGKLNPB-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8823529411764706,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "NQECTGFZOQWBSF-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671559",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OC4CCCNC4)ccc23)cc1",
+          "observed_pic50": 6.892790030352131,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.52064712587304,
+            "xgboost": 7.309681415557861,
+            "mlp": 7.877324313385135,
+            "gnn": 7.375166465979395,
+            "ensemble": 7.569217618272012
+          },
+          "nearest_development": "UIKREWNIYFBAFO-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.725,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "ODIVICGOEIOVIQ-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671521",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 6.892790030352131,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.38817377271775,
+            "xgboost": 7.5025835037231445,
+            "mlp": 7.756036448283116,
+            "gnn": 7.3776884100611095,
+            "ensemble": 7.54893124157467
+          },
+          "nearest_development": "FROYTOQPRFQLJH-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8591549295774648,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "PFRACGZLZAHSRL-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671507",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.585026652029182,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.495044030833443,
+            "xgboost": 7.5216217041015625,
+            "mlp": 8.054300927109118,
+            "gnn": 7.37757830089811,
+            "ensemble": 7.690322220681375
+          },
+          "nearest_development": "RWZGZLPZVJTIAS-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8823529411764706,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "PNENUMJQDWNJEW-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676355",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 8.045757490560675,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.539455226899291,
+            "xgboost": 7.486906051635742,
+            "mlp": 8.066542025752304,
+            "gnn": 7.372013010702227,
+            "ensemble": 7.6976344347624455
+          },
+          "nearest_development": "HCNASUOYSCKZNG-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.821917808219178,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "PPYSXGBNOGMWKR-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676389",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.7447274948966935,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.095207607629647,
+            "xgboost": 7.020550727844238,
+            "mlp": 7.132336964621871,
+            "gnn": 7.378318277043976,
+            "ensemble": 7.082698433365252
+          },
+          "nearest_development": "FROYTOQPRFQLJH-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8356164383561644,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "QEWGTHVMSDULHL-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671541",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.008773924307505,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.104145263941689,
+            "xgboost": 7.551229476928711,
+            "mlp": 6.93587507660067,
+            "gnn": 7.376321484460732,
+            "ensemble": 7.197083272490357
+          },
+          "nearest_development": "XAISGNDPHUTFTD-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8194444444444444,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "QOLLSSWROWSEGI-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671477",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 7.585026652029182,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.4128891939751,
+            "xgboost": 7.527686595916748,
+            "mlp": 7.34891505161961,
+            "gnn": 7.36749327954076,
+            "ensemble": 7.429830280503819
+          },
+          "nearest_development": "RIFKDQITWFTYJS-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.825,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "QWIUMUFIKLQVQM-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671577",
+          "scaffold": "O=C(CN1CC=CC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1",
+          "observed_pic50": 7.494850021680094,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.284267459211612,
+            "xgboost": 7.357106685638428,
+            "mlp": 7.3485050479699145,
+            "gnn": 7.372566939717384,
+            "ensemble": 7.3299597309399855
+          },
+          "nearest_development": "LRZJFGQTXFKLHL-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8648648648648649,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "RHNPQUDHHOMHDW-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671529",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.050609993355087,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.079435165328897,
+            "xgboost": 7.152360916137695,
+            "mlp": 6.787916738879039,
+            "gnn": 7.3791245817937625,
+            "ensemble": 7.0065709401152105
+          },
+          "nearest_development": "HXCZCEAQVPKCAF-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8955223880597015,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "SHRZDXFZUPQARN-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676360",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 8.045757490560675,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.5429788949739836,
+            "xgboost": 7.497650146484375,
+            "mlp": 7.661838012025467,
+            "gnn": 7.371721770525851,
+            "ensemble": 7.567489017827942
+          },
+          "nearest_development": "PDIFYYQHVFGSAI-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8333333333333334,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "UCGXLPHREMHIFF-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676385",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.585026652029182,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.553493601937034,
+            "xgboost": 7.526360034942627,
+            "mlp": 7.680483871757283,
+            "gnn": 7.377671997659001,
+            "ensemble": 7.586779169545648
+          },
+          "nearest_development": "KOVLLCNIJRZXSU-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.9285714285714286,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "UQBFLJPRNOOVSR-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671546",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 5.991399828238082,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.416610200775948,
+            "xgboost": 7.39703369140625,
+            "mlp": 7.709731143241367,
+            "gnn": 7.377442148084118,
+            "ensemble": 7.507791678474522
+          },
+          "nearest_development": "BTYFROXGYQVTDB-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8059701492537313,
+          "ensemble_in_interval": false
+        },
+        {
+          "identity": "VAYPWRLVYXYEQY-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676349",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.096910013008056,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.474607334022394,
+            "xgboost": 7.456020832061768,
+            "mlp": 7.845068805514899,
+            "gnn": 7.377614466578628,
+            "ensemble": 7.5918989905330205
+          },
+          "nearest_development": "TZDAEWGVZVGBPE-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8787878787878788,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "VWJOQIGDVVMABO-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671538",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.6777807052660805,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.390731721119276,
+            "xgboost": 7.311415672302246,
+            "mlp": 7.409113863751793,
+            "gnn": 7.37122261839391,
+            "ensemble": 7.370420419057773
+          },
+          "nearest_development": "LAJAGNNRQYMPDT-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8472222222222222,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "WKGRZWRDIRBFPN-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671555",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.537602002101044,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.210772886568481,
+            "xgboost": 7.2465410232543945,
+            "mlp": 6.8745187975139,
+            "gnn": 7.376532023608944,
+            "ensemble": 7.110610902445592
+          },
+          "nearest_development": "QIAQUEWCLIWXJA-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8266666666666667,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "WTKHKEHPGMXSBH-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671542",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 6.991399828238082,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 6.947946967637662,
+            "xgboost": 7.0993452072143555,
+            "mlp": 7.09059037361602,
+            "gnn": 7.377913052668906,
+            "ensemble": 7.045960849489346
+          },
+          "nearest_development": "XAISGNDPHUTFTD-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8529411764705882,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "YEPJSPZWMLQZDI-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671584",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.376750709602099,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.575572253498176,
+            "xgboost": 7.731790065765381,
+            "mlp": 7.79253234631142,
+            "gnn": 7.383489964234794,
+            "ensemble": 7.699964888524993
+          },
+          "nearest_development": "BTYFROXGYQVTDB-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8208955223880597,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "YHAXBZNUIZZLFJ-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676339",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.853871964321762,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.439324607554493,
+            "xgboost": 7.065423488616943,
+            "mlp": 7.581183625026018,
+            "gnn": 7.373309389802839,
+            "ensemble": 7.361977240399152
+          },
+          "nearest_development": "DYYFQDXLUYZKPP-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8208955223880597,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "YLOOVLOMQTYREV-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671533",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 8.045757490560675,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.4015898142167185,
+            "xgboost": 7.399517059326172,
+            "mlp": 7.708532741473931,
+            "gnn": 7.3718233293085484,
+            "ensemble": 7.503213205005608
+          },
+          "nearest_development": "LAJAGNNRQYMPDT-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8714285714285714,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "YRLMDFYRQYWKJM-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676345",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.721246399047171,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.3288568587331575,
+            "xgboost": 7.216913223266602,
+            "mlp": 6.370450020671602,
+            "gnn": 7.371507988118459,
+            "ensemble": 6.97207336755712
+          },
+          "nearest_development": "QASOHECZVDQOIK-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8831168831168831,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "ZBOCBASKJOBZTN-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676371",
+          "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1",
+          "observed_pic50": 7.236572006437063,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.518768997502597,
+            "xgboost": 7.603960037231445,
+            "mlp": 7.639065561571976,
+            "gnn": 7.374463506744202,
+            "ensemble": 7.58726486543534
+          },
+          "nearest_development": "QASOHECZVDQOIK-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8717948717948718,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "ZUDNAVLBOYSKME-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671558",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OC4CCNC4)ccc23)cc1",
+          "observed_pic50": 7.026872146400302,
+          "predicted_pic50": {
+            "development_median": 7.403437700822769,
+            "random_forest": 7.576780946261734,
+            "xgboost": 7.473228931427002,
+            "mlp": 8.111082224794345,
+            "gnn": 7.375923094149026,
+            "ensemble": 7.720364034161027
+          },
+          "nearest_development": "UIKREWNIYFBAFO-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.7763157894736842,
+          "ensemble_in_interval": true
+        }
+      ],
+      "ensemble_interval": {
+        "nominal_coverage": 0.8,
+        "group_count": 34,
+        "rank": 28,
+        "ordered_scores": [
+          0.03443919992536948,
+          0.0828902303024881,
+          0.09386067621849303,
+          0.13891028288784657,
+          0.15537291569948053,
+          0.16938872554314255,
+          0.2016040959456573,
+          0.2064553424592921,
+          0.22783081836950458,
+          0.3037118184580194,
+          0.3415114058202642,
+          0.34245172977717697,
+          0.39782724048664075,
+          0.4021870306562798,
+          0.40443762037009634,
+          0.42443827180841787,
+          0.4750084590961494,
+          0.5431916767489513,
+          0.6526445995654839,
+          0.6565903169610339,
+          0.708722300361976,
+          0.7112584141674798,
+          0.7423907815254962,
+          0.7684843274326978,
+          0.8011985074013177,
+          0.8123753837235315,
+          0.8260763271686571,
+          0.8767577373112543,
+          0.9652972228248258,
+          1.0154187647989383,
+          1.1025125395575275,
+          1.1050299974918696,
+          1.2582262555873402,
+          1.545365869077628
+        ],
+        "half_width": 0.8767577373112543,
+        "empirical_molecule_coverage": 0.8235294117647058,
+        "molecules_covered": 28,
+        "molecules_tested": 34,
+        "test_groups_all_covered": 28,
+        "test_groups": 34
+      }
+    },
+    "scaffold": {
+      "scheme": "scaffold",
+      "membership": {
+        "development": {
+          "compounds": 142,
+          "scaffolds": 13,
+          "scaffold_counts": {
+            "c1ccc(Nc2ncnc3ccccc23)cc1": 130,
+            "O=C(CN1CCNCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "c1ccc(Nc2ncnc3cc(OCCNc4nccs4)ccc23)cc1": 1,
+            "O=C(CN1CCOCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)c1ccc[nH]1": 1,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CC1": 1,
+            "c1cncc(COc2ccc(Nc3ncnc4ccccc34)cc2)c1": 1,
+            "O=C(CN1CCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "c1ccc(Nc2ncnc3cc(OC4CCCNC4)ccc23)cc1": 1,
+            "O=C(CN1CCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "O=C(CN1CC=CC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "O=C(CN1CCCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 1,
+            "c1ccc(Nc2ncnc3cc(OC4CCNC4)ccc23)cc1": 1
+          }
+        },
+        "calibration": {
+          "compounds": 11,
+          "scaffolds": 5,
+          "scaffold_counts": {
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CCCN1": 4,
+            "O=C(CCN1CCCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": 3,
+            "c1cncc(Nc2ncnc3ccccc23)c1": 1,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)N1CCOCC1": 2,
+            "c1ccc(Nc2ncnc3cc(OCc4ccncc4)ccc23)cc1": 1
+          }
+        },
+        "test": {
+          "compounds": 17,
+          "scaffolds": 5,
+          "scaffold_counts": {
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)N1CCNCC1": 3,
+            "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1": 11,
+            "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)c1cccs1": 1,
+            "c1ccc(Nc2ncnc3cc(OCC4=NCCO4)ccc23)cc1": 1,
+            "O=C1NCC(COc2ccc3c(Nc4ccccc4)ncnc3c2)O1": 1
+          }
+        }
+      },
+      "membership_identities": {
+        "development": [
+          "ANFPFYSQIJYLHA-UHFFFAOYSA-N",
+          "ARBSTGKTOSHPOE-UHFFFAOYSA-N",
+          "AVINRNFZBJEYNB-UHFFFAOYSA-N",
+          "AVWUQSBIDMSXKK-UHFFFAOYSA-N",
+          "AXWQPHKBZRUJSS-GFCCVEGCSA-N",
+          "AXWQPHKBZRUJSS-LBPRGKRZSA-N",
+          "AXWQPHKBZRUJSS-UHFFFAOYSA-N",
+          "AYCVHMDIHRQBDR-UHFFFAOYSA-N",
+          "AYRINFKNJPHSKZ-UHFFFAOYSA-N",
+          "AZWGHQIJMYOUGY-UHFFFAOYSA-N",
+          "BDGBUNQPUJHMAM-UHFFFAOYSA-N",
+          "BJQOPTDJQILKBE-UHFFFAOYSA-N",
+          "BNKGZNXIORHJHK-UHFFFAOYSA-N",
+          "BTYFROXGYQVTDB-UHFFFAOYSA-N",
+          "BVCQMVAUBMWNAI-UHFFFAOYSA-N",
+          "CFOUMODXZDZQSQ-UHFFFAOYSA-N",
+          "COTCOYMOTSGNJY-UHFFFAOYSA-N",
+          "CRPONWBREIIKIJ-UHFFFAOYSA-N",
+          "CUKHNNMXTRUTGY-UHFFFAOYSA-N",
+          "CVUZHHCFPFIVKB-UHFFFAOYSA-N",
+          "CXPFXSZABUYPDJ-UHFFFAOYSA-N",
+          "DDJVPPJAZUNTIE-UHFFFAOYSA-N",
+          "DDQQLDVFRBXYBU-UHFFFAOYSA-N",
+          "DPSBYADGWLEODU-UHFFFAOYSA-N",
+          "DTNINSLBWVYZJC-UHFFFAOYSA-N",
+          "DTTIJFZDEJYJJU-UHFFFAOYSA-N",
+          "DYYFQDXLUYZKPP-UHFFFAOYSA-N",
+          "FFMVKPOWYKTXJH-UHFFFAOYSA-N",
+          "FQIQGTLQUPPSRD-UHFFFAOYSA-N",
+          "FROYTOQPRFQLJH-UHFFFAOYSA-N",
+          "FUDZVMAAPBVLTJ-UHFFFAOYSA-N",
+          "FYZZYOSCIAZCBA-UHFFFAOYSA-N",
+          "FZPKPBLYVQTKPP-UHFFFAOYSA-N",
+          "GANZOBRZAGYPGJ-UHFFFAOYSA-N",
+          "GAONTQMLYXNEGT-UHFFFAOYSA-N",
+          "GENOBEOZZLHYRL-UHFFFAOYSA-N",
+          "GNZCXFIXXQWSSZ-UHFFFAOYSA-N",
+          "GRBIBILPWGFKCS-CYBMUJFWSA-N",
+          "GRBIBILPWGFKCS-UHFFFAOYSA-N",
+          "GRBIBILPWGFKCS-ZDUSSCGKSA-N",
+          "GTDDUMDJAUSXRI-UHFFFAOYSA-N",
+          "GUFBSFFWXVLWCF-UHFFFAOYSA-N",
+          "HCNASUOYSCKZNG-UHFFFAOYSA-N",
+          "HEYAJCDUBCQMPG-UHFFFAOYSA-N",
+          "HFPYKICVHQECPZ-UHFFFAOYSA-N",
+          "HRMPHPPMLURQFC-UHFFFAOYSA-N",
+          "HUFVZUNTJJLXLG-UHFFFAOYSA-N",
+          "HXCZCEAQVPKCAF-UHFFFAOYSA-N",
+          "JCPZKXGIFPYHHJ-UHFFFAOYSA-N",
+          "JCZWCPLKQPNPTP-UHFFFAOYSA-N",
+          "JKFAFNGFEBNHQY-UHFFFAOYSA-N",
+          "JLWNHWBYVLABOU-UHFFFAOYSA-N",
+          "JVCLZAIVGDIVLO-UHFFFAOYSA-N",
+          "KBHOZTNSGNVWQF-UHFFFAOYSA-N",
+          "KDCWCHYNUNBAEU-UHFFFAOYSA-N",
+          "KEOKRCKVDHLVOO-UHFFFAOYSA-N",
+          "KLGKOFYRMVUFIH-UHFFFAOYSA-N",
+          "KOVLLCNIJRZXSU-UHFFFAOYSA-N",
+          "LAJAGNNRQYMPDT-UHFFFAOYSA-N",
+          "LAPPKGYTRPDHPM-UHFFFAOYSA-N",
+          "LQZIDSSLBIXXRD-UHFFFAOYSA-N",
+          "LRZJFGQTXFKLHL-UHFFFAOYSA-N",
+          "LYDMZKUPEIUXHG-UHFFFAOYSA-N",
+          "MHPAMQNXZMJMLZ-UHFFFAOYSA-N",
+          "MLSWVVZNGKLNPB-UHFFFAOYSA-N",
+          "NCWOITZVEWWDCD-UHFFFAOYSA-N",
+          "NFWFBDDHXYCYHP-UHFFFAOYSA-N",
+          "NLQQNMZMFMGGET-UHFFFAOYSA-N",
+          "NQECTGFZOQWBSF-UHFFFAOYSA-N",
+          "ODIVICGOEIOVIQ-UHFFFAOYSA-N",
+          "OELVTHONNCJUEV-UHFFFAOYSA-N",
+          "OHXVMYFKIJOOLR-UHFFFAOYSA-N",
+          "OIPVBSQFFJQZSU-UHFFFAOYSA-N",
+          "OZCTZZBPWFFISD-UHFFFAOYSA-N",
+          "PDIFYYQHVFGSAI-UHFFFAOYSA-N",
+          "PFRACGZLZAHSRL-UHFFFAOYSA-N",
+          "PGZSGIRUWAIJMW-UHFFFAOYSA-N",
+          "PNENUMJQDWNJEW-UHFFFAOYSA-N",
+          "PPNPTLLSQTYHSE-UHFFFAOYSA-N",
+          "PPYSXGBNOGMWKR-UHFFFAOYSA-N",
+          "PSPLRUCSARYWEJ-UHFFFAOYSA-N",
+          "QASOHECZVDQOIK-UHFFFAOYSA-N",
+          "QCROOTBGMAHVGX-UHFFFAOYSA-N",
+          "QEEAABFVJCOYPN-UHFFFAOYSA-N",
+          "QEWGTHVMSDULHL-UHFFFAOYSA-N",
+          "QIAQUEWCLIWXJA-UHFFFAOYSA-N",
+          "QQNYFZMXLDOHEF-UHFFFAOYSA-N",
+          "QWIUMUFIKLQVQM-UHFFFAOYSA-N",
+          "RBVDARIRGNJNFG-UHFFFAOYSA-N",
+          "RFLCMWQKNNQDPU-UHFFFAOYSA-N",
+          "RHGWXTYSJLZTBJ-UHFFFAOYSA-N",
+          "RHNPQUDHHOMHDW-UHFFFAOYSA-N",
+          "RHPPSEKINPIOTC-UHFFFAOYSA-N",
+          "RIGSMDFVBGSWIZ-UHFFFAOYSA-N",
+          "RLCCESPCQUPJAN-UHFFFAOYSA-N",
+          "RLISPUUHADIREB-UHFFFAOYSA-N",
+          "RVHJFVOVALAVIJ-UHFFFAOYSA-N",
+          "RWBZRZZVHCQBPV-UHFFFAOYSA-N",
+          "RWZGZLPZVJTIAS-UHFFFAOYSA-N",
+          "RZLHXVSQWOPUOD-UHFFFAOYSA-N",
+          "SHRZDXFZUPQARN-UHFFFAOYSA-N",
+          "SOYOGGAXHRNJSO-UHFFFAOYSA-N",
+          "SUPFKVRCENJLNR-UHFFFAOYSA-N",
+          "TZDAEWGVZVGBPE-UHFFFAOYSA-N",
+          "UCGXLPHREMHIFF-UHFFFAOYSA-N",
+          "UDBLADDGFQBCCT-UHFFFAOYSA-N",
+          "UGPMTGRGGQYKIB-UHFFFAOYSA-N",
+          "UGQFWYMJDDLZLM-UHFFFAOYSA-N",
+          "UJQBDJHFABZCBZ-UHFFFAOYSA-N",
+          "UNFSZGKSDKZSHK-UHFFFAOYSA-N",
+          "UQBFLJPRNOOVSR-UHFFFAOYSA-N",
+          "URGDWDVOUMUUID-UHFFFAOYSA-N",
+          "UVUWLFQIXSVZBI-UHFFFAOYSA-N",
+          "VAYPWRLVYXYEQY-UHFFFAOYSA-N",
+          "VHQAZGVURZXKGM-UHFFFAOYSA-N",
+          "VNJIDIZIWFGYFN-UHFFFAOYSA-N",
+          "VWJOQIGDVVMABO-UHFFFAOYSA-N",
+          "VXXSTZLCZOCSDY-UHFFFAOYSA-N",
+          "WKGRZWRDIRBFPN-UHFFFAOYSA-N",
+          "WTKHKEHPGMXSBH-UHFFFAOYSA-N",
+          "XAISGNDPHUTFTD-UHFFFAOYSA-N",
+          "XCGXIKJHGROCJB-UHFFFAOYSA-N",
+          "XKROSFHVZFKVQN-UHFFFAOYSA-N",
+          "XOJPXZWMZWFJFS-UHFFFAOYSA-N",
+          "XQNPQCDWAUIUPF-UHFFFAOYSA-N",
+          "XRHZCKCSIVHXIK-UHFFFAOYSA-N",
+          "YEDYIUXXVIDJPB-UHFFFAOYSA-N",
+          "YEPJSPZWMLQZDI-UHFFFAOYSA-N",
+          "YHAXBZNUIZZLFJ-UHFFFAOYSA-N",
+          "YJTSMQVXARPZGP-UHFFFAOYSA-N",
+          "YLOOVLOMQTYREV-UHFFFAOYSA-N",
+          "YMDWARQKAFASNA-UHFFFAOYSA-N",
+          "YNLXJJCFNYBGEB-UHFFFAOYSA-N",
+          "YOHNLHXVSFTRLR-UHFFFAOYSA-N",
+          "YRLMDFYRQYWKJM-UHFFFAOYSA-N",
+          "YSZALBLOXLXRCK-UHFFFAOYSA-N",
+          "ZBOCBASKJOBZTN-UHFFFAOYSA-N",
+          "ZEIPSBCNYPQWSX-UHFFFAOYSA-N",
+          "ZMTLVNLUQRLETC-UHFFFAOYSA-N",
+          "ZRODGYIOYZYWNC-UHFFFAOYSA-N",
+          "ZSDKABQQQPOUIS-UHFFFAOYSA-N",
+          "ZUDNAVLBOYSKME-UHFFFAOYSA-N"
+        ],
+        "calibration": [
+          "BZVKQRRVFARJOO-UHFFFAOYSA-N",
+          "HFETUOIHWSJPSY-UHFFFAOYSA-N",
+          "JLRRXORWMUQGQX-UHFFFAOYSA-N",
+          "KXWGCUQJTHVLTN-UHFFFAOYSA-N",
+          "LZAXPBKXHBEHAS-UHFFFAOYSA-N",
+          "MASSBJVLAZTBSY-UHFFFAOYSA-N",
+          "MSXNFZGSSBGIKB-UHFFFAOYSA-N",
+          "MTPCBGCWGDTUPD-UHFFFAOYSA-N",
+          "OFLPGWWOQOMMAK-UHFFFAOYSA-N",
+          "QKEQHMZWPIXXEY-UHFFFAOYSA-N",
+          "SNBZJZUPCUEFMH-UHFFFAOYSA-N"
+        ],
+        "test": [
+          "AHAJHWAHRBXVFH-UHFFFAOYSA-N",
+          "CANUXFBJESAWLP-UHFFFAOYSA-N",
+          "JRVWLHJZBRHYIL-UHFFFAOYSA-N",
+          "KARDRLFZPWJXEI-UHFFFAOYSA-N",
+          "MAXJTBAHZSUMAV-UHFFFAOYSA-N",
+          "MWSSSMXMJMXNIJ-UHFFFAOYSA-N",
+          "OSTKLEYGNLUETG-UHFFFAOYSA-N",
+          "PJTNXYFSQNXMMA-UHFFFAOYSA-N",
+          "QOLLSSWROWSEGI-UHFFFAOYSA-N",
+          "QYXDMOYCHRRSMH-UHFFFAOYSA-N",
+          "RIFKDQITWFTYJS-UHFFFAOYSA-N",
+          "SFSSJAHDZCXDRO-UHFFFAOYSA-N",
+          "SPELKVATJBMWHZ-UHFFFAOYSA-N",
+          "UIKREWNIYFBAFO-UHFFFAOYSA-N",
+          "UIMWWLHPSZWOBD-UHFFFAOYSA-N",
+          "VZMZAYAKDHWCNK-UHFFFAOYSA-N",
+          "XMXFPUFSKWPYBL-UHFFFAOYSA-N"
+        ]
+      },
+      "development_test_scaffold_overlap": [],
+      "cross_validation_folds": [
+        {
+          "fit_rows": 12,
+          "check_rows": 130,
+          "scaffold_overlap": 0
+        },
+        {
+          "fit_rows": 136,
+          "check_rows": 6,
+          "scaffold_overlap": 0
+        },
+        {
+          "fit_rows": 136,
+          "check_rows": 6,
+          "scaffold_overlap": 0
+        }
+      ],
+      "settings": {
+        "random_forest": {
+          "selected": {
+            "max_depth": null,
+            "min_samples_leaf": 1
+          },
+          "candidates": [
+            {
+              "settings": {
+                "max_depth": 5,
+                "min_samples_leaf": 1
+              },
+              "fold_mae": [
+                0.6453453043319082,
+                0.7778144214858115,
+                0.4791543457695207
+              ],
+              "mean_fold_mae": 0.6341046905290801
+            },
+            {
+              "settings": {
+                "max_depth": 5,
+                "min_samples_leaf": 3
+              },
+              "fold_mae": [
+                0.6347151740754747,
+                0.801042994847692,
+                0.4632735052097911
+              ],
+              "mean_fold_mae": 0.6330105580443194
+            },
+            {
+              "settings": {
+                "max_depth": null,
+                "min_samples_leaf": 1
+              },
+              "fold_mae": [
+                0.6451270414947479,
+                0.7583471678819791,
+                0.43812773234054186
+              ],
+              "mean_fold_mae": 0.6138673139057563
+            },
+            {
+              "settings": {
+                "max_depth": null,
+                "min_samples_leaf": 3
+              },
+              "fold_mae": [
+                0.6347151740754747,
+                0.7869523901976914,
+                0.47794436314263516
+              ],
+              "mean_fold_mae": 0.6332039758052671
+            }
+          ]
+        },
+        "xgboost": {
+          "selected": {
+            "learning_rate": 0.12,
+            "max_depth": 2
+          },
+          "candidates": [
+            {
+              "settings": {
+                "learning_rate": 0.05,
+                "max_depth": 2
+              },
+              "fold_mae": [
+                0.666865827193349,
+                0.7470470606566441,
+                0.4425341673521732
+              ],
+              "mean_fold_mae": 0.6188156850673887
+            },
+            {
+              "settings": {
+                "learning_rate": 0.05,
+                "max_depth": 4
+              },
+              "fold_mae": [
+                0.6797487957200989,
+                0.7185222644886347,
+                0.46185894686267126
+              ],
+              "mean_fold_mae": 0.6200433356904683
+            },
+            {
+              "settings": {
+                "learning_rate": 0.12,
+                "max_depth": 2
+              },
+              "fold_mae": [
+                0.6419580268036575,
+                0.6737931111734085,
+                0.40402988471870965
+              ],
+              "mean_fold_mae": 0.5732603408985918
+            },
+            {
+              "settings": {
+                "learning_rate": 0.12,
+                "max_depth": 4
+              },
+              "fold_mae": [
+                0.6595720298258064,
+                0.7169249851519514,
+                0.3736843653349613
+              ],
+              "mean_fold_mae": 0.583393793437573
+            }
+          ]
+        },
+        "mlp": {
+          "selected": {
+            "alpha": 0.01,
+            "hidden_layer_sizes": [
+              16
+            ]
+          },
+          "candidates": [
+            {
+              "settings": {
+                "alpha": 0.01,
+                "hidden_layer_sizes": [
+                  16
+                ]
+              },
+              "fold_mae": [
+                0.8550905072369207,
+                0.7331596253909202,
+                0.45360897135407036
+              ],
+              "mean_fold_mae": 0.6806197013273038
+            },
+            {
+              "settings": {
+                "alpha": 0.01,
+                "hidden_layer_sizes": [
+                  24,
+                  8
+                ]
+              },
+              "fold_mae": [
+                0.8403059265933761,
+                0.9190510215873372,
+                0.5687056945793159
+              ],
+              "mean_fold_mae": 0.7760208809200098
+            },
+            {
+              "settings": {
+                "alpha": 0.15,
+                "hidden_layer_sizes": [
+                  16
+                ]
+              },
+              "fold_mae": [
+                0.8304175235752194,
+                0.8872412335443275,
+                0.43311300939110103
+              ],
+              "mean_fold_mae": 0.7169239221702158
+            },
+            {
+              "settings": {
+                "alpha": 0.15,
+                "hidden_layer_sizes": [
+                  24,
+                  8
+                ]
+              },
+              "fold_mae": [
+                0.8346792382215111,
+                0.8861598160985364,
+                0.3909357266024786
+              ],
+              "mean_fold_mae": 0.7039249269741754
+            }
+          ]
+        },
+        "gnn": {
+          "selected": {
+            "steps": 180,
+            "width": 24
+          },
+          "candidates": [
+            {
+              "settings": {
+                "steps": 180,
+                "width": 12
+              },
+              "fold_mae": [
+                0.5680182715388385,
+                0.8047998651428401,
+                0.46431088633833467
+              ],
+              "mean_fold_mae": 0.612376341006671
+            },
+            {
+              "settings": {
+                "steps": 180,
+                "width": 24
+              },
+              "fold_mae": [
+                0.5705098954950734,
+                0.8020209036864152,
+                0.4628867503265825
+              ],
+              "mean_fold_mae": 0.6118058498360237
+            },
+            {
+              "settings": {
+                "steps": 360,
+                "width": 12
+              },
+              "fold_mae": [
+                0.5683429039524583,
+                0.805297892855746,
+                0.4646827659350416
+              ],
+              "mean_fold_mae": 0.6127745209144153
+            },
+            {
+              "settings": {
+                "steps": 360,
+                "width": 24
+              },
+              "fold_mae": [
+                0.5716684924311557,
+                0.8034038014759158,
+                0.4641595173685567
+              ],
+              "mean_fold_mae": 0.6130772704252093
+            }
+          ]
+        }
+      },
+      "test_metrics": {
+        "development_median": {
+          "mae": 0.4811745182445553,
+          "rmse": 0.6063825225332229,
+          "r2": -0.16396451814943203,
+          "spearman": null
+        },
+        "random_forest": {
+          "mae": 0.6147112325241805,
+          "rmse": 0.756466705725378,
+          "r2": -0.8114486501017215,
+          "spearman": -0.2727280959393281
+        },
+        "xgboost": {
+          "mae": 0.6276365697422356,
+          "rmse": 0.7984721582652903,
+          "r2": -1.0182081043922486,
+          "spearman": -0.08604808727369231
+        },
+        "mlp": {
+          "mae": 0.9153490614707184,
+          "rmse": 1.1849968020472648,
+          "r2": -3.445091934513602,
+          "spearman": 0.187961255309537
+        },
+        "gnn": {
+          "mae": 0.505823521197619,
+          "rmse": 0.630894810907482,
+          "r2": -0.25997028148931434,
+          "spearman": -0.187961255309537
+        },
+        "ensemble": {
+          "mae": 0.6403980248686565,
+          "rmse": 0.820508108477328,
+          "r2": -1.1311408088958257,
+          "spearman": -0.03562664316324557
+        }
+      },
+      "test_predictions": [
+        {
+          "identity": "AHAJHWAHRBXVFH-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671564",
+          "scaffold": "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)N1CCNCC1",
+          "observed_pic50": 6.156144577376839,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.425340001281831,
+            "xgboost": 7.466004371643066,
+            "mlp": 8.072280605584083,
+            "gnn": 7.336812144690063,
+            "ensemble": 7.654541659502994
+          },
+          "nearest_development": "YOHNLHXVSFTRLR-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.7777777777777778,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "CANUXFBJESAWLP-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671481",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 7.585026652029182,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.100563911704919,
+            "xgboost": 7.122600078582764,
+            "mlp": 5.395239745295301,
+            "gnn": 7.34185215401749,
+            "ensemble": 6.539467911860995
+          },
+          "nearest_development": "YHAXBZNUIZZLFJ-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.6710526315789473,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "JRVWLHJZBRHYIL-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671478",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 7.823908740944319,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.421077771852251,
+            "xgboost": 7.708687782287598,
+            "mlp": 8.998347602760301,
+            "gnn": 7.336782446842323,
+            "ensemble": 8.042704385633384
+          },
+          "nearest_development": "RZLHXVSQWOPUOD-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.6986301369863014,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "KARDRLFZPWJXEI-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671562",
+          "scaffold": "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)c1cccs1",
+          "observed_pic50": 7.327902142064282,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 6.872326181361992,
+            "xgboost": 6.454960346221924,
+            "mlp": 6.6090351883687966,
+            "gnn": 7.350388141182155,
+            "ensemble": 6.6454405719842375
+          },
+          "nearest_development": "YOHNLHXVSFTRLR-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.7887323943661971,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "MAXJTBAHZSUMAV-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671482",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 7.886056647693163,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 6.9222255680959455,
+            "xgboost": 6.846393585205078,
+            "mlp": 4.854304842597874,
+            "gnn": 7.33994178593708,
+            "ensemble": 6.2076413319662995
+          },
+          "nearest_development": "PSPLRUCSARYWEJ-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.6710526315789473,
+          "ensemble_in_interval": false
+        },
+        {
+          "identity": "MWSSSMXMJMXNIJ-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671578",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4=NCCO4)ccc23)cc1",
+          "observed_pic50": 6.903089986991944,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.368109282844128,
+            "xgboost": 7.449843406677246,
+            "mlp": 7.474919413568273,
+            "gnn": 7.347150021863022,
+            "ensemble": 7.430957367696549
+          },
+          "nearest_development": "RZLHXVSQWOPUOD-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.7246376811594203,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "OSTKLEYGNLUETG-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671483",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 7.443697499232712,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.552061168293376,
+            "xgboost": 7.668949127197266,
+            "mlp": 7.9590232294466015,
+            "gnn": 7.336958541136864,
+            "ensemble": 7.726677841645748
+          },
+          "nearest_development": "PFRACGZLZAHSRL-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.7,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "PJTNXYFSQNXMMA-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671561",
+          "scaffold": "O=C1NCC(COc2ccc3c(Nc4ccccc4)ncnc3c2)O1",
+          "observed_pic50": 7.769551078621726,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.299219245567891,
+            "xgboost": 7.540293216705322,
+            "mlp": 7.559303295013625,
+            "gnn": 7.342942543547011,
+            "ensemble": 7.466271919095612
+          },
+          "nearest_development": "RZLHXVSQWOPUOD-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.6756756756756757,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "QOLLSSWROWSEGI-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671477",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 7.585026652029182,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.272087205817972,
+            "xgboost": 7.435092926025391,
+            "mlp": 8.262359730145398,
+            "gnn": 7.357783445996376,
+            "ensemble": 7.656513287329587
+          },
+          "nearest_development": "UNFSZGKSDKZSHK-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.6785714285714286,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "QYXDMOYCHRRSMH-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3676387",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 7.698970004336019,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.509502751334582,
+            "xgboost": 7.474521636962891,
+            "mlp": 8.432384716474665,
+            "gnn": 7.3371778995690144,
+            "ensemble": 7.805469701590712
+          },
+          "nearest_development": "FFMVKPOWYKTXJH-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.6790123456790124,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "RIFKDQITWFTYJS-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671484",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 8.221848749616356,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.276032351842977,
+            "xgboost": 7.186361312866211,
+            "mlp": 8.324067105223069,
+            "gnn": 7.337106064309042,
+            "ensemble": 7.595486923310752
+          },
+          "nearest_development": "FZPKPBLYVQTKPP-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.6923076923076923,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "SFSSJAHDZCXDRO-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671485",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 7.853871964321762,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.209258025356667,
+            "xgboost": 7.498762130737305,
+            "mlp": 7.148155535950606,
+            "gnn": 7.333669707612788,
+            "ensemble": 7.285391897348194
+          },
+          "nearest_development": "ZUDNAVLBOYSKME-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.6666666666666666,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "SPELKVATJBMWHZ-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671566",
+          "scaffold": "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)N1CCNCC1",
+          "observed_pic50": 7.886056647693163,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.567016530232599,
+            "xgboost": 7.691882133483887,
+            "mlp": 8.461885773341661,
+            "gnn": 7.336574760454785,
+            "ensemble": 7.90692814568605
+          },
+          "nearest_development": "BVCQMVAUBMWNAI-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.8205128205128205,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "UIKREWNIYFBAFO-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671475",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 8.522878745280337,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 6.962684861339566,
+            "xgboost": 6.846393585205078,
+            "mlp": 7.5039327768684325,
+            "gnn": 7.339348396353039,
+            "ensemble": 7.104337074471026
+          },
+          "nearest_development": "ZUDNAVLBOYSKME-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.7763157894736842,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "UIMWWLHPSZWOBD-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671476",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 7.327902142064282,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.15483809120854,
+            "xgboost": 6.964234352111816,
+            "mlp": 7.1319744783369226,
+            "gnn": 7.3427942266659905,
+            "ensemble": 7.083682307219092
+          },
+          "nearest_development": "CRPONWBREIIKIJ-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.6708860759493671,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "VZMZAYAKDHWCNK-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671479",
+          "scaffold": "c1ccc(Nc2ncnc3cc(OCC4CCNCC4)ccc23)cc1",
+          "observed_pic50": 8.522878745280337,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.086700052244893,
+            "xgboost": 7.017399311065674,
+            "mlp": 8.009166975627569,
+            "gnn": 7.339202666809976,
+            "ensemble": 7.371088779646045
+          },
+          "nearest_development": "ZUDNAVLBOYSKME-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.6962025316455697,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "XMXFPUFSKWPYBL-UHFFFAOYSA-N",
+          "compound_id": "CHEMBL3671565",
+          "scaffold": "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)N1CCNCC1",
+          "observed_pic50": 7.119186407719209,
+          "predicted_pic50": {
+            "development_median": 7.3979400086720375,
+            "random_forest": 7.368352607799124,
+            "xgboost": 7.482846736907959,
+            "mlp": 7.828639855101958,
+            "gnn": 7.33564886768238,
+            "ensemble": 7.559946399936347
+          },
+          "nearest_development": "BTYFROXGYQVTDB-UHFFFAOYSA-N",
+          "tanimoto_to_development": 0.7945205479452054,
+          "ensemble_in_interval": true
+        }
+      ],
+      "ensemble_interval": {
+        "nominal_coverage": 0.8,
+        "group_count": 5,
+        "rank": 5,
+        "ordered_scores": [
+          0.3517967817378027,
+          0.37904810969229796,
+          0.45269505903089335,
+          1.506872526688273,
+          1.6166761815671418
+        ],
+        "half_width": 1.6166761815671418,
+        "empirical_molecule_coverage": 0.9411764705882353,
+        "molecules_covered": 16,
+        "molecules_tested": 17,
+        "test_groups_all_covered": 4,
+        "test_groups": 5
+      }
+    }
+  }
+}

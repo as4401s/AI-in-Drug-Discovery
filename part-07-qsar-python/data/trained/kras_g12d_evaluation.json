@@ -1,0 +1,979 @@
+{
+  "cohort": {
+    "assay": "CHEMBL5136563",
+    "target": "CHEMBL2189121",
+    "protein": "P01116",
+    "variant": "G12D",
+    "document": "CHEMBL5131563",
+    "records": 23,
+    "context": "SOS-catalyzed nucleotide exchange in the recombinant human KRAS G12D TR-FRET assay.",
+    "curated_identities": 23,
+    "excluded_activity_rows": 0,
+    "activity_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL5136563&standard_type=IC50&standard_relation=%3D&standard_units=nM&limit=1000&order_by=activity_id",
+    "assay_url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5136563.json",
+    "document_url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL5131563.json",
+    "sha256": {
+      "activities.json": "e44e5a8bbdfe420dee023d1d59e7d7bf192a10b674df9684e723be4bfcb8bfb2",
+      "assay.json": "8325b1aca09b6a06a107a1d07268f1111bb7e17c2ae23f453a40a8fc44e01cf0",
+      "document.json": "fabd6d6e0fb33aecf56da440d94a2459b643f05c675f1053ec7f2685ae6ac76b",
+      "labels.json": "2b9e50f821be7a9b54dc97bedcbf500d4b870d40bdbbb9fa11417832fe6d8f5e",
+      "exclusions.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  },
+  "seed": 31,
+  "input_shape": [
+    23,
+    2222
+  ],
+  "scaffold_counts": {
+    "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(C(c2ccccc2)c2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCC(c3ccccc3)N2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 6,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)C(CC2CCCCC2)NC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2C3CCC(C3)N2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2C(c3ccccc3)CCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(CC2CCCCC2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)C(Cc2cscn2)NC(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCN1": 1,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C(Cc2ccccc2)NC(=O)C2C(c3ccccc3)CCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)C(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)C(Cc2ccccc2)NC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 2,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C(CC2CCC2)NC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C(CC2CCC2)NC(=O)C2C(c3ccccc3)CCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(CCc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+    "O=C1CNC(=O)C(CC2CCCCC2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1
+  },
+  "splits": {
+    "random": {
+      "scheme": "random",
+      "membership": {
+        "development": {
+          "compounds": 13,
+          "scaffolds": 11,
+          "scaffold_counts": {
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 3,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2C(c3ccccc3)CCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(CC2CCCCC2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)C(Cc2cscn2)NC(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C(Cc2ccccc2)NC(=O)C2C(c3ccccc3)CCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)C(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)C(Cc2ccccc2)NC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C(CC2CCC2)NC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(CC2CCCCC2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1
+          }
+        },
+        "calibration": {
+          "compounds": 5,
+          "scaffolds": 4,
+          "scaffold_counts": {
+            "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(C(c2ccccc2)c2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)C(CC2CCCCC2)NC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2C3CCC(C3)N2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 2
+          }
+        },
+        "test": {
+          "compounds": 5,
+          "scaffolds": 5,
+          "scaffold_counts": {
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCC(c3ccccc3)N2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C(CC2CCC2)NC(=O)C2C(c3ccccc3)CCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(CCc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1
+          }
+        }
+      },
+      "membership_identities": {
+        "development": [
+          "AWBPBCHANQNQSJ-AGQUMJSNSA-N",
+          "CXUBHHHIXIUVDV-XXUUABCDSA-N",
+          "DNYBKACMUGGKAI-AVUQFRJPSA-N",
+          "FPXHISISQQVTLC-BIUOMKJDSA-N",
+          "HTBVWNJQSHTDAC-VCYVZEEGSA-N",
+          "IQVUKEMUENPMIK-CCWBTXDNSA-N",
+          "IRPHBGJGYPUWOH-UPWGGSGZSA-N",
+          "KPRUVEINTVHQQG-XJPVBFIYSA-N",
+          "MPVMRHSEVHBAHF-MLNVAFRMSA-N",
+          "PDXGVQXKSRMYFX-OLZBSDMXSA-N",
+          "UHXJGPXJMFGPOC-DFFBEYLDSA-N",
+          "WBDYMWZBMXNESN-NFTWJGKGSA-N",
+          "ZUXBLXIVLFXAAK-AVUQFRJPSA-N"
+        ],
+        "calibration": [
+          "AAJFUPPGIOEABR-XWCQLPRDSA-N",
+          "AZHURFFPWLSDAK-SZHSNNHUSA-N",
+          "BXFQPEIROZRXJI-BGZAKGOYSA-N",
+          "KEKKEAGFUCCIRE-UKHJDZQCSA-N",
+          "NHEHKBQEVGFEPF-QISHOAFXSA-N"
+        ],
+        "test": [
+          "AKLOERICBKFCLT-IJNPNXFYSA-N",
+          "HBJXFPXAYGBVKY-RBUQYJTASA-N",
+          "URKCYIFGMNUIQJ-QLQUPYGOSA-N",
+          "YNNSKVJGGYSCCZ-JTZHVSCKSA-N",
+          "ZBHWZBZPVLEITA-DMQSKOQASA-N"
+        ]
+      },
+      "development_test_scaffold_overlap": [
+        "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1",
+        "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1"
+      ],
+      "cross_validation_folds": [
+        {
+          "fit_rows": 8,
+          "check_rows": 5,
+          "scaffold_overlap": 1
+        },
+        {
+          "fit_rows": 9,
+          "check_rows": 4,
+          "scaffold_overlap": 1
+        },
+        {
+          "fit_rows": 9,
+          "check_rows": 4,
+          "scaffold_overlap": 1
+        }
+      ],
+      "settings": {
+        "random_forest": {
+          "selected": {
+            "max_depth": 5,
+            "min_samples_leaf": 1
+          },
+          "candidates": [
+            {
+              "settings": {
+                "max_depth": 5,
+                "min_samples_leaf": 1
+              },
+              "fold_mae": [
+                1.1523095198755013,
+                0.7794486162223964,
+                1.0844528589033535
+              ],
+              "mean_fold_mae": 1.005403665000417
+            },
+            {
+              "settings": {
+                "max_depth": 5,
+                "min_samples_leaf": 3
+              },
+              "fold_mae": [
+                1.3103506596359487,
+                0.7268702618162828,
+                1.234594345576251
+              ],
+              "mean_fold_mae": 1.090605089009494
+            },
+            {
+              "settings": {
+                "max_depth": null,
+                "min_samples_leaf": 1
+              },
+              "fold_mae": [
+                1.1523095198755013,
+                0.7794486162223964,
+                1.0844528589033535
+              ],
+              "mean_fold_mae": 1.005403665000417
+            },
+            {
+              "settings": {
+                "max_depth": null,
+                "min_samples_leaf": 3
+              },
+              "fold_mae": [
+                1.3103506596359487,
+                0.7268702618162828,
+                1.234594345576251
+              ],
+              "mean_fold_mae": 1.090605089009494
+            }
+          ]
+        },
+        "xgboost": {
+          "selected": {
+            "learning_rate": 0.05,
+            "max_depth": 2
+          },
+          "candidates": [
+            {
+              "settings": {
+                "learning_rate": 0.05,
+                "max_depth": 2
+              },
+              "fold_mae": [
+                1.1470409530006456,
+                1.1235627930763419,
+                0.8221814103591325
+              ],
+              "mean_fold_mae": 1.0309283854787066
+            },
+            {
+              "settings": {
+                "learning_rate": 0.05,
+                "max_depth": 4
+              },
+              "fold_mae": [
+                1.1539215224586534,
+                1.181369404137438,
+                0.8787054486739518
+              ],
+              "mean_fold_mae": 1.0713321250900145
+            },
+            {
+              "settings": {
+                "learning_rate": 0.12,
+                "max_depth": 2
+              },
+              "fold_mae": [
+                1.1268717902504015,
+                1.3112127583625968,
+                0.8010333247649553
+              ],
+              "mean_fold_mae": 1.0797059577926513
+            },
+            {
+              "settings": {
+                "learning_rate": 0.12,
+                "max_depth": 4
+              },
+              "fold_mae": [
+                1.1353553908668566,
+                1.2540902894142325,
+                0.9028986163604142
+              ],
+              "mean_fold_mae": 1.097448098880501
+            }
+          ]
+        },
+        "mlp": {
+          "selected": {
+            "alpha": 0.01,
+            "hidden_layer_sizes": [
+              24,
+              8
+            ]
+          },
+          "candidates": [
+            {
+              "settings": {
+                "alpha": 0.01,
+                "hidden_layer_sizes": [
+                  16
+                ]
+              },
+              "fold_mae": [
+                1.3105272856278511,
+                0.6774663550884032,
+                0.9794627712433879
+              ],
+              "mean_fold_mae": 0.9891521373198807
+            },
+            {
+              "settings": {
+                "alpha": 0.01,
+                "hidden_layer_sizes": [
+                  24,
+                  8
+                ]
+              },
+              "fold_mae": [
+                1.2818153497085678,
+                0.7002924997386248,
+                0.8333568587562168
+              ],
+              "mean_fold_mae": 0.9384882360678031
+            },
+            {
+              "settings": {
+                "alpha": 0.15,
+                "hidden_layer_sizes": [
+                  16
+                ]
+              },
+              "fold_mae": [
+                1.279772180539599,
+                0.6662201060919373,
+                0.9750233342526373
+              ],
+              "mean_fold_mae": 0.9736718736280578
+            },
+            {
+              "settings": {
+                "alpha": 0.15,
+                "hidden_layer_sizes": [
+                  24,
+                  8
+                ]
+              },
+              "fold_mae": [
+                1.2652156904768799,
+                0.6752844265082303,
+                0.9983706081839059
+              ],
+              "mean_fold_mae": 0.9796235750563387
+            }
+          ]
+        },
+        "gnn": {
+          "selected": {
+            "steps": 360,
+            "width": 24
+          },
+          "candidates": [
+            {
+              "settings": {
+                "steps": 180,
+                "width": 12
+              },
+              "fold_mae": [
+                1.5343467952043341,
+                0.7412763225707495,
+                1.2881045558232718
+              ],
+              "mean_fold_mae": 1.187909224532785
+            },
+            {
+              "settings": {
+                "steps": 180,
+                "width": 24
+              },
+              "fold_mae": [
+                1.5274901349932848,
+                0.7348195086568463,
+                1.285269119578867
+              ],
+              "mean_fold_mae": 1.182526254409666
+            },
+            {
+              "settings": {
+                "steps": 360,
+                "width": 12
+              },
+              "fold_mae": [
+                1.5288110719493688,
+                0.7333945998444742,
+                1.2845689939304406
+              ],
+              "mean_fold_mae": 1.1822582219080946
+            },
+            {
+              "settings": {
+                "steps": 360,
+                "width": 24
+              },
+              "fold_mae": [
+                1.516216906609475,
+                0.7410887553792542,
+                1.2782045991039537
+              ],
+              "mean_fold_mae": 1.1785034203642277
+            }
+          ]
+        }
+      },
+      "test_metrics": {
+        "development_median": {
+          "mae": 0.7554381505511664,
+          "rmse": 0.9113115782402929,
+          "r2": -0.1481427512197102,
+          "spearman": null
+        },
+        "random_forest": {
+          "mae": 0.73596978701523,
+          "rmse": 0.7919372507124414,
+          "r2": 0.13295097284078194,
+          "spearman": 0.41039134083406165
+        },
+        "xgboost": {
+          "mae": 0.9638949318623368,
+          "rmse": 1.0588245427927143,
+          "r2": -0.5499229569500679,
+          "spearman": 0.41039134083406165
+        },
+        "mlp": {
+          "mae": 0.8985710965442877,
+          "rmse": 0.9792140564826858,
+          "r2": -0.3256149409364888,
+          "spearman": 0.15389675281277312
+        },
+        "gnn": {
+          "mae": 0.701258607022752,
+          "rmse": 0.8434800084097271,
+          "r2": 0.016415447093118707,
+          "spearman": 0.15389675281277312
+        },
+        "ensemble": {
+          "mae": 0.7933682368508537,
+          "rmse": 0.8833061795371195,
+          "r2": -0.07866018773188044,
+          "spearman": 0.41039134083406165
+        }
+      },
+      "test_predictions": [
+        {
+          "identity": "AKLOERICBKFCLT-IJNPNXFYSA-N",
+          "compound_id": "CHEMBL5193444",
+          "scaffold": "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCC(c3ccccc3)N2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1",
+          "observed_pic50": 7.026872146400302,
+          "predicted_pic50": {
+            "development_median": 7.619788758288394,
+            "random_forest": 8.072446405386641,
+            "xgboost": 8.051592826843262,
+            "mlp": 8.344587036493808,
+            "gnn": 7.458758483243701,
+            "ensemble": 8.156208756241236
+          },
+          "nearest_development": "CXUBHHHIXIUVDV-XXUUABCDSA-N",
+          "tanimoto_to_development": 0.8805970149253731,
+          "ensemble_in_interval": false
+        },
+        {
+          "identity": "HBJXFPXAYGBVKY-RBUQYJTASA-N",
+          "compound_id": "CHEMBL5169881",
+          "scaffold": "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1",
+          "observed_pic50": 8.154901959985743,
+          "predicted_pic50": {
+            "development_median": 7.619788758288394,
+            "random_forest": 7.346002334971634,
+            "xgboost": 6.549490451812744,
+            "mlp": 7.826569727559638,
+            "gnn": 7.424055017547576,
+            "ensemble": 7.240687504781339
+          },
+          "nearest_development": "CXUBHHHIXIUVDV-XXUUABCDSA-N",
+          "tanimoto_to_development": 0.9212598425196851,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "URKCYIFGMNUIQJ-QLQUPYGOSA-N",
+          "compound_id": "CHEMBL5171215",
+          "scaffold": "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C(CC2CCC2)NC(=O)C2C(c3ccccc3)CCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1",
+          "observed_pic50": 8.154901959985743,
+          "predicted_pic50": {
+            "development_median": 7.619788758288394,
+            "random_forest": 8.346940465139687,
+            "xgboost": 8.67627239227295,
+            "mlp": 7.609074197812509,
+            "gnn": 7.457378149207786,
+            "ensemble": 8.210762351741716
+          },
+          "nearest_development": "IRPHBGJGYPUWOH-UPWGGSGZSA-N",
+          "tanimoto_to_development": 0.9457364341085271,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "YNNSKVJGGYSCCZ-JTZHVSCKSA-N",
+          "compound_id": "CHEMBL5189659",
+          "scaffold": "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1",
+          "observed_pic50": 7.267606240177031,
+          "predicted_pic50": {
+            "development_median": 7.619788758288394,
+            "random_forest": 6.357380532066581,
+            "xgboost": 6.036596298217773,
+            "mlp": 6.166827375618397,
+            "gnn": 7.385155244958708,
+            "ensemble": 6.186934735300917
+          },
+          "nearest_development": "DNYBKACMUGGKAI-AVUQFRJPSA-N",
+          "tanimoto_to_development": 0.9327731092436975,
+          "ensemble_in_interval": false
+        },
+        {
+          "identity": "ZBHWZBZPVLEITA-DMQSKOQASA-N",
+          "compound_id": "CHEMBL5176360",
+          "scaffold": "O=C1CNC(=O)C(CCc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1",
+          "observed_pic50": 5.857923538926715,
+          "predicted_pic50": {
+            "development_median": 7.619788758288394,
+            "random_forest": 6.581034376738023,
+            "xgboost": 6.294885635375977,
+            "mlp": 7.058125272396675,
+            "gnn": 7.3864104791992755,
+            "ensemble": 6.644681761503558
+          },
+          "nearest_development": "AWBPBCHANQNQSJ-AGQUMJSNSA-N",
+          "tanimoto_to_development": 0.8682170542635659,
+          "ensemble_in_interval": true
+        }
+      ],
+      "ensemble_interval": {
+        "nominal_coverage": 0.8,
+        "group_count": 5,
+        "rank": 5,
+        "ordered_scores": [
+          0.11672161222120359,
+          0.2143065794927077,
+          0.7734587033898093,
+          0.8879357327880824,
+          0.9972928851407943
+        ],
+        "half_width": 0.9972928851407943,
+        "empirical_molecule_coverage": 0.6,
+        "molecules_covered": 3,
+        "molecules_tested": 5,
+        "test_groups_all_covered": 3,
+        "test_groups": 5
+      }
+    },
+    "scaffold": {
+      "scheme": "scaffold",
+      "membership": {
+        "development": {
+          "compounds": 15,
+          "scaffolds": 10,
+          "scaffold_counts": {
+            "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(C(c2ccccc2)c2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 6,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)C(CC2CCCCC2)NC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)C(Cc2cscn2)NC(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C(Cc2ccccc2)NC(=O)C2C(c3ccccc3)CCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)C(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)C(Cc2ccccc2)NC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C(CC2CCC2)NC(=O)C2C(c3ccccc3)CCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(CCc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(CC2CCCCC2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1
+          }
+        },
+        "calibration": {
+          "compounds": 4,
+          "scaffolds": 4,
+          "scaffold_counts": {
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCC(c3ccccc3)N2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2C3CCC(C3)N2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)CNC(=O)C2C(c3ccccc3)CCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C(CC2CCC2)NC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1
+          }
+        },
+        "test": {
+          "compounds": 4,
+          "scaffolds": 3,
+          "scaffold_counts": {
+            "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(CC2CCCCC2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 1,
+            "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1": 2
+          }
+        }
+      },
+      "membership_identities": {
+        "development": [
+          "AAJFUPPGIOEABR-XWCQLPRDSA-N",
+          "AWBPBCHANQNQSJ-AGQUMJSNSA-N",
+          "AZHURFFPWLSDAK-SZHSNNHUSA-N",
+          "HBJXFPXAYGBVKY-RBUQYJTASA-N",
+          "HTBVWNJQSHTDAC-VCYVZEEGSA-N",
+          "IQVUKEMUENPMIK-CCWBTXDNSA-N",
+          "IRPHBGJGYPUWOH-UPWGGSGZSA-N",
+          "KEKKEAGFUCCIRE-UKHJDZQCSA-N",
+          "KPRUVEINTVHQQG-XJPVBFIYSA-N",
+          "MPVMRHSEVHBAHF-MLNVAFRMSA-N",
+          "NHEHKBQEVGFEPF-QISHOAFXSA-N",
+          "URKCYIFGMNUIQJ-QLQUPYGOSA-N",
+          "WBDYMWZBMXNESN-NFTWJGKGSA-N",
+          "ZBHWZBZPVLEITA-DMQSKOQASA-N",
+          "ZUXBLXIVLFXAAK-AVUQFRJPSA-N"
+        ],
+        "calibration": [
+          "AKLOERICBKFCLT-IJNPNXFYSA-N",
+          "BXFQPEIROZRXJI-BGZAKGOYSA-N",
+          "CXUBHHHIXIUVDV-XXUUABCDSA-N",
+          "UHXJGPXJMFGPOC-DFFBEYLDSA-N"
+        ],
+        "test": [
+          "DNYBKACMUGGKAI-AVUQFRJPSA-N",
+          "FPXHISISQQVTLC-BIUOMKJDSA-N",
+          "PDXGVQXKSRMYFX-OLZBSDMXSA-N",
+          "YNNSKVJGGYSCCZ-JTZHVSCKSA-N"
+        ]
+      },
+      "development_test_scaffold_overlap": [],
+      "cross_validation_folds": [
+        {
+          "fit_rows": 9,
+          "check_rows": 6,
+          "scaffold_overlap": 0
+        },
+        {
+          "fit_rows": 10,
+          "check_rows": 5,
+          "scaffold_overlap": 0
+        },
+        {
+          "fit_rows": 11,
+          "check_rows": 4,
+          "scaffold_overlap": 0
+        }
+      ],
+      "settings": {
+        "random_forest": {
+          "selected": {
+            "max_depth": 5,
+            "min_samples_leaf": 3
+          },
+          "candidates": [
+            {
+              "settings": {
+                "max_depth": 5,
+                "min_samples_leaf": 1
+              },
+              "fold_mae": [
+                0.7827967637077085,
+                0.602737070449425,
+                0.5723723868437924
+              ],
+              "mean_fold_mae": 0.6526354070003086
+            },
+            {
+              "settings": {
+                "max_depth": 5,
+                "min_samples_leaf": 3
+              },
+              "fold_mae": [
+                0.7599144010532468,
+                0.6113719327143692,
+                0.5528530292455582
+              ],
+              "mean_fold_mae": 0.6413797876710581
+            },
+            {
+              "settings": {
+                "max_depth": null,
+                "min_samples_leaf": 1
+              },
+              "fold_mae": [
+                0.78271542430844,
+                0.6027272211344472,
+                0.5740098414912771
+              ],
+              "mean_fold_mae": 0.6531508289780548
+            },
+            {
+              "settings": {
+                "max_depth": null,
+                "min_samples_leaf": 3
+              },
+              "fold_mae": [
+                0.7599144010532468,
+                0.6113719327143692,
+                0.5528530292455582
+              ],
+              "mean_fold_mae": 0.6413797876710581
+            }
+          ]
+        },
+        "xgboost": {
+          "selected": {
+            "learning_rate": 0.05,
+            "max_depth": 2
+          },
+          "candidates": [
+            {
+              "settings": {
+                "learning_rate": 0.05,
+                "max_depth": 2
+              },
+              "fold_mae": [
+                0.872563105858005,
+                0.5495286266881452,
+                0.5067574678618436
+              ],
+              "mean_fold_mae": 0.6429497334693313
+            },
+            {
+              "settings": {
+                "learning_rate": 0.05,
+                "max_depth": 4
+              },
+              "fold_mae": [
+                1.1238837063676486,
+                0.5976821224767195,
+                0.5485367475707059
+              ],
+              "mean_fold_mae": 0.7567008588050247
+            },
+            {
+              "settings": {
+                "learning_rate": 0.12,
+                "max_depth": 2
+              },
+              "fold_mae": [
+                0.9687055568264294,
+                0.5635294239598737,
+                0.5231622158247953
+              ],
+              "mean_fold_mae": 0.685132398870366
+            },
+            {
+              "settings": {
+                "learning_rate": 0.12,
+                "max_depth": 4
+              },
+              "fold_mae": [
+                1.205684802965956,
+                0.6034658711034284,
+                0.5182755886275296
+              ],
+              "mean_fold_mae": 0.7758087542323047
+            }
+          ]
+        },
+        "mlp": {
+          "selected": {
+            "alpha": 0.01,
+            "hidden_layer_sizes": [
+              24,
+              8
+            ]
+          },
+          "candidates": [
+            {
+              "settings": {
+                "alpha": 0.01,
+                "hidden_layer_sizes": [
+                  16
+                ]
+              },
+              "fold_mae": [
+                0.9135237129547972,
+                0.9508703162156751,
+                0.7517682553961089
+              ],
+              "mean_fold_mae": 0.872054094855527
+            },
+            {
+              "settings": {
+                "alpha": 0.01,
+                "hidden_layer_sizes": [
+                  24,
+                  8
+                ]
+              },
+              "fold_mae": [
+                0.912837301359302,
+                0.9412711887446896,
+                0.6475885162186199
+              ],
+              "mean_fold_mae": 0.8338990021075373
+            },
+            {
+              "settings": {
+                "alpha": 0.15,
+                "hidden_layer_sizes": [
+                  16
+                ]
+              },
+              "fold_mae": [
+                0.8785652016511484,
+                0.9075286797499148,
+                0.7354492689615
+              ],
+              "mean_fold_mae": 0.8405143834541877
+            },
+            {
+              "settings": {
+                "alpha": 0.15,
+                "hidden_layer_sizes": [
+                  24,
+                  8
+                ]
+              },
+              "fold_mae": [
+                0.9035257726444549,
+                1.0033453032387367,
+                0.7356289817232089
+              ],
+              "mean_fold_mae": 0.8808333525354669
+            }
+          ]
+        },
+        "gnn": {
+          "selected": {
+            "steps": 360,
+            "width": 24
+          },
+          "candidates": [
+            {
+              "settings": {
+                "steps": 180,
+                "width": 12
+              },
+              "fold_mae": [
+                0.89782479729186,
+                0.8247949866349746,
+                0.8223979365752285
+              ],
+              "mean_fold_mae": 0.8483392401673543
+            },
+            {
+              "settings": {
+                "steps": 180,
+                "width": 24
+              },
+              "fold_mae": [
+                0.8980571509020061,
+                0.8226207591264062,
+                0.8206907009438809
+              ],
+              "mean_fold_mae": 0.8471228703240978
+            },
+            {
+              "settings": {
+                "steps": 360,
+                "width": 12
+              },
+              "fold_mae": [
+                0.8979981393797551,
+                0.8223493540909967,
+                0.8213708661594277
+              ],
+              "mean_fold_mae": 0.8472394532100598
+            },
+            {
+              "settings": {
+                "steps": 360,
+                "width": 24
+              },
+              "fold_mae": [
+                0.8991829393892264,
+                0.8173670888305246,
+                0.8185652180051437
+              ],
+              "mean_fold_mae": 0.8450384154082983
+            }
+          ]
+        }
+      },
+      "test_metrics": {
+        "development_median": {
+          "mae": 1.0373551681495,
+          "rmse": 1.1897930899329852,
+          "r2": -0.057790032111181056,
+          "spearman": null
+        },
+        "random_forest": {
+          "mae": 0.9967751412611725,
+          "rmse": 1.2348032485363087,
+          "r2": -0.13933676646742943,
+          "spearman": 0.7999999999999999
+        },
+        "xgboost": {
+          "mae": 1.4707876103716808,
+          "rmse": 1.6892162782553017,
+          "r2": -1.1321958874991735,
+          "spearman": -0.39999999999999997
+        },
+        "mlp": {
+          "mae": 0.995755817753021,
+          "rmse": 1.1409379562406206,
+          "r2": 0.02729613352318394,
+          "spearman": 0.19999999999999998
+        },
+        "gnn": {
+          "mae": 0.9208868264567698,
+          "rmse": 1.1460052218003849,
+          "r2": 0.018636776922649423,
+          "spearman": 0.7999999999999999
+        },
+        "ensemble": {
+          "mae": 1.1544395231286244,
+          "rmse": 1.3432837361334256,
+          "r2": -0.3483172744689118,
+          "spearman": 0.19999999999999998
+        }
+      },
+      "test_predictions": [
+        {
+          "identity": "DNYBKACMUGGKAI-AVUQFRJPSA-N",
+          "compound_id": "CHEMBL5204425",
+          "scaffold": "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(CC2CCCCC2)NC(=O)CN1",
+          "observed_pic50": 5.831502516476967,
+          "predicted_pic50": {
+            "development_median": 7.481486060122112,
+            "random_forest": 6.364383934679176,
+            "xgboost": 6.68980073928833,
+            "mlp": 6.792221723230534,
+            "gnn": 7.105451787832884,
+            "ensemble": 6.615468799066012
+          },
+          "nearest_development": "ZUXBLXIVLFXAAK-AVUQFRJPSA-N",
+          "tanimoto_to_development": 1.0,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "FPXHISISQQVTLC-BIUOMKJDSA-N",
+          "compound_id": "CHEMBL5205422",
+          "scaffold": "O=C1CNC(=O)C(Cc2ccc(-c3ccccc3)cc2)NC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1",
+          "observed_pic50": 9.0,
+          "predicted_pic50": {
+            "development_median": 7.481486060122112,
+            "random_forest": 6.783807779341491,
+            "xgboost": 6.148472309112549,
+            "mlp": 7.27455912936142,
+            "gnn": 7.144977626243067,
+            "ensemble": 6.735613072605154
+          },
+          "nearest_development": "IRPHBGJGYPUWOH-UPWGGSGZSA-N",
+          "tanimoto_to_development": 0.8455882352941176,
+          "ensemble_in_interval": false
+        },
+        {
+          "identity": "PDXGVQXKSRMYFX-OLZBSDMXSA-N",
+          "compound_id": "CHEMBL5192424",
+          "scaffold": "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1",
+          "observed_pic50": 6.714442690992226,
+          "predicted_pic50": {
+            "development_median": 7.481486060122112,
+            "random_forest": 6.3572787559048995,
+            "xgboost": 5.931302070617676,
+            "mlp": 6.5486615972296605,
+            "gnn": 7.124922185352028,
+            "ensemble": 6.2790808079174125
+          },
+          "nearest_development": "HBJXFPXAYGBVKY-RBUQYJTASA-N",
+          "tanimoto_to_development": 0.8809523809523809,
+          "ensemble_in_interval": true
+        },
+        {
+          "identity": "YNNSKVJGGYSCCZ-JTZHVSCKSA-N",
+          "compound_id": "CHEMBL5189659",
+          "scaffold": "O=C1CNC(=O)C(Cc2ccccc2)NC(=O)CNC(=O)C2CCCN2C(=O)CCSSCCNC(=O)CNC(=O)C2CCCN2C(=O)CNC(=O)C(Cc2ccccc2)NC(=O)CN1",
+          "observed_pic50": 7.267606240177031,
+          "predicted_pic50": {
+            "development_median": 7.481486060122112,
+            "random_forest": 6.386743249080385,
+            "xgboost": 5.877422332763672,
+            "mlp": 6.136524140319659,
+            "gnn": 7.123510073822603,
+            "ensemble": 6.133563240721238
+          },
+          "nearest_development": "HBJXFPXAYGBVKY-RBUQYJTASA-N",
+          "tanimoto_to_development": 0.9487179487179487,
+          "ensemble_in_interval": true
+        }
+      ],
+      "ensemble_interval": {
+        "nominal_coverage": 0.8,
+        "group_count": 4,
+        "rank": 4,
+        "ordered_scores": [
+          0.8604676626605352,
+          0.9174865488188377,
+          1.120931244973474,
+          1.1876748145250895
+        ],
+        "half_width": 1.1876748145250895,
+        "empirical_molecule_coverage": 0.75,
+        "molecules_covered": 3,
+        "molecules_tested": 4,
+        "test_groups_all_covered": 2,
+        "test_groups": 3
+      }
+    }
+  }
+}

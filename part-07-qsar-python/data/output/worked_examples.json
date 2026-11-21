@@ -1,0 +1,101 @@
+{
+  "potency": [
+    7.0,
+    8.0
+  ],
+  "tree": {
+    "observed_by_leaf": [
+      [
+        6.0,
+        7.0
+      ],
+      [
+        8.0,
+        9.0
+      ]
+    ],
+    "leaf_predictions": [
+      6.5,
+      8.5
+    ]
+  },
+  "forest": {
+    "tree_predictions": [
+      6.0,
+      7.0,
+      8.0
+    ],
+    "prediction": 7.0
+  },
+  "boosting": {
+    "initial_predictions": [
+      7.0,
+      7.0
+    ],
+    "initial_residuals": [
+      -1.0,
+      1.0
+    ],
+    "predictions": [
+      6.5,
+      7.5
+    ],
+    "mse_before": 1.0,
+    "mse_after": 0.25
+  },
+  "mlp": {
+    "prediction": 1.0,
+    "gradient": -2.0,
+    "next_weight": 1.2,
+    "next_loss": 0.64
+  },
+  "graph": {
+    "atoms": [
+      1.0,
+      1.0,
+      2.0
+    ],
+    "neighbor_means": [
+      1.0,
+      1.5,
+      1.0
+    ],
+    "hidden": [
+      1.5,
+      2.0,
+      2.0
+    ],
+    "pooled": 1.8333333333333333,
+    "prediction": 6.199999999999999
+  },
+  "evaluation": {
+    "observed": [
+      6,
+      7,
+      8
+    ],
+    "predicted": [
+      6,
+      8,
+      7
+    ],
+    "mae": 0.6666666666666666,
+    "rmse": 0.816496580927726,
+    "r2": 0.0,
+    "spearman": 0.5
+  },
+  "calibration": {
+    "ordered_scaffold_errors": [
+      0.15,
+      0.25,
+      0.4,
+      0.8
+    ],
+    "ordered_rank": 4,
+    "half_width": 0.8,
+    "interval": [
+      6.2,
+      7.8
+    ]
+  }
+}

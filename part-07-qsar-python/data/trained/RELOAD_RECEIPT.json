@@ -1,0 +1,37 @@
+{
+  "model_sha256": "0fb37847a2303f9af14683b36b5098344b8bb8ab8840bc00b113b361e2db90d1",
+  "probe_count": 3,
+  "max_absolute_prediction_difference": 0.0,
+  "outputs": [
+    {
+      "compound_id": "CHEMBL3671564",
+      "identity": "AHAJHWAHRBXVFH-UHFFFAOYSA-N",
+      "predicted_pic50": 7.654541659502994,
+      "interval_lower_pic50": 6.037865477935852,
+      "interval_upper_pic50": 9.271217841070136,
+      "nearest_training_identity": "YOHNLHXVSFTRLR-UHFFFAOYSA-N",
+      "nearest_training_tanimoto": 0.7777777777777778,
+      "passes_applicability": true
+    },
+    {
+      "compound_id": "CHEMBL3671481",
+      "identity": "CANUXFBJESAWLP-UHFFFAOYSA-N",
+      "predicted_pic50": 6.539467911860995,
+      "interval_lower_pic50": 4.922791730293853,
+      "interval_upper_pic50": 8.156144093428136,
+      "nearest_training_identity": "YHAXBZNUIZZLFJ-UHFFFAOYSA-N",
+      "nearest_training_tanimoto": 0.6710526315789473,
+      "passes_applicability": true
+    },
+    {
+      "compound_id": "CHEMBL3671478",
+      "identity": "JRVWLHJZBRHYIL-UHFFFAOYSA-N",
+      "predicted_pic50": 8.042704385633384,
+      "interval_lower_pic50": 6.426028204066242,
+      "interval_upper_pic50": 9.659380567200525,
+      "nearest_training_identity": "RZLHXVSQWOPUOD-UHFFFAOYSA-N",
+      "nearest_training_tanimoto": 0.6986301369863014,
+      "passes_applicability": true
+    }
+  ]
+}

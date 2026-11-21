@@ -1,0 +1,50 @@
+{
+  "release": "ChEMBL_37",
+  "frozen_at_utc": "2026-11-20T22:36:19.703077+00:00",
+  "license": "EMBL-EBI ChEMBL, CC BY-SA 3.0",
+  "target_cohorts": {
+    "egfr": {
+      "assay": "CHEMBL3705421",
+      "target": "CHEMBL203",
+      "protein": "P00533",
+      "variant": null,
+      "document": "CHEMBL3638799",
+      "records": 173,
+      "context": "Human EGFR kinase activity in the Tyrosine Kinase Assay Kit Green assay; no variant annotation in the source.",
+      "curated_identities": 170,
+      "excluded_activity_rows": 0,
+      "activity_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL3705421&standard_type=IC50&standard_relation=%3D&standard_units=nM&limit=1000&order_by=activity_id",
+      "assay_url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL3705421.json",
+      "document_url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL3638799.json",
+      "sha256": {
+        "activities.json": "9b657017bfd2631fd4461df83c9b5534f258bed65641909c69ed90a4198de618",
+        "assay.json": "1dc8d0149607510895dab828d88d69992cc5e27418aabc29efd6cdefdac5f564",
+        "document.json": "4d1c9ed18dba04e43671aee8b2f3fc55bad91aef9815acf3b79cccd320d38313",
+        "labels.json": "2a416598eb91c6a94e05e19cfc04a443e0e57bc0fde616848a71e22cfbf412ab",
+        "exclusions.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    },
+    "kras_g12d": {
+      "assay": "CHEMBL5136563",
+      "target": "CHEMBL2189121",
+      "protein": "P01116",
+      "variant": "G12D",
+      "document": "CHEMBL5131563",
+      "records": 23,
+      "context": "SOS-catalyzed nucleotide exchange in the recombinant human KRAS G12D TR-FRET assay.",
+      "curated_identities": 23,
+      "excluded_activity_rows": 0,
+      "activity_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?assay_chembl_id=CHEMBL5136563&standard_type=IC50&standard_relation=%3D&standard_units=nM&limit=1000&order_by=activity_id",
+      "assay_url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5136563.json",
+      "document_url": "https://www.ebi.ac.uk/chembl/api/data/document/CHEMBL5131563.json",
+      "sha256": {
+        "activities.json": "e44e5a8bbdfe420dee023d1d59e7d7bf192a10b674df9684e723be4bfcb8bfb2",
+        "assay.json": "8325b1aca09b6a06a107a1d07268f1111bb7e17c2ae23f453a40a8fc44e01cf0",
+        "document.json": "fabd6d6e0fb33aecf56da440d94a2459b643f05c675f1053ec7f2685ae6ac76b",
+        "labels.json": "2b9e50f821be7a9b54dc97bedcbf500d4b870d40bdbbb9fa11417832fe6d8f5e",
+        "exclusions.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    }
+  },
+  "status_sha256": "29dc1fb09487a8d2962253a4d0d92c4ded0aa0d831effab42445d0c3483d4740"
+}

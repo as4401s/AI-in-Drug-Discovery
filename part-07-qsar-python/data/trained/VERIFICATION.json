@@ -1,0 +1,70 @@
+{
+  "egfr": {
+    "rows": 170,
+    "scaffolds": 23,
+    "separate_partitions": true,
+    "scaffold_cross_validation_isolation": true
+  },
+  "kras_g12d": {
+    "rows": 23,
+    "scaffolds": 17,
+    "separate_partitions": true,
+    "scaffold_cross_validation_isolation": true
+  },
+  "reload": {
+    "model_sha256": "0fb37847a2303f9af14683b36b5098344b8bb8ab8840bc00b113b361e2db90d1",
+    "probe_count": 3,
+    "max_absolute_prediction_difference": 0.0,
+    "outputs": [
+      {
+        "compound_id": "CHEMBL3671564",
+        "identity": "AHAJHWAHRBXVFH-UHFFFAOYSA-N",
+        "predicted_pic50": 7.654541659502994,
+        "interval_lower_pic50": 6.037865477935852,
+        "interval_upper_pic50": 9.271217841070136,
+        "nearest_training_identity": "YOHNLHXVSFTRLR-UHFFFAOYSA-N",
+        "nearest_training_tanimoto": 0.7777777777777778,
+        "passes_applicability": true
+      },
+      {
+        "compound_id": "CHEMBL3671481",
+        "identity": "CANUXFBJESAWLP-UHFFFAOYSA-N",
+        "predicted_pic50": 6.539467911860995,
+        "interval_lower_pic50": 4.922791730293853,
+        "interval_upper_pic50": 8.156144093428136,
+        "nearest_training_identity": "YHAXBZNUIZZLFJ-UHFFFAOYSA-N",
+        "nearest_training_tanimoto": 0.6710526315789473,
+        "passes_applicability": true
+      },
+      {
+        "compound_id": "CHEMBL3671478",
+        "identity": "JRVWLHJZBRHYIL-UHFFFAOYSA-N",
+        "predicted_pic50": 8.042704385633384,
+        "interval_lower_pic50": 6.426028204066242,
+        "interval_upper_pic50": 9.659380567200525,
+        "nearest_training_identity": "RZLHXVSQWOPUOD-UHFFFAOYSA-N",
+        "nearest_training_tanimoto": 0.6986301369863014,
+        "passes_applicability": true
+      }
+    ]
+  },
+  "saved_training_identity_count": 142,
+  "training_replay": {
+    "byte_identical": {
+      "egfr_evaluation.json": true,
+      "kras_g12d_evaluation.json": true,
+      "egfr_qsar_model.joblib": true,
+      "MODEL_MANIFEST.json": true,
+      "reload_probes.json": true
+    },
+    "mlp_max_iteration_warnings": 25,
+    "run_output": [
+      "egfr, 170 rows, 23 exact scaffolds",
+      "egfr random: test MAE 0.5471",
+      "egfr scaffold: test MAE 0.6404",
+      "kras_g12d, 23 rows, 17 exact scaffolds",
+      "kras_g12d random: test MAE 0.7934",
+      "kras_g12d scaffold: test MAE 1.1544"
+    ]
+  }
+}

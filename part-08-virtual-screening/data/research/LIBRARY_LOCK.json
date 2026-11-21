@@ -1,0 +1,925 @@
+{
+  "release": "ChEMBL_37",
+  "data_attribution": "EMBL-EBI ChEMBL database, CC BY-SA 3.0.",
+  "rdkit_version": "2025.09.6",
+  "library_file": "data/source/LIBRARY.json",
+  "library_sha256": "777def6ea53a837a9ae944884cbf639feb533b2866c251724ebac5cdbc5a45f9",
+  "catalogue_plan_sha256": "9c1a9a205f47478180e2aefb73d9f65c9b2e0d972ca35e7103a33fab2fe8b187",
+  "catalogue_requests_sha256": "8894758626a8c3413122afd94bd8802ce7eef4874adb6b45522bf3f47d8a569a",
+  "target_activity_requests_sha256": "c163e62ba35259a27d1550453bfb208c20aba2e86b678deeb92060c1c25a6c50",
+  "target_activity": {
+    "activity_rows": 58847,
+    "activity_pages": 59,
+    "unique_activity_molecule_ids": 19118,
+    "unique_activity_parent_ids": 19005,
+    "unique_activity_standard_inchikeys": 19000,
+    "unparseable_activity_smiles_components": []
+  },
+  "catalogue_pages": {
+    "CHEMBL3639703": {
+      "returned": 211,
+      "total_hits": 211
+    },
+    "CHEMBL3671577": {
+      "returned": 205,
+      "total_hits": 205
+    },
+    "CHEMBL3671579": {
+      "returned": 225,
+      "total_hits": 225
+    },
+    "CHEMBL3671576": {
+      "returned": 228,
+      "total_hits": 228
+    },
+    "CHEMBL3671570": {
+      "returned": 224,
+      "total_hits": 224
+    },
+    "CHEMBL3671571": {
+      "returned": 232,
+      "total_hits": 232
+    },
+    "CHEMBL3671572": {
+      "returned": 236,
+      "total_hits": 236
+    },
+    "CHEMBL3671494": {
+      "returned": 223,
+      "total_hits": 223
+    },
+    "CHEMBL3671569": {
+      "returned": 197,
+      "total_hits": 197
+    },
+    "CHEMBL3671559": {
+      "returned": 218,
+      "total_hits": 218
+    },
+    "CHEMBL3671558": {
+      "returned": 305,
+      "total_hits": 305
+    },
+    "CHEMBL3671560": {
+      "returned": 197,
+      "total_hits": 197
+    },
+    "CHEMBL3676350": {
+      "returned": 227,
+      "total_hits": 227
+    },
+    "CHEMBL3676375": {
+      "returned": 173,
+      "total_hits": 173
+    },
+    "CHEMBL3676352": {
+      "returned": 216,
+      "total_hits": 216
+    },
+    "CHEMBL3671548": {
+      "returned": 185,
+      "total_hits": 185
+    },
+    "CHEMBL3676356": {
+      "returned": 294,
+      "total_hits": 294
+    }
+  },
+  "catalogue_raw_hits": 3796,
+  "catalogue_distinct_ids": 563,
+  "frozen_candidate_count": 95,
+  "selected_candidate_seeds": {
+    "CHEMBL147180": [
+      "CHEMBL3671576"
+    ],
+    "CHEMBL148869": [
+      "CHEMBL3671548"
+    ],
+    "CHEMBL184685": [
+      "CHEMBL3676356"
+    ],
+    "CHEMBL347086": [
+      "CHEMBL3676356"
+    ],
+    "CHEMBL356658": [
+      "CHEMBL3671572"
+    ],
+    "CHEMBL396219": [
+      "CHEMBL3676356"
+    ],
+    "CHEMBL420839": [
+      "CHEMBL3676352"
+    ],
+    "CHEMBL434311": [
+      "CHEMBL3671572"
+    ],
+    "CHEMBL483047": [
+      "CHEMBL3671571",
+      "CHEMBL3671494",
+      "CHEMBL3671559",
+      "CHEMBL3671558",
+      "CHEMBL3676352",
+      "CHEMBL3676356"
+    ],
+    "CHEMBL485303": [
+      "CHEMBL3671572",
+      "CHEMBL3676356"
+    ],
+    "CHEMBL567181": [
+      "CHEMBL3676350"
+    ],
+    "CHEMBL567401": [
+      "CHEMBL3676350"
+    ],
+    "CHEMBL568486": [
+      "CHEMBL3676350"
+    ],
+    "CHEMBL570118": [
+      "CHEMBL3676350"
+    ],
+    "CHEMBL570800": [
+      "CHEMBL3671579",
+      "CHEMBL3671576",
+      "CHEMBL3671570",
+      "CHEMBL3671494",
+      "CHEMBL3671559",
+      "CHEMBL3676375"
+    ],
+    "CHEMBL571718": [
+      "CHEMBL3671494",
+      "CHEMBL3676356"
+    ],
+    "CHEMBL571927": [
+      "CHEMBL3671559",
+      "CHEMBL3671558",
+      "CHEMBL3676375"
+    ],
+    "CHEMBL572160": [
+      "CHEMBL3676356"
+    ],
+    "CHEMBL585373": [
+      "CHEMBL3676350"
+    ],
+    "CHEMBL1934330": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL2035807": [
+      "CHEMBL3676350"
+    ],
+    "CHEMBL2058042": [
+      "CHEMBL3671579",
+      "CHEMBL3671576",
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL2408047": [
+      "CHEMBL3671579",
+      "CHEMBL3671576",
+      "CHEMBL3671571"
+    ],
+    "CHEMBL2408212": [
+      "CHEMBL3676356"
+    ],
+    "CHEMBL3633766": [
+      "CHEMBL3676352"
+    ],
+    "CHEMBL3633767": [
+      "CHEMBL3676352"
+    ],
+    "CHEMBL3633770": [
+      "CHEMBL3676352"
+    ],
+    "CHEMBL3633771": [
+      "CHEMBL3676352"
+    ],
+    "CHEMBL3764849": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3775190": [
+      "CHEMBL3676352"
+    ],
+    "CHEMBL3775415": [
+      "CHEMBL3676352"
+    ],
+    "CHEMBL3894267": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3899604": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3902395": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3902692": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3903343": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3904135": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3907718": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3909613": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3911632": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3912191": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3912945": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3914192": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3914694": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3917422": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3920112": [
+      "CHEMBL3671572"
+    ],
+    "CHEMBL3920630": [
+      "CHEMBL3671558",
+      "CHEMBL3676352"
+    ],
+    "CHEMBL3920767": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3925851": [
+      "CHEMBL3639703",
+      "CHEMBL3671577",
+      "CHEMBL3671579",
+      "CHEMBL3671576",
+      "CHEMBL3671570",
+      "CHEMBL3671571",
+      "CHEMBL3671572",
+      "CHEMBL3671494",
+      "CHEMBL3671569",
+      "CHEMBL3671560",
+      "CHEMBL3676375",
+      "CHEMBL3676352",
+      "CHEMBL3671548",
+      "CHEMBL3676356"
+    ],
+    "CHEMBL3926449": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3927189": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3929894": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3931642": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3931710": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3931756": [
+      "CHEMBL3671579",
+      "CHEMBL3671576",
+      "CHEMBL3671570",
+      "CHEMBL3671571",
+      "CHEMBL3671494",
+      "CHEMBL3671559",
+      "CHEMBL3671558",
+      "CHEMBL3671548"
+    ],
+    "CHEMBL3933996": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3934396": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3936779": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3937090": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3937713": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3938451": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3942744": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3943421": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3943577": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3944345": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3945739": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3946394": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3949216": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3950232": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3950361": [
+      "CHEMBL3676350"
+    ],
+    "CHEMBL3952258": [
+      "CHEMBL3676352",
+      "CHEMBL3671548"
+    ],
+    "CHEMBL3956981": [
+      "CHEMBL3639703",
+      "CHEMBL3671577",
+      "CHEMBL3671579",
+      "CHEMBL3671576",
+      "CHEMBL3671570",
+      "CHEMBL3671571",
+      "CHEMBL3671572",
+      "CHEMBL3671494",
+      "CHEMBL3671559",
+      "CHEMBL3671558",
+      "CHEMBL3671560",
+      "CHEMBL3671548"
+    ],
+    "CHEMBL3958394": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3960989": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3964545": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3965578": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3965760": [
+      "CHEMBL3676352"
+    ],
+    "CHEMBL3966322": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3970362": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3971350": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3971910": [
+      "CHEMBL3671559",
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3973279": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3973906": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3975418": [
+      "CHEMBL3671572"
+    ],
+    "CHEMBL3977316": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3977832": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3977987": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL3983059": [
+      "CHEMBL3671558"
+    ],
+    "CHEMBL4164131": [
+      "CHEMBL3671570"
+    ],
+    "CHEMBL4165188": [
+      "CHEMBL3671571"
+    ],
+    "CHEMBL4172002": [
+      "CHEMBL3671576"
+    ],
+    "CHEMBL4175805": [
+      "CHEMBL3671572"
+    ],
+    "CHEMBL4291513": [
+      "CHEMBL3676350"
+    ],
+    "CHEMBL4650279": [
+      "CHEMBL3671572",
+      "CHEMBL3676350",
+      "CHEMBL3676352",
+      "CHEMBL3676356"
+    ],
+    "CHEMBL5314470": [
+      "CHEMBL3676356"
+    ]
+  },
+  "exclusion_counts": {
+    "recorded_target_molecule_or_parent_id": 439,
+    "recorded_target_or_video_7_structure_or_connectivity": 3,
+    "requires_chembl_small_molecule_parent_record": 26
+  },
+  "exclusion_by_catalogue_id": {
+    "CHEMBL24137": "recorded_target_molecule_or_parent_id",
+    "CHEMBL24979": "recorded_target_molecule_or_parent_id",
+    "CHEMBL25610": "recorded_target_molecule_or_parent_id",
+    "CHEMBL25630": "recorded_target_molecule_or_parent_id",
+    "CHEMBL26050": "recorded_target_molecule_or_parent_id",
+    "CHEMBL26641": "recorded_target_molecule_or_parent_id",
+    "CHEMBL27685": "recorded_target_molecule_or_parent_id",
+    "CHEMBL27688": "recorded_target_molecule_or_parent_id",
+    "CHEMBL31369": "recorded_target_molecule_or_parent_id",
+    "CHEMBL31373": "recorded_target_molecule_or_parent_id",
+    "CHEMBL31419": "recorded_target_molecule_or_parent_id",
+    "CHEMBL31570": "recorded_target_molecule_or_parent_id",
+    "CHEMBL31588": "recorded_target_molecule_or_parent_id",
+    "CHEMBL31622": "recorded_target_molecule_or_parent_id",
+    "CHEMBL31656": "recorded_target_molecule_or_parent_id",
+    "CHEMBL31965": "recorded_target_molecule_or_parent_id",
+    "CHEMBL32079": "recorded_target_molecule_or_parent_id",
+    "CHEMBL32844": "recorded_target_molecule_or_parent_id",
+    "CHEMBL57759": "recorded_target_molecule_or_parent_id",
+    "CHEMBL57990": "recorded_target_molecule_or_parent_id",
+    "CHEMBL95774": "recorded_target_molecule_or_parent_id",
+    "CHEMBL129123": "recorded_target_molecule_or_parent_id",
+    "CHEMBL179313": "recorded_target_molecule_or_parent_id",
+    "CHEMBL190094": "recorded_target_molecule_or_parent_id",
+    "CHEMBL190651": "recorded_target_molecule_or_parent_id",
+    "CHEMBL242131": "recorded_target_molecule_or_parent_id",
+    "CHEMBL275762": "recorded_target_molecule_or_parent_id",
+    "CHEMBL279072": "recorded_target_molecule_or_parent_id",
+    "CHEMBL281872": "recorded_target_molecule_or_parent_id",
+    "CHEMBL283088": "recorded_target_molecule_or_parent_id",
+    "CHEMBL284326": "recorded_target_molecule_or_parent_id",
+    "CHEMBL286343": "recorded_target_molecule_or_parent_id",
+    "CHEMBL363815": "recorded_target_molecule_or_parent_id",
+    "CHEMBL365805": "recorded_target_molecule_or_parent_id",
+    "CHEMBL372246": "recorded_target_molecule_or_parent_id",
+    "CHEMBL431696": "recorded_target_molecule_or_parent_id",
+    "CHEMBL437879": "recorded_target_molecule_or_parent_id",
+    "CHEMBL473747": "recorded_target_molecule_or_parent_id",
+    "CHEMBL473748": "recorded_target_molecule_or_parent_id",
+    "CHEMBL489107": "recorded_target_molecule_or_parent_id",
+    "CHEMBL489111": "recorded_target_molecule_or_parent_id",
+    "CHEMBL489306": "recorded_target_molecule_or_parent_id",
+    "CHEMBL516365": "recorded_target_molecule_or_parent_id",
+    "CHEMBL522928": "recorded_target_molecule_or_parent_id",
+    "CHEMBL545315": "recorded_target_molecule_or_parent_id",
+    "CHEMBL569880": "recorded_target_molecule_or_parent_id",
+    "CHEMBL571040": "recorded_target_molecule_or_parent_id",
+    "CHEMBL1202477": "recorded_target_molecule_or_parent_id",
+    "CHEMBL1202478": "recorded_target_molecule_or_parent_id",
+    "CHEMBL1277620": "recorded_target_molecule_or_parent_id",
+    "CHEMBL1744347": "recorded_target_molecule_or_parent_id",
+    "CHEMBL1907764": "recorded_target_molecule_or_parent_id",
+    "CHEMBL1907944": "recorded_target_molecule_or_parent_id",
+    "CHEMBL1947204": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2018766": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2018773": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2018775": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2031302": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2031303": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2031304": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2031305": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2031310": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2057217": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL2105719": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2110732": "recorded_target_molecule_or_parent_id",
+    "CHEMBL2139591": "recorded_target_or_video_7_structure_or_connectivity",
+    "CHEMBL3092297": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3132872": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3133902": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3133906": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3221260": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3221261": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3221262": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3302608": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3302609": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3302952": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3352869": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3357634": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3357637": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3357638": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3357649": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3544937": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3545154": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3621220": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622617": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622618": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622619": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622620": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622621": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622622": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622623": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622625": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622626": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622627": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622628": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622629": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622630": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622631": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622633": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622634": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622635": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622637": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622639": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622640": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622641": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622649": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622651": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622653": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622654": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622655": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622659": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622660": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622662": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3622663": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3633929": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3633932": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3639703": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3639752": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3647422": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671475": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671476": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671477": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671478": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671479": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671480": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671481": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671482": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671483": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671484": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671485": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671486": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671487": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671488": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671489": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671490": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671491": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671492": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671493": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671494": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671495": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671496": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671497": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671498": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671499": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671500": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671501": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671502": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671503": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671504": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671505": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671506": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671507": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671508": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671509": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671510": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671511": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671512": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671513": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671514": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671515": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671516": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671517": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671518": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671519": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671520": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671521": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671522": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671524": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671527": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671528": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671529": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671530": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671531": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671532": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671533": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671534": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671535": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671536": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671537": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671538": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671539": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671540": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671541": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671542": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671544": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671545": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671546": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671547": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671548": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671549": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671550": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671551": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671552": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671553": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671554": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671555": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671556": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671557": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671558": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671559": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671560": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671561": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671562": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671563": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671564": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671565": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671566": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671567": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671568": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671569": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671570": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671571": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671572": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671573": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671574": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671575": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671576": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671577": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671578": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671579": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671580": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671581": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671582": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671583": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671584": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3671585": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676338": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676339": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676340": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676341": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676342": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676343": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676344": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676345": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676346": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676347": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676348": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676349": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676350": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676351": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676352": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676353": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676354": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676355": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676356": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676357": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676358": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676359": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676360": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676361": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676362": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676363": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676364": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676365": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676366": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676367": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676368": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676369": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676370": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676371": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676372": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676373": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676374": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676375": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676376": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676377": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676378": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676379": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676380": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676381": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676382": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676383": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676384": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676385": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676386": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676387": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676388": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676389": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676390": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676391": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676392": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676393": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3676394": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3680373": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3680374": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3680375": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3680378": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3787386": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3814846": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3818115": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3818364": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3819553": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3883534": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3892310": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3895009": "recorded_target_or_video_7_structure_or_connectivity",
+    "CHEMBL3898447": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3904966": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3909201": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3910915": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3914159": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3916927": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3918330": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3920866": "recorded_target_or_video_7_structure_or_connectivity",
+    "CHEMBL3930316": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3935007": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3939874": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3939985": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3940089": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3940909": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3944171": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3946801": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3950549": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3954587": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3957801": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3958631": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3961532": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3962365": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3965391": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3965901": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3968784": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3970231": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3972168": "recorded_target_molecule_or_parent_id",
+    "CHEMBL3974571": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4110258": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4169489": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4177348": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4435233": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4435885": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4436337": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4436695": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4441788": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4442324": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4443188": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4447976": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4449681": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4450824": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4453429": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4454948": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4456300": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4457295": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4457885": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4460706": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4465139": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4467033": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4468146": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4468464": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4473690": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4473875": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4474073": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4476544": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4515526": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4516586": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4521028": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4521506": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4527800": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4530987": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4541301": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4547332": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4549345": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4557964": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4560518": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4563683": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4573377": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4575267": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4577402": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4577883": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4577968": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4578487": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4579866": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4582933": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4584413": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4589070": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4591414": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4591886": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4592101": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4741678": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4744985": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4745521": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4755444": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4755832": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4757145": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4758761": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4758842": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4759072": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4759697": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4760739": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4762998": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4777353": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4779286": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4783641": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4786257": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL4790655": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4793338": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4794670": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4794998": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4796407": "recorded_target_molecule_or_parent_id",
+    "CHEMBL4851341": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL5095402": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5175489": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5181469": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5193247": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5266601": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5268781": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5270309": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5271930": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5272004": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5273261": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5280664": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5280967": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5281140": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5281205": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5282641": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5283875": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5284701": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5286007": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5290095": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5307029": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL5631845": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL5741413": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5750518": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5753909": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5763353": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5786389": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5786877": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5806859": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5814374": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5816376": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5824131": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5829626": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5838668": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5846412": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5859805": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5864179": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5879850": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5881164": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5888426": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5888474": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5904869": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5905270": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5907345": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5908256": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5915453": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5919894": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5923332": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5924448": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5939422": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5942609": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5949054": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5949226": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5949373": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5968479": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5968961": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5972110": "recorded_target_molecule_or_parent_id",
+    "CHEMBL5985870": "recorded_target_molecule_or_parent_id",
+    "CHEMBL6000037": "recorded_target_molecule_or_parent_id",
+    "CHEMBL6004995": "recorded_target_molecule_or_parent_id",
+    "CHEMBL6008370": "recorded_target_molecule_or_parent_id",
+    "CHEMBL6013422": "recorded_target_molecule_or_parent_id",
+    "CHEMBL6017130": "recorded_target_molecule_or_parent_id",
+    "CHEMBL6028594": "recorded_target_molecule_or_parent_id",
+    "CHEMBL6030968": "recorded_target_molecule_or_parent_id",
+    "CHEMBL6054362": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL6056825": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL6120517": "recorded_target_molecule_or_parent_id",
+    "CHEMBL6144386": "recorded_target_molecule_or_parent_id",
+    "CHEMBL6149365": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL6159633": "requires_chembl_small_molecule_parent_record",
+    "CHEMBL6165809": "recorded_target_molecule_or_parent_id"
+  },
+  "model_access": "None. Plans use frozen Video 7 membership and structural inputs. No potency labels, scores or weights enter catalogue selection."
+}

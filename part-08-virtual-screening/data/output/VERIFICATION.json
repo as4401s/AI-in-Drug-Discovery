@@ -1,0 +1,21 @@
+{
+  "model_sha256": "0fb37847a2303f9af14683b36b5098344b8bb8ab8840bc00b113b361e2db90d1",
+  "catalogue_scanned": 95,
+  "virtual_proposals": 361,
+  "screened": 456,
+  "eligible": 162,
+  "clusters": 74,
+  "chosen": 20,
+  "unique_exact_compound_keys": 456,
+  "unique_connectivity_blocks": 451,
+  "predeclared_budget_met": true,
+  "no_documented_course_identity_overlap": true,
+  "complete_partition_by_cluster_centroid": true,
+  "independently_verified_maxmin_steps": 20,
+  "byte_identical_screen_replay": {
+    "egfr_20_diverse_hits.csv": true,
+    "SCREEN_REPORT.json": true,
+    "CANDIDATE_SCORES.json": true
+  },
+  "measured_potency_present_rows": 0
+}

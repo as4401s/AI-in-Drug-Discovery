@@ -1,0 +1,48 @@
+{
+  "archive_bytes": 1027828,
+  "checks": [
+    {
+      "command": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "code"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "code/worked_examples.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "code/saved_model.py",
+        "data/reference/MODEL_MANIFEST.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "code/train_models.py",
+        "--inputs",
+        "data/input",
+        "--features",
+        "data/chapter5",
+        "--output",
+        "run"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "code/saved_model.py",
+        "run/MODEL_MANIFEST.json"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "model_reproduced_byte_for_byte": true
+}

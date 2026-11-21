@@ -1,0 +1,215 @@
+{
+  "scout_completed_utc": "2026-11-20T22:28:01.808916+00:00",
+  "requests": [
+    {
+      "file": "egfr-00000.json",
+      "sha256": "e385d8ac7fd5779bc4b963f23dbb90ecad86f4841e44bd85e12bdbf262696d3e",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=0",
+      "bytes": 543948
+    },
+    {
+      "file": "egfr-01000.json",
+      "sha256": "8f3886e600136716f562d224160e3c5b143773064f832a8328c24a0a017b5a8a",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=1000",
+      "bytes": 540520
+    },
+    {
+      "file": "egfr-02000.json",
+      "sha256": "fb8a137d081c78621531673a6ed648dca5a956917b1dd65721bf997590c90a97",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=2000",
+      "bytes": 546654
+    },
+    {
+      "file": "egfr-03000.json",
+      "sha256": "c5ad37a491ad0293da5ceb975b2aca58abe13ed67e694286c7e8e44f206eb36d",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=3000",
+      "bytes": 548723
+    },
+    {
+      "file": "egfr-04000.json",
+      "sha256": "4238d5dcf2163ad040daa849b9ad40da40ae33cf6cd6c37e7b5d51c94cb99156",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=4000",
+      "bytes": 561180
+    },
+    {
+      "file": "egfr-05000.json",
+      "sha256": "d8a37b6d18499781ab289889ac40a49a3955161737048412e74b82379fa2030e",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=5000",
+      "bytes": 561945
+    },
+    {
+      "file": "egfr-06000.json",
+      "sha256": "87e6778a438174c1415d488390184d5ea35e51cd274c29b517246abf9eeae9ae",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=6000",
+      "bytes": 559711
+    },
+    {
+      "file": "egfr-07000.json",
+      "sha256": "934bb8f05b997336061a54477429f5cf4ae98cc3ad87bf483fe46fabdf5b5802",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=7000",
+      "bytes": 560823
+    },
+    {
+      "file": "egfr-08000.json",
+      "sha256": "17a0f7eb98e881b7347af35a13cd76742e3bf619d486518001a34de069286789",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=8000",
+      "bytes": 565305
+    },
+    {
+      "file": "egfr-09000.json",
+      "sha256": "0399efee41e7f8ac1c1f3a235833a43cdb6a984b0ef4819b3e8cf6bf8e2dfb7a",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=9000",
+      "bytes": 564412
+    },
+    {
+      "file": "egfr-10000.json",
+      "sha256": "0745d02085e8c17b6c5e7bb003416ad68bc5f2ce9a6da3c7a8eb8520467a7fc9",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=10000",
+      "bytes": 569762
+    },
+    {
+      "file": "egfr-11000.json",
+      "sha256": "ad5a24d451e5c8fd36b613ef0f034711a365da990a0d386e924a45940d1916b7",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=11000",
+      "bytes": 570276
+    },
+    {
+      "file": "egfr-12000.json",
+      "sha256": "d438f8f08a58f91112fe627444eb9f8df95e61971c0e97f0311b5f330013cd4f",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=12000",
+      "bytes": 564847
+    },
+    {
+      "file": "egfr-13000.json",
+      "sha256": "6dbbed2f57351fa57a136bc592aa14d80cceb16985466aa86f7b6cef5af9c78d",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=13000",
+      "bytes": 569044
+    },
+    {
+      "file": "egfr-14000.json",
+      "sha256": "461ae45752daa7aa4555e22a1ce3a5a9b17239266bbd403ab618878f229acdc0",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=14000",
+      "bytes": 565112
+    },
+    {
+      "file": "egfr-15000.json",
+      "sha256": "c90ad0e269a7e9bd6eb39853300735b8650d6cdfcb3c38c6a98aed86ff2324d1",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=15000",
+      "bytes": 593135
+    },
+    {
+      "file": "egfr-16000.json",
+      "sha256": "30d8045a7a60711ced0554edb703750b9d8ec870b6f1b22ad78d8e2525734a14",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=16000",
+      "bytes": 571293
+    },
+    {
+      "file": "egfr-17000.json",
+      "sha256": "d0bd59d529b9094ffea1a2c83ef36e456f526a79b2bdf1eebac04a4051a05ec4",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=17000",
+      "bytes": 563521
+    },
+    {
+      "file": "egfr-18000.json",
+      "sha256": "08764ef81aac30906fe0bf3a85f35a8a959b77b0c021f65194fcfa1b73452acc",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/activity.json?target_chembl_id=CHEMBL203&standard_type=IC50&standard_relation=%3D&standard_units=nM&assay_type=B&limit=1000&order_by=activity_id&only=activity_id%2Cassay_chembl_id%2Ctarget_chembl_id%2Cassay_variant_mutation%2Cdata_validity_comment%2Cpotential_duplicate%2Cmolecule_chembl_id%2Cparent_molecule_chembl_id%2Ccanonical_smiles%2Cstandard_value%2Cstandard_units%2Cstandard_relation%2Cstandard_type%2Cdocument_chembl_id&offset=18000",
+      "bytes": 218670
+    },
+    {
+      "file": "CHEMBL674643.json",
+      "sha256": "9bbf293f5dd127e1274d96a635a43838ae4bade8bf4b7174018e5f152bdca491",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL674643.json",
+      "bytes": 940
+    },
+    {
+      "file": "CHEMBL679944.json",
+      "sha256": "68ea5dbe5c57219617ff51e6af03a179954715fbeefac4b318542677ffea76bc",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL679944.json",
+      "bytes": 1058
+    },
+    {
+      "file": "CHEMBL676067.json",
+      "sha256": "4ebb1d7c5990b304c5b09779ed1e6e96cc5e74e9bb7da54e0e6d3ac36e8a7a28",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL676067.json",
+      "bytes": 903
+    },
+    {
+      "file": "CHEMBL680028.json",
+      "sha256": "5892e18d21eb6caa49b19fe3cfc0772058682300e0ddd0229c53764727f80d6d",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL680028.json",
+      "bytes": 927
+    },
+    {
+      "file": "CHEMBL5136563.json",
+      "sha256": "8325b1aca09b6a06a107a1d07268f1111bb7e17c2ae23f453a40a8fc44e01cf0",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5136563.json",
+      "bytes": 1429
+    },
+    {
+      "file": "CHEMBL5047300.json",
+      "sha256": "e5a9f755d6d5bfd25354dbee385d4d93fa3c54a1dc5af96006165aee14d99770",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5047300.json",
+      "bytes": 1302
+    },
+    {
+      "file": "CHEMBL5737727.json",
+      "sha256": "991d3d736bda2c9a1ecfd04e0393ebe110e5fba2d9a7bb1c9da8efc0d8b4f4d2",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5737727.json",
+      "bytes": 2756
+    },
+    {
+      "file": "CHEMBL5738842.json",
+      "sha256": "02b3eb144d7cf76284b0ff56232648e021c34b7938ffb74f94c50ed7210c0526",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5738842.json",
+      "bytes": 2349
+    },
+    {
+      "file": "CHEMBL4021570.json",
+      "sha256": "72af03e8c23c27fcace31ad65e83ae671c0d37b5b5dc51945f0a8094b0f40b4f",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL4021570.json",
+      "bytes": 1330
+    },
+    {
+      "file": "CHEMBL4021571.json",
+      "sha256": "e29817e196d5912f685f3eaeecc37f71069b7f3def0344660a5b1864bd9d650b",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL4021571.json",
+      "bytes": 1349
+    },
+    {
+      "file": "CHEMBL5374156.json",
+      "sha256": "c724fa89335d3e0739604dc776c0e6a1f777e509168a3fc78cff6ec6655d3385",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5374156.json",
+      "bytes": 1573
+    },
+    {
+      "file": "CHEMBL4845550.json",
+      "sha256": "0ae947f6b503fb967b677a102830f9ec8b5275d52a14de6397450ab7d339fdd2",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL4845550.json",
+      "bytes": 1324
+    },
+    {
+      "file": "CHEMBL5256825.json",
+      "sha256": "f018465f8656bbb394821fae5ac96d1eb328c44c2f50266ead24887c7945fb4f",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5256825.json",
+      "bytes": 1368
+    },
+    {
+      "file": "CHEMBL5256826.json",
+      "sha256": "4f50f8a4e3c84b3b33051000e0ad4b2287098877f747ddf3c837de6f17616b99",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5256826.json",
+      "bytes": 1444
+    },
+    {
+      "file": "CHEMBL5256827.json",
+      "sha256": "8ccee305794b92f39e5fe96bdca5d09831a7cd7e2778159b5d9e34697e57052e",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5256827.json",
+      "bytes": 1302
+    },
+    {
+      "file": "CHEMBL5374159.json",
+      "sha256": "ffd34653f68cc0c063c6f3c14149bc3fd79b355c13ac17855eb27996f7b3eee4",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/assay/CHEMBL5374159.json",
+      "bytes": 1295
+    }
+  ]
+}

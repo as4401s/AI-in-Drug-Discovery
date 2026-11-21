@@ -10,6 +10,8 @@ Code that accompanies the **WhiskerBrief "AI in Drug Discovery"** video course. 
 | 4 | [AI in Drug Discovery 4: Dose-Response Curves, IC50 and a Python Fit](https://youtu.be/_vGbKQa2eMA) | [`part-04-dose-response-curves-and-ic50`](part-04-dose-response-curves-and-ic50) | [Medium](https://arjun-sarkar786.medium.com/ai-in-drug-discovery-4-dose-response-curves-ic50-and-a-python-fit-020f02845bb1) |
 | 5 | AI in Drug Discovery 5: Molecules as Data with SMILES, Graphs and Fingerprints (video coming soon) | [`part-05-molecules-as-data-smiles-fingerprints-and-graphs`](part-05-molecules-as-data-smiles-fingerprints-and-graphs) | – |
 | 6 | AI in Drug Discovery 6: QSAR, Potency Scores and Honest Evaluation (video coming soon) | [`part-06-qsar-evaluation`](part-06-qsar-evaluation) | – |
+| 7 | AI in Drug Discovery 7: Train and Validate EGFR QSAR Models in Python (video coming soon) | [`part-07-qsar-python`](part-07-qsar-python) | – |
+| 8 | AI in Drug Discovery 8: Virtual Screening and Chemical Diversity in Python (video coming soon) | [`part-08-virtual-screening`](part-08-virtual-screening) | – |
 
 ## Layout
 

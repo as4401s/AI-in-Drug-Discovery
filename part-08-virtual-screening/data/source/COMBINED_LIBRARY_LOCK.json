@@ -1,0 +1,67 @@
+{
+  "seed_rows": 142,
+  "candidate_edits_considered": 3115,
+  "cap_per_scaffold": 72,
+  "virtual_count": 361,
+  "catalogue_count": 95,
+  "full_count": 456,
+  "retained_by_scaffold": {
+    "O=C(CN1CC=CC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": {
+      "eligible_structures": 22,
+      "retained": 22
+    },
+    "O=C(CN1CCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": {
+      "eligible_structures": 22,
+      "retained": 22
+    },
+    "O=C(CN1CCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": {
+      "eligible_structures": 22,
+      "retained": 22
+    },
+    "O=C(CN1CCCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": {
+      "eligible_structures": 22,
+      "retained": 22
+    },
+    "O=C(CN1CCNCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": {
+      "eligible_structures": 22,
+      "retained": 22
+    },
+    "O=C(CN1CCOCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1": {
+      "eligible_structures": 22,
+      "retained": 22
+    },
+    "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CC1": {
+      "eligible_structures": 22,
+      "retained": 22
+    },
+    "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)c1ccc[nH]1": {
+      "eligible_structures": 31,
+      "retained": 31
+    },
+    "c1ccc(Nc2ncnc3cc(OC4CCCNC4)ccc23)cc1": {
+      "eligible_structures": 22,
+      "retained": 22
+    },
+    "c1ccc(Nc2ncnc3cc(OC4CCNC4)ccc23)cc1": {
+      "eligible_structures": 22,
+      "retained": 22
+    },
+    "c1ccc(Nc2ncnc3cc(OCCNc4nccs4)ccc23)cc1": {
+      "eligible_structures": 28,
+      "retained": 28
+    },
+    "c1ccc(Nc2ncnc3ccccc23)cc1": {
+      "eligible_structures": 2575,
+      "retained": 72
+    },
+    "c1cncc(COc2ccc(Nc3ncnc4ccccc34)cc2)c1": {
+      "eligible_structures": 32,
+      "retained": 32
+    }
+  },
+  "selection_policy": "Single aromatic H to F, Cl or methyl and terminal F/Cl/Br swaps on every development structure. Stable hash order within scaffold, deduplicate by first InChIKey block and retain the first 72 per group. Computed without loading an estimator or using measured potency.",
+  "activity_receipt_sha256": "c163e62ba35259a27d1550453bfb208c20aba2e86b678deeb92060c1c25a6c50",
+  "activity_rows_checked": 58847,
+  "catalogue_sha256": "777def6ea53a837a9ae944884cbf639feb533b2866c251724ebac5cdbc5a45f9",
+  "library_sha256": "1ac01582dc3885d2ebe01cfd670bef03db47024dfe60417d5dd84a3b4ef2b993"
+}

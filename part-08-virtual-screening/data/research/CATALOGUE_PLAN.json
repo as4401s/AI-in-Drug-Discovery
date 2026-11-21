@@ -1,0 +1,111 @@
+{
+  "selection_rule": "Choose the lowest numeric ChEMBL molecule ID from each exact scaffold-development group. Add four farthest-first molecules from the dominant scaffold using binary Morgan Tanimoto with the Video 7 fingerprint definition. Resolve ties by lowest numeric ChEMBL molecule ID.",
+  "similarity_cutoff_percent": 45,
+  "maximum_candidates_per_seed": 1000,
+  "rdkit_version": "2025.09.6",
+  "video7_inputs": {
+    "egfr": {
+      "file": "data/input/egfr/labels.json",
+      "sha256": "2a416598eb91c6a94e05e19cfc04a443e0e57bc0fde616848a71e22cfbf412ab"
+    },
+    "kras_g12d": {
+      "file": "data/input/kras_g12d/labels.json",
+      "sha256": "2b9e50f821be7a9b54dc97bedcbf500d4b870d40bdbbb9fa11417832fe6d8f5e"
+    },
+    "egfr_evaluation": {
+      "file": "data/trained/egfr_evaluation.json",
+      "sha256": "6df095014b848632fe9b875790984c31027a1aab457254acbf853f2a6aebfcbf"
+    },
+    "model_manifest": {
+      "file": "data/trained/MODEL_MANIFEST.json",
+      "sha256": "21fe77416c0cd41e73a3b53dc58e6cf04902b146944073bc4dd61449e7687217"
+    }
+  },
+  "seeds": [
+    {
+      "compound_id": "CHEMBL3639703",
+      "inchikey": "AZWGHQIJMYOUGY-UHFFFAOYSA-N",
+      "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1"
+    },
+    {
+      "compound_id": "CHEMBL3671577",
+      "inchikey": "QWIUMUFIKLQVQM-UHFFFAOYSA-N",
+      "scaffold": "O=C(CN1CC=CC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1"
+    },
+    {
+      "compound_id": "CHEMBL3671579",
+      "inchikey": "LRZJFGQTXFKLHL-UHFFFAOYSA-N",
+      "scaffold": "O=C(CN1CCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1"
+    },
+    {
+      "compound_id": "CHEMBL3671576",
+      "inchikey": "OELVTHONNCJUEV-UHFFFAOYSA-N",
+      "scaffold": "O=C(CN1CCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1"
+    },
+    {
+      "compound_id": "CHEMBL3671570",
+      "inchikey": "RHGWXTYSJLZTBJ-UHFFFAOYSA-N",
+      "scaffold": "O=C(CN1CCCCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1"
+    },
+    {
+      "compound_id": "CHEMBL3671571",
+      "inchikey": "BVCQMVAUBMWNAI-UHFFFAOYSA-N",
+      "scaffold": "O=C(CN1CCNCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1"
+    },
+    {
+      "compound_id": "CHEMBL3671572",
+      "inchikey": "DTTIJFZDEJYJJU-UHFFFAOYSA-N",
+      "scaffold": "O=C(CN1CCOCC1)NCCOc1ccc2c(Nc3ccccc3)ncnc2c1"
+    },
+    {
+      "compound_id": "CHEMBL3671494",
+      "inchikey": "KDCWCHYNUNBAEU-UHFFFAOYSA-N",
+      "scaffold": "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)C1CC1"
+    },
+    {
+      "compound_id": "CHEMBL3671569",
+      "inchikey": "GAONTQMLYXNEGT-UHFFFAOYSA-N",
+      "scaffold": "O=C(NCCOc1ccc2c(Nc3ccccc3)ncnc2c1)c1ccc[nH]1"
+    },
+    {
+      "compound_id": "CHEMBL3671559",
+      "inchikey": "NQECTGFZOQWBSF-UHFFFAOYSA-N",
+      "scaffold": "c1ccc(Nc2ncnc3cc(OC4CCCNC4)ccc23)cc1"
+    },
+    {
+      "compound_id": "CHEMBL3671558",
+      "inchikey": "ZUDNAVLBOYSKME-UHFFFAOYSA-N",
+      "scaffold": "c1ccc(Nc2ncnc3cc(OC4CCNC4)ccc23)cc1"
+    },
+    {
+      "compound_id": "CHEMBL3671560",
+      "inchikey": "DPSBYADGWLEODU-UHFFFAOYSA-N",
+      "scaffold": "c1ccc(Nc2ncnc3cc(OCCNc4nccs4)ccc23)cc1"
+    },
+    {
+      "compound_id": "CHEMBL3676350",
+      "inchikey": "KLGKOFYRMVUFIH-UHFFFAOYSA-N",
+      "scaffold": "c1cncc(COc2ccc(Nc3ncnc4ccccc34)cc2)c1"
+    },
+    {
+      "compound_id": "CHEMBL3676375",
+      "inchikey": "GRBIBILPWGFKCS-UHFFFAOYSA-N",
+      "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1"
+    },
+    {
+      "compound_id": "CHEMBL3676352",
+      "inchikey": "KEOKRCKVDHLVOO-UHFFFAOYSA-N",
+      "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1"
+    },
+    {
+      "compound_id": "CHEMBL3671548",
+      "inchikey": "LQZIDSSLBIXXRD-UHFFFAOYSA-N",
+      "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1"
+    },
+    {
+      "compound_id": "CHEMBL3676356",
+      "inchikey": "ZMTLVNLUQRLETC-UHFFFAOYSA-N",
+      "scaffold": "c1ccc(Nc2ncnc3ccccc23)cc1"
+    }
+  ]
+}
